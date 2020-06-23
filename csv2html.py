@@ -27,6 +27,7 @@ for username in namelist:
                 tag = """"""
                 tag = row_content[0]
                 print(tag)
+                # below is the tag content
                 tag_content ="""<tr class="tbContext">
                 <td></td>
                 <td><span style="color: red; font-size: 35px; ">{tag_name}</span></td>
@@ -37,21 +38,17 @@ for username in namelist:
             </tr>"""
                 mid_content += tag_content
             else:
-                # start = len(split_content[0]) + 1
-                # end = len(row_content) - len(split_content[-1]) - 5
-                # raw_highlight = row_content[start:end]
+                # It is not tag content, highlight keywords in three map ways
                 keyword_highlight = row_content[1].replace(tag, """<span style="color: yellow;">{con}</span>""".format(con=tag))
                 keyword_highlight = keyword_highlight.replace(tag.upper(), """<span style="color: yellow;">{con}</span>""".format(con=tag.upper()))
                 keyword_highlight = keyword_highlight.replace(tag.lower(), """<span style="color: yellow;">{con}</span>""".format(con=tag.lower()))
                 keyword_highlight = keyword_highlight.replace(tag.capitalize(), """<span style="color: yellow;">{con}</span>""".format(con=tag.capitalize()))
+                # If there is no any changes after mapping method, finding the first keyword in sentences
                 if keyword_highlight == row_content[1]:
-                    # print(tag)
-                    print("-------------")
                     print(row_content[1])
                     highlight_content = """<span style="color: yellow;">{con}</span>""".format(con = keyword_highlight[row_content[1].upper().index(tag.upper()):row_content[1].upper().index(tag.upper()) + len(tag)])
                     keyword_highlight =keyword_highlight[:row_content[1].upper().index(tag.upper())] + highlight_content + keyword_highlight[row_content[1].upper().index(tag.upper()) + len(tag):]
-                # print(keyword_highlight)
-                # split_content[1].replace(tag, """<span style="color: yellow;">{symptom}</span>""".format(symptom = tag))
+                # Untag tweet content
                 tweet_content = """<tr class="tbContext">
                 <td>{tweet_time}</td>
                 <td class ="content_left">{tweet_information}</td>
@@ -61,7 +58,7 @@ for username in namelist:
                 <td></td>
             </tr>""".format(tweet_time = row_content[0], tweet_information = keyword_highlight, retweet_count = row_content[2], favorite_count = row_content[3], twitter_url = row_content[4])
                 mid_content += tweet_content
-        # print(mid_content)
+        # Here is html format frame
         content = """<html lang="en">
 <head>
     <meta charset="UTF-8" />
