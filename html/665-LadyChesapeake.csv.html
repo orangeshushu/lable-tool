@@ -1,0 +1,623 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>665-LadyChesapeake.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 665-LadyChesapeake.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">665-LadyChesapeake.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">painful</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "painful"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 20:31:35</td>
+                <td class ="content_left">@warrenwarmachi1 @Sarahrain19 @Galaxy8SGQ @AngelHe33778004 @_edwardmondini_ @BobThePsychic1 @Lynn80217236 @GiboneyDavid @dianne1h @patticravatta @ScrotieMcP @WaydeDe @Brenro4 @CWarrior17 @MSNDeplorable52 @JohnMcK11707833 @chevmann64 @bbusa617 @ShastaHeart @howienudet @1USMarine4MAGA @DennisG58878004 @GelicaAF @WiChrisandra @PhilipBarron20 @AutriqueRudy @MariBeth120468 @mal1976retaf @Rabbit70414459 @lavo323 @JamesCali3 @TheAkmed @DW76540190 @HarrietNix @theCutemartian1 @abbienormal9 @Adorable_Todd @CookedHillary @tehipisehaka @Brush_Yo_Teeth @old_sales @MeShellVaTech @ClwtrBkAtty @veteran423 @TammyChabot @PlacePortia @JamesMHalloran1 @QUIPZONE7 That is what they did to me. It was <span style="color: yellow;"><span style="color: yellow;">painful</span></span> too. They shoved two swambs together at one time way way up my nostril and told be it was easier for me to do both swabs at the same time.   Now they practice less invasive tests.</td>
+                <td>2</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1265742466499698688">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 18:30:09</td>
+                <td class ="content_left">@ShastaHeart @Lynn80217236 @Rabbit70414459 @howienudet @Sarahrain19 @JohnMcK11707833 @CWarrior17 @Galaxy8SGQ @chevmann64 @patticravatta @bbusa617 @BobThePsychic1 @Brenro4 @Agelaius15 @1USMarine4MAGA @DennisG58878004 @GelicaAF @WiChrisandra @PhilipBarron20 @keraz37 @WaydeDe @warrenwarmachi1 @AngelHe33778004 @AutriqueRudy @MariBeth120468 @mal1976retaf @lavo323 @JamesCali3 @TheAkmed @DW76540190 @MSNDeplorable52 @_edwardmondini_ @HarrietNix @theCutemartian1 @abbienormal9 @Adorable_Todd @CookedHillary @tehipisehaka @Brush_Yo_Teeth @dianne1h @GiboneyDavid @old_sales @MeShellVaTech @ClwtrBkAtty @veteran423 @TammyChabot @PlacePortia @JamesMHalloran1 @QUIPZONE7 @MichaelAaronGr1 That wouldn't even be enough. Our China debt is about a trillion dollars or so.  <span style="color: yellow;">Covid19</span> has cost America at least 3 times so far and that doesn't even count the death and suffering.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1265349520847749128">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 02:00:44</td>
+                <td class ="content_left">@RobHarting1 I could maybe see her point if <span style="color: yellow;">Covid19</span> originated from Africa or South America and called the China Virus but, it came from a Bio Lab in Wuhan, China and allowed to spread the globe. China owns it.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1263288587430264832">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 21:13:25</td>
+                <td class ="content_left">@hogansgoat2423 @dianne1h @GelicaAF @kmichel6 @DianeNo54901680 @Galaxy8SGQ @verfolg @GilbertLane14 @SilvanoKinkela @MooreWyane @us_poll @ezrocks0011 @WeidnerRoger @ShastaHeart @HarryMi47749146 @GiboneyDavid @howienudet @Jo_LuciaLuciano @sueramirez3466 @TheAkmed @frickmick @red_rand @warrenwarmachi1 @david_d1421 @Drumbea82221174 @janedw777 @real_vt16 @_edwardmondini_ @HarrietNix @meaculpau27 @Debrah38249436 @mal1976retaf @AzDerbyGirl @OpalescentMoon @RacingYoshi @Desert_Crow @edd61903044 @lisakitchens8 @realstuart45 @tehipisehaka @Marilyn122868 @johngault071 @SpringsRaff @Timetosayhallo @rfragan @GiacomoCeraolo @HILLBILLYDEPLO1 @AmericanUmbra @Rabbit70414459 @CATZPRIDE To be honest, after the cancer surgery &amp; then  <span style="color: yellow;">Covid19</span> illness for 3 weeks &amp; then when cleared to go back to work being laid off &amp; THEN not qualifying for unemployment because of my pension and SS.....I had to call suicide hotline twice. I am ok now but was in a  very dark place.</td>
+                <td>2</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1260317176201916416">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 18:10:11</td>
+                <td class ="content_left">@GiacomoCeraolo @CWarrior17 @Galaxy8SGQ @WeidnerRoger @us_poll @johngault071 @lisakitchens8 @HarrietNix @mal1976retaf @_edwardmondini_ @ShastaHeart @PestJack @meaculpau27 @hogansgoat2423 @howienudet @GelicaAF @Desert_Crow @Thortheold1 @AB_RTR17 @kmichel6 @verfolg @GilbertLane14 @SilvanoKinkela @ezrocks0011 @HarryMi47749146 @GiboneyDavid @Jo_LuciaLuciano @sueramirez3466 @TheAkmed @frickmick @red_rand @warrenwarmachi1 @david_d1421 @Drumbea82221174 @janedw777 @real_vt16 @Debrah38249436 @AzDerbyGirl @OpalescentMoon @edd61903044 @realstuart45 @tehipisehaka @Marilyn122868 @SpringsRaff @Timetosayhallo @rfragan @dianne1h @Sarahrain19 Thanks Jimmy....Cancer surgery, <span style="color: yellow;">Covid-19</span> and unemployed...I hope bad luck only comes in 3's.</td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1265344496725876736">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 23:05:24</td>
+                <td class ="content_left">@warrenwarmachi1 @ClwtrBkAtty @lavo323 @ShastaHeart @Brenro4 @GelicaAF @vacavillesabra @MariBeth120468 @1USMarine4MAGA @BobThePsychic1 @howienudet @_edwardmondini_ @mal1976retaf @WaydeDe @theCutemartian1 @Lynn80217236 @MSNDeplorable52 @Sarahrain19 @abbienormal9 @Adorable_Todd @Rabbit70414459 @CookedHillary @tehipisehaka @Brush_Yo_Teeth @dianne1h @DW76540190 @CWarrior17 @JamesCali3 @GiboneyDavid @old_sales @MeShellVaTech @bbusa617 @TheAkmed @veteran423 @HarrietNix @TammyChabot @PlacePortia @JamesMHalloran1 @QUIPZONE7 @MichaelAaronGr1 @Richard4m @GunderzT @ChipCunningham3 @mimirussom @AzDerbyGirl @Louise49153139 @WickensBob @praisin7 @GovRonDeSantis @FLDEO Gov. DeSantis lashed out against the former Health Department employee who claims she was removed for objecting to manipulate <span style="color: yellow;">COVID-19</span> case numbers.</td>
+                <td>4</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1263244463364878337">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 04:41:31</td>
+                <td class ="content_left">@Avenger2Toxic @MILTONESPINOZAF <span style="color: yellow;">Covid-19</span> is highly contagious and horrid. I know, because I suffered with it for 3 nightmare weeks. I am 71 and a likely candidate.  However, I don't think the country needed to be shut down &amp; cause such record breaking unemployment &amp; business losses. It just got too political.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262604272233066496">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 03:40:08</td>
+                <td class ="content_left">@oh_melodylane @AcuteAngle199 I had <span style="color: yellow;">Covid-19</span> and was horribly sick for 3 weeks and couldn't get Hydroxychloroquine and I desperately tried.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262588827216089088">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 03:01:29</td>
+                <td class ="content_left">@RepMaxineWaters Trump cares about every single <span style="color: yellow;">Covid-19</span> death.  It's you who doesn't care! All you care about is enriching yourself while neglecting a district you even refuse to live in....oh, &amp; Impeach, Impeach. You are a disgusting  corrupt fraud brought twice brought to the Ethics Committee!</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262579098074976257">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 14:35:22</td>
+                <td class ="content_left">@realDonaldTrump @washingtonpost President Trump and his team has done more to combat <span style="color: yellow;">Covid-19</span> than any other past President could or would have. So much more could and should have been accomplished if not for the obstruction purely for political purposes from the Democrat Party!
+
+#TrumpWillWin2020 🇺🇸❤️🇺🇸</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262391332447891457">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 12:57:36</td>
+                <td class ="content_left">@cannotrunfast As a survivor of <span style="color: yellow;">Covid-19</span> and from what I read of what others have endured, and now these children, there is no way I will ever accept this Virus as anything other than a lab manipulated Bio-Weapon. The wide range of horrible symptoms are simply too unnatural.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262366730086756352">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 21:41:28</td>
+                <td class ="content_left">@warrenwarmachi1 @GelicaAF @_edwardmondini_ @Lynn80217236 @1USMarine4MAGA @dianne1h @ShastaHeart @WaydeDe @Rabbit70414459 @CWarrior17 @DW76540190 @JamesCali3 @theCutemartian1 @howienudet @GiboneyDavid @old_sales @MeShellVaTech @bbusa617 @mal1976retaf @Brenro4 @ClwtrBkAtty @TheAkmed @MSNDeplorable52 @veteran423 @tehipisehaka @HarrietNix @BobThePsychic1 @TammyChabot @PlacePortia @MariBeth120468 @JamesMHalloran1 @QUIPZONE7 @MichaelAaronGr1 @Richard4m @GunderzT @ChipCunningham3 @mimirussom @AzDerbyGirl @lavo323 @Louise49153139 @WickensBob @praisin7 @GiacomoCeraolo @Adorable_Todd @thehawkguardian @PRDDEPLBL0157 @TAwakened1 @real_darrin @NoLeftyEsty @William84912647 Well, you need more than a blurry picture of a circuit board with a printed COV-19 on it. For one thing I never heard the coronavirus called <span style="color: yellow;"><span style="color: yellow;">covid-19</span></span> until the Pandemic was well under way.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262136174652674059">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 15:00:06</td>
+                <td class ="content_left">@Sherpagirl1 @imRohanbakshi @realDonaldTrump That's right.  China killed them.  @BilldeBlasio kille plenty by encouraging people to ignore the virus and to mingle. @NYGovCuomo Cuomo killed plenty more to by sending seniors with <span style="color: yellow;">Covid-19</span> to nursing homes.  But, of course, Liberals blame Trump.
+https://t.co/7gpKUX5kdh</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262035167767670784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 10:48:50</td>
+                <td class ="content_left">@_edwardmondini_ @Lynn80217236 @GelicaAF @WaydeDe @Brenro4 @BobThePsychic1 @DennisG58878004 @warrenwarmachi1 @CWarrior17 @AngelHe33778004 @Sarahrain19 @1USMarine4MAGA @AutriqueRudy @MariBeth120468 @mal1976retaf @ShastaHeart @Rabbit70414459 @lavo323 @JamesCali3 @TheAkmed @DW76540190 @howienudet @MSNDeplorable52 @HarrietNix @theCutemartian1 @abbienormal9 @Adorable_Todd @CookedHillary @tehipisehaka @Brush_Yo_Teeth @dianne1h @GiboneyDavid @old_sales @MeShellVaTech @bbusa617 @ClwtrBkAtty @veteran423 @TammyChabot @PlacePortia @JamesMHalloran1 @QUIPZONE7 @MichaelAaronGr1 @Richard4m @GunderzT @ChipCunningham3 @mimirussom @AzDerbyGirl @Louise49153139 @WickensBob Ann Coulter is just trying to sell books and make money from speaking engagements.  I don't see her as a left or right. She is a complete pragmatist. I don't get the speaking  engagements.Who wants to sit &amp; listen to an arrogant woman speaking out of her <span style="color: yellow;"><span style="color: yellow;">nose</span></span> for an hour anyway?</td>
+                <td>4</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1265233426132742144">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cancer</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cancer"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 17:38:53</td>
+                <td class ="content_left">@Galaxy8SGQ @ShastaHeart @CWarrior17 @Brenro4 @dianne1h @Sarahrain19 @JohnMcK11707833 @BobThePsychic1 @rfragan @_edwardmondini_ @howienudet @HarrietNix @Rabbit70414459 @AmericanUmbra @timpurcell03 @warrenwarmachi1 @1USMarine4MAGA @GelicaAF @WiChrisandra @bbusa617 @Lynn80217236 @PhilipBarron20 @keraz37 @WaydeDe @DennisG58878004 @AngelHe33778004 @AutriqueRudy @MariBeth120468 @mal1976retaf @lavo323 @JamesCali3 @TheAkmed @DW76540190 @MSNDeplorable52 @abbienormal9 @Adorable_Todd @CookedHillary @tehipisehaka @Brush_Yo_Teeth @GiboneyDavid @old_sales @MeShellVaTech @ClwtrBkAtty @veteran423 @TammyChabot @PlacePortia @JamesMHalloran1 @QUIPZONE7 @MichaelAaronGr1 Yes and while he was in prison, I had to take care of our <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> stricken Father by myself.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1264974230606749697">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 17:46:55</td>
+                <td class ="content_left">@howienudet @_edwardmondini_ @Brenro4 @theCutemartian1 @CWarrior17 @WaydeDe @DW76540190 @Lynn80217236 @GelicaAF @MeShellVaTech @1USMarine4MAGA @ClwtrBkAtty @mal1976retaf @TheAkmed @Rabbit70414459 @MSNDeplorable52 @dianne1h @veteran423 @tehipisehaka @HarrietNix @GiboneyDavid @BobThePsychic1 @TammyChabot @PlacePortia @MariBeth120468 @JamesMHalloran1 @JamesCali3 @QUIPZONE7 @MichaelAaronGr1 @Richard4m @warrenwarmachi1 @GunderzT @ChipCunningham3 @mimirussom @AzDerbyGirl @lavo323 @Louise49153139 @WickensBob @praisin7 @GiacomoCeraolo @Adorable_Todd @thehawkguardian @PRDDEPLBL0157 @TAwakened1 @real_darrin @NoLeftyEsty @William84912647 @TheCryptKeepe14 I was given a prescription for 8 oxyies after the <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> surgery with no refills. It was a joke.</td>
+                <td>1</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1260989985383223302">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 21:13:25</td>
+                <td class ="content_left">@hogansgoat2423 @dianne1h @GelicaAF @kmichel6 @DianeNo54901680 @Galaxy8SGQ @verfolg @GilbertLane14 @SilvanoKinkela @MooreWyane @us_poll @ezrocks0011 @WeidnerRoger @ShastaHeart @HarryMi47749146 @GiboneyDavid @howienudet @Jo_LuciaLuciano @sueramirez3466 @TheAkmed @frickmick @red_rand @warrenwarmachi1 @david_d1421 @Drumbea82221174 @janedw777 @real_vt16 @_edwardmondini_ @HarrietNix @meaculpau27 @Debrah38249436 @mal1976retaf @AzDerbyGirl @OpalescentMoon @RacingYoshi @Desert_Crow @edd61903044 @lisakitchens8 @realstuart45 @tehipisehaka @Marilyn122868 @johngault071 @SpringsRaff @Timetosayhallo @rfragan @GiacomoCeraolo @HILLBILLYDEPLO1 @AmericanUmbra @Rabbit70414459 @CATZPRIDE To be honest, after the <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> surgery &amp; then  Covid19 illness for 3 weeks &amp; then when cleared to go back to work being laid off &amp; THEN not qualifying for unemployment because of my pension and SS.....I had to call suicide hotline twice. I am ok now but was in a  very dark place.</td>
+                <td>2</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1260317176201916416">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 16:30:30</td>
+                <td class ="content_left">@TheAkmed @howienudet @StanDMa88471536 @_edwardmondini_ @WeidnerRoger @Rabbit70414459 @rfragan @Irwbpk @HarrietNix @hogansgoat2423 @warrenwarmachi1 @meaculpau27 @us_poll @Galaxy8SGQ @blueeefoxx @GiboneyDavid @johngault071 @GelicaAF @sueramirez3466 @Rebashoenfelt1 @sallytca @TheMtljo @mal1976retaf @MartinMaola @lisakitchens8 @tehipisehaka @GiacomoCeraolo @AzDerbyGirl @kmichel6 @frickmick @GilbertLane14 @Debrah38249436 @TruthAlabama @real_vt16 @janedw777 @GreerIluv @PlacePortia @TammyChabot @Marilyn122868 @vjbrooks12 @verfolg @Drumbea82221174 @april492018 @2smokytop @MILTONESPINOZAF @SaintOfSoCal @NoGutsN83995424 @kerrielou73 @GOP_POPULARES @TeamTrump It is how I keep in <span style="color: yellow;">touch</span> with my boss and co-workers...I need to in order to find out info about when and if we can get back to work.</td>
+                <td>1</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1263145082200494080">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 12:58:59</td>
+                <td class ="content_left">@thejtlewis @dogsarezbest It is a cheap generic <span style="color: yellow;"><span style="color: yellow;">drug</span></span> which is why so many bought and paid for by  Big Pharmaceuticals hacks are against it.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1263091854180003840">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 03:46:52</td>
+                <td class ="content_left">@Covfefe_Willi Trump doesn't own any stock in any companies that make hydroxychloroquine. It is a generic <span style="color: yellow;"><span style="color: yellow;">drug</span></span> that has been around for decades.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262590520431386626">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">headaches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "headaches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 04:32:25</td>
+                <td class ="content_left">@webnetcity @meaculpau27 Have you tried  Excedrin for Migraines. That works for be quite well for me, especially if I catch them early. Maybe you should go to the ER to make sure your <span style="color: yellow;"><span style="color: yellow;">headaches</span></span> are not for some other medical reason.  I will pray for you! 
+✝️🙏✝️</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262601982654717953">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Excedrin</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Excedrin"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 04:32:25</td>
+                <td class ="content_left">@webnetcity @meaculpau27 Have you tried  <span style="color: yellow;"><span style="color: yellow;">Excedrin</span></span> for Migraines. That works for be quite well for me, especially if I catch them early. Maybe you should go to the ER to make sure your headaches are not for some other medical reason.  I will pray for you! 
+✝️🙏✝️</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262601982654717953">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Hydroxychloroquine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Hydroxychloroquine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 03:40:08</td>
+                <td class ="content_left">@oh_melodylane @AcuteAngle199 I had Covid-19 and was horribly sick for 3 weeks and couldn't get <span style="color: yellow;"><span style="color: yellow;">Hydroxychloroquine</span></span> and I desperately tried.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262588827216089088">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 01:02:53</td>
+                <td class ="content_left">@gatewaypundit @realDonaldTrump <span style="color: yellow;"><span style="color: yellow;">Hydroxychloroquine</span></span> has not killed anyone taking it for Malaria, Lupus or  Arthritis. @TeamCavuto could not wait to proclaim "It will kill you!" only moments after Trump announced he was taking it. Since he hates Trump so much, one would think he would be happy Trump is taking it.</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262549251298648065">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">lupus</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "lupus"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 01:02:53</td>
+                <td class ="content_left">@gatewaypundit @realDonaldTrump Hydroxychloroquine has not killed anyone taking it for Malaria, <span style="color: yellow;">Lupus</span> or  Arthritis. @TeamCavuto could not wait to proclaim "It will kill you!" only moments after Trump announced he was taking it. Since he hates Trump so much, one would think he would be happy Trump is taking it.</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262549251298648065">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 19:26:57</td>
+                <td class ="content_left">@ShastaHeart @meaculpau27 @GelicaAF @kmichel6 @Galaxy8SGQ @verfolg @GilbertLane14 @SilvanoKinkela @MooreWyane @us_poll @ezrocks0011 @WeidnerRoger @HarryMi47749146 @GiboneyDavid @howienudet @Jo_LuciaLuciano @sueramirez3466 @TheAkmed @frickmick @red_rand @warrenwarmachi1 @david_d1421 @Drumbea82221174 @janedw777 @real_vt16 @_edwardmondini_ @HarrietNix @Debrah38249436 @mal1976retaf @AzDerbyGirl @hogansgoat2423 @OpalescentMoon @RacingYoshi @Desert_Crow @edd61903044 @lisakitchens8 @realstuart45 @tehipisehaka @Marilyn122868 @johngault071 @SpringsRaff @Timetosayhallo @rfragan @GiacomoCeraolo @HILLBILLYDEPLO1 @AmericanUmbra @Rabbit70414459 @CATZPRIDE @johncola36 @MccrorieJim It helps people with <span style="color: yellow;">Lupus</span> for sure.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1260290384137195529">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breathing difficulties</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breathing difficulties"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 13:20:05</td>
+                <td class ="content_left">@resist48776146 @OliveBr42748782 If it helps...My <span style="color: yellow;"><span style="color: yellow;">breathing difficulties</span></span> are gradually improving. Fatigue makes you want to sleep but, go for walks. There needs to be e investigations. Why did Pelosi go to China last year? Who donated $ to the Wuhan Lab? Why the outbreak just when the Impeachment was failing?</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262372387233976322">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 12:42:41</td>
+                <td class ="content_left">@resist48776146 @OliveBr42748782 My prayers are with you &amp; your family Truthseeker. I suffered over 3 weeks with this horrible nightmare CHINA Virus &amp; still have <span style="color: yellow;"><span style="color: yellow;">breathing difficulties</span></span>.There is no way that this is anything other than a result of Bio-Weapon research. The symptoms are much to varied to be natural.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262362976608309250">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breathing difficult</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breathing difficult"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 13:20:05</td>
+                <td class ="content_left">@resist48776146 @OliveBr42748782 If it helps...My <span style="color: yellow;"><span style="color: yellow;">breathing difficult</span></span>ies are gradually improving. Fatigue makes you want to sleep but, go for walks. There needs to be e investigations. Why did Pelosi go to China last year? Who donated $ to the Wuhan Lab? Why the outbreak just when the Impeachment was failing?</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262372387233976322">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 12:42:41</td>
+                <td class ="content_left">@resist48776146 @OliveBr42748782 My prayers are with you &amp; your family Truthseeker. I suffered over 3 weeks with this horrible nightmare CHINA Virus &amp; still have <span style="color: yellow;"><span style="color: yellow;">breathing difficult</span></span>ies.There is no way that this is anything other than a result of Bio-Weapon research. The symptoms are much to varied to be natural.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262362976608309250">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fatigue</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fatigue"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 13:20:05</td>
+                <td class ="content_left">@resist48776146 @OliveBr42748782 If it helps...My breathing difficulties are gradually improving. <span style="color: yellow;">Fatigue</span> makes you want to sleep but, go for walks. There needs to be e investigations. Why did Pelosi go to China last year? Who donated $ to the Wuhan Lab? Why the outbreak just when the Impeachment was failing?</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262372387233976322">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 13:00:17</td>
+                <td class ="content_left">@mefbama @patricia_cotto Americans need to take notice of the Tyranny of Socialism. This should give everyone a bitter <span style="color: yellow;"><span style="color: yellow;">taste</span></span>  and a wake up call of what the Democrat Party really represents.</td>
+                <td>5</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262367404295929856">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 14:53:53</td>
+                <td class ="content_left">@TrumpNotBiden @realDonaldTrump President Trump will keep us free. Democrats have given Americans a bitter <span style="color: yellow;"><span style="color: yellow;">taste</span></span> of their brand of Socialism and it will be remembered on November 3rd. 
+
+#TrumpWillWin2020 🇺🇸❤️🇺🇸</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262033605892726785">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 10:27:20</td>
+                <td class ="content_left">@WaydeDe @theCutemartian1 @_edwardmondini_ @mal1976retaf @dianne1h @howienudet @ClwtrBkAtty @Lynn80217236 @HarrietNix @rfragan @warrenwarmachi1 @Rabbit70414459 @MariBeth120468 @GelicaAF @DW76540190 @MeShellVaTech @1USMarine4MAGA @CWarrior17 @Brenro4 @TheAkmed @MSNDeplorable52 @veteran423 @tehipisehaka @GiboneyDavid @BobThePsychic1 @TammyChabot @PlacePortia @JamesMHalloran1 @JamesCali3 @QUIPZONE7 @MichaelAaronGr1 @Richard4m @GunderzT @ChipCunningham3 @mimirussom @AzDerbyGirl @lavo323 @Louise49153139 @WickensBob @praisin7 @GiacomoCeraolo @Adorable_Todd @thehawkguardian @PRDDEPLBL0157 @TAwakened1 @real_darrin @NoLeftyEsty @William84912647 @realDonaldTrump Mind boggling how an entire Party moved so for left that has more in common with Communist Governments then the USA Constitution. The fact that half the country still votes for them is even more baffling. I hope this rancid <span style="color: yellow;"><span style="color: yellow;">taste</span></span> of Socialism during the Pandemic will change minds</td>
+                <td>3</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1261604138166693893">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-15 12:24:44</td>
+                <td class ="content_left">A <span style="color: yellow;"><span style="color: yellow;">taste</span></span> of Socialism, courtesy of the Democrat Party.
+
+Los Angeles to shut off water, power of nonessential businesses that refuse to close amid coronavirus https://t.co/xzpNZcdrkL #FoxNews</td>
+                <td>3</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1261271296110886914">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 01:05:03</td>
+                <td class ="content_left">@Brush_Yo_Teeth @tehipisehaka @GelicaAF @Sarahrain19 @dianne1h @MSNDeplorable52 @DW76540190 @warrenwarmachi1 @_edwardmondini_ @Lynn80217236 @1USMarine4MAGA @ShastaHeart @WaydeDe @Rabbit70414459 @CWarrior17 @JamesCali3 @theCutemartian1 @howienudet @GiboneyDavid @old_sales @MeShellVaTech @bbusa617 @mal1976retaf @Brenro4 @ClwtrBkAtty @TheAkmed @veteran423 @HarrietNix @BobThePsychic1 @TammyChabot @PlacePortia @MariBeth120468 @JamesMHalloran1 @QUIPZONE7 @MichaelAaronGr1 @Richard4m @GunderzT @ChipCunningham3 @mimirussom @AzDerbyGirl @lavo323 @Louise49153139 @WickensBob @praisin7 @GiacomoCeraolo @Adorable_Todd @thehawkguardian @PRDDEPLBL0157 @TAwakened1 @real_darrin There is a Quarry about a half hour from my house where people go to swim in the summer &amp; it is very <span style="color: yellow;"><span style="color: yellow;">cold</span></span> because it is fed from underground spring water. However, once one gets in it &amp; starts swimming around the body acclimates to the temperature &amp; it becomes quite refreshing.</td>
+                <td>2</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1262187409854390274">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 20:30:26</td>
+                <td class ="content_left">@hogansgoat2423 @howienudet @Galaxy8SGQ @us_poll @mal1976retaf @meaculpau27 @WeidnerRoger @lisakitchens8 @StanDMa88471536 @tehipisehaka @blueeefoxx @GiboneyDavid @rfragan @GelicaAF @Irwbpk @HarrietNix @TheAkmed @GiacomoCeraolo @AzDerbyGirl @kmichel6 @_edwardmondini_ @frickmick @sueramirez3466 @Rabbit70414459 @warrenwarmachi1 @GilbertLane14 @Debrah38249436 @TruthAlabama @real_vt16 @janedw777 @GreerIluv @PlacePortia @TammyChabot @Marilyn122868 @vjbrooks12 @verfolg @BLMcCallum @Drumbea82221174 @april492018 @johngault071 @2smokytop @MILTONESPINOZAF @SaintOfSoCal @NoGutsN83995424 @kerrielou73 @GOP_POPULARES @red_rand @MartinMaola @Adorable_Todd @SaundraSmoss Yeah. He said he jumped up, shook his leg &amp; it ran away. He keeps his thermostat real low because he hates paying big electric bills &amp; my guess is the mouse was <span style="color: yellow;"><span style="color: yellow;">cold</span></span> &amp; going for his body heat. I am glad for his sake it didn't crawl any farther up his pant leg than it had.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1261031135573880832">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 19:37:25</td>
+                <td class ="content_left">@ShastaHeart @GelicaAF @DianeNo54901680 @Galaxy8SGQ @verfolg @GilbertLane14 @SilvanoKinkela @MooreWyane @us_poll @ezrocks0011 @WeidnerRoger @HarryMi47749146 @GiboneyDavid @howienudet @Jo_LuciaLuciano @sueramirez3466 @TheAkmed @frickmick @red_rand @warrenwarmachi1 @david_d1421 @Drumbea82221174 @janedw777 @real_vt16 @_edwardmondini_ @HarrietNix @meaculpau27 @Debrah38249436 @mal1976retaf @kmichel6 @AzDerbyGirl @hogansgoat2423 @OpalescentMoon @RacingYoshi @Desert_Crow @edd61903044 @lisakitchens8 @realstuart45 @tehipisehaka @Marilyn122868 @johngault071 @SpringsRaff @Timetosayhallo @rfragan @GiacomoCeraolo @HILLBILLYDEPLO1 @AmericanUmbra @Rabbit70414459 @CATZPRIDE @johncola36 Geesh Shasta...I am not telling you anything and am getting <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of this conversation. I don't feel like debating with you.  God Bless..</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1260293017287757829">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">bronchitis</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "bronchitis"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 19:18:09</td>
+                <td class ="content_left">@meaculpau27 @GelicaAF @kmichel6 @ShastaHeart @Galaxy8SGQ @verfolg @GilbertLane14 @SilvanoKinkela @MooreWyane @us_poll @ezrocks0011 @WeidnerRoger @HarryMi47749146 @GiboneyDavid @howienudet @Jo_LuciaLuciano @sueramirez3466 @TheAkmed @frickmick @red_rand @warrenwarmachi1 @david_d1421 @Drumbea82221174 @janedw777 @real_vt16 @_edwardmondini_ @HarrietNix @Debrah38249436 @mal1976retaf @AzDerbyGirl @hogansgoat2423 @OpalescentMoon @RacingYoshi @Desert_Crow @edd61903044 @lisakitchens8 @realstuart45 @tehipisehaka @Marilyn122868 @johngault071 @SpringsRaff @Timetosayhallo @rfragan @GiacomoCeraolo @HILLBILLYDEPLO1 @AmericanUmbra @Rabbit70414459 @CATZPRIDE @johncola36 @MccrorieJim The original coronavirus was patented in the USA &amp; was experimented with as a means to cure <span style="color: yellow;"><span style="color: yellow;">bronchitis</span></span> but was scrapped because of its high mutation properties &amp; then it ends up in China Lab?? How did all those horseshoe bats get it?  I am confused about all of it to be honest.</td>
+                <td>2</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1260288171499233283">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">test positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "test positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 17:59:16</td>
+                <td class ="content_left">@ShastaHeart @GelicaAF @Galaxy8SGQ @verfolg @GilbertLane14 @SilvanoKinkela @MooreWyane @us_poll @ezrocks0011 @WeidnerRoger @HarryMi47749146 @GiboneyDavid @howienudet @Jo_LuciaLuciano @sueramirez3466 @TheAkmed @frickmick @red_rand @warrenwarmachi1 @david_d1421 @Drumbea82221174 @janedw777 @real_vt16 @_edwardmondini_ @HarrietNix @meaculpau27 @Debrah38249436 @mal1976retaf @kmichel6 @AzDerbyGirl @hogansgoat2423 @OpalescentMoon @RacingYoshi @Desert_Crow @edd61903044 @lisakitchens8 @realstuart45 @tehipisehaka @Marilyn122868 @johngault071 @SpringsRaff @Timetosayhallo @rfragan @GiacomoCeraolo @HILLBILLYDEPLO1 @AmericanUmbra @Rabbit70414459 @CATZPRIDE @johncola36 @MccrorieJim It can't hurt to know if you <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> so that you can be careful to not spread it to anyone. I wish my doctor was seeing patients but he isn't yet. I would like to know if having been so sick with it, that is hasn't done permanent damage. Soon as he can, I want a check up.</td>
+                <td>1</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/LadyChesapeake/status/1260268319778668545">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,758 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>13-W7VOA.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 13-W7VOA.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">13-W7VOA.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Hydroxychloroquine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Hydroxychloroquine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 19:15:54</td>
+                <td class ="content_left">Earlier, @WHO announced it had suspended testing <span style="color: yellow;">hydroxychloroquine</span> in #COVID19 patients due to safety concerns.</td>
+                <td>10</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/W7VOA/status/1265361036087119874">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 18:49:21</td>
+                <td class ="content_left">"While <span style="color: yellow;">hydroxychloroquine</span> is currently the subject of many clinical trials, including one in which Cleveland Clinic is participating, results are inconclusive so far. But despite the president’s comments, Cleveland Clinic experts recommend against using it." #CoronavirusUSA https://t.co/BTUQF824tj</td>
+                <td>18</td>
+                <td>20</td>
+                <td><a href="https://twitter.com/W7VOA/status/1265354352157437952">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 12:37:46</td>
+                <td class ="content_left">Study of 96,000 hospitalized #coronavirus patients on six continents found those who received <span style="color: yellow;">hydroxychloroquine</span> had a significantly higher risk of death as compared with those who did not.   https://t.co/J6GwZAZGUy</td>
+                <td>18</td>
+                <td>23</td>
+                <td><a href="https://twitter.com/W7VOA/status/1263811289811423232">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 20:13:27</td>
+                <td class ="content_left">"That was not a VA study," says @SecWilkie "Researchers took VA numbers" and it wasn't peer reviewed, says of the <span style="color: yellow;">hydroxychloroquine</span> study that @POTUS has twice bashed today.</td>
+                <td>10</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/W7VOA/status/1262838802739081216">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 18:39:44</td>
+                <td class ="content_left">Also @VP added that early in this process, @FDA approved off-label use where physicians could prescribe <span style="color: yellow;">hydroxychloroquine</span> in terms they deemed appropriate.</td>
+                <td>6</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/W7VOA/status/1262815218129870851">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 18:06:20</td>
+                <td class ="content_left">"It was a Trump enemy statement" that <span style="color: yellow;">hydroxychloroquine</span> harmed #COVID19 patients, says @POTUS. "I think it gives you an additional level of safety."</td>
+                <td>10</td>
+                <td>14</td>
+                <td><a href="https://twitter.com/W7VOA/status/1262806814191767554">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 01:43:10</td>
+                <td class ="content_left">One reason @realDonaldTrump shouldn't take <span style="color: yellow;">hydroxychloroquine</span> is because he's "morbidly obese," @SpeakerPelosi says on @CNN. https://t.co/jdDFV7Bb5l</td>
+                <td>6</td>
+                <td>12</td>
+                <td><a href="https://twitter.com/W7VOA/status/1262559389552181253">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 01:30:08</td>
+                <td class ="content_left">Here's our updated @VOANews report on @POTUS saying he's taking <span style="color: yellow;">hydroxychloroquine</span> daily to ward off the #coronavirus. https://t.co/BFD3bLlX3g #COVID19</td>
+                <td>10</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/W7VOA/status/1262556109312864261">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 00:07:32</td>
+                <td class ="content_left">The potential benefits of using <span style="color: yellow;">hydroxychloroquine</span> outweigh the risks, says statement from @WhiteHouse physician. https://t.co/OTYQF71Kq5</td>
+                <td>105</td>
+                <td>136</td>
+                <td><a href="https://twitter.com/W7VOA/status/1262535324581998593">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 20:33:19</td>
+                <td class ="content_left">Dr. Rich Bright was against <span style="color: yellow;">hydroxychloroquine</span> and is a "fake whistleblower," says @POTUS.</td>
+                <td>27</td>
+                <td>50</td>
+                <td><a href="https://twitter.com/W7VOA/status/1262481412072116224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 20:29:11</td>
+                <td class ="content_left">A doctor in Westchester County, New York, told him he's treated hundreds of patients with <span style="color: yellow;">hydroxychloroquine</span> and no one has died, according to @POTUS.</td>
+                <td>16</td>
+                <td>22</td>
+                <td><a href="https://twitter.com/W7VOA/status/1262480372547321857">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 20:26:29</td>
+                <td class ="content_left">"I happen to be taking it," says @POTUS of <span style="color: yellow;">hydroxychloroquine</span> . "I'm not going to get hurt by it."</td>
+                <td>38</td>
+                <td>51</td>
+                <td><a href="https://twitter.com/W7VOA/status/1262479694081011713">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 16:29:08</td>
+                <td class ="content_left">Dr. Bright says he became "increasingly alarmed" about supplies of <span style="color: yellow;">hydroxychloroquine</span> coming into the US from #India and #Pakistan.</td>
+                <td>14</td>
+                <td>21</td>
+                <td><a href="https://twitter.com/W7VOA/status/1260970411057168387">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 14:33:17</td>
+                <td class ="content_left">A warning just issued by @US_FDA not to use <span style="color: yellow;">hydroxychloroquine</span> or chloroquine for #COVID19 outside of hospitals or clinical trials "due to risk of heart rhythm problems." https://t.co/0dD0ekKQ3j</td>
+                <td>28</td>
+                <td>23</td>
+                <td><a href="https://twitter.com/W7VOA/status/1253693498022379524">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 20:41:06</td>
+                <td class ="content_left">Panel of experts convened by the National Institute of Allergy and Infectious Diseases recommends against using a combination of <span style="color: yellow;">hydroxychloroquine</span> and azithromycin for the treatment of #COVID19 patients because of potential toxicities, reports @NPR. https://t.co/KTDSF2djSk</td>
+                <td>84</td>
+                <td>90</td>
+                <td><a href="https://twitter.com/W7VOA/status/1252698900529635333">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 16:13:22</td>
+                <td class ="content_left">"It would also represent another unfortunate chink in the armor of arms control agreements that have kept America and its allies safer since the <span style="color: yellow;">Cold</span> War," adds @GregDelawie.</td>
+                <td>7</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/W7VOA/status/1263503159378546688">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 22:42:53</td>
+                <td class ="content_left">"Is anybody freezing? It's very <span style="color: yellow;"><span style="color: yellow;">cold</span></span> out here. We can leave early," says @POTUS in the Rose Garden.</td>
+                <td>6</td>
+                <td>12</td>
+                <td><a href="https://twitter.com/W7VOA/status/1250555221119549443">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">zinc</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "zinc"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 20:28:12</td>
+                <td class ="content_left">"A lot of front-line workers" are also taking hydroxychloroquine. "I'm taking the two -- <span style="color: yellow;"><span style="color: yellow;">zinc</span></span> and hydroxy."</td>
+                <td>27</td>
+                <td>34</td>
+                <td><a href="https://twitter.com/W7VOA/status/1262480126106796032">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-15 03:15:10</td>
+                <td class ="content_left">A new @UNODC report warns that the synthetic <span style="color: yellow;"><span style="color: yellow;">drug</span></span> market in East and Southeast Asia continues to expand and diversify, and the price of methamphetamine has dropped to the lowest level in a decade as the supply has surged.</td>
+                <td>10</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/W7VOA/status/1261132989477642240">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 19:50:14</td>
+                <td class ="content_left">#Remdesivir maker @GileadSciences has received emergency authorization from the @FDA for the <span style="color: yellow;"><span style="color: yellow;">drug</span></span> to be used to treat #COVID19 patients, announces @POTUS. 
+.</td>
+                <td>24</td>
+                <td>19</td>
+                <td><a href="https://twitter.com/W7VOA/status/1256309979818201090">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 19:41:33</td>
+                <td class ="content_left">#Remdesivir "has a clear-cut significant positive effect in diminishing the time to recover,” Dr. Anthony Fauci told reporters today in the @WhiteHouse Oval Office. “A <span style="color: yellow;"><span style="color: yellow;">drug</span></span> can block this virus.”https://t.co/jUAih3UJnf  @VOANews</td>
+                <td>39</td>
+                <td>36</td>
+                <td><a href="https://twitter.com/W7VOA/status/1255583016996478977">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 18:58:25</td>
+                <td class ="content_left">Three or four #COVID19 <span style="color: yellow;"><span style="color: yellow;">drug</span></span> therapies “showing great cause for optimism,” says Dr. Andrew Badley, an infectious diseases specialist here at @MayoClinic. 
+Approval for such therapeutics could come in leas than 10 months, he says after @VP notes a vaccine is still a year away. https://t.co/eQQGmQc09r</td>
+                <td>7</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/W7VOA/status/1255209775664676865">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 16:54:09</td>
+                <td class ="content_left">Antiviral <span style="color: yellow;"><span style="color: yellow;">drug</span></span> #remdesivir, being studied for fighting #COVID19, reportedly flops in first trial.  https://t.co/5mpMLqEQBc via @financialtimes</td>
+                <td>83</td>
+                <td>95</td>
+                <td><a href="https://twitter.com/W7VOA/status/1253366560246333440">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 22:14:15</td>
+                <td class ="content_left">Sharp rise in <span style="color: yellow;"><span style="color: yellow;">drug</span></span> and alcohol abuse, suicides and heart disease if economic shutdown is prolonged, says @POTUS. "Our country has suffered. Our world has suffered."</td>
+                <td>9</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/W7VOA/status/1250910402696921089">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-15 03:15:09</td>
+                <td class ="content_left">“While the world has shifted its attention to the <span style="color: yellow;">COVID-19</span> pandemic, all indications are that production and trafficking of synthetic drugs and chemicals continue at record levels" in SE Asia, says @jdouglasSEA of @UNODC.</td>
+                <td>12</td>
+                <td>14</td>
+                <td><a href="https://twitter.com/W7VOA/status/1261132988521361409">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 20:13:22</td>
+                <td class ="content_left">Today @POTUS “will deliver remarks on the Trump Administration’s <span style="color: yellow;">COVID-19</span> testing accomplishments,” according to the @WhiteHouse, as we await his arrival here in the Rose Garden. https://t.co/9v4vatCL35</td>
+                <td>5</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/W7VOA/status/1259939677076951040">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 04:44:59</td>
+                <td class ="content_left">Based on the most up-to-date data, “the US could have 137,184 cumulative <span style="color: yellow;">COVID-19</span> deaths (estimate range of 102,783 to 223,489) by August.” #CoronavirusUSA https://t.co/5m2UTGnzIL</td>
+                <td>15</td>
+                <td>19</td>
+                <td><a href="https://twitter.com/W7VOA/status/1259706044403646470">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 14:29:07</td>
+                <td class ="content_left">Chapter 11 bankruptcy filing by @neimanmarcus  to support "continued operations during the <span style="color: yellow;">COVID-19</span> pandemic and
+beyond."  https://t.co/x2FkPPpmyt https://t.co/x7iBxeOsuk</td>
+                <td>5</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/W7VOA/status/1258403492923944964">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 19:36:38</td>
+                <td class ="content_left">“Congress is grateful for the Administration’s generous offer to deploy rapid <span style="color: yellow;">COVID-19</span> testing capabilities to Capitol Hill, but we respectfully decline the offer at this time,” says joint statement from ⁦@SpeakerPelosi⁩ and ⁦@senatemajldr⁩.  https://t.co/lfcUpyRy4T</td>
+                <td>28</td>
+                <td>34</td>
+                <td><a href="https://twitter.com/W7VOA/status/1256668943122673666">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 17:47:14</td>
+                <td class ="content_left">"The Intelligence Community also concurs with the wide scientific consensus that the <span style="color: yellow;">COVID-19</span> virus was not manmade or genetically modified,” says @ODNIgov. https://t.co/Gl6aEgQjH2</td>
+                <td>49</td>
+                <td>74</td>
+                <td><a href="https://twitter.com/W7VOA/status/1255916636999168000">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 13:36:36</td>
+                <td class ="content_left">@mrobin032009 No. Temperature checks for journalists prior to briefings. <span style="color: yellow;">COVID-19</span> tests for those who travel on AF2 (and soon AF1).</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/W7VOA/status/1255853563559006211">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 18:34:17</td>
+                <td class ="content_left">"President Trump expressed his strong support for the people of Kenya and offered additional assistance for the nation’s response to the <span style="color: yellow;">COVID-19</span> pandemic," according to the @WhiteHouse readout of the call.</td>
+                <td>8</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/W7VOA/status/1253391761134714880">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 15:40:45</td>
+                <td class ="content_left">Today @POTUS spoke with @ImranKhanPTI about “developments in the global fight against the <span style="color: yellow;">COVID-19</span> pandemic and agreed to continue working together on a coordinated response to defeat the virus and minimize its economic impact,” says @JuddPDeere45.</td>
+                <td>5</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/W7VOA/status/1252985700871520256">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 15:48:54</td>
+                <td class ="content_left">Total of 540 fatalities in the state of #NewYork for Friday is the lowest daily <span style="color: yellow;">COVID-19</span> death toll since Apr. 1st.</td>
+                <td>23</td>
+                <td>32</td>
+                <td><a href="https://twitter.com/W7VOA/status/1251538200495095808">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 17:11:48</td>
+                <td class ="content_left">During a phone call with #China Politburo member  Yang Jiechi, @SecPompeo "stressed the need for full transparency and information sharing to combat the <span style="color: yellow;">COVID-19</span> pandemic and prevent future outbreaks," according to @statedeptspox. https://t.co/6bQWJ8TxZn</td>
+                <td>21</td>
+                <td>14</td>
+                <td><a href="https://twitter.com/W7VOA/status/1250471902998605824">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 12:58:13</td>
+                <td class ="content_left">Nothing listed on today’s schedule for @VP who has been keeping his distance from @POTUS after @VPPressSec <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for #COVID19. https://t.co/bueBdvh7N4</td>
+                <td>5</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/W7VOA/status/1260917334602125315">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 12:37:03</td>
+                <td class ="content_left">Kremlin spokesman Dmitry Peskov says he's <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for #COVID19. #coronavirus #Russia https://t.co/E5Kuftjk28</td>
+                <td>20</td>
+                <td>26</td>
+                <td><a href="https://twitter.com/W7VOA/status/1260187231106498561">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 23:35:47</td>
+                <td class ="content_left">Chief of the @USNationalGuard, @ChiefNGB, has reportedly <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> and negative in conflicting #COVID19 tests this weekend.</td>
+                <td>7</td>
+                <td>14</td>
+                <td><a href="https://twitter.com/W7VOA/status/1259628230136532998">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 18:29:58</td>
+                <td class ="content_left">"She's a wonderful young women, Katie...today she <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. She hasn't come in contact with me. She spent some time with the vice president," says @POTUS confirming @VPPressSec has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for #COVID19.</td>
+                <td>9</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/W7VOA/status/1258826492185849856">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 17:01:33</td>
+                <td class ="content_left">Some screen grabs from @cspan of the @WhiteHouse pool reporters in masks after confirmation that a valet to @POTUS and an aide to @VP have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for #COVID19. https://t.co/Pl41TcxYK2</td>
+                <td>4</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/W7VOA/status/1258804242321719296">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 15:35:23</td>
+                <td class ="content_left">Media reports say a @VP staffer has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for #COVID19.</td>
+                <td>31</td>
+                <td>45</td>
+                <td><a href="https://twitter.com/W7VOA/status/1258782556683722754">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 18:53:00</td>
+                <td class ="content_left">Speaking to reporters in the Oval Office, @POTUS says he had little contact with the military valet at the @White House who has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for #COVID19 and terms the situation “a little bit strange.”</td>
+                <td>14</td>
+                <td>14</td>
+                <td><a href="https://twitter.com/W7VOA/status/1258469902903631875">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 22:49:20</td>
+                <td class ="content_left">The deportation flight came from an airfield holding center for migrants in Alexandria, #Louisiana. Fourteen @ICEgov employees at the facility have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the #coronavirus as of Tuesday, according to the agency.</td>
+                <td>9</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/W7VOA/status/1255630273875709955">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 22:35:17</td>
+                <td class ="content_left">About two dozen migrants deported from the US on a flight to #Colombia last month have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for #COVID19, reports @Reuters.</td>
+                <td>14</td>
+                <td>20</td>
+                <td><a href="https://twitter.com/W7VOA/status/1255626737980977154">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 15:52:31</td>
+                <td class ="content_left">First phase antibody study preliminary results in #NewYork show 13.9% <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>, according to @NYGovCuomo. https://t.co/3Qagou7gYs</td>
+                <td>3</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/W7VOA/status/1253351050238726144">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 21:00:33</td>
+                <td class ="content_left">Providing they're "asymptomatic, screened, and monitored for <span style="color: yellow;"><span style="color: yellow;">fever</span></span> and other symptoms, wear a face covering, and maintain a distance of at least six feet from others, Drs. Redfield, Hahn, and Fauci can and will participate" in @WhiteHouse meetings when their attendance is needed. https://t.co/kWWP3nSoVF</td>
+                <td>10</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/W7VOA/status/1260313941844144140">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recovered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recovered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 18:15:44</td>
+                <td class ="content_left">"We will come back from this devilish illness," @BorisJohnson, who himself <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> from #COVID19, tells the #UK. https://t.co/vLkgm8mgIK</td>
+                <td>5</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/W7VOA/status/1259547688497971201">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 20:35:26</td>
+                <td class ="content_left">Artist, 107, who survived the 1918 flu pandemic, has now <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> from #COVID-19 after spending 5 days in the hospital. https://t.co/7dGUzamQBB</td>
+                <td>26</td>
+                <td>49</td>
+                <td><a href="https://twitter.com/W7VOA/status/1258495678650646528">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 21:34:13</td>
+                <td class ="content_left">Under this agreement, the <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> funds "will help finance the construction of critical infrastructure in key economic zones to include the Second Niger Bridge, the Lagos-Ibadan Expressway and the Abuja-Kano road" in #Nigeria. https://t.co/h7bl0gZxRd</td>
+                <td>6</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/W7VOA/status/1257423309932806153">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 18:44:04</td>
+                <td class ="content_left">Total of 5.6 million coronavirus tests now conducted in the US, according to @VP who also says 6,000 Americans who have <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> from #COVID19 have given blood plasma at 21 sites across the country. https://t.co/EeTHq8Hsze</td>
+                <td>8</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/W7VOA/status/1255206161051275265">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 22:26:55</td>
+                <td class ="content_left">"We want to urge every American who has <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> from the coronavirus" to donate blood for the antibodies, says @VP. https://t.co/J3stJTTj8E</td>
+                <td>14</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/W7VOA/status/1250551202401660929">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 19:42:24</td>
+                <td class ="content_left">#Iowa has been a <span style="color: yellow;">COVID19</span> success story, according to @VP. 
+"We've turned a corner," says @SecretarySonny.</td>
+                <td>19</td>
+                <td>29</td>
+                <td><a href="https://twitter.com/W7VOA/status/1258119944723746816">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">antibiotics</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "antibiotics"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 00:20:18</td>
+                <td class ="content_left">"I think we will have it done within two years," @POTUS replies to @marthamaccallum as to when 94% of <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> used in the US will be made here.  "You've put me in a very bad negotiating position." https://t.co/EmWUWSfypb</td>
+                <td>9</td>
+                <td>14</td>
+                <td><a href="https://twitter.com/W7VOA/status/1257102718130421764">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">freeze</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "freeze"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 00:49:26</td>
+                <td class ="content_left">A call for a national rent <span style="color: yellow;"><span style="color: yellow;">freeze</span></span> from @JoeBiden. https://t.co/9EXjzeaAi1</td>
+                <td>13</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/W7VOA/status/1255660499263459328">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Chloroquine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Chloroquine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 14:33:17</td>
+                <td class ="content_left">A warning just issued by @US_FDA not to use hydroxy<span style="color: yellow;">chloroquine</span> or <span style="color: yellow;">chloroquine</span> for #COVID19 outside of hospitals or clinical trials "due to risk of heart rhythm problems." https://t.co/0dD0ekKQ3j</td>
+                <td>28</td>
+                <td>23</td>
+                <td><a href="https://twitter.com/W7VOA/status/1253693498022379524">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">test positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "test positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 19:46:33</td>
+                <td class ="content_left">Two pet #cats in #NewYork <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for #COVID19, according to @USDA_APHIS.  https://t.co/qFp3MygBYB</td>
+                <td>11</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/W7VOA/status/1253047559012179969">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">massage</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "massage"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 22:42:43</td>
+                <td class ="content_left">Asked by @stevenportnoy about #Georgia re-opening hair and nail salons, <span style="color: yellow;"><span style="color: yellow;">massage</span></span> parlors, Dr. Birx replies, "they need to continue to do everything we said" if cases aren't going down but maybe there's a way "to do those things" creatively with social distancing. https://t.co/TyvLVKpqSH</td>
+                <td>8</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/W7VOA/status/1252729506202365952">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shaking</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shaking"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 21:00:04</td>
+                <td class ="content_left">No, repeat no, tsunami threat expected from M6.4 #quake off the Pacific coast of #Japan. Strongest <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> reported in Iwate and Miyagi prefectures. https://t.co/CqGTQ8gG0Z https://t.co/HQBXbGsD8e</td>
+                <td>19</td>
+                <td>13</td>
+                <td><a href="https://twitter.com/W7VOA/status/1251978896238612480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asymptomatic</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asymptomatic"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 23:36:46</td>
+                <td class ="content_left">Big unknown still is the numbers of <span style="color: yellow;"><span style="color: yellow;">asymptomatic</span></span> carriers and <span style="color: yellow;"><span style="color: yellow;">asymptomatic</span></span> spread, says Dr. Birx. https://t.co/5K68FLUNcw</td>
+                <td>16</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/W7VOA/status/1251293557220147208">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Mineral</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Mineral"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 18:45:29</td>
+                <td class ="content_left">Defendants are Genesis II Church of Health and Healing and its principals, Mark Grenon, Joseph Grenon, Jordan Grenon, and Jonathan Grenon selling and distributing a product called Miracle <span style="color: yellow;"><span style="color: yellow;">Mineral</span></span> Solution, also referred to as MMS. #CoronavirusUSA https://t.co/l4UM5wixC6</td>
+                <td>13</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/W7VOA/status/1251220253033578498">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">heart disease</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "heart disease"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 22:14:15</td>
+                <td class ="content_left">Sharp rise in drug and alcohol abuse, suicides and <span style="color: yellow;"><span style="color: yellow;">heart disease</span></span> if economic shutdown is prolonged, says @POTUS. "Our country has suffered. Our world has suffered."</td>
+                <td>9</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/W7VOA/status/1250910402696921089">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

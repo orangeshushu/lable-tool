@@ -1,0 +1,1548 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>154-Casein_Micelles.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 154-Casein_Micelles.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">154-Casein_Micelles.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 00:33:50</td>
+                <td class ="content_left">@ChuckWendig Melty kale and halfway between caramelized and fried onions in a half-corn, half-wheat tortilla with chipotle salsa and <span style="color: yellow;"><span style="color: yellow;">cold</span></span> beer.</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1265803433052794881">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 00:22:30</td>
+                <td class ="content_left">That's not to say that I AM drinking it like water, but it feels <span style="color: yellow;"><span style="color: yellow;">cold</span></span> and refreshing and not like beer.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1265438190707585029">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 01:39:49</td>
+                <td class ="content_left">@dan613 Years ago, I had a moderate <span style="color: yellow;"><span style="color: yellow;">cold</span></span> and entirely lost my sense of taste for over a week. At the time, I thought I damaged a nerve by coughing so much, but I'm now wondering if I'm just predisposed to these neurological effects.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1263645710185951232">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 15:32:10</td>
+                <td class ="content_left">So, it's great that you're able to source meat from local producers right now, but keep in mind that the vast majority of farms don't have the infrastructure and <span style="color: yellow;"><span style="color: yellow;">cold</span></span> storage to direct-market their product.
+
+Their supply chain issues will continue to harm producers' bottom lines.</td>
+                <td>12</td>
+                <td>102</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1256969810568773635">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 12:21:06</td>
+                <td class ="content_left">@ChuckWendig Thanks! As of right now, it just feels like a moderate head <span style="color: yellow;"><span style="color: yellow;">cold</span></span> with no sense of smell.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252573073145913344">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 04:11:56</td>
+                <td class ="content_left">@NEmyrich @lostlakefarmer As far as I know, it's because they don't drink much during labor, to keep them hydrated, to help their milk production. I was taught as a child to give them body temperature water rather than <span style="color: yellow;"><span style="color: yellow;">cold</span></span> water.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1247376540297461760">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 23:58:24</td>
+                <td class ="content_left">@RainaKerr I don't know if it's a long-term thing or if it's because his dad lets him sleep late when I'm in the barn. He seems <span style="color: yellow;"><span style="color: yellow;">tired</span></span> after lunch, but won't nap.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1265794516134608897">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 16:12:03</td>
+                <td class ="content_left">Porcini is everyone's mother and even she is <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of doing laundry.
+
+#cowfacts https://t.co/bpi4zAbdXo</td>
+                <td>0</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1260241336135045125">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 01:20:36</td>
+                <td class ="content_left">I'm freaking bushed tonight.
+
+I highly suspect it's PMS <span style="color: yellow;"><span style="color: yellow;">tired</span></span> and not anything else.</td>
+                <td>0</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1254943567312797697">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 15:55:52</td>
+                <td class ="content_left">We're still doing well. Husband seems less <span style="color: yellow;"><span style="color: yellow;">tired</span></span> today. He's had a mild headache for a few days. I'm just coughing. It's worse in the morning.
+
+Looking forward to being on the other side of this thing so we can stop worrying about complications.</td>
+                <td>0</td>
+                <td>33</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1254439059440775171">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 23:51:25</td>
+                <td class ="content_left">Still doing well. Cough, congestion, <span style="color: yellow;"><span style="color: yellow;">tired</span></span> enough to take a nap during the day, but not too <span style="color: yellow;"><span style="color: yellow;">tired</span></span>.
+
+Husband is a little <span style="color: yellow;"><span style="color: yellow;">tired</span></span>, but also doing well.
+
+I really wish her diagnosis was confirmed.</td>
+                <td>0</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1253109183953743872">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 18:16:25</td>
+                <td class ="content_left">Today, the overly <span style="color: yellow;"><span style="color: yellow;">tired</span></span> toddler spilled his milk and tried to clean it up with tortillas while I was washing dishes.
+
+So, beans and tortillas are all in a casserole dish now, baking into something hopefully edible.</td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1245414733844488199">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 13:22:17</td>
+                <td class ="content_left">@angieboesche That's terrible! I'm glad it recovered.. I always forget it when I'm not doing food-related things. I was just trying to <span style="color: yellow;"><span style="color: yellow;">smell</span></span> catnip in the pasture and thought I'd misidentified it.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1265634431018074113">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 01:46:24</td>
+                <td class ="content_left">My dad, ever helpful, pointed out that unilateral loss of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> is associated with Alzheimer's, so that's in my head now.</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1265459306603954179">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 01:46:16</td>
+                <td class ="content_left">I can't <span style="color: yellow;"><span style="color: yellow;">smell</span></span> smoke or mucking out gutter manure odors.
+
+I can't <span style="color: yellow;"><span style="color: yellow;">smell</span></span> poop when changing diapers, thought I did get a brief wiff of poopbutt a few days ago when he was crawling on my face.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1265459271707373568">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 01:46:14</td>
+                <td class ="content_left">I have about 15% in my left nostril--however, the <span style="color: yellow;"><span style="color: yellow;">smell</span></span> must be directly under my nose and the sensation of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> is fleeting, as though my nostril become immune to it while inhaling.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1265459266351177728">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 01:46:12</td>
+                <td class ="content_left">COVID loss of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> update:
+
+This is all bizarre.</td>
+                <td>1</td>
+                <td>19</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1265459254435119105">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 16:32:43</td>
+                <td class ="content_left">@robinhobb Thanks. A friend of mine lost her sense of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> after a traumatic brain injury from a horse accident. Her sense of taste has compensated over the years. She opens her mouth to taste <span style="color: yellow;"><span style="color: yellow;">smell</span></span>s.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1264957579924344833">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 16:28:39</td>
+                <td class ="content_left">@robinhobb I've been without a sense of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> for 6 weeks because of it.
+
+There is no difference between good coffee and bad coffee now.</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1264956556291928064">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 16:59:36</td>
+                <td class ="content_left">@PasturesPolitic It's passed. My mom was in the hospital for a few days with pneumonia. We had cold-like symptoms. I'm still without a sense of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> and it's been over five weeks.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1263877181668831232">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 01:25:34</td>
+                <td class ="content_left">@dan613 I thought it was supposed to be 2 weeks, but I'm going on 5.
+
+I have partial <span style="color: yellow;"><span style="color: yellow;">smell</span></span> in my left nostril. Maybe about 15% and it fades quickly.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1263642123649323011">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 21:58:33</td>
+                <td class ="content_left">If my sense of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> doesn't come back, I'm going to have to hire a dairy taster.</td>
+                <td>0</td>
+                <td>18</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1262865252473081865">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 02:20:42</td>
+                <td class ="content_left">Me, getting chippy about the ice cream lacking flavor until I remember the whole no sense of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> thing all over again.</td>
+                <td>0</td>
+                <td>25</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1262568834625568769">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 00:47:19</td>
+                <td class ="content_left">@TPLgames I put the strainer on the hot burner after draining pasta and couldn't <span style="color: yellow;"><span style="color: yellow;">smell</span></span> it melting.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1261458170351890435">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 15:55:55</td>
+                <td class ="content_left">@NEmyrich Yes, I'm at 4 weeks without a sense of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> now.
+
+My husband's has mostly returned and he lost his after I lost mine.
+
+About 14 years ago, I got sick and totally lost my sense of taste, but that only took a week to return.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1260599662874148875">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 01:43:32</td>
+                <td class ="content_left">@Oh_Hi_Fi Feel and sight. I asked my husband to <span style="color: yellow;"><span style="color: yellow;">smell</span></span> what I bought when he got home, but he informed me that he can <span style="color: yellow;"><span style="color: yellow;">smell</span></span> my hay later.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1260385156382195712">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 22:31:56</td>
+                <td class ="content_left">You all totally missed me getting upset at the hay auction because I forgot I still have no sense of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> and thought all the hay was shitty.</td>
+                <td>0</td>
+                <td>41</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1260336938533478400">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 02:22:40</td>
+                <td class ="content_left">I have the slightest tickle of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> back.
+
+It's transient and deep, like a moving whisper in the dark.</td>
+                <td>0</td>
+                <td>19</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1257495901708455936">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 23:00:42</td>
+                <td class ="content_left">@nmhwilson With the whole not having a sense of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> thing, all chocolate tastes like white chocolate right now.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1254545970395664386">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 13:05:51</td>
+                <td class ="content_left">When I can <span style="color: yellow;"><span style="color: yellow;">smell</span></span> again, I'm going to figure out how to get a hunk of good parmesan and a bottle of Pinot Noir.</td>
+                <td>0</td>
+                <td>30</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1254396273014329345">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 12:26:24</td>
+                <td class ="content_left">@NorthofSeven Okay, so the joke is on me. I've been trying to adjust my acidification ratio to get a softer, sweeter ricotta, but with no sense of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> right now, I'll not too sure about how it tastes.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1254023956048248840">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 12:30:52</td>
+                <td class ="content_left">My husband lost his sense of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> this morning.
+
+He lit a silicone hot pad on fire and didn't notice.
+
+We need to stop finding this out without possibly burning down the house.</td>
+                <td>0</td>
+                <td>27</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1253300304231182340">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 22:17:04</td>
+                <td class ="content_left">@StreamLass I can't even <span style="color: yellow;"><span style="color: yellow;">smell</span></span> the super fragrant hand soap at the kitchen sink.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252360664661680130">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 22:12:36</td>
+                <td class ="content_left">@woofpickle It was probably fun seeing me squirt a handful of yellow mustard in my hand to try to <span style="color: yellow;"><span style="color: yellow;">smell</span></span> it.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252359537408933889">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 03:34:27</td>
+                <td class ="content_left">@DocHollandD My husband made meat on Sunday. I only cook vegetarian. You should have seen the cats' faces at the <span style="color: yellow;"><span style="color: yellow;">smell</span></span> of actual flesh.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1249903822262153216">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">itchy</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "itchy"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 02:22:08</td>
+                <td class ="content_left">Last night, the kiddo was too <span style="color: yellow;"><span style="color: yellow;">itchy</span></span> to sleep soundly, so we adults had to pile into his room, rub him with creams, sing songs, play with his monster and unicorn...
+
+Tonight, he's having microcries.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1265468297476177925">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 01:46:22</td>
+                <td class ="content_left">I recently started wondering if any of the mild cases in children have resulted in loss of <span style="color: yellow;"><span style="color: yellow;">taste</span></span> or smell.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1265459298387275777">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 01:46:19</td>
+                <td class ="content_left">It's hard to eat healthy foods when you're only tuned into salt, sweet, bitter, and sour.
+
+This is the opposite of what it was like when I lost my sense of <span style="color: yellow;"><span style="color: yellow;">taste</span></span> years ago. I ate lots of crunchy lettuce for texture.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1265459286131556353">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 01:46:18</td>
+                <td class ="content_left">My sense of <span style="color: yellow;"><span style="color: yellow;">taste</span></span> is still really muted from the lack of smell. Herbs and aromatics are pointless.
+
+Strawberries, blueberries, grapes, and apples <span style="color: yellow;"><span style="color: yellow;">taste</span></span> normal.
+
+Cheese is texture, fat, and salt.
+
+Breads seem dry and crumbling.
+
+Citrus is bullshit.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1265459280263725060">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 00:21:43</td>
+                <td class ="content_left">I bought a case of Yuengling because it didn't feel worthwhile to splurge on beer when I can't really <span style="color: yellow;"><span style="color: yellow;">taste</span></span> it.</td>
+                <td>0</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1265437993743069185">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 16:32:43</td>
+                <td class ="content_left">@robinhobb Thanks. A friend of mine lost her sense of smell after a traumatic brain injury from a horse accident. Her sense of <span style="color: yellow;"><span style="color: yellow;">taste</span></span> has compensated over the years. She opens her mouth to <span style="color: yellow;"><span style="color: yellow;">taste</span></span> smells.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1264957579924344833">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 00:09:38</td>
+                <td class ="content_left">@John_B_Cole @brenofra I also know what it's like to not subject my ttrpg friends to my <span style="color: yellow;"><span style="color: yellow;">taste</span></span> in music.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1263985401833930753">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 01:39:49</td>
+                <td class ="content_left">@dan613 Years ago, I had a moderate cold and entirely lost my sense of <span style="color: yellow;"><span style="color: yellow;">taste</span></span> for over a week. At the time, I thought I damaged a nerve by coughing so much, but I'm now wondering if I'm just predisposed to these neurological effects.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1263645710185951232">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 01:05:34</td>
+                <td class ="content_left">Fuck restaurants.
+
+I miss cooking with my friends.
+
+Also, having a sharp sense of <span style="color: yellow;"><span style="color: yellow;">taste</span></span> and being able to smell.</td>
+                <td>0</td>
+                <td>27</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1263637092871163906">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 12:12:30</td>
+                <td class ="content_left">@arockjonestown I might have to do that or make ravioli.
+
+The sad thing here is we still can't smell, so our <span style="color: yellow;"><span style="color: yellow;">taste</span></span> is very muted. It feels creamy and sweet, but that's the limit of my tasting abilities.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1256919560265052160">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 20:49:28</td>
+                <td class ="content_left">Trying to decide if I should attempt cooking supper without my husband to <span style="color: yellow;"><span style="color: yellow;">taste</span></span> as I'm still without a sense of smell.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1253063395173117955">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 12:17:53</td>
+                <td class ="content_left">Back in '06, I fully lost my sense of <span style="color: yellow;"><span style="color: yellow;">taste</span></span> for two weeks. I ate lots of romaine because it felt crispy and wet.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252572261296422912">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 12:17:52</td>
+                <td class ="content_left">Oatmeal with a dulled sense of <span style="color: yellow;"><span style="color: yellow;">taste</span></span> in kind of gross.</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252572256099643392">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Can't smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Can't smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 01:46:16</td>
+                <td class ="content_left">I <span style="color: yellow;">can't smell</span> smoke or mucking out gutter manure odors.
+
+I <span style="color: yellow;">can't smell</span> poop when changing diapers, thought I did get a brief wiff of poopbutt a few days ago when he was crawling on my face.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1265459271707373568">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 12:12:30</td>
+                <td class ="content_left">@arockjonestown I might have to do that or make ravioli.
+
+The sad thing here is we still <span style="color: yellow;">can't smell</span>, so our taste is very muted. It feels creamy and sweet, but that's the limit of my tasting abilities.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1256919560265052160">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 01:46:14</td>
+                <td class ="content_left">I have about 15% in my left nostril--however, the smell must be directly under my <span style="color: yellow;"><span style="color: yellow;">nose</span></span> and the sensation of smell is fleeting, as though my nostril become immune to it while inhaling.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1265459266351177728">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 09:21:02</td>
+                <td class ="content_left">@kitchenartist It's pretty wild.
+
+If I put something very fragrant up to my <span style="color: yellow;"><span style="color: yellow;">nose</span></span> and inhale deeply, I sometimes get a hint of a smell.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1262674617807888384">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 14:12:43</td>
+                <td class ="content_left">Just dropped a tire off at the parts store.
+
+Out of 6 employees, only one was wearing a mask... with his <span style="color: yellow;"><span style="color: yellow;">nose</span></span> out.</td>
+                <td>0</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1259848918084587524">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 16:28:06</td>
+                <td class ="content_left">And these asshats want to thumb their <span style="color: yellow;"><span style="color: yellow;">nose</span></span> at a virus because they confuse liberty with security.</td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252272844723159044">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">my nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "my nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 01:46:14</td>
+                <td class ="content_left">I have about 15% in my left nostril--however, the smell must be directly under <span style="color: yellow;"><span style="color: yellow;">my nose</span></span> and the sensation of smell is fleeting, as though my nostril become immune to it while inhaling.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1265459266351177728">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 09:21:02</td>
+                <td class ="content_left">@kitchenartist It's pretty wild.
+
+If I put something very fragrant up to <span style="color: yellow;"><span style="color: yellow;">my nose</span></span> and inhale deeply, I sometimes get a hint of a smell.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1262674617807888384">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">exhausted</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "exhausted"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 04:23:56</td>
+                <td class ="content_left">The bites have been medicated, but now there's an <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> toddler who wants to play at midnight.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1265136565132681217">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sweat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sweat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 00:46:33</td>
+                <td class ="content_left">First, you chop up a bunch of onions, carrots, and celery.
+
+And you <span style="color: yellow;"><span style="color: yellow;">sweat</span></span> that shit in butter for a long time.
+
+Like, half an hour.
+
+You can throw in a bay leaf.</td>
+                <td>1</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1265081856279674881">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 12:42:34</td>
+                <td class ="content_left">I strained something in the nape of my neck when I cuddled the baby back to sleep last night.
+
+I woke in raging <span style="color: yellow;"><span style="color: yellow;">pain</span></span> when it happened. It's just stiff now.
+
+Don't recommend.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1263087721020567553">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 12:40:45</td>
+                <td class ="content_left">I can't think too much about my breathing or I'll have a panic attack. That was a feature of the panic attacks of yore and I had a slight one yesterday. I'm glad I know that about myself, <span style="color: yellow;"><span style="color: yellow;">pain</span></span> in the ass though it is.</td>
+                <td>0</td>
+                <td>15</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252940405110259717">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Mineral</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Mineral"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 18:16:53</td>
+                <td class ="content_left">@familyorganicsf Some of my heifers were sent to a traditional raising facility against my wishes and those cows (who were nice cows) didn't flourish on all grass. My oldest two I raised on pasture and the cows born in 2016 onwards.
+
+What's your <span style="color: yellow;">mineral</span> program? I always want more feedback!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1261722305677463565">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fatigued</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fatigued"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 15:45:44</td>
+                <td class ="content_left">Brief COVID update: We're doing fine. We had a bunch of really good days, but are getting <span style="color: yellow;"><span style="color: yellow;">fatigued</span></span> again. I'm getting headaches, my husband is sore. It might be because we're trying to function at normal levels again. Nothing serious, just lingering.</td>
+                <td>0</td>
+                <td>36</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1260597100041158656">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asymptomatic</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asymptomatic"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 00:06:44</td>
+                <td class ="content_left">I may have just picked a fight on FB after a kid I used to milk cows with posted this.
+
+We have culled entire herds to stop the spread of highly contagious viruses.
+
+Also, <span style="color: yellow;"><span style="color: yellow;">asymptomatic</span></span> transmission. https://t.co/eXKUixiaD0</td>
+                <td>40</td>
+                <td>293</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1258911243592585217">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 02:46:28</td>
+                <td class ="content_left">@1redsquirrel Yep. They're doing twice daily temperature checks of staff, but that ignores the whole <span style="color: yellow;"><span style="color: yellow;">asymptomatic</span></span> carrier thing.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1247355028542816256">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">freeze</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "freeze"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 16:49:30</td>
+                <td class ="content_left">@hoffsbeefs @JanetteJoyB Because I'm not in an urban area, many of my consumers cite being unable to afford a deep <span style="color: yellow;"><span style="color: yellow;">freeze</span></span> or a quarter/half/whole beef, despite the cost savings.
+
+I've often thought about producers taking a down payment, then delivering weekly or biweekly while paying off the meat cost.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1258801209651191811">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 02:10:51</td>
+                <td class ="content_left">Here's a cool thing I read: Once recipe suggested you can <span style="color: yellow;"><span style="color: yellow;">freeze</span></span> the dry curds, defrost them, and add your liquid (cream, milk, yogurt, whatev) into them to make the usual store cottage cheese we're used to.
+
+I'm totally going to try it.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1242272638246019073">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 13:15:05</td>
+                <td class ="content_left">Apparently, they never came up with a protocol for <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>, but out of quarantine families, so I got to sit in the car for half an hour while they developed a strategy and, ultimately, decided that they'd rather wait another month to see us.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1258747250789974017">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 16:12:59</td>
+                <td class ="content_left">No surprise, my husband and I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID.
+
+We're still doing fine.</td>
+                <td>3</td>
+                <td>78</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1254805752155459584">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 01:12:15</td>
+                <td class ="content_left">@CyanBullock Thanks! It's not a big deal. Just a relative through marriage was being dumb about <span style="color: yellow;">COVID-19</span> on another social media platform and I've been thinking of rebuttals all day.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1258202953774542850">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 23:51:10</td>
+                <td class ="content_left">Not knowing whether having had <span style="color: yellow;">COVID-19</span> confers immunity or how long that immunity lasts is a huge problem.</td>
+                <td>0</td>
+                <td>22</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1254196282626891777">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 19:18:43</td>
+                <td class ="content_left">@Oh_Hi_Fi She's been moved into an isolation room in the hospital. She definitely has pneumonia. Waiting on <span style="color: yellow;">COVID-19</span> test results.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1251953394106937346">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 22:21:15</td>
+                <td class ="content_left">Local Facebook is getting punchy about <span style="color: yellow;">COVID-19</span> once again.
+
+Not a good sign.</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1251636942103441408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 20:52:40</td>
+                <td class ="content_left">Berks County <span style="color: yellow;">COVID-19</span> Numbers Approach Critical Levels - Continue Reading https://t.co/uyjWlMuvOE via @bctv_org</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1251252257699569666">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 14:59:44</td>
+                <td class ="content_left">We know that many underlying health conditions are linked to chronic stress, pollution exposure, poverty, lack of access to healthcare. It’s why we’re seeing disparities in the number of black Americans who are dying of <span style="color: yellow;">COVID-19</span> compared to white Americans.</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1250801052036804608">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 10:18:11</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> testing update:
+
+My mom's workplace has several confirmed cases.
+
+She has been off work since Wednesday due to extreme fatigue.
+
+Her physician wanted her to go to urgent care or the ER.</td>
+                <td>1</td>
+                <td>19</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1250005421038895105">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 16:02:22</td>
+                <td class ="content_left">There's now a positive <span style="color: yellow;">COVID-19</span> case at my mom's job.
+
+*sigh*</td>
+                <td>0</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1247192937441775616">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 00:21:55</td>
+                <td class ="content_left">Just so you know, my father-in-law just said that <span style="color: yellow;">COVID-19</span> is the same as the flu, except it was created by George Soros in a Chinese lab.</td>
+                <td>2</td>
+                <td>18</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1246956264674004995">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 12:29:35</td>
+                <td class ="content_left">I'm glad to see so many farm stores putting in <span style="color: yellow;">COVID-19</span> safety measures.
+ 
+On the other hand, I'm still seeing a lot of "come by and visit with our baby animals!" posts, which she kinda concerning.</td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1246414613421256705">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 18:53:38</td>
+                <td class ="content_left">Dairy farmers dumping milk due to <span style="color: yellow;">COVID-19</span> supply issues is just another example of the weaknesses in a poorly designed system being exposed when stressed.</td>
+                <td>12</td>
+                <td>43</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1245786484508110849">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 16:39:56</td>
+                <td class ="content_left">My husband had to go into work for a review of their <span style="color: yellow;">COVID-19</span> procedures.
+
+I'm sitting in a hardware parking lot right now.
+
+The vast majority of people going in look like they're over 60.
+
+This is nonsense.</td>
+                <td>1</td>
+                <td>16</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1244665675572039682">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">rash</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "rash"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 01:14:36</td>
+                <td class ="content_left">Either I have a weird <span style="color: yellow;"><span style="color: yellow;">rash</span></span> or I sunburned my chest when I fell asleep in a lawn chair this afternoon.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1255666832213594112">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">vegetarians</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "vegetarians"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 16:33:20</td>
+                <td class ="content_left">I bet some of those <span style="color: yellow;"><span style="color: yellow;">vegetarians</span></span> who saw ag people making fun of fake meat being the only food left in the butcher case are feeling a little smug right now.</td>
+                <td>0</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1255535649165377539">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 16:12:59</td>
+                <td class ="content_left">No surprise, my husband and I tested <span style="color: yellow;">positive for COVID</span>.
+
+We're still doing fine.</td>
+                <td>3</td>
+                <td>78</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1254805752155459584">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">headache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "headache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 15:55:52</td>
+                <td class ="content_left">We're still doing well. Husband seems less tired today. He's had a mild <span style="color: yellow;"><span style="color: yellow;">headache</span></span> for a few days. I'm just coughing. It's worse in the morning.
+
+Looking forward to being on the other side of this thing so we can stop worrying about complications.</td>
+                <td>0</td>
+                <td>33</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1254439059440775171">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">chills</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "chills"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 12:36:14</td>
+                <td class ="content_left">Morning update is we're okay. Husband is tired/sore/had some <span style="color: yellow;"><span style="color: yellow;">chills</span></span> last night, but nothing immobilizing.
+
+I'm just coughing.
+
+So far, my dad is doing well. Mom is back to her emailing me at 3am sleep schedule.</td>
+                <td>0</td>
+                <td>68</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1254026430528151552">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 18:49:47</td>
+                <td class ="content_left">@arockjonestown @JulianneTeitman Because he's asymptomatic. They won't issue an order unless he has a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> or is coughing. That he had a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> 10 days ago doesn't factor in.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1253758048591634432">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 22:33:32</td>
+                <td class ="content_left">@CyanBullock Yeah, the evening before she got sick, I left him with them so I could take trash to the end of the lane. She got sick the next day. He had a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> 5 days later.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1253451970263867392">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 22:29:56</td>
+                <td class ="content_left">@CyanBullock He had a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> on Easter. I kinda suspect he got in from Mom and gave it to us.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1253451063962808322">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 13:35:05</td>
+                <td class ="content_left">Husband is tired. He's still not off from work because he doesn't have a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> and we don't have a positive test from Mom. His company is in the loop with what's going on.</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1253316465215918080">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 17:31:02</td>
+                <td class ="content_left">@1redsquirrel Nope. We hardly quality as we're coughing without <span style="color: yellow;"><span style="color: yellow;">fever</span></span> or fatigue. Our county is a mess right now.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1253013455470129152">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 22:40:15</td>
+                <td class ="content_left">@Clockverk Yeah, our guy is also still breastfeeding. He had a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> on Easter and was cranky leading up to it, so I'm wondering if he got it from Mom and brought it to us.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252366498418397184">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 22:11:42</td>
+                <td class ="content_left">@hoffsbeefs We'll see where it goes. I haven't had a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> yet. Of course, my mom never had one, either.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252359312418017288">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">no appetite</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "no appetite"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 20:36:10</td>
+                <td class ="content_left">@mrs_fridley Okay. Less coughing, but <span style="color: yellow;"><span style="color: yellow;">no appetite</span></span> (yes, I'm eating). Hoping we can get tested tomorrow.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1253422434771845121">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">have a fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "have a fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 13:35:05</td>
+                <td class ="content_left">Husband is tired. He's still not off from work because he doesn't <span style="color: yellow;"><span style="color: yellow;">have a fever</span></span> and we don't have a positive test from Mom. His company is in the loop with what's going on.</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1253316465215918080">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">no fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "no fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 13:35:04</td>
+                <td class ="content_left">Morning update: Doing okay. Coughing and a little tired. Still <span style="color: yellow;"><span style="color: yellow;">no fever</span></span>. I'm excessively thirsty, despite drinking constantly. I don't really have an appetite, but I'm making myself eat.</td>
+                <td>0</td>
+                <td>22</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1253316461021593600">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 12:42:55</td>
+                <td class ="content_left">@mileshuman My mom couldn't get tested until she went to the ER. She only had GI symptoms and extreme fatigue. They refused to prescribe a test because she had <span style="color: yellow;"><span style="color: yellow;">no fever</span></span>. I'm waiting for her positive test so I can prove exposure before I start trying to get the run around.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1253303336536858624">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 01:55:58</td>
+                <td class ="content_left">Just like my mom. <span style="color: yellow;">No fever</span>. https://t.co/5QswUGeBni</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1253140527072997378">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 01:21:41</td>
+                <td class ="content_left">@ChiNurse Still doing okay.
+
+Coughing and head congestion. Took an afternoon nap, but not overly tired.
+
+My husband is having some minor body aches and coughing.
+
+<span style="color: yellow;">No fever</span>, no shortness of breath.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252769513214484480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">body ache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "body ache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 12:40:42</td>
+                <td class ="content_left">We're still doing well. I'm coughing, my ears are clogged, and I have slight tightness in my chest. No tiredness, fever, or aches.
+
+My husband is also coughing with mild <span style="color: yellow;"><span style="color: yellow;">body ache</span></span>s.
+
+Kid is great.</td>
+                <td>1</td>
+                <td>57</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252940392846094338">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 01:21:41</td>
+                <td class ="content_left">@ChiNurse Still doing okay.
+
+Coughing and head congestion. Took an afternoon nap, but not overly tired.
+
+My husband is having some minor <span style="color: yellow;"><span style="color: yellow;">body ache</span></span>s and coughing.
+
+No fever, no shortness of breath.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252769513214484480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 11:27:34</td>
+                <td class ="content_left">I'm still doing well today. No <span style="color: yellow;"><span style="color: yellow;">body ache</span></span>s. No fatigue. I can breathe just fine.
+
+However, I've been coughing so much that the baby is fake coughing to impersonate me.
+
+It's kinda adorable.</td>
+                <td>0</td>
+                <td>68</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252559599539859458">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">body aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "body aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 12:40:42</td>
+                <td class ="content_left">We're still doing well. I'm coughing, my ears are clogged, and I have slight tightness in my chest. No tiredness, fever, or aches.
+
+My husband is also coughing with mild <span style="color: yellow;"><span style="color: yellow;">body aches</span></span>.
+
+Kid is great.</td>
+                <td>1</td>
+                <td>57</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252940392846094338">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 01:21:41</td>
+                <td class ="content_left">@ChiNurse Still doing okay.
+
+Coughing and head congestion. Took an afternoon nap, but not overly tired.
+
+My husband is having some minor <span style="color: yellow;"><span style="color: yellow;">body aches</span></span> and coughing.
+
+No fever, no shortness of breath.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252769513214484480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 11:27:34</td>
+                <td class ="content_left">I'm still doing well today. No <span style="color: yellow;"><span style="color: yellow;">body aches</span></span>. No fatigue. I can breathe just fine.
+
+However, I've been coughing so much that the baby is fake coughing to impersonate me.
+
+It's kinda adorable.</td>
+                <td>0</td>
+                <td>68</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252559599539859458">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Shortness of breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Shortness of breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 01:21:41</td>
+                <td class ="content_left">@ChiNurse Still doing okay.
+
+Coughing and head congestion. Took an afternoon nap, but not overly tired.
+
+My husband is having some minor body aches and coughing.
+
+No fever, no <span style="color: yellow;">shortness of breath</span>.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252769513214484480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 01:21:41</td>
+                <td class ="content_left">@ChiNurse Still doing okay.
+
+Coughing and head congestion. Took an afternoon nap, but not overly tired.
+
+My husband is having some minor body <span style="color: yellow;"><span style="color: yellow;">aches</span></span> and coughing.
+
+No fever, no shortness of breath.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252769513214484480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 17:47:40</td>
+                <td class ="content_left">@amylopan I'm sure this is just my experience, but tooth <span style="color: yellow;"><span style="color: yellow;">aches</span></span> are worse than unmedicated child birth.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1247944211594391554">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 18:37:01</td>
+                <td class ="content_left">My heart <span style="color: yellow;"><span style="color: yellow;">aches</span></span> for my nieces and nephew. https://t.co/sbyMTRV7Ny</td>
+                <td>1</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1245782302774484993">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recover</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recover"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 19:08:49</td>
+                <td class ="content_left">So, we picked my mom up from the hospital so she can <span style="color: yellow;"><span style="color: yellow;">recover</span></span> at home.
+
+She's on antibiotics and we're monitoring her.
+
+She seems stronger than she had been.
+
+Still no test result, though.</td>
+                <td>0</td>
+                <td>16</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252675677070872576">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">antibiotics</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "antibiotics"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 19:08:49</td>
+                <td class ="content_left">So, we picked my mom up from the hospital so she can recover at home.
+
+She's on <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> and we're monitoring her.
+
+She seems stronger than she had been.
+
+Still no test result, though.</td>
+                <td>0</td>
+                <td>16</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252675677070872576">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 15:55:22</td>
+                <td class ="content_left">Because I really don't like to overuse <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> and I know best practices would involve a milk culture before administering them as not all clinical symptoms have a live infection actively occurring, I tested a different method of treatment.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1251539828174278656">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 10:34:36</td>
+                <td class ="content_left">@RichardsnGraham That's also very good to know. So far, I've just had a mild <span style="color: yellow;"><span style="color: yellow;">cough</span></span> and sore throat.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252546271371423744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 01:12:26</td>
+                <td class ="content_left">I have a slight <span style="color: yellow;"><span style="color: yellow;">cough</span></span> and sore throat, but I've had post nasal drip for weeks now.</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252042408813977601">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 23:44:18</td>
+                <td class ="content_left">So, Mom has pneumonia.
+
+She never had a <span style="color: yellow;"><span style="color: yellow;">cough</span></span> or fever.
+
+The doctor gave her the option of going home because all of her lab work and vitals look really good, but they jointly decided that she would stay overnight.</td>
+                <td>0</td>
+                <td>34</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1251657840898584578">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 02:30:14</td>
+                <td class ="content_left">I have a slight <span style="color: yellow;"><span style="color: yellow;">cough</span></span> today and it's freaking me the eff out.</td>
+                <td>0</td>
+                <td>12</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1244814227690455046">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sore throat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sore throat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 10:34:36</td>
+                <td class ="content_left">@RichardsnGraham That's also very good to know. So far, I've just had a mild cough and <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span>.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252546271371423744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 16:27:58</td>
+                <td class ="content_left">Here's my situation: Mom is in the hospital. We're keeping a close eye on Dad. I have a dry cough, runny nose, <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span>, slightly tight chest, and I'm actually sleeping through the night, so who knows what the fuck is up with me.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252272811009347584">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 01:12:26</td>
+                <td class ="content_left">I have a slight cough and <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span>, but I've had post nasal drip for weeks now.</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252042408813977601">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 12:39:06</td>
+                <td class ="content_left">I haven't really left the farm for 4 weeks.
+
+How the heck do we all have a <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span> and runny noses?</td>
+                <td>0</td>
+                <td>16</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1251128049199915008">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">runny nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "runny nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 16:27:58</td>
+                <td class ="content_left">Here's my situation: Mom is in the hospital. We're keeping a close eye on Dad. I have a dry cough, <span style="color: yellow;"><span style="color: yellow;">runny nose</span></span>, sore throat, slightly tight chest, and I'm actually sleeping through the night, so who knows what the fuck is up with me.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252272811009347584">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 12:39:06</td>
+                <td class ="content_left">I haven't really left the farm for 4 weeks.
+
+How the heck do we all have a sore throat and <span style="color: yellow;"><span style="color: yellow;">runny nose</span></span>s?</td>
+                <td>0</td>
+                <td>16</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1251128049199915008">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">dry cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "dry cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 16:27:58</td>
+                <td class ="content_left">Here's my situation: Mom is in the hospital. We're keeping a close eye on Dad. I have a <span style="color: yellow;"><span style="color: yellow;">dry cough</span></span>, runny nose, sore throat, slightly tight chest, and I'm actually sleeping through the night, so who knows what the fuck is up with me.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252272811009347584">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">head ache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "head ache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 01:10:09</td>
+                <td class ="content_left">Mom is in an isolation ward now. They're starting her on an antibiotic drip tonight and will check the progress of her infection tomorrow.
+
+Dad has a bad <span style="color: yellow;"><span style="color: yellow;">head ache</span></span>. We're going to check with his GP tomorrow.</td>
+                <td>0</td>
+                <td>50</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252041833179308033">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cancer</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cancer"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 00:15:58</td>
+                <td class ="content_left">Among our raw milk customers were pregnant people, people with kids, <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> patients, the elderly.
+
+If I made that choice with all my information, why would I promote it to others?</td>
+                <td>0</td>
+                <td>12</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1252028196322783233">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">mild fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "mild fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 00:52:27</td>
+                <td class ="content_left">Well, now the kiddo has a <span style="color: yellow;"><span style="color: yellow;">mild fever</span></span>.</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1249500664230797312">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 14:55:09</td>
+                <td class ="content_left">On the bright side, the curd is firm and milky and a <span style="color: yellow;">touch</span> salty. It melts. There's no reason I can't crumble it on pizza or in pasta, so I still have cheese. It's just not stretchy cheese.</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1248987958872625158">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 01:36:42</td>
+                <td class ="content_left">When you're making cheese at home, you can't <span style="color: yellow;">touch</span> your face, either.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Casein_Micelles/status/1242264043513155584">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

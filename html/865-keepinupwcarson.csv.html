@@ -1,0 +1,1182 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>865-keepinupwcarson.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 865-keepinupwcarson.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">865-keepinupwcarson.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 23:47:50</td>
+                <td class ="content_left">I’m <span style="color: yellow;"><span style="color: yellow;">tired</span></span> af bro</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1266154244299567104">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 00:50:28</td>
+                <td class ="content_left">I’m <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of breaking out</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1264358068277698561">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 08:45:22</td>
+                <td class ="content_left">I think ima get box breads for the summer . I’m <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of dealing with curly hair</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1263390414717046785">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 03:39:12</td>
+                <td class ="content_left">I’m so <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of hearing about this damn covid I’m blocking the word from my twitter feed</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1262588589747175424">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 11:51:45</td>
+                <td class ="content_left"><span style="color: yellow;">Tired</span> of fucking with these lame niggas</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1259088666284249095">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 09:02:40</td>
+                <td class ="content_left">So fucking <span style="color: yellow;"><span style="color: yellow;">tired</span></span> 😩</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1255784625647091712">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 03:26:28</td>
+                <td class ="content_left">I’m <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of hearing people say 
+“ oh no offense if you’re white “
+“ oh you not black right “ 
+
+Like nigga stfu , i am black and Mexican but as pale as a white person 
+
+It happens 😒</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1252438525972107274">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 17:02:46</td>
+                <td class ="content_left">I’m <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of coming back to the fucking doctors bro</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1250832015001137152">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 21:58:32</td>
+                <td class ="content_left">@POTUS find a cure because this virus is messing with my money . I’m <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of the run around and being stuck isolated from the damn world</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1248007344941752320">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 16:26:56</td>
+                <td class ="content_left">I’m <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of fucking coughing 😭
+
+My chest hurts so bad</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1246474344911581185">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 23:54:31</td>
+                <td class ="content_left">I’m <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of seeing this fetish on social media 😒 https://t.co/I5eZkBmdOn</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1246224593200861187">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 17:31:03</td>
+                <td class ="content_left">Lmao the smallest thing and i get so <span style="color: yellow;"><span style="color: yellow;">tired</span></span> 😂☹️
+What has my life come to</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1244678538537639942">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 13:11:40</td>
+                <td class ="content_left">I went to the grocery store for the first time since everytime i leave the hospital I’m too <span style="color: yellow;"><span style="color: yellow;">tired</span></span> 
+
+Yeah never going again 
+Not a damn thing there</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1240626999158341633">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 22:16:17</td>
+                <td class ="content_left">I’m so <span style="color: yellow;"><span style="color: yellow;">tired</span></span> 😪</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1240401667851517958">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-29 06:59:19</td>
+                <td class ="content_left">I’m <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of being let down 
+
+I’m at the point where i don’t expect nothing from people</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1233647920672624640">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-28 00:28:12</td>
+                <td class ="content_left">Today’s wash day and my arms are already <span style="color: yellow;"><span style="color: yellow;">tired</span></span> ☹️
+
+I need me a hair lady</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1233187106165600258">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-22 10:27:44</td>
+                <td class ="content_left">So fucking <span style="color: yellow;"><span style="color: yellow;">tired</span></span> 
+I’m so ready to go to bed</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1231163657209421824">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-21 06:43:06</td>
+                <td class ="content_left">Started doing my hair and not even half way done 🤦🏼‍♀️ I’m <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of doing it</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1230744739038646276">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-30 00:45:48</td>
+                <td class ="content_left">I’m <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of being single</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1222682286392512515">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">massage</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "massage"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 06:10:02</td>
+                <td class ="content_left">My coworker gave me a shoulder <span style="color: yellow;"><span style="color: yellow;">massage</span></span> and lawd 😭😩🥴</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1265525651647467522">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 08:39:34</td>
+                <td class ="content_left">I asked my coworker for a <span style="color: yellow;"><span style="color: yellow;">massage</span></span> and this man gave me a shitty ass shoulder <span style="color: yellow;"><span style="color: yellow;">massage</span></span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1263388957200584704">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 07:42:00</td>
+                <td class ="content_left">I need a <span style="color: yellow;"><span style="color: yellow;">massage</span></span> so bad 😭</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1263374470623838208">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 04:57:05</td>
+                <td class ="content_left">I need a <span style="color: yellow;"><span style="color: yellow;">massage</span></span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1262970577687633931">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 02:33:25</td>
+                <td class ="content_left">I need a head <span style="color: yellow;"><span style="color: yellow;">massage</span></span> or my curls played in</td>
+                <td>2</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1262572035080892416">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 03:02:48</td>
+                <td class ="content_left">Chiropractor is calling my name 
+With a deep tissue <span style="color: yellow;"><span style="color: yellow;">massage</span></span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1260767489471975424">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 03:33:49</td>
+                <td class ="content_left">Boy preach . 
+I miss my monthly <span style="color: yellow;"><span style="color: yellow;">massage</span></span> 😭🥴 https://t.co/XXsEc6etDJ</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1257151418865238017">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 20:14:08</td>
+                <td class ="content_left">I just want my cheeks kissed and a <span style="color: yellow;"><span style="color: yellow;">massage</span></span> 😩</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1250517787891716103">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 04:31:00</td>
+                <td class ="content_left">I need a <span style="color: yellow;"><span style="color: yellow;">massage</span></span></td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1248106114165637120">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 13:00:24</td>
+                <td class ="content_left">I just need a <span style="color: yellow;"><span style="color: yellow;">massage</span></span> 😭☹️</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1246422367296991234">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 12:33:02</td>
+                <td class ="content_left">I really need a back <span style="color: yellow;"><span style="color: yellow;">massage</span></span></td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1239892497112932353">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-25 06:05:51</td>
+                <td class ="content_left">I need a back <span style="color: yellow;"><span style="color: yellow;">massage</span></span> so bad bro</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1232184917968199680">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-12 00:32:06</td>
+                <td class ="content_left">I need to be stretched out and a <span style="color: yellow;"><span style="color: yellow;">massage</span></span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1227389880927477760">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-07 18:18:32</td>
+                <td class ="content_left">Sore af from my <span style="color: yellow;"><span style="color: yellow;">massage</span></span> yesterday</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1225846319773863936">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-05 20:48:03</td>
+                <td class ="content_left">Today is the first time I’m getting a professional <span style="color: yellow;"><span style="color: yellow;">massage</span></span> from a male and I’m super excited only Bc i know he will actually work my knots out</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1225159171303247872">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tiredness</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tiredness"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 08:10:35</td>
+                <td class ="content_left">By the time hour 9 out of 12 comes when at work . <span style="color: yellow;">Tiredness</span> hits me</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1265193600364806144">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 12:23:30</td>
+                <td class ="content_left">I love the <span style="color: yellow;"><span style="color: yellow;">smell</span></span> of fresh cut grass</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1263445312548540419">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-23 00:30:49</td>
+                <td class ="content_left">My curls <span style="color: yellow;"><span style="color: yellow;">smell</span></span> like coconut 
+So everybody at work from coworkers to patients always say how good i <span style="color: yellow;"><span style="color: yellow;">smell</span></span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1231375825334874112">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-15 23:05:23</td>
+                <td class ="content_left">“ you <span style="color: yellow;"><span style="color: yellow;">smell</span></span> like coconuts “
+
+Thank you 😉 it’s my hair</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1228817611363962892">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">migraines</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "migraines"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 02:01:14</td>
+                <td class ="content_left">I be getting horrible ass <span style="color: yellow;"><span style="color: yellow;">migraines</span></span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1260027220405317637">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 01:45:00</td>
+                <td class ="content_left">@TheTeeMichelle @kingasshole_ Ahhh if you don’t listen to a lot of Latino music then it wouldn’t be your <span style="color: yellow;"><span style="color: yellow;">taste</span></span> or fuck with him . 
+
+To each it’s own</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1259660750282465284">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 21:09:57</td>
+                <td class ="content_left">I noticed i have bad <span style="color: yellow;"><span style="color: yellow;">taste</span></span> in men when neither one of my ex’s showed up to an ultrasound or my surgeries when i was pregnant 
+
+Why i be chillen</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1253430935850106882">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 04:30:15</td>
+                <td class ="content_left">I know but that shit makes my <span style="color: yellow;"><span style="color: yellow;">taste</span></span> buds happy 😏🤫 https://t.co/tqu9rGbzHC</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1248105922557284352">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">headache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "headache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 04:06:03</td>
+                <td class ="content_left"><span style="color: yellow;">Headache</span> on ten 
+I just need a head rub</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1257521919152345088">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 08:11:12</td>
+                <td class ="content_left">I’ve had a <span style="color: yellow;"><span style="color: yellow;">headache</span></span> for the past week 
+Shit doesn’t go away</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1242725707475824640">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 01:09:54</td>
+                <td class ="content_left">Low grade fever/ chills / <span style="color: yellow;"><span style="color: yellow;">headache</span></span> / occasional sneezing and sniffling 
+
+I’m dying and I’m only 1 hour into a 12 hour shift</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1238271031183314944">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-12 11:20:24</td>
+                <td class ="content_left">@aijahnaesprings Being in this room &amp; ive had the same <span style="color: yellow;"><span style="color: yellow;">headache</span></span> for two days and body fatigue .</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1238062280413249537">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">chill</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "chill"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 03:34:19</td>
+                <td class ="content_left">I’m a real <span style="color: yellow;"><span style="color: yellow;">chill</span></span> person , I’m just not one for the moving fast type shit .</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1254977216829685767">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 03:20:17</td>
+                <td class ="content_left">Yall got no mf <span style="color: yellow;"><span style="color: yellow;">chill</span></span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1251712196410847234">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 18:05:56</td>
+                <td class ="content_left">@SmoothSkinC Bro it’s the lords day <span style="color: yellow;"><span style="color: yellow;">chill</span></span></td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1249398361779834886">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 22:43:13</td>
+                <td class ="content_left">I had no <span style="color: yellow;"><span style="color: yellow;">fever</span></span> . A lot of the symptoms that they first stated i didn’t have . My symptoms were way different . https://t.co/Cg6nA0wfj0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1254541570768080896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">no fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "no fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 22:43:13</td>
+                <td class ="content_left">I had <span style="color: yellow;"><span style="color: yellow;">no fever</span></span> . A lot of the symptoms that they first stated i didn’t have . My symptoms were way different . https://t.co/Cg6nA0wfj0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1254541570768080896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 00:57:12</td>
+                <td class ="content_left">Im not going to lie ,
+
+After beating <span style="color: yellow;">COVID19</span> i have so much anxiety and stress towards all aspects of the virus 😒</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1253850512304283650">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 17:02:53</td>
+                <td class ="content_left">I survived having <span style="color: yellow;"><span style="color: yellow;">covid19</span></span> so i know i can get through whatever else bullshit comes my way in life 😂</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1250469655149502464">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Itching</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Itching"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 02:07:05</td>
+                <td class ="content_left">This quarantine really got me <span style="color: yellow;">itching</span> for a tattoo</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1253505711784570880">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 02:59:25</td>
+                <td class ="content_left">On god my room gotta be <span style="color: yellow;"><span style="color: yellow;">cold</span></span> af or i can’t sleep</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1250619779360178176">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 15:41:01</td>
+                <td class ="content_left">Why the fuck is it <span style="color: yellow;"><span style="color: yellow;">cold</span></span> outside</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1241389357862436864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-05 14:52:38</td>
+                <td class ="content_left">I love <span style="color: yellow;"><span style="color: yellow;">cold</span></span> weather but I’m lowkey over it now</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1235578976317460480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-06 03:45:19</td>
+                <td class ="content_left">My titties was hot yesterday from the heat and then they was freezing today from the <span style="color: yellow;"><span style="color: yellow;">cold</span></span> 😒</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1225264181710131200">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 22:09:17</td>
+                <td class ="content_left">I’m so frustrated with this virus it’s ridiculous.
+I’ve been on isolation for 14 days because i <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>.
+I’ve been told all i have to do is wait for the 14 days and get a pcp to sign off 
+Now I’m being told by somebody else i have to test negative before i can do anything</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1248010052155265025">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 00:34:53</td>
+                <td class ="content_left">@KeepItTrillMane If the other people aren’t showing symptoms then they are not going to test . Just everybody in the house has to 14 day self quarantine. If symptoms worsen between anybody then seek help . I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. Everybody in my house is quarantined but don’t have symptoms</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1246234753868726279">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 07:24:07</td>
+                <td class ="content_left">My job won’t let me return till I’m 7 days without symptoms from having the virus . But I’m blessed the CEO of the corporation that’s part of the hospital agreed to pay 100% of our paycheck when <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the virus 😭😪</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1245975349730607106">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 15:16:03</td>
+                <td class ="content_left">23 and i <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for covid 
+
+So I’m begging just stay home. You don’t want the symptoms . You definitely don’t want the feeling of having to isolate yourself from your family . 
+
+Anybody can get it . 
+#COVID19</td>
+                <td>17</td>
+                <td>17</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1245006953849511936">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 18:26:06</td>
+                <td class ="content_left">Blessed i was on the other spectrum of having covid . 
+
+Beyond blessed to say my symptoms have gone away except for my <span style="color: yellow;"><span style="color: yellow;">cough</span></span> 
+
+Thursday will be my first day out my room since Being put on self isolation from everybody in my household . 
+
+Thank you for the prayers 🙏🏼🥰</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1247591497198952449">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 17:45:01</td>
+                <td class ="content_left">I want a Starbucks drink and <span style="color: yellow;"><span style="color: yellow;">cough</span></span> drops ☹️</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1246856382894276608">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 16:29:52</td>
+                <td class ="content_left">Today is probably the first day I’ve felt like me . 
+
+Only thing i have now is a <span style="color: yellow;"><span style="color: yellow;">cough</span></span> but due to having bronchitis</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1246837471041728514">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 22:16:20</td>
+                <td class ="content_left">I’ve had headaches , fire sensation in my chest , <span style="color: yellow;"><span style="color: yellow;">cough</span></span> and shortness of breath with some hot flashes since Saturday 
+
+My mom told me to take a Zyrtec 
+😐😒 what happens when you live with a nurse practitioner</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1243300780268019712">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">bronchitis</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "bronchitis"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 16:29:52</td>
+                <td class ="content_left">Today is probably the first day I’ve felt like me . 
+
+Only thing i have now is a cough but due to having <span style="color: yellow;"><span style="color: yellow;">bronchitis</span></span></td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1246837471041728514">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 18:58:52</td>
+                <td class ="content_left">Just hope my <span style="color: yellow;"><span style="color: yellow;">bronchitis</span></span> doesn’t turn into pneumonia. Times where i feel like im getting better and others when it feels like my chest is getting hit by a truck 🙃☹️</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1244338253458739200">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 18:55:47</td>
+                <td class ="content_left">Day 9 of having <span style="color: yellow;"><span style="color: yellow;">bronchitis</span></span> 
+
+Still stuck in quarantine of my own room (can’t leave it so i don’t get others sick or myself get worse)
+
+inhaler i was prescribed at my doctors visit (day 5 of sympt) is my bff 
+
+Still haven’t gotten my covid results back and today is day 4/5 of wait</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1244337476644286464">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 14:27:04</td>
+                <td class ="content_left">Really praying this is just <span style="color: yellow;"><span style="color: yellow;">bronchitis</span></span></td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1243545075243716609">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 12:04:27</td>
+                <td class ="content_left">Ugh i think I’m getting <span style="color: yellow;"><span style="color: yellow;">bronchitis</span></span> 😩
+It’s been years since I’ve gotten it</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1240247694108635138">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recovered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recovered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 21:36:28</td>
+                <td class ="content_left">I’m ready to be able to tweet that I <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> fully from covid ☹️☹️</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1246189850749030400">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 03:31:57</td>
+                <td class ="content_left">My ass was littering moving my head back everytime they kept moving it in my <span style="color: yellow;"><span style="color: yellow;">nose</span></span> . 
+
+Shit is the most uncomfortable thing you will ever go through https://t.co/f5mz1EBUms</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1245192150377287685">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">my nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "my nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 03:31:57</td>
+                <td class ="content_left">My ass was littering moving my head back everytime they kept moving it in <span style="color: yellow;"><span style="color: yellow;">my nose</span></span> . 
+
+Shit is the most uncomfortable thing you will ever go through https://t.co/f5mz1EBUms</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1245192150377287685">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Vitamin C</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Vitamin C"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 16:23:49</td>
+                <td class ="content_left">My mom said i need <span style="color: yellow;">vitamin c</span> 
+
+She brought me a huge ass orange 😂😐</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1245024005771452428">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 15:16:03</td>
+                <td class ="content_left">23 and i tested <span style="color: yellow;">positive for covid</span> 
+
+So I’m begging just stay home. You don’t want the symptoms . You definitely don’t want the feeling of having to isolate yourself from your family . 
+
+Anybody can get it . 
+#COVID19</td>
+                <td>17</td>
+                <td>17</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1245006953849511936">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 13:27:11</td>
+                <td class ="content_left">So i ended up testing <span style="color: yellow;">positive for covid</span> 19 ...</td>
+                <td>7</td>
+                <td>29</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1244979555678539777">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 22:16:20</td>
+                <td class ="content_left">I’ve had headaches , fire sensation in my chest , cough and shortness of <span style="color: yellow;"><span style="color: yellow;">breath</span></span> with some hot flashes since Saturday 
+
+My mom told me to take a Zyrtec 
+😐😒 what happens when you live with a nurse practitioner</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1243300780268019712">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Shortness of breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Shortness of breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 22:16:20</td>
+                <td class ="content_left">I’ve had headaches , fire sensation in my chest , cough and <span style="color: yellow;">shortness of breath</span> with some hot flashes since Saturday 
+
+My mom told me to take a Zyrtec 
+😐😒 what happens when you live with a nurse practitioner</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1243300780268019712">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">headaches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "headaches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 22:16:20</td>
+                <td class ="content_left">I’ve had <span style="color: yellow;"><span style="color: yellow;">headaches</span></span> , fire sensation in my chest , cough and shortness of breath with some hot flashes since Saturday 
+
+My mom told me to take a Zyrtec 
+😐😒 what happens when you live with a nurse practitioner</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1243300780268019712">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">itchy</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "itchy"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 23:32:34</td>
+                <td class ="content_left">Having eye lashes extensions and your eyes being <span style="color: yellow;"><span style="color: yellow;">itchy</span></span> Bc of allergies is pure hell 😭☹️😩</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1240058475939495938">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">chills</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "chills"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 01:09:54</td>
+                <td class ="content_left">Low grade fever/ <span style="color: yellow;"><span style="color: yellow;">chills</span></span> / headache / occasional sneezing and sniffling 
+
+I’m dying and I’m only 1 hour into a 12 hour shift</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1238271031183314944">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Sneezing</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Sneezing"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 01:09:54</td>
+                <td class ="content_left">Low grade fever/ chills / headache / occasional <span style="color: yellow;">sneezing</span> and sniffling 
+
+I’m dying and I’m only 1 hour into a 12 hour shift</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1238271031183314944">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fatigue</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fatigue"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-12 11:20:24</td>
+                <td class ="content_left">@aijahnaesprings Being in this room &amp; ive had the same headache for two days and body <span style="color: yellow;"><span style="color: yellow;">fatigue</span></span> .</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1238062280413249537">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">exhausted</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "exhausted"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-02 16:16:18</td>
+                <td class ="content_left">I am <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> 😭😩</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1234512869372416001">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-01 14:02:12</td>
+                <td class ="content_left"><span style="color: yellow;">Exhausted</span> and delusional at the moment</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1234116733730017281">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-29 06:28:58</td>
+                <td class ="content_left">I’ve had my shit done 3 times about to be my 4th . It don’t hurt . 
+Maybe if it was yo tit that’s a whole other level of <span style="color: yellow;"><span style="color: yellow;">pain</span></span> tbh https://t.co/uN3i5FuRHM</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1233640285634166784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">freezing</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "freezing"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-26 14:31:03</td>
+                <td class ="content_left">This weather got my hands <span style="color: yellow;"><span style="color: yellow;">freezing</span></span> 😭</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1232674442117029888">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-06 03:45:19</td>
+                <td class ="content_left">My titties was hot yesterday from the heat and then they was <span style="color: yellow;"><span style="color: yellow;">freezing</span></span> today from the cold 😒</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1225264181710131200">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">migraine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "migraine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-11 05:50:18</td>
+                <td class ="content_left">My head is on ten with this <span style="color: yellow;"><span style="color: yellow;">migraine</span></span> and i just need my hair played in</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1227107572873879552">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-09 22:14:10</td>
+                <td class ="content_left">The video annoying but she do got a really good first <span style="color: yellow;">touch</span> https://t.co/w2FSvzgtVU</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1226630396391165952">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cancer</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cancer"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-05 19:14:35</td>
+                <td class ="content_left">As well as my dad . He’s a country black man from Georgia who despises the doctors . went years without going . The one time he goes they tell him he has <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> the doctors saying they just want his money . He ignores, two years they take majority of his stomach out .</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1225135650934067206">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nauseous</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nauseous"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-31 00:02:45</td>
+                <td class ="content_left">I be getting so <span style="color: yellow;"><span style="color: yellow;">nauseous</span></span> 🤢</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/keepinupwcarson/status/1223033842434441218">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

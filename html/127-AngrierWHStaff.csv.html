@@ -1,0 +1,971 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>127-AngrierWHStaff.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 127-AngrierWHStaff.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">127-AngrierWHStaff.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 21:17:31</td>
+                <td class ="content_left">In the same <span style="color: yellow;"><span style="color: yellow;">breath</span></span> he said he can’t delete his Twitter account because the media is dishonest. 
+
+Again: Trump would never shut down his favorite disinformation platform. He’s just pissed because they fact-checked him once. https://t.co/Ehl8uIIqsa</td>
+                <td>1039</td>
+                <td>4878</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1266116414752129031">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-09 04:19:04</td>
+                <td class ="content_left">Yeah, if Reagan was sniffing uncontrollably, about to pass out from being totally out of <span style="color: yellow;"><span style="color: yellow;">breath</span></span> and mispronounced Gorbachev’s name, they would be *exactly* the same. https://t.co/CH6j3H751p</td>
+                <td>471</td>
+                <td>3238</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1215125814242660352">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-08 16:30:41</td>
+                <td class ="content_left">He’s also already out of <span style="color: yellow;"><span style="color: yellow;">breath</span></span> somehow</td>
+                <td>78</td>
+                <td>1306</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1214947542426947586">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 23:34:18</td>
+                <td class ="content_left">This is what happened when a malignant narcissist is cornered and held accountable for the first time ever. 
+
+Twitter fact checked him once and he’s ranting about regulation and executive orders. 
+
+Think how many lives could have been spared if he took <span style="color: yellow;">COVID-19</span> that seriously.</td>
+                <td>5098</td>
+                <td>15913</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1265788449933725696">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 04:00:24</td>
+                <td class ="content_left">It’s sad, albeit predictable, that the knives are out for Redfield and the CDC over the <span style="color: yellow;">COVID-19</span> response, when the blame clearly — and very publicly — lies with Trump.</td>
+                <td>3426</td>
+                <td>15426</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1262231537283719168">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 19:14:43</td>
+                <td class ="content_left">Trump official tried to fast track funding for his friend’s unproven <span style="color: yellow;">COVID-19</span> treatment. 
+
+ https://t.co/pLPnyALxQj</td>
+                <td>790</td>
+                <td>1960</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1261012084139200515">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 04:35:03</td>
+                <td class ="content_left">When my mom was wondering if she had <span style="color: yellow;">COVID-19</span> (she didn’t, thankfully) the first thing her teledoc asked her was if she was able to take her BP and temperature, and whether or not she had a pulse ox. 2/2</td>
+                <td>65</td>
+                <td>750</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1259703541356265473">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 22:28:32</td>
+                <td class ="content_left">Apparently, this video was taken in Colorado. 
+
+Also known as the next <span style="color: yellow;">COVID-19</span> hotspot https://t.co/BOeFxB0vAi</td>
+                <td>704</td>
+                <td>2701</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1259611306191204355">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 14:11:22</td>
+                <td class ="content_left">Also, worldwide, we’ve already rocketed past most of the CDC/WHO *estimated* H1N1 deaths with *confirmed* <span style="color: yellow;">COVID-19</span> deaths. 
+
+H1N1 lasted 20 months. We’re only in month 7 of <span style="color: yellow;">COVID-19</span>.</td>
+                <td>340</td>
+                <td>1514</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1259486190945927168">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 21:41:50</td>
+                <td class ="content_left">We’re on pace to hit 100,000 <span style="color: yellow;">COVID-19</span> deaths by next weekend.</td>
+                <td>2594</td>
+                <td>6099</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1258874779504967681">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 21:03:31</td>
+                <td class ="content_left">To be clear: this was not COVID-related. Treatment was successful. We’ve gone through a couple years of cardiologist appointments and they’ve been given a clean bill of health, it’s just scary that <span style="color: yellow;">COVID-19</span> is turning in to this for some kids.</td>
+                <td>88</td>
+                <td>2425</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1258502747252494343">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 20:24:30</td>
+                <td class ="content_left">We’ll probably never know what the real death toll from <span style="color: yellow;">COVID-19</span> is, but I wouldn’t be at all surprised if we were already over 100,000 in the United States. https://t.co/l5y87DlBc2</td>
+                <td>929</td>
+                <td>3307</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1256680990879166466">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 01:14:15</td>
+                <td class ="content_left">We should always remember that Trump was happy to use his powers to force meat processing plants to stay open despite massive <span style="color: yellow;">COVID-19</span> outbreaks in them, but he wouldn’t use the same powers to order the production of ventilators or other vital PPE. 
+
+https://t.co/8OHqsDxWQ2</td>
+                <td>5079</td>
+                <td>11556</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1255666741973262336">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 19:19:26</td>
+                <td class ="content_left">Will <span style="color: yellow;">COVID-19</span> cause you to change your behavior even after the pandemic is over?</td>
+                <td>119</td>
+                <td>292</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1254490286920798210">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 00:07:00</td>
+                <td class ="content_left">That’s why I posted the thread. If I had <span style="color: yellow;">COVID-19</span> (as my first antibody test suggests) it was circulating in the US before January. 
+
+Unless, of course, I was one of the completely asymptomatic ones, which I’m not betting on with as sick as I was with no real diagnosis. https://t.co/vUb707Tz5z</td>
+                <td>231</td>
+                <td>1525</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1252388326998372352">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 21:10:38</td>
+                <td class ="content_left">For those asking, a lot of states are offering rapid antibody tests now. It’s still almost impossible to get an actual <span style="color: yellow;">COVID-19</span> test, but if you’re curious about the antibodies, a quick google search for your area should help you.
+
+Keep in mind, not all are FDA-approved.</td>
+                <td>79</td>
+                <td>946</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1252343942793715717">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 21:01:26</td>
+                <td class ="content_left">Will wait on the FDA-approved test to verify, but if it does, <span style="color: yellow;">COVID-19</span> was almost certainly in the US in December.
+
+Also, yes I’ll be donating plasma if second test confirms.</td>
+                <td>156</td>
+                <td>2342</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1252341630905925633">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 20:59:39</td>
+                <td class ="content_left">I’m still going to do the FDA-sanctioned one, but I found a rapid-results antibody test and took it this weekend. 
+
+Guess who tested positive for <span style="color: yellow;">COVID-19</span> antibodies? https://t.co/aDjwNNOYQz</td>
+                <td>258</td>
+                <td>3338</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1252341179019980803">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 16:59:21</td>
+                <td class ="content_left">@itsdoctorjoel @alt_localgov SARS was briefly in North America. 
+
+And we don’t know the exact r-naught of <span style="color: yellow;">COVID-19</span> yet, but it’s at least similar to SARS/MERS https://t.co/zZxLTTDBbw</td>
+                <td>5</td>
+                <td>28</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1251918318283427842">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 22:37:51</td>
+                <td class ="content_left">Scheduled a <span style="color: yellow;">COVID-19</span> antibody test today. I’m pretty exited about it — will (obviously) share the results when I get them.</td>
+                <td>308</td>
+                <td>6003</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1250916343144239105">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 17:19:48</td>
+                <td class ="content_left">Yikes — at least 150 members of the Saudi royal family are infected with <span style="color: yellow;">COVID-19</span> https://t.co/0yOVhTPpJW</td>
+                <td>2403</td>
+                <td>6722</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1248299586600517632">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 00:12:49</td>
+                <td class ="content_left">Uh. 
+
+The worldwide reported death toll from <span style="color: yellow;">COVID-19</span> is currently 59,000, but please feel free to lecture me on facts. 🙄 https://t.co/GKyScVPSOs</td>
+                <td>61</td>
+                <td>569</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1246229200421425154">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 23:19:19</td>
+                <td class ="content_left">Talked to a nurse who works at a fairly large hospital. 
+
+They have 12 presumptive cases of <span style="color: yellow;">COVID-19</span> and 3 confirmed right now. 
+
+The CDC and county websites both only have 2 cases listed for the *whole* county.
+
+We are *vastly* underreporting this nationwide.</td>
+                <td>5961</td>
+                <td>15306</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1243679020740378624">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 21:27:56</td>
+                <td class ="content_left">If Trump forced mask/PPE production &amp; got serious about tracking <span style="color: yellow;">COVID-19</span> cases (read: TESTING/contact tracing) in Dec/Jan, we would have had a plan in place and none of this would be happening.
+
+Hell, if Trump had done *anything* but call it a hoax, this wouldn’t be happening. https://t.co/RW0bvaPlVX</td>
+                <td>1246</td>
+                <td>3896</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1243288603247153161">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 04:20:32</td>
+                <td class ="content_left">I’ve been so wrapped up in <span style="color: yellow;">COVID-19</span> coverage —and appalled that states are even voting today—that I didn’t pay much attention to the primaries. 
+
+It’s clear that Biden is the nominee. Bernie should drop out now — rest of the primaries should be postponed/mail in votes planned.</td>
+                <td>457</td>
+                <td>4265</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1240130944423596039">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-14 22:54:06</td>
+                <td class ="content_left">Remember, the point of this isn’t to eliminate <span style="color: yellow;">COVID-19</span> entirely — it is to slow the spread enough to where hospitals — already overworked from the flu and other critical cases — aren’t overrun at the same time and people don’t die unnecessarily from quality (or lack) of care.</td>
+                <td>284</td>
+                <td>1200</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1238961630790258690">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-12 22:00:29</td>
+                <td class ="content_left">If you didn’t watch Biden’s speech, you should have. 
+
+That’s what Presidential looks like. 
+
+The fact that the Biden campaign has a better <span style="color: yellow;">COVID-19</span> plan than the entire federal government is pretty fucking terrifying, though.</td>
+                <td>1477</td>
+                <td>7278</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1238223363421753344">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-12 01:44:25</td>
+                <td class ="content_left">@wolfie_tx Gobert tested positive for <span style="color: yellow;">COVID-19</span></td>
+                <td>18</td>
+                <td>180</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1237917329222184960">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-07 01:37:37</td>
+                <td class ="content_left">@se_kear There are more than just rumors. He admitted it on live television when it comes to the cruise ship. And there are stories all over Twitter of people who were told they probably have <span style="color: yellow;">COVID-19</span> but that we couldn’t test for it.</td>
+                <td>369</td>
+                <td>2142</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1236103680560160770">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-03 13:54:35</td>
+                <td class ="content_left">Depressing thread.
+
+It also unfortunately matches other <span style="color: yellow;">COVID-19</span> stories exactly.
+
+We know it’s spreading in WA — for this person to somehow not qualify for testing is insane. 
+
+I know we can’t possibly test everyone w/ symptoms, but high risk people being turned away is gross. https://t.co/HLUsTwLdJk</td>
+                <td>365</td>
+                <td>1260</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1234839590198005764">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-27 18:33:49</td>
+                <td class ="content_left">It’s incredible to me that they’re not taking steps to prevent this. 
+
+The entire Iranian government might be infected — and we know <span style="color: yellow;">COVID-19</span> is far deadlier to the elderly. https://t.co/gAn2ehhgD6</td>
+                <td>610</td>
+                <td>1625</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1233097925527572480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Hydroxychloroquine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Hydroxychloroquine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 18:36:10</td>
+                <td class ="content_left">The most important thing to remember about Trump taking <span style="color: yellow;">hydroxychloroquine</span> is that he just fired the inspector general who was investigating Pompeo’s involvement in a Saudi arms sale</td>
+                <td>14973</td>
+                <td>41381</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1262814319839936512">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">inhaler</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "inhaler"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 21:30:44</td>
+                <td class ="content_left">Quick, someone get him a Lysol <span style="color: yellow;"><span style="color: yellow;">inhaler</span></span> https://t.co/eaD87oLy8m</td>
+                <td>654</td>
+                <td>4816</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1262495863013814272">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 23:37:47</td>
+                <td class ="content_left">In December, I got sick as *hell*
+
+I assumed it was the flu, but it seemed like it was never-ending. Towards the end of week 1, I ended up in the ER because I couldn’t breathe, and my prescribed <span style="color: yellow;"><span style="color: yellow;">inhaler</span></span> wasn’t helping. 2/8</td>
+                <td>176</td>
+                <td>2018</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1252380976631537664">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-26 17:48:26</td>
+                <td class ="content_left">That’s basically what I meant - pain/fever reducers, your cold med of choice. Chicken soup.
+
+If you have any asthmatics in the family, nebulizer and/or <span style="color: yellow;"><span style="color: yellow;">inhaler</span></span> refills would be intelligent.
+
+Besides anti-virals, you’re essentially just treating the symptoms if you do catch it. https://t.co/qi7vvEVzF4</td>
+                <td>96</td>
+                <td>526</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1232724113875181574">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 00:44:12</td>
+                <td class ="content_left">@JT_Hume Awesome. You talk and the mask goes down. Or up. Then you want to <span style="color: yellow;">touch</span> it but you you remember you can’t <span style="color: yellow;">touch</span> your face and AHHHHHH</td>
+                <td>17</td>
+                <td>1205</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1261457385685684224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 20:58:36</td>
+                <td class ="content_left">Good analogy. I love the whole “pregnancy glow” — I don’t ever <span style="color: yellow;">touch</span> any pregnant bellies though, mostly because it made my wife SUPER uncomfortable when random people would approach her and want to feel the baby kick. https://t.co/vzkdvcfjsa</td>
+                <td>88</td>
+                <td>783</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1259588675282878464">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 20:53:02</td>
+                <td class ="content_left">@DWhittington901 Correct.
+
+Wet hands &gt; apply soap &gt; lather for 20 seconds &gt; rinse hands &gt; dry hands &gt; don’t <span style="color: yellow;">touch</span> knob (or door handle) with newly-cleaned hands</td>
+                <td>13</td>
+                <td>127</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1253789065264144384">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-26 17:39:31</td>
+                <td class ="content_left">3. The same measures you use to prevent yourself from getting the cold and flu are effective here — wash your hands frequently. Sanitize if you can’t wash. Don’t <span style="color: yellow;">touch</span> your mouth, nose, or eyes with unwashed hands.</td>
+                <td>390</td>
+                <td>2257</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1232721871419867139">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recovered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recovered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 20:42:13</td>
+                <td class ="content_left">@CarolAllred8 Mine was diagnosed with Kawasaki’s a few years ago. They’re fully <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> now.</td>
+                <td>1</td>
+                <td>50</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1259222164374421504">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 23:37:48</td>
+                <td class ="content_left">She <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> quickly, but it took a solid 3 weeks before I felt even semi-normal again.
+
+Around the same time, mini-Angry was hospitalized with pneumonia. 
+
+Anecdotally, the ER Dr. told us she was seeing an unusual amount of viral pneumonia this season. 5/8</td>
+                <td>174</td>
+                <td>2204</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1252380981165604865">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">test positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "test positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 13:30:40</td>
+                <td class ="content_left">President Best Brain says testing is bad because you can <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> after testing negative a bunch
+
+ https://t.co/I6xEzSd1Zc</td>
+                <td>3536</td>
+                <td>14234</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1259113559193194497">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 18:42:04</td>
+                <td class ="content_left">Katie Miller — Pence’s Press Secretary — is reportedly the person on his staff who <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19.</td>
+                <td>556</td>
+                <td>4002</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1258829537204453376">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 23:37:49</td>
+                <td class ="content_left">Obviously, I have no idea whether or not we all had coronavirus, but I suspect we did. 
+
+I took one rapid-antibody test and <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the antibodies, but the tests aren’t perfect. 
+
+After I get the results of my second (FDA-approved) test I’ll be more confident. 7/8</td>
+                <td>154</td>
+                <td>2455</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1252380984604889088">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 20:59:39</td>
+                <td class ="content_left">I’m still going to do the FDA-sanctioned one, but I found a rapid-results antibody test and took it this weekend. 
+
+Guess who <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19 antibodies? https://t.co/aDjwNNOYQz</td>
+                <td>258</td>
+                <td>3338</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1252341179019980803">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-12 01:44:25</td>
+                <td class ="content_left">@wolfie_tx Gobert <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19</td>
+                <td>18</td>
+                <td>180</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1237917329222184960">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 18:42:04</td>
+                <td class ="content_left">Katie Miller — Pence’s Press Secretary — is reportedly the person on his staff who tested <span style="color: yellow;">positive for COVID</span>-19.</td>
+                <td>556</td>
+                <td>4002</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1258829537204453376">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 20:59:39</td>
+                <td class ="content_left">I’m still going to do the FDA-sanctioned one, but I found a rapid-results antibody test and took it this weekend. 
+
+Guess who tested <span style="color: yellow;">positive for COVID</span>-19 antibodies? https://t.co/aDjwNNOYQz</td>
+                <td>258</td>
+                <td>3338</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1252341179019980803">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-12 01:44:25</td>
+                <td class ="content_left">@wolfie_tx Gobert tested <span style="color: yellow;">positive for COVID</span>-19</td>
+                <td>18</td>
+                <td>180</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1237917329222184960">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asymptomatic</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asymptomatic"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 17:17:46</td>
+                <td class ="content_left">@MsResistFL That’s happening in quite a few <span style="color: yellow;"><span style="color: yellow;">asymptomatic</span></span> young people. It’s awful</td>
+                <td>15</td>
+                <td>205</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1257358771644518401">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 00:07:00</td>
+                <td class ="content_left">That’s why I posted the thread. If I had COVID-19 (as my first antibody test suggests) it was circulating in the US before January. 
+
+Unless, of course, I was one of the completely <span style="color: yellow;"><span style="color: yellow;">asymptomatic</span></span> ones, which I’m not betting on with as sick as I was with no real diagnosis. https://t.co/vUb707Tz5z</td>
+                <td>231</td>
+                <td>1525</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1252388326998372352">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 18:14:18</td>
+                <td class ="content_left">Until we get this testing capacity, we are going to be unable to completely curb this.
+
+Even if all sick people stay home, <span style="color: yellow;"><span style="color: yellow;">asymptomatic</span></span> people spreading the virus is still a concern. The only way to know is to test. https://t.co/7upQk2uBtj</td>
+                <td>544</td>
+                <td>1921</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1240703157325291522">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 01:07:01</td>
+                <td class ="content_left">@for_EandFIFight I don’t think he’ll make it that far, but he has the potential to siphon votes from both. My biggest worry is that he will pull the never Trumpers who really don’t want to hold their collective <span style="color: yellow;"><span style="color: yellow;">nose</span></span> and vote for Biden, but he’ll probably also pull some of Trump’s moderate base.</td>
+                <td>35</td>
+                <td>885</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1256389700702687234">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 06:04:53</td>
+                <td class ="content_left">@ShellyusaShelly @MollyMcBBrown Agreed. Looked like a pencil up the <span style="color: yellow;"><span style="color: yellow;">nose</span></span></td>
+                <td>1</td>
+                <td>71</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1255015106808856576">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-03 15:02:50</td>
+                <td class ="content_left">The same Pence who wipes his <span style="color: yellow;"><span style="color: yellow;">nose</span></span> with his hand on national television? 
+
+What could possibly go wrong? https://t.co/qBfFQCNb3A</td>
+                <td>477</td>
+                <td>1723</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1234856767944904706">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-31 14:08:22</td>
+                <td class ="content_left">Some unsolicited advice from your favorite angry person: 
+
+You might not like the Democratic nominee. You might not like anyone on the ticket. 
+
+Hold your <span style="color: yellow;"><span style="color: yellow;">nose</span></span> and vote anyway. Lots of people skipped 2016. Hell, *I* skipped 2016 — look where that got us. 
+
+Never again.</td>
+                <td>3942</td>
+                <td>14117</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1223246647586705408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breathing difficulties</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breathing difficulties"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 21:03:38</td>
+                <td class ="content_left">@Articulate_indy Sickest I’ve ever been. I was in the ER twice in December with <span style="color: yellow;"><span style="color: yellow;">breathing difficulties</span></span></td>
+                <td>2</td>
+                <td>50</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1252342185141264384">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breathing difficult</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breathing difficult"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 21:03:38</td>
+                <td class ="content_left">@Articulate_indy Sickest I’ve ever been. I was in the ER twice in December with <span style="color: yellow;"><span style="color: yellow;">breathing difficult</span></span>ies</td>
+                <td>2</td>
+                <td>50</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1252342185141264384">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 21:57:11</td>
+                <td class ="content_left">People should learn to read the room. 
+
+NatSec is my favorite topic to discuss, but nobody gives a shit about the Maduro regime right now, and devoting this much time — publicly — talking about <span style="color: yellow;"><span style="color: yellow;">drug</span></span> trafficking during a global pandemic is stupid.</td>
+                <td>650</td>
+                <td>4521</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1245470289565298692">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asthma</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asthma"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 03:10:12</td>
+                <td class ="content_left">@Cocoanilla I have mild <span style="color: yellow;"><span style="color: yellow;">asthma</span></span> that is well-controlled. 
+
+Scares the crap out of me too.</td>
+                <td>3</td>
+                <td>396</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1241562794744561664">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 05:35:37</td>
+                <td class ="content_left">You guys are probably going to get <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of my #FlattenTheCurve posts, but I really don’t care.
+
+Stay home, save lives. https://t.co/Nm4dCUBdDr</td>
+                <td>761</td>
+                <td>2775</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1239425064719745024">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-23 02:39:33</td>
+                <td class ="content_left">The GOP Senators aren’t mad that Schiff is repeating himself because they’re <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of hearing it:
+
+They’re mad because they know thousands more people are watching this than watched the individual hearings, and that scares the hell out of them.</td>
+                <td>5343</td>
+                <td>22882</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1220174201081991168">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-18 22:38:55</td>
+                <td class ="content_left">Same <span style="color: yellow;"><span style="color: yellow;">tired</span></span> defense from Trump’s team, meanwhile the House impeachment managers laid out a compelling argument for removing the largest threat to national security. https://t.co/VMbaHX0JN9</td>
+                <td>944</td>
+                <td>4441</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1218664091037962240">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-07 05:58:29</td>
+                <td class ="content_left">@imparting @TraceeOkrainec @TheWarMonitor That’s interesting. I had a similar cough, low o2, and a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> also. Never turned into pneumonia, thankfully. 
+
+It was definitely going around here too, and there was a lot of “well, I was flu negative...”</td>
+                <td>5</td>
+                <td>149</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1236169327763742720">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-26 17:48:26</td>
+                <td class ="content_left">That’s basically what I meant - pain/fever reducers, your <span style="color: yellow;"><span style="color: yellow;">cold</span></span> med of choice. Chicken soup.
+
+If you have any asthmatics in the family, nebulizer and/or inhaler refills would be intelligent.
+
+Besides anti-virals, you’re essentially just treating the symptoms if you do catch it. https://t.co/qi7vvEVzF4</td>
+                <td>96</td>
+                <td>526</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1232724113875181574">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-26 17:39:31</td>
+                <td class ="content_left">3. The same measures you use to prevent yourself from getting the <span style="color: yellow;"><span style="color: yellow;">cold</span></span> and flu are effective here — wash your hands frequently. Sanitize if you can’t wash. Don’t touch your mouth, nose, or eyes with unwashed hands.</td>
+                <td>390</td>
+                <td>2257</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1232721871419867139">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Shortness of breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Shortness of breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-26 17:39:32</td>
+                <td class ="content_left">4. If we start seeing community spread in the United States:
+
+If you’re sick, STAY HOME. 
+
+If someone is coughing and/or sneezing, stay away from them. Virus particulates can fly ~6 feet.
+
+Drink plenty of fluids. Seek emergency medical attention for <span style="color: yellow;">shortness of breath</span>, etc.</td>
+                <td>484</td>
+                <td>2664</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1232721873064034309">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shake</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shake"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-24 06:15:06</td>
+                <td class ="content_left">Their Bernie support has two primary objectives:
+
+1. A Bernie nomination will <span style="color: yellow;"><span style="color: yellow;">shake</span></span> the Democratic establishment to its core. It will set up a nasty fight and leave the Dems weakened and limping into November. 
+
+2. They’ve judged that’s the best shot at Trump being reelected. 2/3</td>
+                <td>1655</td>
+                <td>7236</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1231824854720110592">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-17 17:59:50</td>
+                <td class ="content_left">With the all-out blitz from the right, Bloomberg is getting a *small* <span style="color: yellow;"><span style="color: yellow;">taste</span></span> of what it’s like to be a front-runner.
+
+The ads are obviously hitting home.
+
+It’s also worth remembering that in almost all the video clips you’re seeing, Bloomberg was a Republican.</td>
+                <td>389</td>
+                <td>2272</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1229465491372154880">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-20 22:19:45</td>
+                <td class ="content_left">This letter is pretty brutal — he alleges that prosecutors are refusing to meet with him. 
+
+I <span style="color: yellow;"><span style="color: yellow;">smell</span></span> another coverup https://t.co/eUIwFLGYr2</td>
+                <td>1913</td>
+                <td>5983</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1219384041239203842">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">itchy</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "itchy"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-11 04:29:17</td>
+                <td class ="content_left">@NHarpenewby He’s partially to blame, because the tensions should have never been as high as they were in the first place, but to wholesale blame him for a SAM battery operator’s <span style="color: yellow;"><span style="color: yellow;">itchy</span></span> trigger finger would be silly.</td>
+                <td>40</td>
+                <td>1000</td>
+                <td><a href="https://twitter.com/AngrierWHStaff/status/1215853161535221760">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,851 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>89-Miss_Cameo.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 89-Miss_Cameo.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">89-Miss_Cameo.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 10:44:16</td>
+                <td class ="content_left">@bobbank14 I'm rather <span style="color: yellow;"><span style="color: yellow;">tired</span></span> - par for the course these days. I cannot complain though, I have been in far worse positions than I am now!</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1265594663475523584">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 20:31:54</td>
+                <td class ="content_left">@AmoreSub I'm very <span style="color: yellow;"><span style="color: yellow;">tired</span></span> and still terribly breathless, but I am still smiling and getting on with it x</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1252334197034844161">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 18:24:15</td>
+                <td class ="content_left">@Slave2heels I'm struggling today after a little walk to the chemist 😭 I am so very <span style="color: yellow;"><span style="color: yellow;">tired</span></span> too, I've spent the last couple of days whacked.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1242879988598276099">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-27 10:41:53</td>
+                <td class ="content_left">@Andy6Red I am very <span style="color: yellow;"><span style="color: yellow;">tired</span></span> but very determined!</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1221745133458206720">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asthma</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asthma"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 00:48:48</td>
+                <td class ="content_left">@tampon_glenn I have been told medically 1. To not quit and 2. My <span style="color: yellow;"><span style="color: yellow;">asthma</span></span> type isn't inflammatory and smoking doesn't effect it. Unusual to say the least, I too was thrown. But that's from the top respiratory consultant.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1263632871878770688">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 14:51:27</td>
+                <td class ="content_left">@glove_pet I don't have a cough other than an <span style="color: yellow;"><span style="color: yellow;">asthma</span></span> one, which isn't chesty x</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1239927331931721729">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 13:48:43</td>
+                <td class ="content_left">@glove_pet I'm not entirely sure what happened this time but seems to be more <span style="color: yellow;"><span style="color: yellow;">asthma</span></span> related and as that's atypical and still being experimented with your guess is as good as mine.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1239549157699997697">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-06 21:03:52</td>
+                <td class ="content_left">The scan results showed the ground glass inflammation (seen in December) has radically worsened. They no longer think it is simply down to the <span style="color: yellow;"><span style="color: yellow;">asthma</span></span> and infection.
+More tests, possibly another lung biopsy, basically a serious change and need to find out why and what it is.</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1236034788651339776">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-19 21:37:46</td>
+                <td class ="content_left">@tequilla_mmm The double pneumonia seems in check right now but realistically we've been here many times. Hopefully it doesn't return this time. Then we have to solve the underlying immune system antibodies and atypical <span style="color: yellow;"><span style="color: yellow;">asthma</span></span> issues.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1230245113143623681">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-17 16:14:53</td>
+                <td class ="content_left">We have progress. I have an atypical type of <span style="color: yellow;"><span style="color: yellow;">asthma</span></span> on a base immune cellular level, correlated to my recurrent pneumonia and my EDS. It's also not inflammatory. I Have a new drug starting but this could be quite a long hospital stay as we try and get on top of everything.</td>
+                <td>0</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1229439082402648070">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-14 14:00:30</td>
+                <td class ="content_left">So I'm sorry to announce that I am back in the hospital again with another nasty double pneumonia and <span style="color: yellow;"><span style="color: yellow;">asthma</span></span> exacerbation. I have narrowly avoided itu and intubation this time so I'm doing OK.</td>
+                <td>2</td>
+                <td>30</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1228318100241702918">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recovered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recovered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 10:22:32</td>
+                <td class ="content_left">@sherrylever @OnlySam240 @ElleJ2016 @Dea_Dhelia @DominaIra1 @FemdomLith @thetashablack @MaitresseCecil1 I'm pleased to say rather good considering the triple pneumonia and Covid-19. My legs have not <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> yet they are very unsteady, shaky, and weak so I am having to use my walking stick all of the time. But my breathing is remarkably reasonable after all that!</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1263052479123595264">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 10:56:14</td>
+                <td class ="content_left">I'm sad that I had to unfriend someone spouting bollocks that <span style="color: yellow;">Covid-19</span> is a hoax. Bloody morons!</td>
+                <td>1</td>
+                <td>40</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1262336188016480256">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 16:38:41</td>
+                <td class ="content_left">Currently I am being told I have now got hospital acquired pneumonia after my usual pneumonia. They are actually trying to kill me what with the highest likely hood that I caught <span style="color: yellow;">Covid-19</span> here too. Crazy, crazy.</td>
+                <td>0</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1260972815370670085">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 10:54:44</td>
+                <td class ="content_left">Update for you all! My doctor says that I have my usual infection and also the <span style="color: yellow;">Covid-19</span> thing BUT I am just sleepy and sweaty, on just 3 litres of oxygen (which could easily be dropped to 2 due to how good my o2 sats are) and generally I feel reasonable!</td>
+                <td>1</td>
+                <td>52</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1259799092084998146">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 18:59:18</td>
+                <td class ="content_left">I am not in the least bit shocked after the things I witnessed during this last admission. I'm surprised there aren't more. Nine more confirmed <span style="color: yellow;">Covid-19</span> deaths as Northampton General Hospital total passes 100 https://t.co/IhJaHWJZo7</td>
+                <td>1</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1251948506748764163">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 19:16:23</td>
+                <td class ="content_left">Somebody was able to negotiate an early release 😎 
+The doctor agreed with my concerns about <span style="color: yellow;">Covid-19</span> and being there. She had me do a walking test for my sats, a blood test to see infection levels/white cell count. So back home, now to get busy with some hardcore resting 🤣</td>
+                <td>3</td>
+                <td>49</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1251590415389732865">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 10:58:08</td>
+                <td class ="content_left">Very unsurprisingly the <span style="color: yellow;">Covid-19</span> swab came back as negative. I do not have it. I did expect as much, they expected as much, but I had to follow the procedure and sit on a query ward until I got the all clear. That risk I accept as protocol. #StayHome, avoid any risks.</td>
+                <td>0</td>
+                <td>33</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1251102641700118530">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 09:50:06</td>
+                <td class ="content_left">Very useful in understanding how <span style="color: yellow;">Covid-19</span> effects the body.
+
+https://t.co/TPd3aXjjsZ</td>
+                <td>3</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1247099251806658562">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 21:51:09</td>
+                <td class ="content_left">HOW <span style="color: yellow;">COVID-19</span> KILLS--I'm a Surgeon--And Why We Can't Save You https://t.co/TPd3aXjjsZ via @YouTube</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1244019221970944003">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Breathless</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Breathless"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 12:08:11</td>
+                <td class ="content_left">@OnlySam240 @sherrylever @ElleJ2016 @Dea_Dhelia @DrLeiaAnnWoods @DominaIra1 @FemdomLith @thetashablack @MaitresseCecil1 Yes, whilst I am still pretty <span style="color: yellow;">breathless</span> I am down to 2 litres of o2.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1261629517325578240">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Vitamin D</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Vitamin D"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 06:39:11</td>
+                <td class ="content_left">@LadyEville @rahulshaha Having once suffered kidney failure due to an accidental overdose of <span style="color: yellow;">vitamin D</span> even though I was deficient I don't think I will mess there again!</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1260821946801033217">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 14:17:40</td>
+                <td class ="content_left">I'm sad to announce that I have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for Covid-19. I am waiting to see what the doctors plans are. I am doing OK just now, long may it remain.</td>
+                <td>9</td>
+                <td>150</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1259487777072263170">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 14:17:40</td>
+                <td class ="content_left">I'm sad to announce that I have tested <span style="color: yellow;">positive for Covid</span>-19. I am waiting to see what the doctors plans are. I am doing OK just now, long may it remain.</td>
+                <td>9</td>
+                <td>150</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1259487777072263170">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 14:20:08</td>
+                <td class ="content_left">@Slave2heels I woke up with the indescribable <span style="color: yellow;"><span style="color: yellow;">pain</span></span> thing I have had in my legs occasionally, only this morning it was both of them 😖😫 so I ended up chucking a whole world of opiates and <span style="color: yellow;"><span style="color: yellow;">pain</span></span> meds at them so I could just sit without crying out! So I'm not really with it today!</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1256226906871148546">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-11 16:45:01</td>
+                <td class ="content_left">That feeling when you hug someone and you feel their heart swell and their angst lessen just for a moment. I've given 2 hugs like this today, to 2 ladies I've met who are visiting loved ones who don't have long in this world. Just easing their <span style="color: yellow;"><span style="color: yellow;">pain</span></span> for that moment, priceless.</td>
+                <td>6</td>
+                <td>33</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1237781586118131714">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-16 17:54:22</td>
+                <td class ="content_left">@AlanHardern My <span style="color: yellow;"><span style="color: yellow;">pain</span></span> is back under control thankfully but boy it took a lot of drugs. The trouble being is the EDS and fibro react badly to infection making both uncontrollable.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1229101730681565185">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-16 15:34:14</td>
+                <td class ="content_left">Generally fed up with being stuck in hospital again. Seriously bad <span style="color: yellow;"><span style="color: yellow;">pain</span></span> day I'm literally hurting from temples to toe joints despite regular oramorph and my usual slow release morphine and neuropathic <span style="color: yellow;"><span style="color: yellow;">pain</span></span> blockers. Grumble.</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1229066462536634375">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-27 13:59:06</td>
+                <td class ="content_left">Blooming heck. Not what you need when you get home from hospital finally... Trying to sort out the errors from the hospital not sending me home with the correct <span style="color: yellow;"><span style="color: yellow;">pain</span></span> meds AND trying to get my broken boiler fixed...</td>
+                <td>2</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1221794765303316480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-25 13:27:23</td>
+                <td class ="content_left">@n1mikesmith Probably, I always do better in the heat especially with my <span style="color: yellow;"><span style="color: yellow;">pain</span></span> conditions but I'm not in a financial position to do so x</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1221062005626482698">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">antibiotics</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "antibiotics"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 16:48:36</td>
+                <td class ="content_left">@CarvedKink I'm being given iv <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> for the infection, iv steroids for the breathing, and fluids for my kidneys. They're struggling to get arterial blood from my wrists, diggi g about with needles. I am waiting for the 3rd person to try...</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1250103673398665219">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 12:02:30</td>
+                <td class ="content_left">@Slave2heels @OnlySam240 @ElleJ2016 @sherrylever @Dea_Dhelia @LadyAmber2017 @MissRaven666 @DominaIra1 @thetashablack @mistress_baton I have been deteriorating for a few days now 😔 I knew that I was poorly a week ago when I got the <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> so it was 50/50 if I could keep out of hospital as oral <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> rarely work for this damn infection. I had hoped that they might this time having had the antibodies</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1250031674869649410">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 13:07:50</td>
+                <td class ="content_left">@OnlySam240 @ElleJ2016 @sherrylever @Dea_Dhelia @LadyAmber2017 @mistress_baton @MissRaven666 @DominaIra1 @thetashablack Yes, it has. I am on super strong <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> that wipe me completely out but also seem to fend off the infection for a little while too previously, I'm just hoping they still do the same! My sats have dropped as to be expected but I have to O2 to top them up if they take ages.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1247511402253824000">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 13:51:32</td>
+                <td class ="content_left">Ohh yay... The infection is back... I have <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> and hope this time they might work, if not next stage I would fight for is home IV again because there is no way in hell I am going into hospital at the moment, no way at all.</td>
+                <td>2</td>
+                <td>16</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1247160010892701696">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 08:17:46</td>
+                <td class ="content_left">@love_lingerie62 I am not doing so well, it's possible I have another infection, it is a wait and see game currently but as soon as I am certain I will shake a leg and get it sorted. Oral <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> are proven to be of no use medics have agreed so have to wait for it to be iv worthy!</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1243089749507821574">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-13 14:17:18</td>
+                <td class ="content_left">Coronavirus reaches London as Chinese national is first diagnosed in the capital - It is a viral illness so <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> won't kill it, all that is possible would be antiviral medications but all they can do is lessen the symptoms drugs like Tamiflu. https://t.co/4RyjGGQ46w</td>
+                <td>1</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1227959938804310017">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 14:52:07</td>
+                <td class ="content_left">Simulation shows how a <span style="color: yellow;"><span style="color: yellow;">cough</span></span> can spread coronavirus in supermarkets https://t.co/REsfajFSnj via @nypost</td>
+                <td>4</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1248262420096856064">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 14:51:27</td>
+                <td class ="content_left">@glove_pet I don't have a <span style="color: yellow;"><span style="color: yellow;">cough</span></span> other than an asthma one, which isn't chesty x</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1239927331931721729">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breathing difficulties</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breathing difficulties"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 19:06:04</td>
+                <td class ="content_left">What really bothers me, knowing well what life-threatening <span style="color: yellow;"><span style="color: yellow;">breathing difficulties</span></span> feel like, is these people having not experienced it before will be terrified, they will panic, panic will make them worse. Going through that alone and in the worst cases dying alone. Horrifying.</td>
+                <td>3</td>
+                <td>20</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1246876779706486785">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breathing difficult</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breathing difficult"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 19:06:04</td>
+                <td class ="content_left">What really bothers me, knowing well what life-threatening <span style="color: yellow;"><span style="color: yellow;">breathing difficult</span></span>ies feel like, is these people having not experienced it before will be terrified, they will panic, panic will make them worse. Going through that alone and in the worst cases dying alone. Horrifying.</td>
+                <td>3</td>
+                <td>20</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1246876779706486785">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shaking</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shaking"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 20:31:09</td>
+                <td class ="content_left">I finally have a semi-reasonable attempt at a rainbow, I copied it of course. I have decided kids are really clever, they knock out rainbows with their eyes shut... My <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> hands did not enjoy doing it but I refused to give up! This is the 3rd attempt by the way lolol https://t.co/5DqzQwHGK2</td>
+                <td>1</td>
+                <td>28</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1245811025032732673">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Shiatsu</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Shiatsu"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 14:54:20</td>
+                <td class ="content_left">When you are browsing <span style="color: yellow;">shiatsu</span> back massagers and Amazon adds these two to your list... https://t.co/bIuWr3poR9</td>
+                <td>1</td>
+                <td>19</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1245363876079775744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 20:29:17</td>
+                <td class ="content_left">@LeiaAnnWoods I hope so, I have been here before though and my chest isn't clear and the nasty stuff is back in it I can <span style="color: yellow;"><span style="color: yellow;">taste</span></span> it.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1245085782072795138">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-01 16:50:11</td>
+                <td class ="content_left">@meonmyknees @slipperedbehind Master and Mistress enforced the pynishment because you flipping complained about being able to <span style="color: yellow;"><span style="color: yellow;">taste</span></span> coffee... *growling*</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1234159006173847553">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recover</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recover"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 11:45:45</td>
+                <td class ="content_left">@LeiaAnnWoods Day 5 of good days in a row, I am hoping maybe this time is the one I actually <span style="color: yellow;"><span style="color: yellow;">recover</span></span> from, or even for a few weeks would be nice!</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1244954031832862720">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">exhausted</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "exhausted"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 12:39:42</td>
+                <td class ="content_left">@RealLadyPandora @Miss_Tara_Red @GoddessSoria That is what is so frustrating for me, I am still too <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> to be busy and I am a busy person I need to be busy but convalescing buggers it all up.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1244242830677225474">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 19:25:39</td>
+                <td class ="content_left">After a shitty day feeling beyond <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> there's nothing more restorative than a hot chocolate with marshmallows and whipped cream, especially when it's rhubarb and custard flavour hot chocolate. From the parcel that saved my life on Friday the 13th from @WoodbineLazlo ❤️</td>
+                <td>0</td>
+                <td>17</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1242533051625811968">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-07 16:34:28</td>
+                <td class ="content_left">@ArctanPete @AffordableLeath It has been a while since I made it to LAM, lovely memories! I'm onat least my 10th admission since being intubated in November, but this has been over 18 months straight serious illness. I'm done, I'm <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> but all this support lifts me so, so much, thank you so much ❤️</td>
+                <td>3</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1236329380777005062">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-07 04:50:17</td>
+                <td class ="content_left">@dav_emitremmus I'm tired, I'm frightened, I feel beyond <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> and ill, but I keep getting on out there and moving forward.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1236152167251275776">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-15 22:13:21</td>
+                <td class ="content_left">I'm doing OK considering. They've had to turn my o2 up as my sats were still low on 2 litres so I'm on 3 litres now, it's just my poor chest is <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> after so many infections! I still have a smile on my face and sending all my love to you folk, and hope you are all OK xx</td>
+                <td>2</td>
+                <td>28</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1228804516864237568">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Difficulty breathing</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Difficulty breathing"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 14:03:00</td>
+                <td class ="content_left">@Maid_Collette lolol no, I don't really have very big breaths in and out. I have sleep disorders that mess with falling asleep, then add the pain, then add the <span style="color: yellow;">difficulty breathing</span> etc. etc. it is normal for me to fail!</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1243176632350912513">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Difficulty breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Difficulty breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 14:03:00</td>
+                <td class ="content_left">@Maid_Collette lolol no, I don't really have very big breaths in and out. I have sleep disorders that mess with falling asleep, then add the pain, then add the <span style="color: yellow;">difficulty breath</span>ing etc. etc. it is normal for me to fail!</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1243176632350912513">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shake</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shake"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 08:17:46</td>
+                <td class ="content_left">@love_lingerie62 I am not doing so well, it's possible I have another infection, it is a wait and see game currently but as soon as I am certain I will <span style="color: yellow;"><span style="color: yellow;">shake</span></span> a leg and get it sorted. Oral antibiotics are proven to be of no use medics have agreed so have to wait for it to be iv worthy!</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1243089749507821574">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Aromatherapy</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Aromatherapy"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 07:41:46</td>
+                <td class ="content_left">My online course company has a sale. I was looking as herbalism and <span style="color: yellow;">aromatherapy</span> courses to help my own health and wellness, despite that my basket is £114.91-the original price £1,014.91! There are 9 courses in my basket! It is a shame though, way out of my reach!</td>
+                <td>3</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1243080691534966784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 16:58:43</td>
+                <td class ="content_left">My skin is need of TLC after all that hospital rubbish, especially my hands, these <span style="color: yellow;"><span style="color: yellow;">smell</span></span> amazing!
+Almond Milk https://t.co/4FNWyJEpm2… 
+Almond Hands https://t.co/AJvKnzh0EL… 
+Almond Scrub https://t.co/QWW4jfl1GI… 
+All found on https://t.co/9eZeKIaULz https://t.co/vSHwmioezH</td>
+                <td>1</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1240684136991305729">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">freeze</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "freeze"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-06 04:43:24</td>
+                <td class ="content_left">What joy EDS is as a condition... I'm awake because my shoulder dislocated in my sleep and went back in slightly off. Easing a bit now after drugs and <span style="color: yellow;"><span style="color: yellow;">freeze</span></span> spray.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1235788045020024833">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pains</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pains"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-22 08:21:08</td>
+                <td class ="content_left">@oldgit1967 As much as it <span style="color: yellow;"><span style="color: yellow;">pains</span></span> me I have been taking it easy the entire time I have been ill. I don't have all that much choice either lol</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1231131797725073412">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nebs</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nebs"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-21 13:05:51</td>
+                <td class ="content_left">I'm allowed to go home but I'm coming back in weekly for reviews 😀I have <span style="color: yellow;"><span style="color: yellow;">nebs</span></span> at home so there's nothing they're doing here I can't do myself at home.The difference this time is I'm going to be closely monitored at every possible point.</td>
+                <td>2</td>
+                <td>36</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1230841060135489536">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-18 10:38:59</td>
+                <td class ="content_left">@KidKool4U Really rather tired. I have not started the new <span style="color: yellow;"><span style="color: yellow;">drug</span></span> yet so no change.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1229716936335994880">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-17 16:14:53</td>
+                <td class ="content_left">We have progress. I have an atypical type of asthma on a base immune cellular level, correlated to my recurrent pneumonia and my EDS. It's also not inflammatory. I Have a new <span style="color: yellow;"><span style="color: yellow;">drug</span></span> starting but this could be quite a long hospital stay as we try and get on top of everything.</td>
+                <td>0</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1229439082402648070">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">penicillin</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "penicillin"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-16 18:11:45</td>
+                <td class ="content_left">@AlanHardern Unfortunately I am allergic to <span style="color: yellow;"><span style="color: yellow;">penicillin</span></span> and a few others to the level of anaphylaxis 🤪</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1229106103759310849">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-27 09:44:19</td>
+                <td class ="content_left">#DsWordOfTheDay #WordOfTheDay
+19/01/20
+Kowtow
+To show obsequious deference.
+To kneel and <span style="color: yellow;">touch</span> the forehead to the ground in token of homage, worship, or deep respect
+#MissCameo #lifestyledomme #mistress #fetish #bdsm #word</td>
+                <td>2</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/Miss_Cameo/status/1221730646495780864">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,2610 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>365-stonecold2050.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 365-stonecold2050.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">365-stonecold2050.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 22:43:12</td>
+                <td class ="content_left">According to the CDC so far this year Florida has had 2,364 deaths from <span style="color: yellow;">COVID-19</span> &amp; 5,185 deaths from pneumonia.
+
+However, the average pneumonia deaths in Florida from 2013-2018 for the same period are 918.
+
+Well isn’t that interesting? https://t.co/EWCM38BkHb</td>
+                <td>103</td>
+                <td>173</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1266137977568129024">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 22:29:14</td>
+                <td class ="content_left">Bla bla bla... the idiot rambles on about nothing &amp; trying to distract you from the fact that over 102,240 are dead &amp; that we are trending at over 200,000 dead with over 5 Million sick with <span style="color: yellow;">COVID-19</span> by late August
+
+#TrumpIsKillingAmerica 
+
+#202240Dead
+
+#AnotherDistraction https://t.co/2q4xnKVrdT</td>
+                <td>11</td>
+                <td>29</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1266134464872079361">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 23:14:49</td>
+                <td class ="content_left">I guess Michael Turzai is a close runner up. Telling people <span style="color: yellow;">COVID-19</span> is a hoax while not telling Democrat’s about sick republicans in the Pennsylvania House of Representatives . This man is a truly despicable human being.
+
+#MichaelTuraziMustResign https://t.co/V2vBltNsVi</td>
+                <td>35</td>
+                <td>80</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1265783548595695616">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 23:08:47</td>
+                <td class ="content_left">Michael Turzai is a GOP member of the Pennsylvania House of Rep who is currently Speaker of the House
+
+Turzai knew for weeks that at least one GOP member had contracted <span style="color: yellow;">COVID-19</span> &amp; did not report it to all of his fellow Democrat members in Pennsylvania
+
+#MichaelTuraziMustResign https://t.co/LyVb0Qut03</td>
+                <td>112</td>
+                <td>134</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1265782027845947392">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 19:44:42</td>
+                <td class ="content_left">Selfish Idiots who defy social distancing aren't going to self quarantine.  They're not capable of a rational decision.  I doubt they're aware of the fact that 40% of people infected with <span style="color: yellow;">Covid-19</span> are Asymptomatic. https://t.co/ZIxIU4WI5I</td>
+                <td>38</td>
+                <td>121</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1265368280753033221">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 03:57:06</td>
+                <td class ="content_left">The city of Vernon in Los Angeles County has seen <span style="color: yellow;">COVID-19</span> outbreaks at nine food processing facilities, including the Farmer John plant which has reported at least 153 cases. https://t.co/8pwzIPhLRl</td>
+                <td>62</td>
+                <td>61</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1264767423607042048">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 01:29:55</td>
+                <td class ="content_left">Trump plans a massive <span style="color: yellow;">COVID-19</span> vaccine testing effort involving 100,000 volunteers to meet year-end goals
+ 
+The project will compress what is typically 10 years of vaccine development &amp; testing into a matter of months
+
+Does anyone else think this is crazy? https://t.co/Was9lN3YuM</td>
+                <td>45</td>
+                <td>134</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1264005606064586752">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 21:22:21</td>
+                <td class ="content_left">That nasty ignorant Trump called on governors to let churches reopen in time for the Memorial Day weekend.
+
+Then threaten Governor’s “If they don’t do it, I will override the governors.” Because we need more death not less
+
+More than 97,528 have died from <span style="color: yellow;">COVID-19</span> in the U.S. https://t.co/D5oS3U8QSW</td>
+                <td>47</td>
+                <td>109</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1263943304019767296">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 16:19:25</td>
+                <td class ="content_left">We were broken long before <span style="color: yellow;">COVID-19</span> https://t.co/8on6nmGpOt</td>
+                <td>102</td>
+                <td>401</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1263867070296371200">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 20:56:01</td>
+                <td class ="content_left">The idiot says he won't close the country when the second wave of <span style="color: yellow;">COVID-19</span> hits the country.  He didn't close it the first time. The governors did. https://t.co/NegLl8DLjF</td>
+                <td>98</td>
+                <td>245</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1263574290944778240">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 00:12:49</td>
+                <td class ="content_left">Michael Cohen will be released from prison this week over <span style="color: yellow;">COVID-19</span> fears.  Cohen, who split with Trump after his guilty plea and is working on a tell-all book about the president, will serve the remainder of his three-year sentence in home confinement https://t.co/2d6kz9UwxJ</td>
+                <td>25</td>
+                <td>74</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1263261429571829760">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 22:07:42</td>
+                <td class ="content_left">Another failed reopening 
+
+Just days after reopening its American assembly plants, Ford temporarily shut down two separate factories because employees tested positive for <span style="color: yellow;">Covid-19</span> https://t.co/qaBQ6jF6tG</td>
+                <td>54</td>
+                <td>56</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1263229939882450944">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 21:57:09</td>
+                <td class ="content_left">I predict that the idiot is going to claim he had <span style="color: yellow;">COVID-19</span> and survived it by taking Hydroxychloroquine.  What do you think? https://t.co/0KmZfN7kKj</td>
+                <td>319</td>
+                <td>1988</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1263227287794642944">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 01:47:19</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> explained in gay terms; You and 10 friends are in your home getting ready for a party.  One has glitter on.  How many end up with glitter on them? https://t.co/znA1qy5KUG</td>
+                <td>66</td>
+                <td>298</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1262922821757476864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 23:07:31</td>
+                <td class ="content_left">Another reopening fail.
+
+Maryland is reporting 1,784 newly confirmed <span style="color: yellow;">COVID-19</span> cases, the largest jump the state has seen, four days after reopening retailers, hair salons and churches at 50%. https://t.co/BXosoHO9bC</td>
+                <td>61</td>
+                <td>69</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1262882607341031424">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 22:08:09</td>
+                <td class ="content_left">Kansas Republican Roger Marshall said that his family is taking hydroxychloroquine to prevent getting <span style="color: yellow;">COVID-19</span> adding: “I would encourage those over 65 or with a medical condition to talk to their own physician about taking hydroxychloroquine and I’m relieved Trump is taking it." https://t.co/LxaIx5JLG4</td>
+                <td>87</td>
+                <td>173</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1262867665778958336">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 22:41:41</td>
+                <td class ="content_left">New York barber who defied stay-at-home orders and continued to "illicitly" cut hair and 12 clients now have tested positive for <span style="color: yellow;">COVID-19</span> https://t.co/gmWQII6bAn</td>
+                <td>127</td>
+                <td>197</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1262151331487207424">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 04:32:15</td>
+                <td class ="content_left">Meanwhile in LOOPYVILLE.........
+
+Eric Trump says that <span style="color: yellow;">COVID-19</span> is a conspiracy against his dad that will ‘magically’ disappear in November after the election.  Traitortot says the lockdowns are designed to keep king trump from campaigning  https://t.co/pUX27mLBmK</td>
+                <td>172</td>
+                <td>539</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1261877166276370433">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 04:26:32</td>
+                <td class ="content_left">Michigan anti-lockdown protesters spread <span style="color: yellow;">COVID-19</span> to rural areas, Whitmer tells Pence in leaked call
+
+Love her. I hate vp penis...I mean pence. 
+ https://t.co/NCEoKXRAR9</td>
+                <td>112</td>
+                <td>228</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1261875724962562049">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 01:55:39</td>
+                <td class ="content_left">Huge surge in <span style="color: yellow;">COVID-19</span> cases in Texas today. The state is reporting 1,801 new cases since yesterday - the biggest one day surge they’ve had to deal with.
+
+#BugChasers
+
+#COVIDIDIOTS  https://t.co/JDiT3f7Vsj</td>
+                <td>149</td>
+                <td>204</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1261837755698429952">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 19:17:54</td>
+                <td class ="content_left">Because of the <span style="color: yellow;">COVID-19</span> pandemic for the first time since 1945 the National Spelling Bee is cancil...cancul...cancel...it’s been called off. https://t.co/nAVxAc6RxG</td>
+                <td>10</td>
+                <td>61</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1261737656850935808">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 23:53:01</td>
+                <td class ="content_left">So to be clear... #CaptainClorox thinks schools are safe enough for your kids but jail is too dangerous for Paul Manafort
+
+Ranting now... so we're supposed to send kids back to school &amp; this treasonous Douchebag gets to leave prison because they are afraid he'll catch <span style="color: yellow;">COVID-19</span> https://t.co/KOEW4TqTXI</td>
+                <td>94</td>
+                <td>155</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1261082120480423937">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 23:38:52</td>
+                <td class ="content_left">The original bat that started the <span style="color: yellow;">COVID-19</span> pandemic https://t.co/AshWza8TpP</td>
+                <td>89</td>
+                <td>321</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1261078557373030400">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 18:18:35</td>
+                <td class ="content_left">Are you watching Dr. Bright testifying before Congress? He tells Congress how indifferent Trump was to the <span style="color: yellow;">COVID-19</span> pandemic &amp; how dangerous he is by not knowing what he’s doing. Trump is the reason the virus is so bad in this country. https://t.co/vq9hOqDsC0</td>
+                <td>156</td>
+                <td>304</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1260997953918865408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 22:23:09</td>
+                <td class ="content_left">I thought I’d do a little work in the garden today.  So I go out back and find my husband George drunk and naked in the sun.  What?
+
+George tells me: “I’m doing medical research.” “Trump says that alcohol and sunlight will kill <span style="color: yellow;">COVID-19</span> and I believe it’s working” https://t.co/nqumn6FUcm</td>
+                <td>8</td>
+                <td>115</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1260697116260753408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 00:36:49</td>
+                <td class ="content_left">Dr. Robert Redfield the head of the Centers for Disease Control and Prevention is self-quarantining for two weeks after being being exposed to <span style="color: yellow;">COVID-19</span> by the White House staff who refuse to wear masks
+
+#WhiteHouseCOVIDOutbreak 
+
+#TrumpIsKillingAmericans https://t.co/O8UUlKkxmF</td>
+                <td>40</td>
+                <td>76</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1259281201237377024">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 20:24:56</td>
+                <td class ="content_left">White House press secretary Kayleigh McEnany is preparing for a live news conference to discuss the <span style="color: yellow;">COVID-19</span> in the White House https://t.co/PMsqaqFBdb</td>
+                <td>19</td>
+                <td>77</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1259217814029692928">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 02:20:46</td>
+                <td class ="content_left">Magician Roy Horn of Siegfried &amp; Roy has died of <span style="color: yellow;">COVID-19</span> at the age of 75
+
+Rest In Peace https://t.co/Nd1cOjeEyV</td>
+                <td>75</td>
+                <td>241</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1258944974156001281">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 19:43:52</td>
+                <td class ="content_left">Trump, it’s <span style="color: yellow;">COVID-19</span> calling.
+
+I’m calling from inside your house. https://t.co/nXC6mrIVrx</td>
+                <td>49</td>
+                <td>193</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1258845092778962944">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 19:31:35</td>
+                <td class ="content_left">The Pence staffer with <span style="color: yellow;">COVID-19</span> is Katie Miller, the wife of Stephen Miller.  Staffers are saying the entire West Wing has been exposed to COVID 
+
+I’m still shocked that someone would marry the goulash Stephen Miller. https://t.co/A5om9PwubA</td>
+                <td>156</td>
+                <td>604</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1258841998364078080">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 18:21:07</td>
+                <td class ="content_left">A member of Vice President Mike Pence’s staff tested positive for the <span style="color: yellow;">COVID-19</span> today just two days after a valet to idiot Trump was found to be infected.
+
+How is that no mask policy working out for you Princess?
+
+#COVIDIOTS https://t.co/ZaXptWIpMa</td>
+                <td>47</td>
+                <td>208</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1258824267174539264">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 15:04:39</td>
+                <td class ="content_left">The U.S. Mint's decision to put the fruit bat on the back of 2020 quarters probably seemed perfectly innocent pre-<span style="color: yellow;">COVID-19</span>, but now it's kinda creepy. The odd timing of the bat quarter's release is fueling the conspiracy theory that the government plotted the <span style="color: yellow;">COVID-19</span> outbreak. https://t.co/1cNGunEjVN</td>
+                <td>44</td>
+                <td>120</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1258774825025196034">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 18:56:46</td>
+                <td class ="content_left">The Texas Supreme Court today ordered that Shelley Luther who was jailed for opening in violation of the state’s <span style="color: yellow;">COVID-19</span> rules be freed
+
+The salon owner was jailed by a State District Judge, but will be released following Texas Gov. Greg Abbott’s executive order
+
+#COVIDIOT https://t.co/5vsSfk3iHB</td>
+                <td>10</td>
+                <td>26</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1258470849805316096">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 16:03:14</td>
+                <td class ="content_left">Trump's personal valet has tested positive for <span style="color: yellow;">COVID-19</span>, &amp; even though Trump has tested negative, experts say that doesn't mean he's virus-free &amp; if he does have it he could have exposed others
+
+The valet, had <span style="color: yellow;">COVID-19</span> symptoms Wednesday morning, &amp; his test came back positive https://t.co/ak9gDltENz</td>
+                <td>163</td>
+                <td>447</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1258427176786907136">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 05:14:10</td>
+                <td class ="content_left">Scumbag Republican Senator Rand Paul, who tested positive for <span style="color: yellow;">COVID-19</span> in March, refuses to wear a mask to the Senate even though experts don't yet have definitive proof of immunity. https://t.co/ZEyxjlyK8e</td>
+                <td>146</td>
+                <td>300</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1258263836181716993">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 03:11:25</td>
+                <td class ="content_left">A county in Washington State dealing with a <span style="color: yellow;">COVID-19</span> outbreak has identified a horrifying source of spread: “<span style="color: yellow;">Covid-19</span> parties” organized so that people can deliberately mingle with an infected person in the hope of getting their own illness out of the way. https://t.co/8gyMWWnk4e</td>
+                <td>70</td>
+                <td>87</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1258232944570691584">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 06:08:43</td>
+                <td class ="content_left">Texas Republican Governor Greg Abbott has been caught on an audio recording saying that reopening the state's businesses will actually lead to an increase in the spread of <span style="color: yellow;">COVID-19</span> adding the goal never has been to get <span style="color: yellow;">COVID-19</span> transmission down to zero https://t.co/Ecg0qfxn6O</td>
+                <td>176</td>
+                <td>207</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1257915174197104642">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 20:19:47</td>
+                <td class ="content_left">90% of people who tested positive for <span style="color: yellow;">COVID-19</span> in Mission District study had one thing in common.  They had to go to work everyday  https://t.co/iJx5pYGd95</td>
+                <td>36</td>
+                <td>46</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1257766963863937027">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 18:41:14</td>
+                <td class ="content_left">A new government report projects <span style="color: yellow;"><span style="color: yellow;">covid-19</span></span> cases will surge to about 200,000 per day by June 1, a staggering jump that would be accompanied by more than 3,000 deaths each day
+
+Well this seams like good reason open up the country 
+
+#TrumpIsKillingAmericans  https://t.co/xHi5rxx5nB</td>
+                <td>31</td>
+                <td>39</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1257379778040135681">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 17:38:05</td>
+                <td class ="content_left">Experts predict ‘significant <span style="color: yellow;">COVID-19</span> activity’ in US for up to 2 years
+
+Well this sucks... https://t.co/8Mwox9dJIK</td>
+                <td>24</td>
+                <td>39</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1256276723005448194">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 02:51:00</td>
+                <td class ="content_left">Thank goodness the <span style="color: yellow;">COVID-19</span> virus can’t move sideways https://t.co/KpktT68iNb</td>
+                <td>64</td>
+                <td>314</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1256053481149919237">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 21:11:59</td>
+                <td class ="content_left">Over half of all the <span style="color: yellow;">COVID-19</span> deaths in the United States have occurred in the past 2 weeks
+
+So why are 30 states opening up? https://t.co/GMZ2eb1pFk</td>
+                <td>72</td>
+                <td>163</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1255968162874486784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 22:18:31</td>
+                <td class ="content_left">WTF NEWS:
+
+The WH Gift Shop is selling some odd memorabilia, a coronavirus commemorative coin.
+
+The <span style="color: yellow;">COVID-19</span> coin features the names of Trump &amp; Pence &amp; it depicts an empty presidential podium on one side, and a graphic of the novel coronavirus above the world on the other side. https://t.co/6e1TOx61lI</td>
+                <td>105</td>
+                <td>193</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1255622517487624192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 05:48:41</td>
+                <td class ="content_left">So George and were just talking about how scary this <span style="color: yellow;">COVID-19</span> pandemic is, and he looks at me and says “but have you ever flooded the toilet at your in-laws house...that’s fucking scary... https://t.co/iJziXpGrau</td>
+                <td>7</td>
+                <td>59</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1255373420663050242">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 19:21:30</td>
+                <td class ="content_left">The Princess toured the Mayo Clinic today without wearing a mask despite <span style="color: yellow;">Covid-19</span> risk and being told he was required to.
+
+The biggest #COVIDIOT in the room. https://t.co/JEbnM5zqvt</td>
+                <td>140</td>
+                <td>422</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1255215584045907969">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 03:10:22</td>
+                <td class ="content_left">My husband George and I went grocery shopping this evening with our masks on.  This is the first time leaving the house other our <span style="color: yellow;">COVID-19</span> test....anyway we got home, took off our masks, oh shit I brought home wrong husband home! 
+
+Stay alert people! https://t.co/pXrHz9CtpD</td>
+                <td>46</td>
+                <td>480</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1254971188524146688">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 19:36:33</td>
+                <td class ="content_left">The United States now has over 1,000,888 cases of <span style="color: yellow;">COVID-19</span> with over 56,323 deaths. 
+
+#TrumpOwnsEveryDeath 
+
+#RepublicansAreKillingUs https://t.co/mTHAjCE07r</td>
+                <td>49</td>
+                <td>68</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1254856981069754368">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 19:21:24</td>
+                <td class ="content_left">Leader of North Carolina anti-lockdown protests tests positive for <span style="color: yellow;">COVID-19</span> 
+
+And now she is angry that she has been quarantined..saying she should be able to go out and spread the virus.
+
+#COVIDIOT  https://t.co/Wf3vlSgijX</td>
+                <td>82</td>
+                <td>125</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1254853168472535040">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 19:00:54</td>
+                <td class ="content_left">Tyson Foods chairman warns 'the food supply chain is breaking'
+
+Tyson is asking for a bailout. Meanwhile, Tyson working conditions were so bad their workers were getting sick and being forced to work while ill before <span style="color: yellow;">COVID-19</span> https://t.co/iKJ3w4eiIV</td>
+                <td>24</td>
+                <td>41</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1254848010334306306">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 01:17:48</td>
+                <td class ="content_left">As of today we have 677 <span style="color: yellow;">COVID-19</span> in the Coachella Valley with 22 new cases today in La Quinta</td>
+                <td>8</td>
+                <td>52</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1254580473541480448">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 00:34:10</td>
+                <td class ="content_left">I predict that when it’s official that Kim Jong  Un Is actually dead. Trump will show more sympathy for that murderous dictator than the 50k that have died from <span style="color: yellow;">Covid-19</span> in the USA. ￼ https://t.co/LRHJfznMLP</td>
+                <td>171</td>
+                <td>857</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1254207102844694528">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 01:33:50</td>
+                <td class ="content_left">Forget testing, ventilators, &amp; PPE. Trump’s plan to beat <span style="color: yellow;">COVID-19</span> involved distributing millions of doses of an unproven drug. Behind the scenes, senior administration officials pushed hard to bend the rules &amp; back up his boasts.
+
+#TrumpIsKillingAmericans  https://t.co/sYeEyypsVE</td>
+                <td>23</td>
+                <td>44</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1253859732885893121">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 00:02:19</td>
+                <td class ="content_left">Are you afraid of contracting <span style="color: yellow;">COVID-19</span>?
+
+Now you’re safe from <span style="color: yellow;">COVID-19</span> with Ivanka’s UV butt plugs.
+
+A 3 pack is on sale right now for only $1,200.
+
+Call 666-Ivanka-Butt https://t.co/rEjGkBNofI</td>
+                <td>25</td>
+                <td>83</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1253836699936776193">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 23:04:21</td>
+                <td class ="content_left">The real reason the idiot abruptly ended his daily <span style="color: yellow;">COVID-19</span> briefing today
+
+“I know it burns Mr President, but just hang on tight.  Your <span style="color: yellow;">COVID-19</span> treatment is almost complete “ https://t.co/Sj3yBTJnFj</td>
+                <td>57</td>
+                <td>198</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1253822115272249344">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 22:35:05</td>
+                <td class ="content_left">The idiot abruptly ended his daily <span style="color: yellow;">COVID-19</span> briefing today, walking out without answering any questions from the press.
+
+He didn't have the courage to face the press after yesterday!! Too bad, I was looking forward to watching him squirm. https://t.co/Ft3mnvhESF</td>
+                <td>92</td>
+                <td>305</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1253814748178575361">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 05:01:34</td>
+                <td class ="content_left">New York City has 85 refrigerated trucks just for the dead bodies from the <span style="color: yellow;">COVID-19</span> pandemic . 
+
+That's all you need to know about why you need to stay home.
+
+Stay home and be safe please. XOXO https://t.co/TJ8nCs7HCJ</td>
+                <td>119</td>
+                <td>156</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1253549621021822976">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 21:44:48</td>
+                <td class ="content_left">Nurses being harassed by armed far-right #COVIDIOTS at today's protest to open Kansas &amp; end the <span style="color: yellow;">COVID-19</span> regulations.
+
+The Kansas Statehouse was surrounded by honking cars &amp; revving motorcycles with anti-vaxxers, pro-Trump, GOP politicians &amp; all sorts of conspiracy theory signs https://t.co/2PiMXXlLYu</td>
+                <td>51</td>
+                <td>107</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1253439706915729409">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 00:55:05</td>
+                <td class ="content_left">Traitortot Ivanka slammed Biden today for saying only Fauci should speak about <span style="color: yellow;">COVID-19</span> &amp; Trump should STFU
+
+Where have Mr &amp; Mrs Javanka been hiding? Aren't they on the committee to reopen America? I think they meet every other Tuesday in the Red Room https://t.co/CZ67HbUuAx</td>
+                <td>52</td>
+                <td>158</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1253125204575784960">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 20:14:09</td>
+                <td class ="content_left">Personal Health Update: George &amp; I both tested positive for <span style="color: yellow;">COVID-19</span> after our tests last Saturday. We were notified by the county on Monday. Good news however, neither of us have shown any symptoms for the last three days. Thank you all for your kind thoughts &amp; prayers. XOXO https://t.co/p4G12LwUIp</td>
+                <td>72</td>
+                <td>1212</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1253054508009021440">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 19:39:36</td>
+                <td class ="content_left">#MoscowMitch said today he would rather states  file for bankruptcy to deal with economic losses stemming from the <span style="color: yellow;">COVID-19</span> pandemic then giving them any federal aid.
+
+#VoteBlueNoMatterWho 
+
+#COVIDIOT  https://t.co/Jap1LkHQcY</td>
+                <td>51</td>
+                <td>68</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1253045812738711554">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 15:31:55</td>
+                <td class ="content_left">Santa Clara County announced that 3 people who died at home during Feb. &amp; March tested positive for <span style="color: yellow;">COVID-19</span> during their autopsies. The deaths took place on 2/6, 2/17 &amp; 3/ 6
+
+It was believed that the first US victim of the virus was a man in Washington state who died on 2/29 https://t.co/mtLi7piQLu</td>
+                <td>23</td>
+                <td>29</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1252983479773454336">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 05:09:29</td>
+                <td class ="content_left">Wow, what a lovely woman.  I am sure the mask and sunglasses at today’s rally in Nashville are protection against <span style="color: yellow;">COVID-19</span> and not to hide her identity. https://t.co/LCk3QATMLS</td>
+                <td>166</td>
+                <td>403</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1252464452818989056">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 01:55:38</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> antibody testing shows LA County outbreak is up to 55 times bigger than reported cases
+
+I highly suspect that the numbers of cases everywhere have been widely under-estimated https://t.co/tvldZyzogc</td>
+                <td>66</td>
+                <td>98</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1252415667954790408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 22:12:41</td>
+                <td class ="content_left">Over 1,340 Pennsylvanians have been killed by the <span style="color: yellow;">COVID-19</span> pandemic which is about 3 real people dead for every protester that showed up at the Capitol today to scream about how much they don’t care.
+
+#COVIDIOTS https://t.co/b4ZYssYnIc</td>
+                <td>42</td>
+                <td>77</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1252359561350008834">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 21:50:02</td>
+                <td class ="content_left">SewerRat Barbie is running her foolish mouth off again about Trump’s assertion that some governors have “gone too far” with <span style="color: yellow;">COVID-19</span> restrictions. This foul creature is now justifying Trumps words by claiming that Michigan lets residents smoke their grass but not cut it
+
+#420day https://t.co/MRcnIOkxPG</td>
+                <td>58</td>
+                <td>206</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1252353861328617472">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 00:49:31</td>
+                <td class ="content_left">Personal Update: George &amp; I had our <span style="color: yellow;">COVID-19</span> tests today.  Riverside county is testing everyone who requests a test. Last week however my doctor told me “you will either live or die with maybe a side trip to the hospital, sorry no testing available”
+
+Still feeling very sick https://t.co/ipxa3gI0Pd</td>
+                <td>37</td>
+                <td>195</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1251674253587476480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 22:22:40</td>
+                <td class ="content_left">Quarantine Day 35: George begged me to go for a little bike ride after returning from our <span style="color: yellow;">COVID-19</span> tests.  We have both gained a tiny bit of weight so I relented.
+
+ If we get much larger we’ll need to order bigger bikes. https://t.co/NZ0D9g59iJ</td>
+                <td>11</td>
+                <td>74</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1251637298816380928">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 20:50:19</td>
+                <td class ="content_left">For anyone who decides to take part in the <span style="color: yellow;">COVID-19</span> lockdown protests around the country, please feel free to print this out and put in your wallet https://t.co/rBzObhecVk</td>
+                <td>266</td>
+                <td>481</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1251614056303046656">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 02:41:40</td>
+                <td class ="content_left">Personal update:  After being sick for two weeks my husband and I are finally getting test for <span style="color: yellow;">COVID-19</span> tomorrow.  Lungs on fire this evening.  I’ll keep you updated. https://t.co/oaa3kuqXCA</td>
+                <td>35</td>
+                <td>394</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1251340088572690432">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 21:55:29</td>
+                <td class ="content_left">#COVIDIOTS drove thousands of vehicles, draped with protest signs to Michigan's Capitol today, loudly protesting Gov. Whitmer's stay-at-home order intended to fight the <span style="color: yellow;">COVID-19</span> pandemic
+
+Michigan <span style="color: yellow;">COVID-19</span> cases: 28,059
+
+New cases today: 1,058
+
+Deaths: 1,921
+
+Deaths today: 153 https://t.co/KQMM5KJG75</td>
+                <td>63</td>
+                <td>136</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1250543293961658368">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 04:56:47</td>
+                <td class ="content_left">Yesterday I asked my husband to buy a roll of 100 USPS stamps.  
+
+Why you ask?
+
+Because Trump hates the USPS and wants them to fail. Due to the <span style="color: yellow;">COVID-19</span> pandemic the post office is in a crisis. If the post office fails we will no longer be able to vote by mail. 
+
+#BuySomeStamps https://t.co/XGdquiTzqV</td>
+                <td>105</td>
+                <td>185</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1250286929855180800">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 19:39:24</td>
+                <td class ="content_left">Commercials in 2030 will be like: Were you or someone you know overly exposed to hand sanitizer, Lysol, or bleach during the 2020 <span style="color: yellow;">COVID-19</span> pandemic? If so you may be eligible for compensation. https://t.co/MCV3cMwVww</td>
+                <td>10</td>
+                <td>47</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1250146659796807687">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 22:08:24</td>
+                <td class ="content_left">Bishop Gerald Bishop, an evangelical pastor died of <span style="color: yellow;">COVID-19</span> on Easter just weeks after proudly showing off how packed his Virginia church was and vowing to keep preaching “unless I’m in jail or the hospital.”
+
+#COVIDIOTS https://t.co/PhCyqWIvTR</td>
+                <td>53</td>
+                <td>120</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1249821767092146176">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 23:44:07</td>
+                <td class ="content_left">Anthony Fauci admits earlier <span style="color: yellow;">Covid-19</span> mitigation efforts would have saved more American lives
+
+Uh oh. Expect Fauci to disappear from the daily "briefings" this week. 
+
+#TrumpIsKillingAmericans  https://t.co/eTnDZjaGUz</td>
+                <td>102</td>
+                <td>267</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1249483467244494848">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 21:41:02</td>
+                <td class ="content_left">Another trump rally yesterday at the WH &amp; the idiot &amp; his administration still has no plan for ending the <span style="color: yellow;">COVID-19</span> pandemic, but it does have many task forces utilizing the incredible skills of Ivanka &amp; Jared. They need to call in Traitortot &amp; Kimberly to solve the problem https://t.co/IQ8fbBm0jp</td>
+                <td>33</td>
+                <td>85</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1249090105287024641">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 20:09:16</td>
+                <td class ="content_left">This is disgusting. Trump &amp; friends are using the <span style="color: yellow;">COVID-19</span> crisis to kill the U.S. Postal Service. The USPS is the only government agency provided for in the Constitution. The Republicans have been dying to get their hands on this cash cow for decades https://t.co/bNs7QgAB59</td>
+                <td>268</td>
+                <td>401</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1249067010295599110">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 17:05:55</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> spreading across the globe &amp; is now the No. 1 cause of death in America where it is killing more people every day than heart disease or cancer. On average 1,774 deaths per day are caused by heart disease and 1,641 by cancer. https://t.co/81gx3Hd4xv</td>
+                <td>29</td>
+                <td>34</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1248658483055972352">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 01:10:56</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> should be afraid of this man
+
+Oh my lord not the wind of god... https://t.co/hYOKy1QVAg</td>
+                <td>15</td>
+                <td>73</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1248418151118680066">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 18:22:47</td>
+                <td class ="content_left">How soon before people are made to wear a <span style="color: yellow;">COVID-19</span> star on their clothing? https://t.co/sKTITV92ir</td>
+                <td>153</td>
+                <td>342</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1248315437701427200">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 05:02:57</td>
+                <td class ="content_left">The former Fox News host Bill O’Reilly has resurfaced with the worst possible comment on the <span style="color: yellow;">COVID-19</span> pandemic.
+
+Bill O’Reilly &amp; Rush Limbaugh must be in competition for some kind of a**hole award. How can anyone take this man seriously?  https://t.co/4rTMWWvlB2</td>
+                <td>229</td>
+                <td>572</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1248114152519815170">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 00:18:52</td>
+                <td class ="content_left">Here are the richest pastors in America:
+
+Kenneth Copeland $760M
+Pat Robertson $100M
+Benny Hinn $60M
+Joel Osteen $40M
+Credulous Dollar $27M
+Rick Warren $25M
+Franklin Graham $25M
+T.D. Jakes $18M
+Joyce Meyer $8M
+
+Total: $1.06 Billion 
+
+Total donated to <span style="color: yellow;">COVID-19</span> assistance $0.00 https://t.co/LNDlVqfu4T</td>
+                <td>34575</td>
+                <td>64709</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1247680273543598084">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 19:52:42</td>
+                <td class ="content_left">Karen Kolb Sehlke, a Trump-loving woman from Texas is dead from <span style="color: yellow;">COVID-19</span> after claiming the virus was a “media driven” hoax.
+
+I am truly sorry for her loved ones.  I hope this a wake up call for #Trumpanzees 
+
+#TrumpIsKillingAmericans  https://t.co/7NQHCETBz2</td>
+                <td>184</td>
+                <td>332</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1247250902651506689">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 00:02:28</td>
+                <td class ="content_left">134 new cases of <span style="color: yellow;">COVID-19</span> have been confirmed in Riverside County today
+
+Riverside County health officials reported a large spike in <span style="color: yellow;">COVID-19</span> cases today, bringing its totals to 799 confirmed cases and 19 deaths. https://t.co/rJFjxtSQG3</td>
+                <td>9</td>
+                <td>18</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1246951369929457664">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 21:25:20</td>
+                <td class ="content_left">A tiger at the Bronx Zoo has tested positive for <span style="color: yellow;">COVID-19</span> says the Wildlife Conservation Society
+
+Nadia, a female Malayan tiger at the Bronx Zoo, has tested positive. She, her sister Azul, 2 Amur tigers, &amp; 3 African lions developed a dry cough &amp; all are expected to recover https://t.co/P6xKySdV9q</td>
+                <td>44</td>
+                <td>90</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1246911824341000192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 22:06:25</td>
+                <td class ="content_left">Iowa GOP Governor Kim Reynolds defended her decision not to order a shelter-in-place amid the <span style="color: yellow;">COVID-19</span> pandemic, saying that health officials &amp; Dr. Fauci can't just look at a map &amp; make demands.
+
+#RepublicansAreDestroyingAmerica 
+
+#TrumpIsKillingAmericans  https://t.co/4xDC7imEQl</td>
+                <td>40</td>
+                <td>80</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1246559776013561856">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 21:56:00</td>
+                <td class ="content_left">These churchgoers believe they're immune to <span style="color: yellow;">COVID-19</span> because they are "covered in Jesus' blood."
+
+#FOOL 
+
+https://t.co/Dav5LlC2SO</td>
+                <td>35</td>
+                <td>87</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1246557156926566401">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 20:23:04</td>
+                <td class ="content_left">#TrumpCrimeFamily lays off 1,500 employees amid <span style="color: yellow;">COVID-19</span> pandemic 
+
+I predict Trump will file for bankruptcy in the next three months. Watch. Trump businesses are not sustainable business
+
+#TrumpIsKillingAmericans 
+
+#TrumpDepression  https://t.co/IHGt4L7q3r</td>
+                <td>80</td>
+                <td>183</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1246533769537830914">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 01:47:41</td>
+                <td class ="content_left">The vacuous #IdiotInChief joked about hooking up with models during <span style="color: yellow;">COVID-19</span> pandemic briefing today 
+
+#TrumpIsKillingAmericans  https://t.co/g6yY8lK6gT</td>
+                <td>44</td>
+                <td>73</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1246253072675831808">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 00:06:34</td>
+                <td class ="content_left">#TheIdiot snapped at a reporter today, telling her she should “be ashamed of herself” for asking for clarification on the #Evil #JaredKushner’s earlier statement regarding the federal stockpile of medical supplies amid the <span style="color: yellow;">COVID-19</span> pandemic. 
+
+https://t.co/HWksbi2EWC</td>
+                <td>16</td>
+                <td>38</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1246227625694998528">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 22:21:48</td>
+                <td class ="content_left">The <span style="color: yellow;">COVID-19</span> pandemic won’t end until Trump is voted out of office along with every other republican 
+
+#RepublicansAreKillingUs 
+
+#TrumpLiedPeopleDied</td>
+                <td>22</td>
+                <td>87</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1246201262405595136">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 21:46:53</td>
+                <td class ="content_left">#TrumpTool #TuckerCarlson doesn’t think Americans should let medical experts make <span style="color: yellow;">COVID-19</span> decisions 
+
+This has got to be fake news.  The article says Tucker Carlson "thinks,” one must have a brain to think https://t.co/SsnDQAUiJc</td>
+                <td>13</td>
+                <td>31</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1246192473296138240">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 21:40:08</td>
+                <td class ="content_left">Bachmann: God will end the <span style="color: yellow;">COVID-19</span> pandemic if we give up porn and masturbation.
+
+Quoting my husband: What an ignorant €¥^! https://t.co/nkEI32AfpC</td>
+                <td>23</td>
+                <td>162</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1246190776280727552">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 21:20:39</td>
+                <td class ="content_left">Would you still go out if you could see the <span style="color: yellow;">COVID-19</span> virus?  The world is no longer what it used to be.  Stay home friends and stay safe. XOXO https://t.co/DN7Rkoq2bY</td>
+                <td>57</td>
+                <td>120</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1246185870400487429">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 17:45:51</td>
+                <td class ="content_left">Our beloved Oprah has donated $10M to the <span style="color: yellow;">COVID-19</span> relief efforts.
+
+I’m sorry,  did I miss the tweet where Trump said how much he was personally donating to COVID- 19 relief ?
+
+#TrumpIsKillingAmericans  https://t.co/y9YBrmTZDg</td>
+                <td>237</td>
+                <td>651</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1245769427691298816">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 23:42:19</td>
+                <td class ="content_left">America has had over 1041 deaths today due to the <span style="color: yellow;">COVID-19</span> virus. More than any other country in the world.
+
+#TrumpIsKillingAmericans  https://t.co/OkZqPg5765</td>
+                <td>31</td>
+                <td>54</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1245496747989684224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 01:41:55</td>
+                <td class ="content_left">#MoscowMitch is now blaming the impeachment inquiry for Trump’s poor handling of the <span style="color: yellow;">COVID-19</span> crisis.
+
+I’m sure not sending documents, not testifying and not allowing staff to testify was very time consuming. https://t.co/N2sbrMGUgN</td>
+                <td>95</td>
+                <td>219</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1245164456574767104">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 18:41:10</td>
+                <td class ="content_left">WTF NEWS: Spring Break Fools
+
+28 spring breakers from the Austin, Texas area tested positive for <span style="color: yellow;">COVID-19</span> following a spring break trip to Mexico, public health officials say. https://t.co/mtL3d85Z0N</td>
+                <td>35</td>
+                <td>40</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1245058573966536705">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 01:31:21</td>
+                <td class ="content_left">Tomorrow’s <span style="color: yellow;">COVID-19</span> press conference from the White House will be brought to you by the makers of: https://t.co/KQv5YQSudx</td>
+                <td>21</td>
+                <td>93</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1244799412380954625">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 23:59:24</td>
+                <td class ="content_left">Deaths on 9/11: 2996
+
+The current number of <span style="color: yellow;">COVID-19</span> deaths in America: 3148
+
+#TrumpIsKillingAmericans  https://t.co/OkZqPg5765</td>
+                <td>32</td>
+                <td>51</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1244776270040162305">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 21:07:01</td>
+                <td class ="content_left">Las Vegas is putting homeless people in parking lots while the city's hotels are completely empty. For some reason, this photo sums up for me everything that is wrong with this country &amp; its response to the <span style="color: yellow;">COVID-19</span> crisis.
+
+#RepublicansAreDestroyingAmerica 
+
+#TrumpPandemic https://t.co/J7NrZR5PKs</td>
+                <td>164</td>
+                <td>288</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1244732888307785730">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 15:55:54</td>
+                <td class ="content_left">States that currently have at least as many <span style="color: yellow;">Covid-19</span> cases as New York did 10 days ago: New Jersey, California, Michigan, Massachusetts, Florida, Washington State, Illinois, Louisiana, Pennsylvania, Georgia, Texas, Connecticut, Ohio.  https://t.co/V6d633Ks7R</td>
+                <td>37</td>
+                <td>52</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1244292207214874624">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 05:23:25</td>
+                <td class ="content_left">Rudy Ghouliani to Laura Ingraham: Governor’s &amp; Mayors should take the blame and show subservience to ‘Boss’ Trump to get <span style="color: yellow;">COVID-19</span> assistance 
+
+Crawl back under your slimey rock, Ghouliani...
+
+#TrumpPandemic 
+
+#TrumpLiedAmericansDied 
+
+#VoteBlueNoMatterWho  https://t.co/EfQXZAfAmv</td>
+                <td>27</td>
+                <td>64</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1244133038725853185">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 05:04:47</td>
+                <td class ="content_left">"An open license to pollute": Trump administration indefinitely suspends environmental protection laws during coronavirus pandemic. 
+
+Um, what does <span style="color: yellow;">COVID-19</span> have to do with environmental laws? https://t.co/wO1XhgwsiQ</td>
+                <td>244</td>
+                <td>259</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1244128347761700864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 00:14:05</td>
+                <td class ="content_left">Now the idiot Is demanding his signature appear on the <span style="color: yellow;">COVID-19</span> stimulus checks.
+
+Somebody please save us... https://t.co/R46KP9V7ta</td>
+                <td>230</td>
+                <td>730</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1244055190333874176">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 01:33:17</td>
+                <td class ="content_left">The top 5 Countries <span style="color: yellow;">COVID-19</span> infection rates. We have surpassed Italy. A great many deaths will follow especially now that trump thinks we don't need as many respirators. Thanks for preparing for it Donald. If you think Italy is bad, just wait and see where we are going. https://t.co/7b0aWJX4S9</td>
+                <td>27</td>
+                <td>60</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1243712732924235776">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 23:00:34</td>
+                <td class ="content_left">The <span style="color: yellow;">COVID-19</span> virus has turned us all into dogs.  We roam the house all day looking for food. We’re told “no” if we get too close to strangers and we get really excited about car rides. https://t.co/r9n71PuGdp</td>
+                <td>75</td>
+                <td>325</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1243674300969668608">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 22:56:09</td>
+                <td class ="content_left">Virginia Pastor who said <span style="color: yellow;">COVID-19</span> was anti-Trump “Mass Hysteria” has died of <span style="color: yellow;">COVID-19</span> https://t.co/fQCca9zbUy</td>
+                <td>176</td>
+                <td>323</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1243310801718407168">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 21:03:22</td>
+                <td class ="content_left">It appears stupidly spreads just as quick, if not quicker than <span style="color: yellow;">Covid-19</span> itself. Fuck you Brit Hume. https://t.co/3tEOylxcAm</td>
+                <td>51</td>
+                <td>160</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1242920032457199616">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 15:31:03</td>
+                <td class ="content_left">Prince Charles tests positive for coronavirus .  Prince Charles is showing mild symptoms of <span style="color: yellow;">COVID-19</span> and is self-isolating at a royal estate in Scotland, his Clarence House office said. https://t.co/9s5WLfqWtT</td>
+                <td>11</td>
+                <td>26</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1242836402997350401">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 03:39:17</td>
+                <td class ="content_left">If the <span style="color: yellow;">COVID-19</span> virus doesn’t get you to use gloves and sanitizer after pumping gas, this will. https://t.co/LRvDJ7s1uD</td>
+                <td>747</td>
+                <td>1738</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1242657280677392386">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 23:46:14</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Visualizer
+
+Great resource. World Map tracks #Coronavirus in real-time.
+
+Thank you ⁦@sharonstone⁩ for sharing this https://t.co/iOnnFATtL2</td>
+                <td>19</td>
+                <td>33</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1242598628310409217">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 23:05:15</td>
+                <td class ="content_left">The <span style="color: yellow;">COVID-19</span> virus has got us all like:
+
+Stone! Come look at all the wine bottles in Nikki’s recycling bin! https://t.co/qVEmbdxCfK</td>
+                <td>6</td>
+                <td>40</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1241863540425641985">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 21:26:45</td>
+                <td class ="content_left">Trump said they can now test every American for the <span style="color: yellow;">COVID-19</span> Virus.  
+
+Send a stool sample to:   
+
+1600 Pennsylvania Ave NW, Washington, DC 20500 
+
+#TrumpPandemic 
+
+#TrumpLiesPeopleDie 
+
+#VoteBlueToEndThisNightmare https://t.co/2qjjfl3Bay</td>
+                <td>183</td>
+                <td>482</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1241838750503538688">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 21:40:16</td>
+                <td class ="content_left">A woman says she was billed $34,927. after being tested &amp; treated for COV19-19, a new analysis predicts the cost of <span style="color: yellow;">COVID-19</span> treatment for someone with insurance &amp; without health complications would total $9,763.
+
+#TrumpPandemic 
+
+#TrumpLiedPeopleDied  https://t.co/cS8LhZbmJK</td>
+                <td>121</td>
+                <td>130</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1241117379603476480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 00:35:54</td>
+                <td class ="content_left">California Gov. Gavin Newsom said more than half of California’s population could be infected with the new virus that causes <span style="color: yellow;">COVID-19</span> over the next eight weeks – totaling more than 25 million people. https://t.co/hgtzgPdmq5</td>
+                <td>20</td>
+                <td>26</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1240799189799333889">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 23:35:38</td>
+                <td class ="content_left">Why <span style="color: yellow;">Covid-19</span> is worse than the flu, in one chart
+It’s more contagious, more deadly (particularly for older people), and it has a greater potential to overwhelm our health care system. https://t.co/eAK1nFSJuk</td>
+                <td>40</td>
+                <td>41</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1240784022256533504">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 04:33:56</td>
+                <td class ="content_left">Trump has directed the Navy to dispatch two hospital ships to deal with the coronavirus pandemic. But neither of the 1,000-patient ships are ready to go anywhere, nor will they be taking on <span style="color: yellow;">COVID-19</span> patients.
+
+#TrumpPandemic 
+
+#TrumpLiedPeopleDied  https://t.co/adPnU00BZC</td>
+                <td>63</td>
+                <td>70</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1240496704966627328">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 21:58:44</td>
+                <td class ="content_left">Trump refused to accept responsibility for the slow rate of coronavirus testing in the US, saying today that he was given a set of circumstances that wasn’t meant for the high numbers of potential <span style="color: yellow;">COVID-19</span> infections
+
+#TrumpIsAnIdiot 
+
+#VoteBlueNoMatterWho https://t.co/VGuh6addii</td>
+                <td>18</td>
+                <td>36</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1238585312495816704">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-12 01:47:48</td>
+                <td class ="content_left">The NBA announced on tonight that it is suspending its season until further notice amid coronavirus fears. The extraordinary step is the latest in the United States to limit large gatherings in an effort to stifle the transmission of the virus that causes <span style="color: yellow;">COVID-19</span> https://t.co/vl7GuDz1nI</td>
+                <td>11</td>
+                <td>36</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1237918179629748224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-10 16:20:29</td>
+                <td class ="content_left">Trumps advisory committee for the <span style="color: yellow;">COVID-19</span> virus 🦠 https://t.co/eOZvDBHbov</td>
+                <td>236</td>
+                <td>677</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1237413022244589569">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-03 15:06:49</td>
+                <td class ="content_left">Twitter wants its employees to stay out of the office so they don’t come down with the coronavirus.
+
+Twitter told all of its roughly 4,900 staffers this week to work from home if possible as the potentially deadly disease known as <span style="color: yellow;">COVID-19</span> continues to spread around the world. https://t.co/0dTHLVSquH</td>
+                <td>43</td>
+                <td>47</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1234857770723225601">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-02 19:36:02</td>
+                <td class ="content_left">The CDC said there are currently 91 confirmed or presumptive positive cases of <span style="color: yellow;">COVID-19</span> in the United States, up from just over 60 cases a day ago.
+
+#CoronaVirusUpdate  https://t.co/XZnQe9C5FC</td>
+                <td>23</td>
+                <td>32</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1234563134486142983">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-21 18:57:35</td>
+                <td class ="content_left">Trump overruled the CDC &amp; flew 14 <span style="color: yellow;">COVID-19</span> infected passengers in a plane from Japan back to the US with 300 people. Passengers were lied to &amp; told that no infected people would be aboard the plane. Trump singlehandedly just doubled the number of coronavirus cases in the US. https://t.co/RLHp3a1qX2</td>
+                <td>288</td>
+                <td>332</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1230929576794058753">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 01:45:30</td>
+                <td class ="content_left">13 day update with the Agave poisoning. My legs are finally beginning to heal. The burning <span style="color: yellow;"><span style="color: yellow;">pain</span></span> is down by about 50% and the blisters are drying up https://t.co/zBRlwKKvpO</td>
+                <td>23</td>
+                <td>390</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1265459078286856192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 20:28:52</td>
+                <td class ="content_left">This must be a side effect of Hydroxychloroquine, or years of <span style="color: yellow;"><span style="color: yellow;">drug</span></span> abuse? https://t.co/4RiO6Ue0ns</td>
+                <td>145</td>
+                <td>679</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1265017008648630273">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 23:56:32</td>
+                <td class ="content_left">I don’t think he’s taking the <span style="color: yellow;"><span style="color: yellow;">drug</span></span>. I think he’s lying. I think he’s going to get people killed. But telling the world he’s taking a <span style="color: yellow;"><span style="color: yellow;">drug</span></span> with severe reality-altering and deadly side-effects is just...it’s madness. https://t.co/S57L0H7yDn</td>
+                <td>175</td>
+                <td>656</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1262532556798390272">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 21:37:04</td>
+                <td class ="content_left">He is charge no such thing.  The <span style="color: yellow;"><span style="color: yellow;">drug</span></span> companies are way out ahead on this.  He's the rooster claiming credit for the dawn https://t.co/fL3ZhU13YY</td>
+                <td>19</td>
+                <td>55</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1255974476925120513">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 17:30:21</td>
+                <td class ="content_left">I'm beginning to think Adderall may be an effective <span style="color: yellow;"><span style="color: yellow;">drug</span></span> to fight covid19.  The idiot has been near many who have tested positive and yet nothing. https://t.co/5JVlLTsbIU</td>
+                <td>63</td>
+                <td>306</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1253375673902592002">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 00:25:09</td>
+                <td class ="content_left">"Tremendous", snort, "Incredible" snort Beautiful",  snort... We have a <span style="color: yellow;"><span style="color: yellow;">drug</span></span> addict in the White House ! https://t.co/Ux9l7CUxec</td>
+                <td>35</td>
+                <td>113</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1248769016941797376">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 16:37:34</td>
+                <td class ="content_left">Trump owns a stake in a company that produces hydroxychloroquine, the anti-malaria <span style="color: yellow;"><span style="color: yellow;">drug</span></span> he has repeatedly touted as a coronavirus treatment even though his experts say there’s no strong evidence it works. 
+
+Of course he does, the grifter. https://t.co/BOuOM78yjQ</td>
+                <td>136</td>
+                <td>218</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1247564184172150786">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 05:07:27</td>
+                <td class ="content_left">The idiot has stated that he has stockpiled over 2 million Hydroxychloroquine pills. No gloves, no gowns, no masks. He sounds like a <span style="color: yellow;"><span style="color: yellow;">drug</span></span> dealer with a lot of product for profit. https://t.co/faHPsVFvJq</td>
+                <td>558</td>
+                <td>1178</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1247390508927692800">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 20:33:39</td>
+                <td class ="content_left">No wonder Republicans blocked the vote to lowering <span style="color: yellow;"><span style="color: yellow;">drug</span></span> prices
+
+#TrumpCrimeFamily  https://t.co/mf03FMsREU</td>
+                <td>38</td>
+                <td>49</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1240375838987767808">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 22:44:07</td>
+                <td class ="content_left">A little farther south, in Siberia you know, the region of world we reference when we want to connote something <span style="color: yellow;"><span style="color: yellow;">cold</span></span> it was 86 degrees. Arctic sea ice in the Kara Sea took the deepest May nose dive ever recorded. Oh, &amp; swaths of the region are on fire. https://t.co/hZkupaaBUX</td>
+                <td>47</td>
+                <td>51</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1263963880876765184">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 06:10:43</td>
+                <td class ="content_left">Despite the voter suppression by the Wisconsin GOP conservative Supreme Court. The Wisconsin voters persisted by standing in 5 hour lines in the <span style="color: yellow;"><span style="color: yellow;">cold</span></span> risking their personal safety. They exercised their right to vote &amp; were heard Bravo Wisconsin voters https://t.co/GssBepATfa</td>
+                <td>46</td>
+                <td>160</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1249943146647015426">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 22:44:07</td>
+                <td class ="content_left">A little farther south, in Siberia you know, the region of world we reference when we want to connote something cold it was 86 degrees. Arctic sea ice in the Kara Sea took the deepest May <span style="color: yellow;"><span style="color: yellow;">nose</span></span> dive ever recorded. Oh, &amp; swaths of the region are on fire. https://t.co/hZkupaaBUX</td>
+                <td>47</td>
+                <td>51</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1263963880876765184">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 15:35:00</td>
+                <td class ="content_left">A Kentucky #COVIDIOT was captured on camera shopping with a hole cut in her face mask, claiming that it made it easier to breathe
+
+Video shows a gas station clerk stunned to see the woman enter the convenience store with her face mask slashed to expose her <span style="color: yellow;"><span style="color: yellow;">nose</span></span> and mouth. https://t.co/4j55Zou4yO</td>
+                <td>74</td>
+                <td>163</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1257332909763108864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">test positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "test positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 18:05:34</td>
+                <td class ="content_left">Another reopening failure 
+
+Nearly 600 workers from North Carolina Tyson chicken processing plant <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for coronavirus https://t.co/rrdNhxfBN8</td>
+                <td>195</td>
+                <td>225</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1263531393709076480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 20:56:00</td>
+                <td class ="content_left">WTF NEWS:
+
+58 percent of workers at Tyson meat factory in Iowa <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for coronavirus https://t.co/j4MLNXTSyc</td>
+                <td>42</td>
+                <td>38</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1257776080695341058">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 17:09:52</td>
+                <td class ="content_left">Five Florida college students <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for coronavirus after going on spring break
+
+In a few weeks it will be thousands..🦠 https://t.co/VkSh8IApAg</td>
+                <td>143</td>
+                <td>270</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1242136493767847940">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 23:18:37</td>
+                <td class ="content_left">Republican Rep. Mario Diaz-Balart from Florida has become first member of Congress to <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for the coronavirus.
+
+Close your beaches and bar’s scumbag  https://t.co/gKuxKQxFl1</td>
+                <td>31</td>
+                <td>76</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1240417355240329216">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-08 04:41:15</td>
+                <td class ="content_left">Two people <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for the coronavirus at US conference attended by Pence
+
+Is #PrincessPence really #TyphoidMary ? https://t.co/XywO5Z8hk9</td>
+                <td>43</td>
+                <td>115</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1236512279991992320">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-04 15:17:45</td>
+                <td class ="content_left">This is bad news for New York City
+
+Wife, son and daughter of Westchester coronavirus patient <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for illness, along with neighbor who drove him to the hospital https://t.co/ehZBvOfttb</td>
+                <td>33</td>
+                <td>35</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1235222907401322500">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-28 04:08:24</td>
+                <td class ="content_left">I sure hope this virus doesn’t hit the Trump White House
+
+The highest ranking woman in Iran's government has fallen ill with the coronavirus, making her Iran’s seventh official to <span style="color: yellow;"><span style="color: yellow;">test positive</span></span>. https://t.co/aG0TRbQ8Pb</td>
+                <td>80</td>
+                <td>182</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1233242521972563968">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 22:07:42</td>
+                <td class ="content_left">Another failed reopening 
+
+Just days after reopening its American assembly plants, Ford temporarily shut down two separate factories because employees <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for Covid-19 https://t.co/qaBQ6jF6tG</td>
+                <td>54</td>
+                <td>56</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1263229939882450944">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 22:41:41</td>
+                <td class ="content_left">New York barber who defied stay-at-home orders and continued to "illicitly" cut hair and 12 clients now have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19 https://t.co/gmWQII6bAn</td>
+                <td>127</td>
+                <td>197</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1262151331487207424">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 00:26:47</td>
+                <td class ="content_left">Katie Miller, Mike Pence's Press Secretary, seen here chitchatting with members of the press yesterday, <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> today for COVID. 
+
+Oh. She's the one without the mask. Right there on the right. https://t.co/EhUimuT9ZX</td>
+                <td>92</td>
+                <td>188</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1259278675654000640">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 16:07:17</td>
+                <td class ="content_left">More bad news for the idiot.
+
+COVID-19 is swirling ever closer to idiot Trump. At least 11 Secret Service agents have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the COVID-19.
+
+The agency is responsible for protecting Trump, the first family and other world leaders.
+
+Wow...testing? https://t.co/0yH0IkTcaE</td>
+                <td>62</td>
+                <td>168</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1259152975420743682">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 16:00:48</td>
+                <td class ="content_left">Traitortot Ivanka’s personal assistant has also <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19, and the FDA commissioner has been forced to self-quarantine after exposure to Katie Miller who also came down with the disease.
+
+See what happens when you test everyone? https://t.co/4elaDLNKT8</td>
+                <td>20</td>
+                <td>72</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1259151341240283136">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 18:21:07</td>
+                <td class ="content_left">A member of Vice President Mike Pence’s staff <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the COVID-19 today just two days after a valet to idiot Trump was found to be infected.
+
+How is that no mask policy working out for you Princess?
+
+#COVIDIOTS https://t.co/ZaXptWIpMa</td>
+                <td>47</td>
+                <td>208</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1258824267174539264">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 16:03:14</td>
+                <td class ="content_left">Trump's personal valet has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19, &amp; even though Trump has tested negative, experts say that doesn't mean he's virus-free &amp; if he does have it he could have exposed others
+
+The valet, had COVID-19 symptoms Wednesday morning, &amp; his test came back positive https://t.co/ak9gDltENz</td>
+                <td>163</td>
+                <td>447</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1258427176786907136">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 05:14:10</td>
+                <td class ="content_left">Scumbag Republican Senator Rand Paul, who <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19 in March, refuses to wear a mask to the Senate even though experts don't yet have definitive proof of immunity. https://t.co/ZEyxjlyK8e</td>
+                <td>146</td>
+                <td>300</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1258263836181716993">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 20:19:47</td>
+                <td class ="content_left">90% of people who <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19 in Mission District study had one thing in common.  They had to go to work everyday  https://t.co/iJx5pYGd95</td>
+                <td>36</td>
+                <td>46</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1257766963863937027">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 04:41:50</td>
+                <td class ="content_left">But, but, we need to open the country up
+
+A Colorado Walmart closed after three people connected to the store died from coronavirus.
+
+Additionally, six employees at the store have officially <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the virus.
+
+#TrumpIsKillingAmericans  https://t.co/mUyw2ZEk2O</td>
+                <td>37</td>
+                <td>60</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1253907043846512641">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 17:30:21</td>
+                <td class ="content_left">I'm beginning to think Adderall may be an effective drug to fight covid19.  The idiot has been near many who have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> and yet nothing. https://t.co/5JVlLTsbIU</td>
+                <td>63</td>
+                <td>306</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1253375673902592002">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 20:14:09</td>
+                <td class ="content_left">Personal Health Update: George &amp; I both <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19 after our tests last Saturday. We were notified by the county on Monday. Good news however, neither of us have shown any symptoms for the last three days. Thank you all for your kind thoughts &amp; prayers. XOXO https://t.co/p4G12LwUIp</td>
+                <td>72</td>
+                <td>1212</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1253054508009021440">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 15:31:55</td>
+                <td class ="content_left">Santa Clara County announced that 3 people who died at home during Feb. &amp; March <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19 during their autopsies. The deaths took place on 2/6, 2/17 &amp; 3/ 6
+
+It was believed that the first US victim of the virus was a man in Washington state who died on 2/29 https://t.co/mtLi7piQLu</td>
+                <td>23</td>
+                <td>29</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1252983479773454336">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 23:54:51</td>
+                <td class ="content_left">The U.S. Navy reported today that 669 of the nearly 5,000 people who worked aboard the USS Theodore Roosevelt have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the coronavirus. https://t.co/IqCvj4HM8D</td>
+                <td>21</td>
+                <td>32</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1251660495607656448">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 04:58:49</td>
+                <td class ="content_left">A crew member aboard the Navy hospital ship USNS Comfort has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for novel coronavirus and is in isolation aboard the ship that is docked in New York City https://t.co/T7vJR0cNK5</td>
+                <td>27</td>
+                <td>30</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1247388338379620352">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 02:22:42</td>
+                <td class ="content_left">That’s what he gets for being a schmuck &amp; blaming gay people. Health Minister Yaakov Litzman, <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the coronavirus last week, broke his own ministry’s guidelines on social distancing by attending group prayer services https://t.co/JznVFFhCzm</td>
+                <td>15</td>
+                <td>65</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1247349047607717894">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 21:25:20</td>
+                <td class ="content_left">A tiger at the Bronx Zoo has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19 says the Wildlife Conservation Society
+
+Nadia, a female Malayan tiger at the Bronx Zoo, has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. She, her sister Azul, 2 Amur tigers, &amp; 3 African lions developed a dry cough &amp; all are expected to recover https://t.co/P6xKySdV9q</td>
+                <td>44</td>
+                <td>90</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1246911824341000192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 19:03:39</td>
+                <td class ="content_left">Captain Brett Crozier who was removed after he sounded the alarm about a COVID -19 outbreak aboard an aircraft carrier he commanded has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19
+
+Capt. Crozier began showing symptoms of COVID -19 before he was removed from the USS Theodore Roosevelt last week https://t.co/uHN1HYTi0v</td>
+                <td>57</td>
+                <td>88</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1246876169242173440">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 18:41:10</td>
+                <td class ="content_left">WTF NEWS: Spring Break Fools
+
+28 spring breakers from the Austin, Texas area <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19 following a spring break trip to Mexico, public health officials say. https://t.co/mtL3d85Z0N</td>
+                <td>35</td>
+                <td>40</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1245058573966536705">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 17:07:06</td>
+                <td class ="content_left">“Congressman Massie has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for being an asshole. He must be quarantined to prevent the spread of his massive stupidity. He's given new meaning to the term #Masshole. (Finally, something the president &amp; I can agree on!)"
+-John Kerry, Former US Secy of State https://t.co/f36NyromQV</td>
+                <td>90</td>
+                <td>300</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1243585348803813376">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 05:06:09</td>
+                <td class ="content_left">WTF NEWS: 
+
+Three unaccompanied migrant children in government custody have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for coronavirus, according to the Office of Refugee Resettlement, marking the first announced positive cases among children in the agency's care. https://t.co/8dXj6C4kIe</td>
+                <td>129</td>
+                <td>106</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1243403914512232448">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 22:46:13</td>
+                <td class ="content_left">Plácido Domingo has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for coronavirus. “I feel it is my moral duty to announce to you that I have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID19. My Family &amp; I are all in self isolation for as long as it is deemed medically necessary. Currently we are all in good health.” https://t.co/7p0x8i4TxP</td>
+                <td>43</td>
+                <td>66</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1241858749028917249">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 21:43:22</td>
+                <td class ="content_left">German Chancellor Angela Merkel has gone into quarantine after a doctor who administered a vaccine to her <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for coronavirus. https://t.co/ghTwMFmsA6</td>
+                <td>14</td>
+                <td>30</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1241842934799990784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 17:56:36</td>
+                <td class ="content_left">Republican scumbag Senator Rand Paul has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the coronavirus. Yup, the same guy who voted against helping Americans last week.
+
+#CoronaVirusUpdates 
+
+#TrumpPandemic https://t.co/GytIQffeqX</td>
+                <td>523</td>
+                <td>1436</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1241785865925353473">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 23:34:14</td>
+                <td class ="content_left">A staff member in Pence's office has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for coronavirus
+
+Remember how trump chastised reporters for sitting too close? Just look at how close his people are standing. The people supposedly responsible for securing the nation from this pandemic https://t.co/rGaoWwxchV</td>
+                <td>83</td>
+                <td>192</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1241146057746042880">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 14:27:04</td>
+                <td class ="content_left">White House Boozer Stephanie Grisham is self-quarantining after having contact with booze hound Matt Gaetz and others while at Mar-a-Lago who have since <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for coronavirus, a White House official confirmed.  Now we know why bars have closed down. https://t.co/6s1zaPyfGW</td>
+                <td>148</td>
+                <td>417</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1239921196763734018">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 18:58:19</td>
+                <td class ="content_left">Miami Mayor Francis Suarez announced today that he has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the novel coronavirus, four days after he attended a Mar-a-Lago conference with a Brazilian government official who contracted the coronavirus.  It looks like Mar A Lago should be closed down https://t.co/pwoZDpzBPS</td>
+                <td>72</td>
+                <td>144</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1238539907376640000">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 02:18:42</td>
+                <td class ="content_left">Sophie Gregoire Trudeau, the wife of the Canadian PM Justin Trudeau has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for coronavirus. https://t.co/9BlAFRwbKv</td>
+                <td>18</td>
+                <td>23</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1238288345819570177">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 00:05:51</td>
+                <td class ="content_left">Trump &amp; Pence will not be tested for the coronavirus after coming into contact with a Brazilian who <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the virus after a Mar-a-Lago visit, the WH said today.  Why?  Because they fear the facts &amp; would rather be free to infect others  https://t.co/iTIBiQbXyQ</td>
+                <td>349</td>
+                <td>619</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1238254913974669319">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-12 02:54:28</td>
+                <td class ="content_left">A staffer in Sen. Maria Cantwell's Washington, DC office has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the coronavirus, the first known instance of a congressional staffer getting the virus. https://t.co/7NdOHAFUO2</td>
+                <td>22</td>
+                <td>30</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1237934958259261440">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-12 01:27:31</td>
+                <td class ="content_left">Oscar-winning actor Tom Hanks said he and wife, Rita Wilson, <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> while in Australia, where he is set to begin production on a film. https://t.co/Dod0Be3X4Z</td>
+                <td>23</td>
+                <td>35</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1237913076298428416">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-09 23:03:28</td>
+                <td class ="content_left">This is bad news friends
+
+Three more people have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for coronavirus in the Coachella Valley, officials announced Monday. This brings the total number of positive cases in the valley to four. https://t.co/mkNOf1Ces1</td>
+                <td>25</td>
+                <td>43</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1237152048295993345">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-09 01:30:26</td>
+                <td class ="content_left">Scumbag Ted Cruz quarantined himself after learning he interacted with someone who <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for coronavirus
+
+He had a bconversation with another republican &amp; shook hands with the person at the Conservative Political Action Conference
+
+Need a COVD-19 test?
+
+Hopes &amp; prayers https://t.co/N8E5iEgI8g</td>
+                <td>41</td>
+                <td>185</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1236826646121811968">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-08 23:05:27</td>
+                <td class ="content_left">Coachella's fate is hanging in the balance
+
+Riverside County public health officer Dr. Cameron Kaiser made the announcement today, saying RC is under a public health emergency because a patient who's <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for coronavirus after being tested by the Public Health Office. https://t.co/jueRfgGDEN</td>
+                <td>8</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1236790159237984256">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-08 00:50:40</td>
+                <td class ="content_left">The American Conservative Union (ACU) announced today that an attendee at the Conservative Political Action Conference (CPAC) <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the coronavirus
+
+I sure hope this doesn’t wipe out the Republican Party  https://t.co/OOEX82tpf1</td>
+                <td>29</td>
+                <td>106</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1236454251448029185">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-06 23:23:42</td>
+                <td class ="content_left">The Coast Guard had delivered 46 tests to the Grand Princess, which has been held off the California coast since Wednesday. Of the 46 passengers tested, Pence said 21 people, 19 employees and two passengers, had <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. https://t.co/XxoqtThjCT</td>
+                <td>32</td>
+                <td>25</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1236069976622022656">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-04 02:20:04</td>
+                <td class ="content_left">Well crap!
+
+Amazon confirmed that an employee who works in its Amazon office in downtown Seattle, Washington has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the coronavirus. https://t.co/JZoVyizOGe</td>
+                <td>56</td>
+                <td>66</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1235027199515717633">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-01 23:57:31</td>
+                <td class ="content_left">This is bad news.
+
+A US Postal Service employee has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the coronavirus in the Seattle area — as the Pacific Northwest grapples with an outbreak.
+
+#CoronaVirusUpdate  https://t.co/4d60lc5kcj</td>
+                <td>192</td>
+                <td>249</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1234266548967067648">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-27 00:44:52</td>
+                <td class ="content_left">The Virus has spread to every continent except Antarctica
+ 
+New cases in Brazil &amp; Russia
+
+A Flight attendant in LA has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the disease 
+
+83 people exposed in Long Island
+
+The spread rate is for every person who gets the disease he/she spreads it to 2.6 more people https://t.co/82tTPVHAI4</td>
+                <td>27</td>
+                <td>37</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1232828914000519168">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-25 19:35:05</td>
+                <td class ="content_left">Americans should prepare for coronavirus spread in U.S., CDC says
+
+Hurry, everyone hurry  to Mar A Lago. The owner told us he himself has the virus under control, and will house all who have been <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> to be cured.... https://t.co/4ul3tQnfJO</td>
+                <td>24</td>
+                <td>52</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1232388565687910400">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 22:07:42</td>
+                <td class ="content_left">Another failed reopening 
+
+Just days after reopening its American assembly plants, Ford temporarily shut down two separate factories because employees tested <span style="color: yellow;">positive for Covid</span>-19 https://t.co/qaBQ6jF6tG</td>
+                <td>54</td>
+                <td>56</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1263229939882450944">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 22:41:41</td>
+                <td class ="content_left">New York barber who defied stay-at-home orders and continued to "illicitly" cut hair and 12 clients now have tested <span style="color: yellow;">positive for COVID</span>-19 https://t.co/gmWQII6bAn</td>
+                <td>127</td>
+                <td>197</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1262151331487207424">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 16:00:48</td>
+                <td class ="content_left">Traitortot Ivanka’s personal assistant has also tested <span style="color: yellow;">positive for COVID</span>-19, and the FDA commissioner has been forced to self-quarantine after exposure to Katie Miller who also came down with the disease.
+
+See what happens when you test everyone? https://t.co/4elaDLNKT8</td>
+                <td>20</td>
+                <td>72</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1259151341240283136">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 16:03:14</td>
+                <td class ="content_left">Trump's personal valet has tested <span style="color: yellow;">positive for COVID</span>-19, &amp; even though Trump has tested negative, experts say that doesn't mean he's virus-free &amp; if he does have it he could have exposed others
+
+The valet, had COVID-19 symptoms Wednesday morning, &amp; his test came back positive https://t.co/ak9gDltENz</td>
+                <td>163</td>
+                <td>447</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1258427176786907136">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 05:14:10</td>
+                <td class ="content_left">Scumbag Republican Senator Rand Paul, who tested <span style="color: yellow;">positive for COVID</span>-19 in March, refuses to wear a mask to the Senate even though experts don't yet have definitive proof of immunity. https://t.co/ZEyxjlyK8e</td>
+                <td>146</td>
+                <td>300</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1258263836181716993">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 20:19:47</td>
+                <td class ="content_left">90% of people who tested <span style="color: yellow;">positive for COVID</span>-19 in Mission District study had one thing in common.  They had to go to work everyday  https://t.co/iJx5pYGd95</td>
+                <td>36</td>
+                <td>46</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1257766963863937027">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 19:21:24</td>
+                <td class ="content_left">Leader of North Carolina anti-lockdown protests tests <span style="color: yellow;">positive for COVID</span>-19 
+
+And now she is angry that she has been quarantined..saying she should be able to go out and spread the virus.
+
+#COVIDIOT  https://t.co/Wf3vlSgijX</td>
+                <td>82</td>
+                <td>125</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1254853168472535040">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 20:14:09</td>
+                <td class ="content_left">Personal Health Update: George &amp; I both tested <span style="color: yellow;">positive for COVID</span>-19 after our tests last Saturday. We were notified by the county on Monday. Good news however, neither of us have shown any symptoms for the last three days. Thank you all for your kind thoughts &amp; prayers. XOXO https://t.co/p4G12LwUIp</td>
+                <td>72</td>
+                <td>1212</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1253054508009021440">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 15:31:55</td>
+                <td class ="content_left">Santa Clara County announced that 3 people who died at home during Feb. &amp; March tested <span style="color: yellow;">positive for COVID</span>-19 during their autopsies. The deaths took place on 2/6, 2/17 &amp; 3/ 6
+
+It was believed that the first US victim of the virus was a man in Washington state who died on 2/29 https://t.co/mtLi7piQLu</td>
+                <td>23</td>
+                <td>29</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1252983479773454336">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 21:25:20</td>
+                <td class ="content_left">A tiger at the Bronx Zoo has tested <span style="color: yellow;">positive for COVID</span>-19 says the Wildlife Conservation Society
+
+Nadia, a female Malayan tiger at the Bronx Zoo, has tested positive. She, her sister Azul, 2 Amur tigers, &amp; 3 African lions developed a dry cough &amp; all are expected to recover https://t.co/P6xKySdV9q</td>
+                <td>44</td>
+                <td>90</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1246911824341000192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 19:03:39</td>
+                <td class ="content_left">Captain Brett Crozier who was removed after he sounded the alarm about a COVID -19 outbreak aboard an aircraft carrier he commanded has tested <span style="color: yellow;">positive for COVID</span>-19
+
+Capt. Crozier began showing symptoms of COVID -19 before he was removed from the USS Theodore Roosevelt last week https://t.co/uHN1HYTi0v</td>
+                <td>57</td>
+                <td>88</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1246876169242173440">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 18:41:10</td>
+                <td class ="content_left">WTF NEWS: Spring Break Fools
+
+28 spring breakers from the Austin, Texas area tested <span style="color: yellow;">positive for COVID</span>-19 following a spring break trip to Mexico, public health officials say. https://t.co/mtL3d85Z0N</td>
+                <td>35</td>
+                <td>40</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1245058573966536705">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 22:46:13</td>
+                <td class ="content_left">Plácido Domingo has tested positive for coronavirus. “I feel it is my moral duty to announce to you that I have tested <span style="color: yellow;">positive for COVID</span>19. My Family &amp; I are all in self isolation for as long as it is deemed medically necessary. Currently we are all in good health.” https://t.co/7p0x8i4TxP</td>
+                <td>43</td>
+                <td>66</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1241858749028917249">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Hydroxychloroquine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Hydroxychloroquine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 21:51:22</td>
+                <td class ="content_left">In light of a recent presidential promotion, <span style="color: yellow;"><span style="color: yellow;">Hydroxychloroquine</span></span> will now be known as:
+
+#Imbecillen https://t.co/HRcMa9JcTr</td>
+                <td>102</td>
+                <td>311</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1263225830521442304">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 22:08:09</td>
+                <td class ="content_left">Kansas Republican Roger Marshall said that his family is taking <span style="color: yellow;">hydroxychloroquine</span> to prevent getting COVID-19 adding: “I would encourage those over 65 or with a medical condition to talk to their own physician about taking <span style="color: yellow;">hydroxychloroquine</span> and I’m relieved Trump is taking it." https://t.co/LxaIx5JLG4</td>
+                <td>87</td>
+                <td>173</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1262867665778958336">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 23:19:39</td>
+                <td class ="content_left">A French hospital has stopped the use of <span style="color: yellow;">hydroxychloroquine</span> because it does not work &amp; it has major cardiac side effects including heart failure. Trumpsters, if you're out there, do NOT drink Trump's Kool Aid, this is a public service announcement https://t.co/QZRa27VUHf</td>
+                <td>980</td>
+                <td>1445</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1248027757453258757">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 05:07:27</td>
+                <td class ="content_left">The idiot has stated that he has stockpiled over 2 million <span style="color: yellow;"><span style="color: yellow;">Hydroxychloroquine</span></span> pills. No gloves, no gowns, no masks. He sounds like a drug dealer with a lot of product for profit. https://t.co/faHPsVFvJq</td>
+                <td>558</td>
+                <td>1178</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1247390508927692800">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 16:27:45</td>
+                <td class ="content_left">An Ohio lawmaker says she is making a criminal referral today to the International Criminal Court for Trump to be charged with crimes against humanity over his <span style="color: yellow;">hydroxychloroquine</span> promotion.
+
+#TrumpIsKillingAmericans 
+
+#<span style="color: yellow;"><span style="color: yellow;">Hydroxychloroquine</span></span>  https://t.co/xSN7fVvGil</td>
+                <td>87</td>
+                <td>243</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1247199324385071104">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Chloroquine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Chloroquine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 02:28:41</td>
+                <td class ="content_left">The <span style="color: yellow;">chloroquine</span> is kicking in... https://t.co/uivlr6tXy8</td>
+                <td>12</td>
+                <td>93</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1262570844108156928">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 02:07:38</td>
+                <td class ="content_left">An Arizona man died after he &amp; his wife ingested a chemical in an attempt to prevent a coronavirus infection, His wife is in critical care. Both are in their 60s.
+
+The chemical, <span style="color: yellow;">chloroquine</span> phosphate is commonly used to clean fish tanks
+
+Trump at work... https://t.co/xWiXjameiY</td>
+                <td>69</td>
+                <td>97</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1253868239899127808">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 22:07:11</td>
+                <td class ="content_left">WTF NEWS: Just following the Trump stable genius recommendation (not FDA approved)
+
+Man dies after self-medicating with <span style="color: yellow;">chloroquine</span> - Axios https://t.co/MzBcq45XdQ</td>
+                <td>56</td>
+                <td>75</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1242211313792585728">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recovered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recovered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 20:08:02</td>
+                <td class ="content_left">According to documents from the Department of Homeland Security, there were 11 active cases at the agency as of Thursday. On top of those currently infected another 23 Secret Service members have reportedly <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> from COVID-19. 60 WH employees are self-quarantining. https://t.co/oNpDoxzUJH</td>
+                <td>44</td>
+                <td>67</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1259213559747145728">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-05 23:52:13</td>
+                <td class ="content_left">Kirk Douglas the renowned actor and father of Michael Douglas, with a decorated career spanning more than 6 decades has died.
+
+Kirk passed away today. Kirk's health had been in decline. In 1996 he suffered a stroke but <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> most of his faculties.
+
+#RIPKirkDouglas https://t.co/SrICVoYQGR</td>
+                <td>32</td>
+                <td>120</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1225205518043471872">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">exhausted</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "exhausted"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 19:12:02</td>
+                <td class ="content_left">A nurse walks into a bank totally <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> after an 18-hour shift.  She grabs a deposit slip, pulls a rectal thermometer out of her pocket &amp; tries to write with it. Realizing her mistake she looks a the teller &amp; says “great some asshole’s got my pen” https://t.co/SdqxBOSbqT</td>
+                <td>37</td>
+                <td>182</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1258837081247211520">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shaking</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shaking"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 20:50:27</td>
+                <td class ="content_left">Trump holds his first campaign rally.
+
+Trump didn’t wear a mask and was <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> hands after he landed in Phoenix for his coronavirus propaganda events. Trump should lead by example, but he’s not a leader.
+
+None of the #COVIDIOTS are wearing masks or are 6 feet apart https://t.co/DPHmSgeccT</td>
+                <td>105</td>
+                <td>286</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1257774683140702208">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-10 15:48:25</td>
+                <td class ="content_left">Some people aren’t <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> hands because of the Coronavirus. I’m not <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> hands because everyone is out of toilet paper. https://t.co/oCGKxbuylN</td>
+                <td>33</td>
+                <td>164</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1237404952084938752">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-23 17:05:13</td>
+                <td class ="content_left">Prince Charles snubbed VP Mike Pence as he shook hands of other attendees at the Fifth World Holocaust Forum in Jerusalem. A video shows the Prince of Wales <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> hands, then, as he comes to Pence, Charles walks right past him
+
+#IMPOTUS https://t.co/EEBb3pGMmb</td>
+                <td>54</td>
+                <td>209</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1220392050907987968">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sweat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sweat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 06:15:57</td>
+                <td class ="content_left"><span style="color: yellow;">Sweat</span> dreams friends XOXO https://t.co/LJcHmq4ewT</td>
+                <td>24</td>
+                <td>105</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1257554608391483392">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-14 05:30:51</td>
+                <td class ="content_left">@GailAScott65 <span style="color: yellow;">Sweat</span> dreams XOXO https://t.co/XpvdNeUzBt</td>
+                <td>2</td>
+                <td>14</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1238699087437762573">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-04 06:09:58</td>
+                <td class ="content_left"><span style="color: yellow;">Sweat</span> dreams my friends XOXO https://t.co/oBCEDaLjii</td>
+                <td>4</td>
+                <td>32</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1235085055690551301">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">massage</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "massage"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 16:04:28</td>
+                <td class ="content_left">Spain cancelled the Running of the Bulls  
+
+Germany cancelled Octoberfest
+
+Georgia  has reopened it’s <span style="color: yellow;"><span style="color: yellow;">massage</span></span> parlors... https://t.co/XkFNFizz2o</td>
+                <td>275</td>
+                <td>586</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1252991670980767744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 05:19:24</td>
+                <td class ="content_left">I don't know what offends me more here: Is it the vulgar <span style="color: yellow;"><span style="color: yellow;">taste</span></span> in interior design or the cheap Frederick's of Hollywood dress worn by the escort lying on top of a piano? Or is it the constipated look on the idiot in the photo who is wearing a  dead squirrel on the top of his head https://t.co/p9pblvwXQh</td>
+                <td>1195</td>
+                <td>4279</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1252829333149761536">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">prone</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "prone"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 16:37:19</td>
+                <td class ="content_left">WTF NEW: Well that explains it.
+
+The coronavirus could linger in the testicles, making men <span style="color: yellow;"><span style="color: yellow;">prone</span></span> to longer, more severe cases of the illness, according to a new study. https://t.co/M9h1miegcA</td>
+                <td>100</td>
+                <td>190</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1251912774927568896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 05:07:06</td>
+                <td class ="content_left">160,643 <span style="color: yellow;">COVID19</span> deaths in world now.  Over 39,014 of those are from the US.
+
+That means, about 24% of the deaths have been in the US.  The US only makes up about 4% of the world population.
+
+You can continue to pray Princess but America needs the testing ability you promised https://t.co/jblP99P5oN</td>
+                <td>169</td>
+                <td>306</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1251739075012251648">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 22:06:16</td>
+                <td class ="content_left">💩 I never get <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of this... https://t.co/yxtVQ1MEch</td>
+                <td>127</td>
+                <td>493</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1251633171340201985">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 05:19:58</td>
+                <td class ="content_left">Quarantine Day 32:  <span style="color: yellow;">Tired</span> of cooking, would somebody please take me for dinner
+
+Anybody else feel like they’ve cooked dinner about 395 times this month? https://t.co/t9PNhRzaYd</td>
+                <td>8</td>
+                <td>135</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1249930375251374081">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-10 15:58:28</td>
+                <td class ="content_left">George Papadoolous' wife announced she is divorcing Papadopoulos
+
+The drama and ugliness associated with this administration is exhausting.
+
+“I am <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of him and playing his wife…He is a monster” she tweeted.
+
+Wow, I’m just heartbroken.... https://t.co/hJMiQrqftT</td>
+                <td>134</td>
+                <td>373</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1237407481300582400">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-30 00:08:23</td>
+                <td class ="content_left">He’s already been impeached for it so that’s obviously not true. An impeachable offense is whatever the House of Representatives says it is per the Constitution of the United States &amp; by the way, that’s NOT a defense. So incredibly <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of this horseshit. https://t.co/4LqK9x0jbX</td>
+                <td>46</td>
+                <td>132</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1222672873455669248">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cancer</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cancer"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 20:29:48</td>
+                <td class ="content_left">The stooges over at the PR wing of the President, FOX news love to site that the seasonal flu causes more deaths than COVID-19. That <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> and Heart disease cause more deaths also. 
+
+Well here's the facts and this is only the current snapshot https://t.co/nmDEvsxH9d</td>
+                <td>37</td>
+                <td>45</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1251608891604889600">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 14:36:36</td>
+                <td class ="content_left">Stuart Whitman has died.  Whitman died at around 2 PM yesterday at his home in Montecito, CA. Whitman had been in and out of the hospital recently due to skin <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> that seeped into his bloodstream. He was surrounded by family at the time of his death. https://t.co/G8Cmpk9aYW</td>
+                <td>25</td>
+                <td>82</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1239923593976238080">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-25 17:06:18</td>
+                <td class ="content_left">In a crazy monologue yesterday, Rush floated a debunked theory linking the coronavirus to Chinese biological weapons research.
+
+It is hard to feel pity for his <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> while he continues to throw festering words out to the public. In fact, it is impossible. https://t.co/HOzSvG8NXF</td>
+                <td>16</td>
+                <td>49</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1232351122775396353">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-13 05:01:26</td>
+                <td class ="content_left">Limbaugh: Manly Trump will have fun with Buttigieg 
+
+When I read things like this I think that it’s a shame that Rush has stage 4 <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> rotting his body https://t.co/V9KqkMgwEe</td>
+                <td>8</td>
+                <td>55</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1227820051757068288">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-13 02:26:00</td>
+                <td class ="content_left">Trump to visit Larry Ellison's Palm Springs estate for fundraising event next week
+
+I sure hope he doesn't get brain <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> from the windmills, that would be a shame wouldn’t it? https://t.co/m16W5CWb5T</td>
+                <td>41</td>
+                <td>192</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1227780936030285824">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-10 22:00:23</td>
+                <td class ="content_left">Neil Peart, the celebrated drummer and lyricist for the rock band Rush, is dead at 67 of brain <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> 
+
+Rush was a Canadian classic rock band consisting of Geddy Lee, Alex Lifeson, and Neil Peart, who joined in 1974, six years after the band formed.
+
+R.I.P. https://t.co/Jf5y3Am6qx</td>
+                <td>25</td>
+                <td>126</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1215755291326697478">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-08 23:08:44</td>
+                <td class ="content_left">Supreme Court Justice Ruth Bader Ginsburg just revealed that she is "<span style="color: yellow;"><span style="color: yellow;">cancer</span></span> free" after surviving four bouts with <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> since she was appointed to the bench more than 20 years ago, including a recent brush with pancreatic <span style="color: yellow;"><span style="color: yellow;">cancer</span></span>. 👏👏👏 https://t.co/KOwCsJ9rM3</td>
+                <td>460</td>
+                <td>2494</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1215047714544635905">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">heart disease</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "heart disease"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 20:29:48</td>
+                <td class ="content_left">The stooges over at the PR wing of the President, FOX news love to site that the seasonal flu causes more deaths than COVID-19. That cancer and <span style="color: yellow;">Heart disease</span> cause more deaths also. 
+
+Well here's the facts and this is only the current snapshot https://t.co/nmDEvsxH9d</td>
+                <td>37</td>
+                <td>45</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1251608891604889600">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 17:05:55</td>
+                <td class ="content_left">COVID-19 spreading across the globe &amp; is now the No. 1 cause of death in America where it is killing more people every day than <span style="color: yellow;"><span style="color: yellow;">heart disease</span></span> or cancer. On average 1,774 deaths per day are caused by <span style="color: yellow;"><span style="color: yellow;">heart disease</span></span> and 1,641 by cancer. https://t.co/81gx3Hd4xv</td>
+                <td>29</td>
+                <td>34</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1248658483055972352">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">antibiotics</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "antibiotics"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 21:50:59</td>
+                <td class ="content_left">On the day 2,000 Americans died. Trump described the virus as smart, brilliant, &amp; the virus is changing so fast that we aren't able to develop <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span>. Every doctor can tell you, &amp; those who completed 6th grade, <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> work for bacterial infections, not viral infections https://t.co/z1OVBGu7ov</td>
+                <td>82</td>
+                <td>206</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1249092606794948609">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 15:33:04</td>
+                <td class ="content_left">Sad News:
+
+Booze hound Stephanie Grisham has been fired as White House press secretary as coronavirus shake-up continues
+
+This famously thin-skinned bag of booze <span style="color: yellow;"><span style="color: yellow;">breath</span></span> has never held a single on-camera press briefing https://t.co/4Cp9lwDpdj</td>
+                <td>68</td>
+                <td>274</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1247547950546464770">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recover</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recover"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 21:25:20</td>
+                <td class ="content_left">A tiger at the Bronx Zoo has tested positive for COVID-19 says the Wildlife Conservation Society
+
+Nadia, a female Malayan tiger at the Bronx Zoo, has tested positive. She, her sister Azul, 2 Amur tigers, &amp; 3 African lions developed a dry cough &amp; all are expected to <span style="color: yellow;"><span style="color: yellow;">recover</span></span> https://t.co/P6xKySdV9q</td>
+                <td>44</td>
+                <td>90</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1246911824341000192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 21:25:20</td>
+                <td class ="content_left">A tiger at the Bronx Zoo has tested positive for COVID-19 says the Wildlife Conservation Society
+
+Nadia, a female Malayan tiger at the Bronx Zoo, has tested positive. She, her sister Azul, 2 Amur tigers, &amp; 3 African lions developed a dry <span style="color: yellow;"><span style="color: yellow;">cough</span></span> &amp; all are expected to recover https://t.co/P6xKySdV9q</td>
+                <td>44</td>
+                <td>90</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1246911824341000192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">dry cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "dry cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 21:25:20</td>
+                <td class ="content_left">A tiger at the Bronx Zoo has tested positive for COVID-19 says the Wildlife Conservation Society
+
+Nadia, a female Malayan tiger at the Bronx Zoo, has tested positive. She, her sister Azul, 2 Amur tigers, &amp; 3 African lions developed a <span style="color: yellow;"><span style="color: yellow;">dry cough</span></span> &amp; all are expected to recover https://t.co/P6xKySdV9q</td>
+                <td>44</td>
+                <td>90</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1246911824341000192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 23:03:01</td>
+                <td class ="content_left">Ewww....
+
+Don’t <span style="color: yellow;">touch</span> your face in publIc! https://t.co/GfcM318c12</td>
+                <td>15</td>
+                <td>59</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1245849246420484096">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 00:01:30</td>
+                <td class ="content_left">I really got in <span style="color: yellow;">touch</span> with my inner self this morning.
+
+That's the last time I buy toilet paper from the Dollar Store. https://t.co/FJOFRZgiuD</td>
+                <td>37</td>
+                <td>243</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1241152919363149824">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 23:46:37</td>
+                <td class ="content_left">“Don’t <span style="color: yellow;">touch</span> your face.” Ok
+
+“Wash your hands frequently.” Ok
+
+“Stop kissing your dog.” If I die I die... https://t.co/pzXr8C5kQc</td>
+                <td>24</td>
+                <td>179</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1240424400014282752">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-02 00:59:54</td>
+                <td class ="content_left">Neil Diamond: Hands
+CDC: Yes, wash them for at least 20 seconds 
+Neil Diamond: <span style="color: yellow;"><span style="color: yellow;">Touch</span></span>ing hands
+CDC: No, please don’t <span style="color: yellow;">touch</span> hands
+Neil Diamond: Reaching out
+CDC: Avoiding that too
+Neil Diamond: <span style="color: yellow;"><span style="color: yellow;">Touch</span></span>ing me
+CDC: Oh hell
+Neil Diamond: <span style="color: yellow;"><span style="color: yellow;">Touch</span></span>ing you
+CDC: we’re doomed! https://t.co/8X3NTqpncK</td>
+                <td>93</td>
+                <td>271</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1234282247605215232">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">freeze</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "freeze"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 02:10:11</td>
+                <td class ="content_left">Surprise! The idiot caught lying again 
+
+A USAID email obtained by NBC News  makes clear that the admin. ordered a <span style="color: yellow;"><span style="color: yellow;">freeze</span></span> on all shipments of personal protective gear overseas and that agency staff were told not to make public references to those shipments https://t.co/CNVARRipC4</td>
+                <td>63</td>
+                <td>82</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1245533959657631744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shake</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shake"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 05:56:08</td>
+                <td class ="content_left">Due to the Chinese Virus I will not <span style="color: yellow;"><span style="color: yellow;">shake</span></span> hands with you. 
+
+You may kneel or bow to me, either will be fine. https://t.co/PQa4cPf2TF</td>
+                <td>13</td>
+                <td>62</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1244141269774811136">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 21:48:44</td>
+                <td class ="content_left">Trump continues to <span style="color: yellow;"><span style="color: yellow;">shake</span></span> hands with people in the Rose Garden, even as health experts warn against the practice in a bid to prevent community spread
+
+I'd lick a door knob in China (No disrespect to the Chinese intended) before I'd <span style="color: yellow;"><span style="color: yellow;">shake</span></span> his dirty hand! https://t.co/NNFxST7wpS</td>
+                <td>7</td>
+                <td>36</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1238582792042082305">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">mild symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "mild symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 15:31:03</td>
+                <td class ="content_left">Prince Charles tests positive for coronavirus .  Prince Charles is showing <span style="color: yellow;"><span style="color: yellow;">mild symptoms</span></span> of COVID-19 and is self-isolating at a royal estate in Scotland, his Clarence House office said. https://t.co/9s5WLfqWtT</td>
+                <td>11</td>
+                <td>26</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1242836402997350401">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">medicine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "medicine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 23:09:32</td>
+                <td class ="content_left">Larry Kudlow “Economic cost of prolonged coronavirus shutdown is just too great" 
+
+When it comes to listening to people who are in charge of money or in charge of <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> you should always choose <span style="color: yellow;"><span style="color: yellow;">medicine</span></span>. These greedy Republicans are going to kill us all https://t.co/Op5UsUFAef</td>
+                <td>17</td>
+                <td>28</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1242227008190312449">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diagnosed with covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diagnosed with covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-12 20:20:02</td>
+                <td class ="content_left">Fabio Wajngarten, communications secretary to Jair Bolsonaro, has been <span style="color: yellow;">diagnosed with COVID</span>-19.  Fabio Wajngarten accompanied the Brazilian president on a visit to Florida, where  Jair Bolsonaro &amp; Trump dined together at Mar A Lago. https://t.co/mhKk3w4fe2</td>
+                <td>36</td>
+                <td>61</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1238198084489732097">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">HIV</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "HIV"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-27 05:00:34</td>
+                <td class ="content_left">Mike Pence, who enabled an <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> outbreak in Indiana, will lead US coronavirus response
+
+Princess Pence is going to pray about it, and then he’ll blame the Coronavirus on gay people.￼￼￼ https://t.co/U1lqZRUA8Y</td>
+                <td>182</td>
+                <td>302</td>
+                <td><a href="https://twitter.com/stonecold2050/status/1232893261083111424">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

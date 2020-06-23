@@ -1,0 +1,1406 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>772-BigLawUS.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 772-BigLawUS.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">772-BigLawUS.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 22:23:49</td>
+                <td class ="content_left">Hey ⁦@GOP⁩, you ask why we think you are stupid.
+
+Over 40% of Republicans think Bill Gates will use <span style="color: yellow;">COVID-19</span> vaccine to implant tracking microchips, survey says https://t.co/cPV8Bagbxw</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1264683550198190083">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 23:27:56</td>
+                <td class ="content_left">How Virginia Juked Its <span style="color: yellow;">COVID-19</span> Data
+⁦@shannshaann⁩  https://t.co/fnbCo1Mvhx</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1262525358273855490">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 19:13:12</td>
+                <td class ="content_left">Texas cases of <span style="color: yellow;">COVID-19</span> increasing by thousands since reopening https://t.co/4hxsoBfzf6</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1261736476162895873">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 13:47:23</td>
+                <td class ="content_left">@Qu33nB3314 @Mike_Pence @realDonaldTrump @fema Rare syndrome tied to <span style="color: yellow;">COVID-19</span> kills three children in New York, Cuomo says https://t.co/EUqg3ugQVH</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1259480155669565441">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 15:49:44</td>
+                <td class ="content_left">⁦@realDonaldTrump⁩ it is coming for you.
+
+11 Secret Service agents test positive for <span style="color: yellow;">COVID-19</span> and fears of it spreading through the White House are mounting https://t.co/y6cWKUamOc</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1259148558185443330">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 04:02:29</td>
+                <td class ="content_left">This is the baby Hitler dilemma.
+
+I Will Personally Be Thrilled If Stephen Miller Dies of <span style="color: yellow;">Covid-19</span> https://t.co/R6KqVLCWDq</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1258970571284627456">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 21:09:27</td>
+                <td class ="content_left">@PressSec says <span style="color: yellow;">COVID-19</span> testing is nonsensical the same week @realDonaldTrump begins testing himself daily.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1258504239036366850">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 22:26:19</td>
+                <td class ="content_left">Healthcare under ⁦⁦@realDonaldTrump⁩
+
+‘It's a nightmare': First denied testing, twice denied ER admittance, Iowa man dies of <span style="color: yellow;">COVID-19</span> https://t.co/hDA6Zs9PMN</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1257074035189481472">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 01:46:42</td>
+                <td class ="content_left">‘Trump spent 10 minutes praising himself for every 1 minute he spent expressing condolences’ in 13 hours of <span style="color: yellow;">COVID-19</span> briefings: analysis
+⁦@realDonaldTrump⁩  https://t.co/az3kLBicx5</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1254587747232251904">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 03:42:18</td>
+                <td class ="content_left">LISTEN: Audio shows Trump misrepresented MD governor's comments on <span style="color: yellow;">COVID-19</span> testing
+⁦@realDonaldTrump⁩  https://t.co/pQ4sPUDQQm</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1252442512435884033">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 23:01:53</td>
+                <td class ="content_left">The problem is the 35% that continue to support him no matter what. 
+
+65 Percent of U.S. Adults Say Donald Trump Was Too Slow to Respond to <span style="color: yellow;">COVID-19</span> Outbreak: Poll https://t.co/f2nOyEOMSy</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1251647168034811908">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 19:24:24</td>
+                <td class ="content_left">The Next Clusters of <span style="color: yellow;">COVID-19</span> Cases Will Probably Be Among Right-Wing Protesters Who Hate Sheltering Orders https://t.co/p0rgJuRMCD</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1251592433051275264">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 19:20:45</td>
+                <td class ="content_left">S. Dakota GOP governor busted by Harvard doctor for ‘simplistic’ plan to send workers back to jobs as <span style="color: yellow;">COVID-19</span> ravages state
+⁦@govkristinoem⁩  https://t.co/Mch9At1kbC</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1251591517514477574">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 20:01:27</td>
+                <td class ="content_left">@NYGovCuomo Governor, I respectfully suggest empaneling a grand jury to investigate the <span style="color: yellow;">COVID-19</span> deaths. Put the intelligence officers and the State Deprtment officials on the stand. Find out who new what Nd when they knew it.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1251239368506970113">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 13:41:01</td>
+                <td class ="content_left">@IngrahamAngle You know who disagrees with you? The 34,784 Americans who died because Trump did nothing when he learned of <span style="color: yellow;">COVID-19</span> in November 2019.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1251143632155000833">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 14:35:50</td>
+                <td class ="content_left">China walks all over ⁦@realDonaldTrump⁩. Even the money he claims they paid in tariffs were paid by the American consumer.
+
+China continues South China Sea military action despite <span style="color: yellow;">COVID-19</span> https://t.co/WtKHFKcobO</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1250795040491876354">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 14:32:51</td>
+                <td class ="content_left">This is a great timeline of the <span style="color: yellow;">COVID-19</span> pandemic and Trump's (lack) of response.
+
+https://t.co/ITspoINjxU</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1250069513875357703">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 00:56:04</td>
+                <td class ="content_left">@IngrahamAngle I was diagnosed as <span style="color: yellow;">COVID-19</span> positive. I was quarantined for two weeks. I drink @SailorJerry and Coke. Under your logic, Sailor Jerry is the cure for the coronavirus. If only I can get my health insurance to pay for the supply.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1249139187787476993">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 05:44:40</td>
+                <td class ="content_left"><span style="color: yellow;">Covid-19</span> found in air samples up to 13 feet from patients
+⁦@realDonaldTrump⁩  https://t.co/FDGFOeW8k8</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1248849426707333120">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 03:26:42</td>
+                <td class ="content_left">This is bad, but I feel if you voted from @realDonaldTrump and died of <span style="color: yellow;">COVID-19</span> you got what you deserve.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1248452316530757640">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 22:42:20</td>
+                <td class ="content_left">The only beneficial side effect of <span style="color: yellow;">COVID-19</span> is that the price of gas dropped to become reasonable. Now @realDonaldTrump has taken action to raise the price of gas. Does that benefit you?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1248380755081756679">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 04:29:21</td>
+                <td class ="content_left">⁦@realDonaldTrump⁩
+Bill Gates: This is how long it may take before Americans 'can be completely safe' from <span style="color: yellow;">COVID-19</span> https://t.co/QSyww1YFc5</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1248105697201590278">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 03:38:01</td>
+                <td class ="content_left">⁦@realDonaldTrump⁩ 
+Small Trial Finds No Evidence That Hydroxychloroquine Works Against <span style="color: yellow;">Covid-19</span> https://t.co/RTRp4VTern</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1248092779865047040">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 14:00:59</td>
+                <td class ="content_left">@RealMargieWatso @AnnCoulter I don’t know except that the flu starts in the East and travels West. Maybe there would be polio, measles, whooping cough seasons if we did not have vaccines. I get a flu shot and have not had it in 30 years. But this is a novel <span style="color: yellow;">COVID-19</span> and not a flu.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1247887164546797569">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 05:47:47</td>
+                <td class ="content_left">@JohnCornyn Funny thing John, not every place is the same until it becomes the same. <span style="color: yellow;">COVID-19</span> will be worse when it reaches you. Thoughts and prayers coming your way.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1246675883278172160">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 04:21:29</td>
+                <td class ="content_left">@katieboylecomic Hey @roywoodjr just said if you can’t properly pronounce <span style="color: yellow;">COVID-19</span> you have it. I think you need to get tested.
+#TheShift</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1246654165360795649">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 20:54:12</td>
+                <td class ="content_left">Dum Dum just ran through a list of every commissioner of sports organizations during <span style="color: yellow;">COVID-19</span> Conference for no apparent reason.
+@realDonaldTrump</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1246541602669170691">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 20:55:28</td>
+                <td class ="content_left">Republicans are too dumb to run government. This is a perfect example. They don’t follow the advice of the experts. They don’t believe in science. I think that people in Georgia that voted for the governor should not receive medical treatment for <span style="color: yellow;">COVID-19</span> https://t.co/n11d0gQKAL</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1245817145440849920">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 02:48:16</td>
+                <td class ="content_left">Any one else concerned that @JohnsHopkins stopped totaling American <span style="color: yellow;">COVID-19</span> deaths on its dashboard? I think it is way higher that the government is saying and they doesn’t want to get caught in the inevitable fallout.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1245543544833654784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 01:58:54</td>
+                <td class ="content_left">Coronavirus New Jersey: <span style="color: yellow;">COVID-19</span> Testing Site Open At Quaker Bridge Mall In Lawrence https://t.co/5KBJKrF5vr</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1245531121053466625">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 20:36:42</td>
+                <td class ="content_left">@RepAdamSchiff During your investigation, please find out why the #USSComfort refused to treat <span style="color: yellow;">COVID-19</span> patients?
+
+We spend nearly $1 Trillion on the Millitary each year. They provide medical aid in foreign countries but deny us the same aid.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1245450035652894723">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 20:32:32</td>
+                <td class ="content_left">@the_USO I am sorry for them but the military has abandoned us! Annually, we spend nearly$1 Trillion on the Milliary. When we asked the USS Confort to help treat <span style="color: yellow;">COVID-19</span> patients they said, “No.”
+
+You want help? I am sending thoughts and prayers.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1245448986703671297">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 02:33:31</td>
+                <td class ="content_left">@realMikeLindell of @MyPillowUSA has promised to equip every <span style="color: yellow;">COVID-19</span> related body bag with his pillow. This way your loved ones will have eternal comfort.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244815056803713024">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 02:09:58</td>
+                <td class ="content_left">@HealingRoutes @USNavy I tested positive and it was a fight to get the test in NJ. It took hours of work and our health insurance company public ally said they would pay 100% of <span style="color: yellow;">COVID-19</span> related cases.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244809129241325568">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 01:45:47</td>
+                <td class ="content_left">@HealingRoutes @USNavy Cuomo was being diplomatic because NY is desperate. He said he asked for the ship to treat <span style="color: yellow;">COVID-19</span> patients but a Trump said, “No.’</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244803044140867584">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 00:02:45</td>
+                <td class ="content_left">The #USSComfort docked in NYC’s harbor has refused to treat patients with <span style="color: yellow;">COVID-19</span> or even do a single <span style="color: yellow;">COVID-19</span> test. Ironically, it would have to render this aid to the enemy under the GENEVA CONVENTION! Tell the @USNavy what you think! 
+(718) 892-2145</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244777115159072768">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 18:54:50</td>
+                <td class ="content_left">Does anyone realize that the #USSComfort will NOT be resting <span style="color: yellow;">Covid-19</span> patients at the Order of @realDonaldTrump ?
+Fuck the @USNavy !</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244699622301478914">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 18:51:56</td>
+                <td class ="content_left">@AndreaGainey Based on the way <span style="color: yellow;">COVID-19</span> attacked New York City and in particular the elderly, Florida is going to need more body bags then PPE.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244698894518431749">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 18:49:42</td>
+                <td class ="content_left">@B52Malmet No one is talking about the fact that President Trump refused to allow the needy to treat <span style="color: yellow;">COVID-19</span> patients. They will only handle the overflow of non-<span style="color: yellow;">COVID-19</span> patients.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244698331047170053">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 18:46:47</td>
+                <td class ="content_left">@MorninGovnaa So true. No one is explaining that the USS Comfort will not treat <span style="color: yellow;">COVID-19</span> patients. While New York needs their help to handle the hospitals overflow of broken bones and car accidents, I would hardly call this the front line.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244697599019548680">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 18:13:45</td>
+                <td class ="content_left">@WhiteHouse @TrumpWinner1 Wrong! The Navy will only treat non-<span style="color: yellow;">Covid-19</span> patients. The Navy refused to treat <span style="color: yellow;">Covid-19</span> patients. They will treat patients for other conditions to take the strain off the real Frontline Doctors.
+
+Call the Naval Base at (718) 892-2145 to complain! 
+
+#FakePresident 
+#COVIDー19</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244689287003680768">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 01:13:32</td>
+                <td class ="content_left">@ChrisJansing You fail to explain the there are different guidelines for treating patients with infectious diseases like <span style="color: yellow;">COVID-19</span> and other conditions. Masks used for <span style="color: yellow;">COVID-19</span> patients are not supposed to be reused.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244432537541320704">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 01:03:36</td>
+                <td class ="content_left">@realDonaldTrump says that if they can hold the <span style="color: yellow;">COVID-19</span> deaths down to 100,000 they will have done a "good job." You gave him a chance. Now people are dying. Enough is enough. Remove this clown by vote or by force!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244430037627088896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 00:12:16</td>
+                <td class ="content_left">Of course the are. When are we going to stop these dangerous Evangelicals?
+
+Liberty University Students Showing Signs Of <span style="color: yellow;">COVID-19</span> After Returning To Campus https://t.co/RtZBtMJEX4</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244417120055758853">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 17:03:02</td>
+                <td class ="content_left">@realDonaldTrump made the US #1 in the world for <span style="color: yellow;">COVID-19</span> cases.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1243584323611213825">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 00:25:24</td>
+                <td class ="content_left">@KenKrantzComic I heard you get a discount if you type in <span style="color: yellow;">COVID-19</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1243333263105708032">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 23:36:17</td>
+                <td class ="content_left">@GovMurphy No one answers the <span style="color: yellow;">COVID-19</span> hotline! Counties won’t test all New Jersians. Mercer County test sites won’t make new test appointments. 
+
+You are failing us!
+
+SOS!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1243320901678108675">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 15:23:06</td>
+                <td class ="content_left">@officialroyall8 @tone_day42 @Wawa Will they need a paycheck when they are dead? Enjoy tour <span style="color: yellow;">Covid-19</span> shorty.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1243196788569452545">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 18:23:23</td>
+                <td class ="content_left">How Jared Kushner's family is cashing in on <span style="color: yellow;">COVID-19</span> testing
+⁦@realDonaldTrump⁩  https://t.co/jYGdSdlf6P</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1240343054487298052">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 03:31:44</td>
+                <td class ="content_left">Seattle-area nursing home unable to test 65 workers with <span style="color: yellow;">COVID-19</span> symptoms
+⁦@realDonaldTrump⁩  https://t.co/59iCzAq0sh</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1238306726065119232">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-06 20:31:42</td>
+                <td class ="content_left">The results are in, <span style="color: yellow;">COVID-19</span> spreads through poop https://t.co/yArKysVXhT</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1236026693174931456">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 23:16:44</td>
+                <td class ="content_left">@realDonaldTrump You let 100,000,Americans die because of your ignorance. You,can’t make America great. Everything you <span style="color: yellow;">touch</span> turns to shit.</td>
+                <td>1</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1264334479558139906">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 02:57:01</td>
+                <td class ="content_left">@AnnCoulter You should definitely go out, <span style="color: yellow;">touch</span> door knobs, walk near coughing people... Do it! School us!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1242284253917990912">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Hydroxychloroquine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Hydroxychloroquine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 19:32:18</td>
+                <td class ="content_left">⁦@realDonaldTrump⁩ Please urge all of your supporters to ignore medical science and keep taking hydro chloroquine!
+
+Coronavirus patients treated with Trump-touted <span style="color: yellow;">hydroxychloroquine</span> at higher risk of death, study says https://t.co/iiQqcIw85H</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1263915611266170880">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 02:35:53</td>
+                <td class ="content_left"><span style="color: yellow;"><span style="color: yellow;">Hydroxychloroquine</span></span> user contracts COVID-19, warns that it isn't a miracle drug
+⁦@realDonaldTrump⁩  https://t.co/FGESS30Njl</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1263659818813964289">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 16:19:45</td>
+                <td class ="content_left">@PoliticalAnim13 They are pandering to the Deploreables who want their <span style="color: yellow;">hydroxychloroquine</span> and bleach.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1260968048263155714">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 03:59:13</td>
+                <td class ="content_left"><span style="color: yellow;"><span style="color: yellow;">Hydroxychloroquine</span></span> truther Ingraham begs Trump to overturn FDA warning before study disproves her
+⁦@IngrahamAngle⁩  https://t.co/fULq9jFDlh</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1258969750081875974">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 21:32:31</td>
+                <td class ="content_left">Trump and Fox News stop hyping <span style="color: yellow;">hydroxychloroquine</span> as NIH warns against using it to treat COVID-19
+⁦@seanhannity⁩ 
+#BloodOnHisHandsHannity  https://t.co/HuhYwGGFVo</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1253074227282010116">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 21:08:26</td>
+                <td class ="content_left"><span style="color: yellow;"><span style="color: yellow;">Hydroxychloroquine</span></span> is the new Cool-Aid.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1253068165552144386">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 02:10:14</td>
+                <td class ="content_left">What happened ⁦@FoxNews⁩? Medicine that doubles the death rate not a “miracle drug.”
+
+Fox News mentions of <span style="color: yellow;">hydroxychloroquine</span> have significantly dropped off https://t.co/vmiqj8YRFK</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1252781731205218306">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 13:06:27</td>
+                <td class ="content_left">French officials report heart incidents in experimental coronavirus treatments with <span style="color: yellow;">hydroxychloroquine</span> | TheHill
+⁦@realDonaldTrump⁩ 
+#<span style="color: yellow;">hydroxychloroquine</span> https://t.co/4CYzjdivmA</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1248960606385905665">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 03:38:01</td>
+                <td class ="content_left">⁦@realDonaldTrump⁩ 
+Small Trial Finds No Evidence That <span style="color: yellow;"><span style="color: yellow;">Hydroxychloroquine</span></span> Works Against Covid-19 https://t.co/RTRp4VTern</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1248092779865047040">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 16:11:23</td>
+                <td class ="content_left"><span style="color: yellow;">Drug</span> promoted by Trump as coronavirus ‘game changer’ increasingly linked to deaths
+⁦@realDonaldTrump⁩  https://t.co/llduSkRqlf</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1262053109544648704">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 13:36:38</td>
+                <td class ="content_left">The results are in. Trump’s miracle <span style="color: yellow;"><span style="color: yellow;">drug</span></span> is useless. https://t.co/xguajRVvfP</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1262014163720843265">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 18:07:37</td>
+                <td class ="content_left">@Andrew46870696 @RFK1966 @Gemgee64 @shannshaann @pleehansen @JoeBiden Ok kill the <span style="color: yellow;"><span style="color: yellow;">drug</span></span> dealers then do they get a trial?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1260995197758046208">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 05:11:37</td>
+                <td class ="content_left">Malaria <span style="color: yellow;"><span style="color: yellow;">drug</span></span> shows no benefit in another coronavirus study
+⁦@realDonaldTrump⁩  https://t.co/ObRUg3B7sK</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1258625579945000961">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 20:24:56</td>
+                <td class ="content_left">Even the VA says <span style="color: yellow;"><span style="color: yellow;">drug</span></span> touted by ⁦@realDonaldTrump⁩ doesn’t work!
+
+More deaths, no benefit from malaria <span style="color: yellow;"><span style="color: yellow;">drug</span></span> in VA virus study https://t.co/FdCVGH1a5k</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1252694830444154880">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">test positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "test positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 15:49:44</td>
+                <td class ="content_left">⁦@realDonaldTrump⁩ it is coming for you.
+
+11 Secret Service agents <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for COVID-19 and fears of it spreading through the White House are mounting https://t.co/y6cWKUamOc</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1259148558185443330">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 21:48:27</td>
+                <td class ="content_left">Another 103 sailors from U.S. carrier <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for coronavirus
+⁦@USNavy⁩  https://t.co/YZiFPILXgj</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1249091969097269250">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 18:15:35</td>
+                <td class ="content_left">Over 500 NYPD members <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for coronavirus | TheHill https://t.co/u7WqnCOjaU</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244327357449715713">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-02 03:11:07</td>
+                <td class ="content_left">Manhattan Woman First to <span style="color: yellow;">Test Positive</span> for Virus in New York State
+⁦@realDonaldTrump⁩  https://t.co/LS5b9tuyvx</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1234315271663423488">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 15:49:44</td>
+                <td class ="content_left">⁦@realDonaldTrump⁩ it is coming for you.
+
+11 Secret Service agents test <span style="color: yellow;">positive for COVID</span>-19 and fears of it spreading through the White House are mounting https://t.co/y6cWKUamOc</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1259148558185443330">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 18:41:38</td>
+                <td class ="content_left">@VPPressSec @Mike_Pence Now that you have tested <span style="color: yellow;">positive for COVID</span> 19, any thoughts about @VP’s refusal to wear masks? It is going to spread through the @WhiteHouse like wildfire!</td>
+                <td>0</td>
+                <td>17</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1258829431256363010">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 16:08:37</td>
+                <td class ="content_left">@GovKemp 23% of Georgians that were tested, tested <span style="color: yellow;">positive for COVID</span>-19. Georgia is open for business.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1252630326205206529">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 03:41:31</td>
+                <td class ="content_left">Two weeks ago I tested <span style="color: yellow;">positive for COVID</span>-19. I put myself on an experimental trial of @SailorJerry. I imbibed Sailor Jerry for 10 days. Not only did it mute my symptoms, it cured me. Today I am 100% recovered. Thank you Sailor Jerry!
+#COVID19CURE</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1248093661226848256">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 05:14:08</td>
+                <td class ="content_left">I have been isolated in my room for over a week because I tested <span style="color: yellow;">positive for COVID</span>-19. Just today, my wife realized that I have my son’s refrigerator and microwave from college in the room.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1246667417432068102">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 13:28:11</td>
+                <td class ="content_left">@SenBillCassidy, I saw you on  @smerconish this morning. I agree with your registry proposition. I tested <span style="color: yellow;">positive for COVID</span> 19. None of my doctors where I can get an antibody test. I have even written to the labs directly.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1246429361491849217">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 23:46:04</td>
+                <td class ="content_left">@MyPillowUSA I recently purchased one of your pillows before being quarantined. After using your pillow, I tested <span style="color: yellow;">positive for COVID</span>-19.  People are saying that your pillows are manufactured in Wuhan China and may be responsible for the pandemic. Can you shed light on this?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244772914886586371">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 00:38:44</td>
+                <td class ="content_left">@pill_reggie I just tested <span style="color: yellow;">positive for COVID</span>-19. I would love to give you a big hug and kiss.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244423780446896134">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 23:39:43</td>
+                <td class ="content_left">@BakerBone I just found out that I am <span style="color: yellow;">positive for COVID</span>-19. I did not vote for Trump. I think it is unfair. I am considering nothing on the door of every Trump supporter in my neighborhood and giving them a big hug.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244408928844251137">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 18:41:38</td>
+                <td class ="content_left">@VPPressSec @Mike_Pence Now that you have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID 19, any thoughts about @VP’s refusal to wear masks? It is going to spread through the @WhiteHouse like wildfire!</td>
+                <td>0</td>
+                <td>17</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1258829431256363010">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 16:08:37</td>
+                <td class ="content_left">@GovKemp 23% of Georgians that were tested, <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19. Georgia is open for business.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1252630326205206529">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 03:41:31</td>
+                <td class ="content_left">Two weeks ago I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19. I put myself on an experimental trial of @SailorJerry. I imbibed Sailor Jerry for 10 days. Not only did it mute my symptoms, it cured me. Today I am 100% recovered. Thank you Sailor Jerry!
+#COVID19CURE</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1248093661226848256">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 05:14:08</td>
+                <td class ="content_left">I have been isolated in my room for over a week because I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19. Just today, my wife realized that I have my son’s refrigerator and microwave from college in the room.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1246667417432068102">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 13:28:11</td>
+                <td class ="content_left">@SenBillCassidy, I saw you on  @smerconish this morning. I agree with your registry proposition. I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID 19. None of my doctors where I can get an antibody test. I have even written to the labs directly.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1246429361491849217">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 03:44:50</td>
+                <td class ="content_left">@BakerBone Not exactly on point but.... My wife caught complaining about have to be quarantined with her. She was upset. 2 days later I started feeling sick and <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. I have been quarantined I’m my room alone since. God punished me!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1246282555441152007">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 13:05:20</td>
+                <td class ="content_left">@therituchandra I was in normal quarantine with my wife and kids. My wife caught me complaining about her. Then I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> and had to go into solitary confinement. 100% worse. I think God punished me.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1246061222266634245">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 05:16:35</td>
+                <td class ="content_left">Just found your podcast. On episode 1. I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> so I am quarantined until Monday. I am going to see if I can catch up by then! Love it.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1245943257122684929">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 02:09:58</td>
+                <td class ="content_left">@HealingRoutes @USNavy I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> and it was a fight to get the test in NJ. It took hours of work and our health insurance company public ally said they would pay 100% of COVID-19 related cases.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244809129241325568">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 23:46:04</td>
+                <td class ="content_left">@MyPillowUSA I recently purchased one of your pillows before being quarantined. After using your pillow, I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19.  People are saying that your pillows are manufactured in Wuhan China and may be responsible for the pandemic. Can you shed light on this?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244772914886586371">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 12:55:16</td>
+                <td class ="content_left">@realDonaldTrump I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the MAGAVirus and I am voting for anyone but Trump!
+#FakePresident 
+#NotMyPresident</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244609136215633921">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 00:38:44</td>
+                <td class ="content_left">@pill_reggie I just <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19. I would love to give you a big hug and kiss.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244423780446896134">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Sneeze</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Sneeze"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 18:10:03</td>
+                <td class ="content_left">@FrancisTheSailr Now that I don’t have to do lawyer stuff, I have time to focus on bigger ideas. Your post inspired me. I am making Coronavirus masks with a cutout for your mouth. This way you can <span style="color: yellow;">sneeze</span> and cough without getting the inside of the mask dirty. I am going to mark it CDC approved!</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1254835215555596293">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 18:10:03</td>
+                <td class ="content_left">@FrancisTheSailr Now that I don’t have to do lawyer stuff, I have time to focus on bigger ideas. Your post inspired me. I am making Coronavirus masks with a cutout for your mouth. This way you can sneeze and <span style="color: yellow;"><span style="color: yellow;">cough</span></span> without getting the inside of the mask dirty. I am going to mark it CDC approved!</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1254835215555596293">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 14:00:59</td>
+                <td class ="content_left">@RealMargieWatso @AnnCoulter I don’t know except that the flu starts in the East and travels West. Maybe there would be polio, measles, whooping <span style="color: yellow;"><span style="color: yellow;">cough</span></span> seasons if we did not have vaccines. I get a flu shot and have not had it in 30 years. But this is a novel COVID-19 and not a flu.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1247887164546797569">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shaking</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shaking"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 22:11:27</td>
+                <td class ="content_left">@jennyrachelpal Why won’t God give him the Coronavirus. It is <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> my faith.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1253084023666155521">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 13:57:28</td>
+                <td class ="content_left">@FriendOfThurlow @FanHemi @AnnCoulter If you want to know what should have been stockpiled, read the Inspector General’s report.
+https://t.co/10kXNGf3sa
+
+I think all that <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> of your head has done some damage.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1247886279800270849">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 15:05:32</td>
+                <td class ="content_left">@therituchandra Yes, of course. Let me search for his twitter account. We can DM him. 
+
+I hope you can build off that joke! There is so much <span style="color: yellow;"><span style="color: yellow;">pain</span></span> in the White Community. Someone should profit off it.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1252976841926881282">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 13:23:33</td>
+                <td class ="content_left">⁦@katieboylecomic⁩ I thought this might be an interesting discussion for a future episode of #TheSwitch.
+
+A Man Injected Himself With His Own Semen to 'Cure' His Back <span style="color: yellow;">Pain</span> https://t.co/NziYebRlzn</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1249689682608377868">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">medicine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "medicine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 02:10:14</td>
+                <td class ="content_left">What happened ⁦@FoxNews⁩? <span style="color: yellow;">Medicine</span> that doubles the death rate not a “miracle drug.”
+
+Fox News mentions of hydroxychloroquine have significantly dropped off https://t.co/vmiqj8YRFK</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1252781731205218306">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 01:38:28</td>
+                <td class ="content_left">@katieboylecomic @kunqian33 Can’t you just tell by the <span style="color: yellow;"><span style="color: yellow;">taste</span></span> in your mouth?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1252773734332739585">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">massage</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "massage"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 04:03:31</td>
+                <td class ="content_left">@GovKemp I got a <span style="color: yellow;"><span style="color: yellow;">massage</span></span> today in Georgia and the masseuse maintained social distancing. Worst <span style="color: yellow;"><span style="color: yellow;">massage</span></span> ever.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1252447849792647169">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">HIV</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "HIV"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 01:16:39</td>
+                <td class ="content_left">@GOP @Mike_Pence We know what happened. WHO informed the CDC. The CDC must have told Trump because he told Israel. You just don’t know what you are doing. You in way over your head. Just like you <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> screw up.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1252043469964664835">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 03:19:36</td>
+                <td class ="content_left">@ggreenwald I am a fan but I think your criticism is unfair. The objection was calling it the China virus. I remeber when people called <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> the gay virus. Neither did anything to make us safer. The ad focuses on what Trump failed to do.
+
+You should have Michael Lewis on the podcast. #5thRisk</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1251712023248941056">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">painful</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "painful"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 05:17:31</td>
+                <td class ="content_left">@SpiderLily62 Yikes. So sorry. The world is so <span style="color: yellow;"><span style="color: yellow;">painful</span></span> for some.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1251741697526181888">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 04:18:01</td>
+                <td class ="content_left">@bonniemcfarlane @VicHenley It is just that much more <span style="color: yellow;"><span style="color: yellow;">painful</span></span> when a person who dedicates their life to making you dies.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1247378067812757509">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sore throat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sore throat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 18:52:18</td>
+                <td class ="content_left">@RoArquette He is a terrible doctor. He is my PCP. I went to him for a <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span> and he diagnosed me with vaginosis. Then he prescribed Monistat 7 and it tasted horrible.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1250859581934317576">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Chloroquine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Chloroquine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 03:11:56</td>
+                <td class ="content_left">Small <span style="color: yellow;"><span style="color: yellow;">Chloroquine</span></span> Study Halted Over Risk of Fatal Heart Complications
+⁦@realDonaldTrump⁩  https://t.co/bTstLxvLMl</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1249898155581169664">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 00:34:11</td>
+                <td class ="content_left">Man dies after ingesting <span style="color: yellow;">chloroquine</span> in an attempt to prevent coronavirus
+
+The good news is he was probably a ⁦@realDonaldTrump⁩ supporter. https://t.co/PqbwAFCsP2</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1242248311102414864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">antibiotics</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "antibiotics"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 01:08:33</td>
+                <td class ="content_left">@realDonaldTrump Hey #DonRaper, you can't use <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> to treat viruses.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1248779940188782592">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 04:34:39</td>
+                <td class ="content_left">@anneapplebaum @Beingconscious3 I read this book a few months ago. I have been holding my <span style="color: yellow;"><span style="color: yellow;">breath</span></span> since.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1248469418641743875">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 03:12:54</td>
+                <td class ="content_left">@88SEATTLE61 @amazon When I read this book it made me hold my <span style="color: yellow;"><span style="color: yellow;">breath</span></span> and pray that we could get through this administration. It’s pointed out so many potential disasters and it wasn’t a question of whether one would happen but which one would happen. Required reading for everybody in quarantine.</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1245187356266835970">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 17:48:42</td>
+                <td class ="content_left">@KenKrantzComic They will spend their last <span style="color: yellow;"><span style="color: yellow;">breath</span></span> trying cancel comedians. 
+
+BTW I think @therituchandra had Covid-19.  Glad she survived.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244682981660340229">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 16:05:18</td>
+                <td class ="content_left">@BernieSanders My heart <span style="color: yellow;"><span style="color: yellow;">aches</span></span> today not only for America but for the America we could have had.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1247918450095337477">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 22:13:47</td>
+                <td class ="content_left">@NikkiGlaser I think you got it. Did you get tested? I only had a low grade <span style="color: yellow;"><span style="color: yellow;">fever</span></span> and I had it.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1246924020852940800">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 05:43:35</td>
+                <td class ="content_left">@realDonaldTrump is only calling the Coronavirus the Chinese flu because Yellow <span style="color: yellow;"><span style="color: yellow;">fever</span></span> was already taken.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244138110180560896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 17:15:30</td>
+                <td class ="content_left">@GovMurphy @PNCArtsCenter This is a lie. If you have all the symptoms but a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> below 99.5 you will be turned away.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1243587461844008962">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recovered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recovered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 06:17:36</td>
+                <td class ="content_left">@justchilln247 Yes. I will be considered <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> on Monday. Will do.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1246683388192460802">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diagnosed with covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diagnosed with covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 01:48:14</td>
+                <td class ="content_left">@RickArnonal @russ1mitchell I was <span style="color: yellow;">diagnosed with COVID</span>-19. I have a CPap machine. I find using it during the day helps. I understand it is not a ventilator but I don’t need a ventilator now.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1245528437332365313">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 01:24:09</td>
+                <td class ="content_left">@TrumpWinner1 @JoeBorelliNYC I was just <span style="color: yellow;">diagnosed with COVID</span> 19. Give your location. I'd love to kiss you on the lips. Then tell me how overblown this situation is.</td>
+                <td>6</td>
+                <td>306</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244435211364024328">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 03:33:23</td>
+                <td class ="content_left">Is it me or does this story cry out for @KenKrantzComic material?
+
+Astrophysicist Gets Magnets Stuck in His <span style="color: yellow;">Nose</span> While Trying to Invent Face-Touching Alarm https://t.co/8uK1nVBhnd</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244830120319356928">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asymptomatic</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asymptomatic"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 19:26:34</td>
+                <td class ="content_left">@Yaay_Yay_Indeed @TrumpWinner1 @JoeBorelliNYC I had mild symptoms which prompted me to go get tested. That was 4 days ago. At this point I feel <span style="color: yellow;"><span style="color: yellow;">asymptomatic</span></span> but don’t want to infect anyone else. So, I am isolating in my bedroom. Thanks for asking.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244707608361086977">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">mild symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "mild symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 19:26:34</td>
+                <td class ="content_left">@Yaay_Yay_Indeed @TrumpWinner1 @JoeBorelliNYC I had <span style="color: yellow;"><span style="color: yellow;">mild symptoms</span></span> which prompted me to go get tested. That was 4 days ago. At this point I feel asymptomatic but don’t want to infect anyone else. So, I am isolating in my bedroom. Thanks for asking.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244707608361086977">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">low fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "low fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 05:43:35</td>
+                <td class ="content_left">@realDonaldTrump is only calling the Coronavirus the Chinese flu because Yel<span style="color: yellow;"><span style="color: yellow;">low fever</span></span> was already taken.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1244138110180560896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 18:49:52</td>
+                <td class ="content_left">@alexanderCreat @MrAndersonSays @Kustom_Kitten @mccbumgarner @RandPaul Many of us are <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of people using their wealth to get special treatment. Calling someone an Idiot is the least harmful thing a person can do.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1241799270476525569">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-04 02:03:19</td>
+                <td class ="content_left">Hey ⁦@realDonaldTrump⁩ looks like some more people are <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of your lies!
+
+⁦@DonaldJTrumpJr⁩
+
+Republicans Say Pompeo And Trump Lied About Afghanistan Peace Deal https://t.co/8E6d82wWmc</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1235022985112588290">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shake</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shake"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 18:42:46</td>
+                <td class ="content_left">@JoeySalads Please meet with as many people and <span style="color: yellow;"><span style="color: yellow;">shake</span></span> their hands.
+
+BTW - Thoughts about the Trump socialist bailout?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1241797483254210563">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Aspirin</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Aspirin"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 21:04:26</td>
+                <td class ="content_left">“Nobody knew that <span style="color: yellow;">aspirin</span> could be used to treat a fever”
+#ThingsThatTrumpWouldSay</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/BigLawUS/status/1241470746867761157">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

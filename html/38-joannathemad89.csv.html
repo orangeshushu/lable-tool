@@ -1,0 +1,1142 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>38-joannathemad89.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 38-joannathemad89.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">38-joannathemad89.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 04:37:07</td>
+                <td class ="content_left">@AmazonChique If she'd said this to me 2 months ago*, I would've kissed her right on the lips.
+
+*when I had <span style="color: yellow;">COVID-19</span></td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1265139882952982535">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 00:19:37</td>
+                <td class ="content_left">I've noticed my s/p <span style="color: yellow;">COVID-19</span> patients have lost a lot of muscle mass and even those who exercised frequently are needing physical therapy to walk again. https://t.co/eUgXe0Q1Ku</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1263263141850427393">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 15:52:59</td>
+                <td class ="content_left">I have recovered and was cleared to return to work after my symptoms resolved and 2 negative <span style="color: yellow;">COVID-19</span> swabs.
+
+None of my patients tested positive, for which I am so grateful.  I did, however, get my boss sick.  
+
+Is anyone making a "Sorry I gave you <span style="color: yellow;">COVID-19</span>" greeting cards?</td>
+                <td>0</td>
+                <td>24</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1251901617173147653">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 14:55:23</td>
+                <td class ="content_left">@BathysphereHat I'm a nurse and I just got over <span style="color: yellow;">COVID-19</span> myself. DM me if you have any questions. Please take care of yourself. You know a lot about your health yet I cannot resist saying: acetaminophen not ibuprofen, humidifier, prepare for anosmia. Feel better soon!</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1251887122417664005">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 01:39:59</td>
+                <td class ="content_left">@broderick Wait, how do I get this cleanup crew? I have <span style="color: yellow;">COVID-19</span> and I've been quite worried about how to decontaminate my home when well.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245888749260636162">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 16:02:41</td>
+                <td class ="content_left">@DorkusRegis At noon I began to feel nauseous but still able to care for patients. I was not concerned because I did not think this was a <span style="color: yellow;">COVID-19</span> symptom.  I tried eating saltines w/ginger ale. Then I vomited everywhere.  My colleagues took my VS and discovered a low-grade fever.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245381078107459587">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 19:12:33</td>
+                <td class ="content_left">I'm a nurse and tested positive for <span style="color: yellow;">COVID-19</span> after suddenly becoming ill at work. My illness is mild, but I cannot forgive myself for potentially exposing my patients and colleagues.</td>
+                <td>8</td>
+                <td>176</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1244341695900274695">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 13:44:54</td>
+                <td class ="content_left">In quarantine until my <span style="color: yellow;">COVID-19</span> test comes back negative and for some reason this is the time my body chose to be hornier than ever.</td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1243896852585410560">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recovered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recovered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 00:25:39</td>
+                <td class ="content_left">@Werewoof_MD I was so scared of declining and needing a ventilator when I had it.  I was very lucky; I have a lot of ongoing health issues from it, but they're all minor (dermatological, gynecological).
+
+The thing that gets the more serious <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> cases seems to be the clotting.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1263264657504120835">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 15:52:59</td>
+                <td class ="content_left">I have <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and was cleared to return to work after my symptoms resolved and 2 negative COVID-19 swabs.
+
+None of my patients tested positive, for which I am so grateful.  I did, however, get my boss sick.  
+
+Is anyone making a "Sorry I gave you COVID-19" greeting cards?</td>
+                <td>0</td>
+                <td>24</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1251901617173147653">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 05:49:46</td>
+                <td class ="content_left">@ChuckWendig Related: Brian, you were the worst coworker I've ever had (so far).  I told you your habit of wearing the entire stock of Bath &amp; Body Works gave me migraines. We worked together most days. I was constantly in <span style="color: yellow;"><span style="color: yellow;">pain</span></span> until you quit. I hope wherever you are, you're fucking miserable.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1260084732873838592">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 05:41:04</td>
+                <td class ="content_left">@ChuckWendig No one should wear cologne/perfume or heavily scented products.  It's a major migraine trigger; it's essentially a toiletry that causes <span style="color: yellow;"><span style="color: yellow;">pain</span></span> to those around you.</td>
+                <td>1</td>
+                <td>24</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1260082543199752192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 13:52:47</td>
+                <td class ="content_left">@dannychapchap But I want someone else to make it because rolling all those little balls of dough looks like a <span style="color: yellow;"><span style="color: yellow;">pain</span></span> in the ass.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1258394350939181059">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 19:39:04</td>
+                <td class ="content_left">@TransNursing Oh. That's not so bad. I feared there would be real patients somehow involved. Like on a webcam.
+
+You: If I were there, I'd offer you a PRN for <span style="color: yellow;"><span style="color: yellow;">pain</span></span> and reposition you every two hours.
+
+Pt: Great. That's fucking terrific. It helps a lot.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245435530558529543">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-23 23:04:24</td>
+                <td class ="content_left">@grendelsmumm Yeah...I don't think people understand that a lot of the <span style="color: yellow;"><span style="color: yellow;">pain</span></span> is actually in the fallout from such relationships.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1220482444731854854">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">migraine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "migraine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 05:41:04</td>
+                <td class ="content_left">@ChuckWendig No one should wear cologne/perfume or heavily scented products.  It's a major <span style="color: yellow;"><span style="color: yellow;">migraine</span></span> trigger; it's essentially a toiletry that causes pain to those around you.</td>
+                <td>1</td>
+                <td>24</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1260082543199752192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-18 19:38:07</td>
+                <td class ="content_left">@ohhecomin The only fragrance product that doesn't give me a <span style="color: yellow;"><span style="color: yellow;">migraine</span></span> is PooPourri, so... https://t.co/d2pcPILI3z</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1229852615548264453">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 14:24:39</td>
+                <td class ="content_left">Does anyone know a way to prepare Swiss chard that doesn't <span style="color: yellow;"><span style="color: yellow;">taste</span></span> soggy and sad?</td>
+                <td>0</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1258764757684887554">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 00:30:13</td>
+                <td class ="content_left">@redditships I'm <span style="color: yellow;"><span style="color: yellow;">tired</span></span> just reading about this. How does that poor OP manage?</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1258554764280856576">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-03 03:17:31</td>
+                <td class ="content_left">@rozietoez @ThatBlunt_Bytch @PlanetKay @nononoagh Hairdresser: What will it be, Dr. Lawrence?
+
+Anne Lawrence: I'm getting <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of the Nancy Reagan. Let's go for a Dee Dee Blanchard.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1234679266433847297">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Ibuprofen</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Ibuprofen"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 00:56:51</td>
+                <td class ="content_left">@HarbourSeal @lovelylippie21 Prostaglandins are a bitch. <span style="color: yellow;"><span style="color: yellow;">Ibuprofen</span></span> can help for excessive period poops.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1258199079470927876">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 15:52:59</td>
+                <td class ="content_left">I have recovered and was cleared to return to work after my symptoms resolved and 2 negative COVID-19 swabs.
+
+None of my patients <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>, for which I am so grateful.  I did, however, get my boss sick.  
+
+Is anyone making a "Sorry I gave you COVID-19" greeting cards?</td>
+                <td>0</td>
+                <td>24</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1251901617173147653">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 15:55:01</td>
+                <td class ="content_left">@DorkusRegis My symptoms (I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19):
+
+Nausea 1 hr before vomiting (initial symptom)
+Continued nausea
+Intermittent fever following no discernable pattern
+Body aches, particularly in hips, pelvic floor, and feet
+Dry mucous membranes w/occasional congestion</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245379148522172417">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 19:12:33</td>
+                <td class ="content_left">I'm a nurse and <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19 after suddenly becoming ill at work. My illness is mild, but I cannot forgive myself for potentially exposing my patients and colleagues.</td>
+                <td>8</td>
+                <td>176</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1244341695900274695">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">mild symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "mild symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 15:45:56</td>
+                <td class ="content_left">@MrsPA_C I had <span style="color: yellow;"><span style="color: yellow;">mild symptoms</span></span>. I probably did look like I had the flu, but none of my symptoms were that worrisome or dangerous.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1251899841950683136">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">anosmia</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "anosmia"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 14:59:39</td>
+                <td class ="content_left">@BathysphereHat Autism and food texture is one of those complex and individualized things, of course, but if someone can drop off food with textures you enjoy, <span style="color: yellow;"><span style="color: yellow;">anosmia</span></span> will be a lot less awful. (For me it was spaghetti with sauce and shredded parmesan.)</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1251888196901834752">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 00:19:18</td>
+                <td class ="content_left">@redditships People <span style="color: yellow;">touch</span> their crotches when they're anxious, and most of us "unlearn" it during early childhood to satisfy social norms.  It sounds like this dude expects to not have to follow these conventions at home and she's unprepared to deal with it.</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1251304258613411840">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 21:15:35</td>
+                <td class ="content_left">@SamsquatchTweet @AITA_reddit When I was a baby we lived next to an elderly straight couple. He collected toy trains and she collected dolls, but I couldn't <span style="color: yellow;">touch</span> them because they weren't for children. My parents had fun trying to explain that one.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1239661615131353088">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-12 18:46:57</td>
+                <td class ="content_left">@whizvermont @KenidraRWoods_ Why don't you grow up and focus on the kind of prejudice that is actually creating barriers to work, education, justice, healthcare, and even life itself?  Shame on you. I think we'll both survive without getting to <span style="color: yellow;">touch</span> Kenidra's hair.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1227665412093087745">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 23:37:01</td>
+                <td class ="content_left">@LahilahiH @chrislhayes That would <span style="color: yellow;"><span style="color: yellow;">smell</span></span> awful.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1250206457884262402">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 23:19:24</td>
+                <td class ="content_left">@lovelylippie21 I am, thank you for asking! I can't <span style="color: yellow;"><span style="color: yellow;">smell</span></span> anything, which is a bummer, but I'm hoping things stay this mild for me and anyone else afflicted 💕💕💕</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245853369618427904">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-24 23:37:28</td>
+                <td class ="content_left">@mimesatwork Perhaps, but I have to say I prefer the farty feet <span style="color: yellow;"><span style="color: yellow;">smell</span></span> of unwashed adolescent to the <span style="color: yellow;"><span style="color: yellow;">smell</span></span> of AXE, since the former does not give me migraines.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1232087177007378432">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-11 22:22:37</td>
+                <td class ="content_left">@anoticingsenpa1 <span style="color: yellow;">Smell</span> it</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1227357299213242369">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-28 08:39:26</td>
+                <td class ="content_left">@MaratheAkata2 Side note: I just scrolled through this dude's TL and now I have to wash off the <span style="color: yellow;"><span style="color: yellow;">smell</span></span> of incel frustration, feet, and crusty socks.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1222076706686676993">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 21:45:05</td>
+                <td class ="content_left">@PandaWithLasers I'm going to vote for him. I'll probably be putting on pants because it's <span style="color: yellow;"><span style="color: yellow;">cold</span></span> in November. At this point he doesn't have to do anything *for* me, merely not hurt anyone on purpose. I'm voting for him in the hopes of not having 4 more years of someone who won't try to fuck up.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1248366349732241408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-15 01:15:41</td>
+                <td class ="content_left">@redditships Caveman and cavewoman make primitive love in their <span style="color: yellow;"><span style="color: yellow;">cold</span></span> cave dwelling. She dies in childbirth soon after. He is gored to death by a mammoth.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1238997263348895744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-18 15:45:28</td>
+                <td class ="content_left">@alprazosam18 I do. <span style="color: yellow;">Cold</span> air can trigger asthma attacks, or it could be dust that accumulated when you were on break.
+
+What color are his tongue and gums? I high-tailed it straight to an animal hospital whenever my little girl's turned blue.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1218560042405974016">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Can't smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Can't smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 23:19:24</td>
+                <td class ="content_left">@lovelylippie21 I am, thank you for asking! I <span style="color: yellow;">can't smell</span> anything, which is a bummer, but I'm hoping things stay this mild for me and anyone else afflicted 💕💕💕</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245853369618427904">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">feverish</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "feverish"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 20:52:01</td>
+                <td class ="content_left">@KtheDilettante I'm still <span style="color: yellow;"><span style="color: yellow;">feverish</span></span> and achy, but my symptoms are all mild. I miss being able to smell.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245816277983166464">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">painful</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "painful"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 19:56:26</td>
+                <td class ="content_left">@redditships Schizophrenia is a <span style="color: yellow;"><span style="color: yellow;">painful</span></span> and debilitating disease.  It's hard to find meds that work for sufferers, and it's hard to get them to take those meds even when a good regimen is found. The side effects are also very serious.</td>
+                <td>0</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245802291292188674">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-23 15:13:30</td>
+                <td class ="content_left">@AITA_reddit All the bride wanted was clip-on extensions and the OP talked her into this <span style="color: yellow;"><span style="color: yellow;">painful</span></span> disaster. Her hair could take years to grow back.  Honestly, the OP owes her a whole lot more than a wig.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1220363936698191873">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-08 19:50:05</td>
+                <td class ="content_left">@grendelsmumm Like they see it as a condition that makes their jobs harder (granted, it often does, but still). They were very surprised when I told them that it is a very <span style="color: yellow;"><span style="color: yellow;">painful</span></span> condition to have. Many never believed me.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1214997723084206080">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">vomiting</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "vomiting"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 23:20:08</td>
+                <td class ="content_left">@BillGlennon2 You should get tested for COVID-19. I know there are other factors, but <span style="color: yellow;"><span style="color: yellow;">vomiting</span></span> was literally my first symptom and now I have it.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245491165094391812">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 20:38:42</td>
+                <td class ="content_left">@DrLindaDykes Nausea and <span style="color: yellow;"><span style="color: yellow;">vomiting</span></span> (personal experience)</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245450540701679620">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 16:00:04</td>
+                <td class ="content_left">@DorkusRegis I want to stress that the nausea and <span style="color: yellow;"><span style="color: yellow;">vomiting</span></span> developed very suddenly. I was screened at the door at 0700 and I answered no to their questions in complete honesty.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245380419241095171">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 15:55:01</td>
+                <td class ="content_left">@DorkusRegis My symptoms (I tested positive for COVID-19):
+
+Nausea 1 hr before <span style="color: yellow;"><span style="color: yellow;">vomiting</span></span> (initial symptom)
+Continued nausea
+Intermittent fever following no discernable pattern
+Body aches, particularly in hips, pelvic floor, and feet
+Dry mucous membranes w/occasional congestion</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245379148522172417">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nausea</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nausea"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 20:38:42</td>
+                <td class ="content_left">@DrLindaDykes <span style="color: yellow;">Nausea</span> and vomiting (personal experience)</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245450540701679620">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 16:00:04</td>
+                <td class ="content_left">@DorkusRegis I want to stress that the <span style="color: yellow;"><span style="color: yellow;">nausea</span></span> and vomiting developed very suddenly. I was screened at the door at 0700 and I answered no to their questions in complete honesty.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245380419241095171">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 15:57:47</td>
+                <td class ="content_left">@DorkusRegis Anorexia (perhaps responsible for oliguria and constipation)
+Scratchy but not sore throat
+Fatigue
+Malaise
+Trouble breathing deeply - lung sounds clear in all fields
+
+The <span style="color: yellow;"><span style="color: yellow;">nausea</span></span> is worsened by changing position or any PO intake</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245379845430874112">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nausea and vomiting</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nausea and vomiting"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 20:38:42</td>
+                <td class ="content_left">@DrLindaDykes <span style="color: yellow;">Nausea and vomiting</span> (personal experience)</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245450540701679620">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 16:00:04</td>
+                <td class ="content_left">@DorkusRegis I want to stress that the <span style="color: yellow;"><span style="color: yellow;">nausea and vomiting</span></span> developed very suddenly. I was screened at the door at 0700 and I answered no to their questions in complete honesty.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245380419241095171">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">body pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "body pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 19:42:52</td>
+                <td class ="content_left">@lovelylippie21 I am (so far). I have mostly had a fever, <span style="color: yellow;"><span style="color: yellow;">body pain</span></span>s, and nausea. I don't feel any worse than when I have a cold, but I worry that could change.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245436488235573248">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">body pains</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "body pains"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 19:42:52</td>
+                <td class ="content_left">@lovelylippie21 I am (so far). I have mostly had a fever, <span style="color: yellow;"><span style="color: yellow;">body pains</span></span>, and nausea. I don't feel any worse than when I have a cold, but I worry that could change.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245436488235573248">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nauseous</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nauseous"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 16:02:41</td>
+                <td class ="content_left">@DorkusRegis At noon I began to feel <span style="color: yellow;"><span style="color: yellow;">nauseous</span></span> but still able to care for patients. I was not concerned because I did not think this was a COVID-19 symptom.  I tried eating saltines w/ginger ale. Then I vomited everywhere.  My colleagues took my VS and discovered a low-grade fever.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245381078107459587">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 17:04:36</td>
+                <td class ="content_left">@EmergMedDr For what it's worth I got very <span style="color: yellow;"><span style="color: yellow;">nauseous</span></span> and vomited, no pain, low-grade fever, now positive for COVID-19. My symptoms are still very mild.</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1244309496165433346">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">trouble breathing</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "trouble breathing"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 15:57:47</td>
+                <td class ="content_left">@DorkusRegis Anorexia (perhaps responsible for oliguria and constipation)
+Scratchy but not sore throat
+Fatigue
+Malaise
+<span style="color: yellow;">Trouble breathing</span> deeply - lung sounds clear in all fields
+
+The nausea is worsened by changing position or any PO intake</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245379845430874112">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sore throat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sore throat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 15:57:47</td>
+                <td class ="content_left">@DorkusRegis Anorexia (perhaps responsible for oliguria and constipation)
+Scratchy but not <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span>
+Fatigue
+Malaise
+Trouble breathing deeply - lung sounds clear in all fields
+
+The nausea is worsened by changing position or any PO intake</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245379845430874112">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 15:55:01</td>
+                <td class ="content_left">@DorkusRegis My symptoms (I tested <span style="color: yellow;">positive for COVID</span>-19):
+
+Nausea 1 hr before vomiting (initial symptom)
+Continued nausea
+Intermittent fever following no discernable pattern
+Body aches, particularly in hips, pelvic floor, and feet
+Dry mucous membranes w/occasional congestion</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245379148522172417">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 19:12:33</td>
+                <td class ="content_left">I'm a nurse and tested <span style="color: yellow;">positive for COVID</span>-19 after suddenly becoming ill at work. My illness is mild, but I cannot forgive myself for potentially exposing my patients and colleagues.</td>
+                <td>8</td>
+                <td>176</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1244341695900274695">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 17:04:36</td>
+                <td class ="content_left">@EmergMedDr For what it's worth I got very nauseous and vomited, no pain, low-grade fever, now <span style="color: yellow;">positive for COVID</span>-19. My symptoms are still very mild.</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1244309496165433346">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 15:55:01</td>
+                <td class ="content_left">@DorkusRegis My symptoms (I tested positive for COVID-19):
+
+Nausea 1 hr before vomiting (initial symptom)
+Continued nausea
+Intermittent <span style="color: yellow;"><span style="color: yellow;">fever</span></span> following no discernable pattern
+Body aches, particularly in hips, pelvic floor, and feet
+Dry mucous membranes w/occasional congestion</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245379148522172417">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">body ache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "body ache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 15:55:01</td>
+                <td class ="content_left">@DorkusRegis My symptoms (I tested positive for COVID-19):
+
+Nausea 1 hr before vomiting (initial symptom)
+Continued nausea
+Intermittent fever following no discernable pattern
+<span style="color: yellow;">Body ache</span>s, particularly in hips, pelvic floor, and feet
+Dry mucous membranes w/occasional congestion</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245379148522172417">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">body aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "body aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 15:55:01</td>
+                <td class ="content_left">@DorkusRegis My symptoms (I tested positive for COVID-19):
+
+Nausea 1 hr before vomiting (initial symptom)
+Continued nausea
+Intermittent fever following no discernable pattern
+<span style="color: yellow;">Body aches</span>, particularly in hips, pelvic floor, and feet
+Dry mucous membranes w/occasional congestion</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1245379148522172417">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shake</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shake"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 23:11:55</td>
+                <td class ="content_left">@LucyXIV <span style="color: yellow;">Shake</span> It Off by Taylor Swift can fuck right off.
+
+It's so hard for me to select a least favorite as there are so many strong contenders.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1243677157127262208">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">massage</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "massage"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-15 00:26:58</td>
+                <td class ="content_left">@redditships A hot Asian <span style="color: yellow;"><span style="color: yellow;">massage</span></span> therapist asks her client if she should focus on a particular area. He points to his crotch.  She <span style="color: yellow;"><span style="color: yellow;">massage</span></span>s his sore thigh adductors and he leaves feeling much better.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1238985004006457345">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">vomit</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "vomit"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-29 16:27:29</td>
+                <td class ="content_left">@northcoastkevin @amanda_poops <span style="color: yellow;">Vomit</span></td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1233790907515842560">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">medicine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "medicine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-28 04:24:41</td>
+                <td class ="content_left">Box the over-the-counter <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> comes in: drug facts like directions, dosage, warnings, and ingredients.
+
+The actual pill bottle: store at room temperature lol</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1233246621560922112">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-10 18:54:01</td>
+                <td class ="content_left">@tnicholsmd Republicans: I'm gonna go with bizarre myths about how public <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> removes autonomy.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1215708388530835460">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-28 04:24:41</td>
+                <td class ="content_left">Box the over-the-counter medicine comes in: <span style="color: yellow;"><span style="color: yellow;">drug</span></span> facts like directions, dosage, warnings, and ingredients.
+
+The actual pill bottle: store at room temperature lol</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1233246621560922112">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-18 07:38:22</td>
+                <td class ="content_left">@FinallyInspired @jonathanstea *psych
+
+Which medications do you want to know about?
+
+SSRIs take so long to kick in because they augment neuronal regeneration, a cycle that takes 6-8 weeks.  They do not cause dependence.
+
+Pretty much every <span style="color: yellow;"><span style="color: yellow;">drug</span></span> can cause harm in some way.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1218437459878535168">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">loose stool</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "loose stool"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-19 22:54:30</td>
+                <td class ="content_left">@DrNickTwit @andrewjtagg @fluffette My high school said students have to stay home for 24 hours after at least 2 <span style="color: yellow;"><span style="color: yellow;">loose stool</span></span>s and I spent those 4 years wondering how to count diarrheas.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1230264425527095299">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-19 22:54:30</td>
+                <td class ="content_left">@DrNickTwit @andrewjtagg @fluffette My high school said students have to stay home for 24 hours after at least 2 <span style="color: yellow;"><span style="color: yellow;">loose stool</span></span>s and I spent those 4 years wondering how to count diarrheas.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1230264425527095299">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">loose stools</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "loose stools"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-19 22:54:30</td>
+                <td class ="content_left">@DrNickTwit @andrewjtagg @fluffette My high school said students have to stay home for 24 hours after at least 2 <span style="color: yellow;"><span style="color: yellow;">loose stools</span></span> and I spent those 4 years wondering how to count diarrheas.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1230264425527095299">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-19 22:54:30</td>
+                <td class ="content_left">@DrNickTwit @andrewjtagg @fluffette My high school said students have to stay home for 24 hours after at least 2 <span style="color: yellow;"><span style="color: yellow;">loose stools</span></span> and I spent those 4 years wondering how to count diarrheas.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1230264425527095299">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-01 09:52:59</td>
+                <td class ="content_left">@tyleroakley She told me I needed a <span style="color: yellow;"><span style="color: yellow;">nose</span></span> job. I had to stick around because she was my ride.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1223544769059663872">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">migraines</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "migraines"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-27 22:33:33</td>
+                <td class ="content_left">Does anyone use unscented deodorant? Does it still do the trick?
+
+I have <span style="color: yellow;"><span style="color: yellow;">migraines</span></span> easily triggered by fragrances, and I think I might have to switch.</td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1221924232017465344">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asthma</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asthma"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-18 15:45:28</td>
+                <td class ="content_left">@alprazosam18 I do. Cold air can trigger <span style="color: yellow;"><span style="color: yellow;">asthma</span></span> attacks, or it could be dust that accumulated when you were on break.
+
+What color are his tongue and gums? I high-tailed it straight to an animal hospital whenever my little girl's turned blue.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1218560042405974016">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diabetes</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diabetes"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-18 07:14:01</td>
+                <td class ="content_left">@damienxpat @whatsgooddiablo Yes, and anyone who has <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> or has recently taken antibiotics should be on high alert!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1218431330607927297">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">antibiotics</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "antibiotics"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-18 07:14:01</td>
+                <td class ="content_left">@damienxpat @whatsgooddiablo Yes, and anyone who has diabetes or has recently taken <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> should be on high alert!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1218431330607927297">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cancer</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cancer"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-13 19:09:16</td>
+                <td class ="content_left">@MavenOfMayhem I lost a beloved Karen to <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> this year and hearing her name makes me sad.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/joannathemad89/status/1216799389487960066">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

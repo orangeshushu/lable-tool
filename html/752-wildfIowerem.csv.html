@@ -1,0 +1,984 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>752-wildfIowerem.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 752-wildfIowerem.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">752-wildfIowerem.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 23:28:28</td>
+                <td class ="content_left">I’m <span style="color: yellow;"><span style="color: yellow;">tired</span></span> and angry but somebody should be.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1266149371428712460">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 19:15:06</td>
+                <td class ="content_left">I’m so fucking <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of being sick every day. I literally can’t work rn and I’m glad my work is shut down bc otherwise I’d probably be fired. I can barely leave the house. I just wish they’d find out what’s wrong with me. I feel awful and it’s so hard to live.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1264636057997410305">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 00:58:30</td>
+                <td class ="content_left">Me: I’m <span style="color: yellow;"><span style="color: yellow;">tired</span></span> 
+
+My grandpa: hi <span style="color: yellow;"><span style="color: yellow;">tired</span></span>, I’m John 
+
+LMAO HE IS SUCH A DAD JDJDJDJD</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1262548148632854530">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 22:51:30</td>
+                <td class ="content_left">I’m trying so hard to adjust to my new psych meds and it’s so hard 😭 I’m panicking a little bit and feel so <span style="color: yellow;"><span style="color: yellow;">tired</span></span> because one med knocks me out so I sleep for 12 hours and then wake up exhausted still. And I have NO appetite whatsoever. 😭 this is hard but hopefully I’ll adjust</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1262153801135542273">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 03:00:08</td>
+                <td class ="content_left">I’m so <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of being chronically ill and turning 20 life really sucks right now and I’m in pain all day every day and I just wanna be normal but I can’t</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1259317270368657408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 22:00:54</td>
+                <td class ="content_left">I am so <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of feeling sick every day.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1258879577428033539">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 01:57:06</td>
+                <td class ="content_left">Kinda personal but I’m annoyed that my grandma is my moms next of kin and makes the medical decisions for her. I’m her oldest child and I’m 19 so it should be me. I’m <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of getting updates on my mom through my grandma. Like I have to wait all day for an update.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1250604098128412675">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 07:06:17</td>
+                <td class ="content_left">@feeItoomuch She is my everything &amp; I would be lost without her &amp; she just sounded so <span style="color: yellow;"><span style="color: yellow;">tired</span></span> on the phone. She feels like she doesn’t have the strength. I won’t be worried until she starts making big changes. We had a 22 minute conversation which is great she can talk she just sounded drained</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1250319519496601602">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 03:51:13</td>
+                <td class ="content_left">Also my mom is doing okay she’s stable just really <span style="color: yellow;"><span style="color: yellow;">tired</span></span> but we just had a 22 minute conversation and she was only on the cannula the whole time not the BiPAP which is a good sign! Not nearly out of the woods yet and I’m still worried but I truly think she can pull through this</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1250270427575812101">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 05:21:47</td>
+                <td class ="content_left">My mental illness makes me go from mad to h word to <span style="color: yellow;"><span style="color: yellow;">tired</span></span> to happy to depressed all in one day https://t.co/X2idTQtHke</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1247394115031007232">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recover</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recover"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 02:58:38</td>
+                <td class ="content_left">@kycasso I hope your surgery goes well and you <span style="color: yellow;"><span style="color: yellow;">recover</span></span> quickly!! ❤️</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1265839874298515457">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shaking</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shaking"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 01:33:29</td>
+                <td class ="content_left">When I’m mad I GO OFF I’m literally <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> and seething rn</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1265818443309289473">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 00:15:37</td>
+                <td class ="content_left">TEETH LIVE FROM THE VAULT IS PLAYING AND IT IS <span style="color: yellow;">SHAKING</span> THE HOUSE IT IS SO LOUD LMAOOOOOO I HOPE MY NEIGHBORS CALL THE LANDLORD AND REPORT ME!!!!!</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1252390497676484608">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 03:12:14</td>
+                <td class ="content_left">@BEJUSTFlNE We have <span style="color: yellow;"><span style="color: yellow;">taste</span></span> 💆🏻‍♀️</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1264393745258221568">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 01:39:45</td>
+                <td class ="content_left">@someferriswheel Excuse me....those people have no <span style="color: yellow;"><span style="color: yellow;">taste</span></span> whatsoever....red desert is the best on the album</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1264370468397727744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 01:21:49</td>
+                <td class ="content_left">@someferriswheel YOU have no <span style="color: yellow;"><span style="color: yellow;">taste</span></span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1264365956932960258">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 00:02:37</td>
+                <td class ="content_left">@tchvIamet @noshamemcr I’m sorry 😭 I have <span style="color: yellow;"><span style="color: yellow;">taste</span></span></td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1264346024568655872">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 23:58:10</td>
+                <td class ="content_left">@noshamemcr <span style="color: yellow;">Taste</span></td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1264344907206008832">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 01:41:10</td>
+                <td class ="content_left">@nov20ths Harry in the background you have <span style="color: yellow;"><span style="color: yellow;">taste</span></span> https://t.co/iz3DILyvDP</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1262921276294934533">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 21:35:23</td>
+                <td class ="content_left">@kycasso you have such a wild music <span style="color: yellow;"><span style="color: yellow;">taste</span></span> and i love it i wish i could be like that but i’m really picky lol</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1256698826251010048">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 20:50:53</td>
+                <td class ="content_left">@BEJUSTFlNE no <span style="color: yellow;"><span style="color: yellow;">taste</span></span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1254875691365122050">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 05:25:57</td>
+                <td class ="content_left">@feeItoomuch We have such good <span style="color: yellow;"><span style="color: yellow;">taste</span></span> ❤️</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1254280533934247942">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 03:01:44</td>
+                <td class ="content_left">They have <span style="color: yellow;"><span style="color: yellow;">taste</span></span> I love Ashton too https://t.co/nx7PyaXUpl</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1250982749311242243">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 02:03:12</td>
+                <td class ="content_left">@noshamemcr YES !!!!!! <span style="color: yellow;">TASTE</span></td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1250605631813361670">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 03:30:47</td>
+                <td class ="content_left">@redesertmgc <span style="color: yellow;">Taste</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1247003793595805696">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nauseous</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nauseous"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 07:00:34</td>
+                <td class ="content_left">My anxiety is sooo bad at all times I’m always so stressed and for some reason I have a panic attack every time I get in the car now and it makes me super <span style="color: yellow;"><span style="color: yellow;">nauseous</span></span> and my heart beats so fast and I just need an anxiety med that ACTUALLY works.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1264088818094833665">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 17:40:36</td>
+                <td class ="content_left">This made me <span style="color: yellow;"><span style="color: yellow;">nauseous</span></span> https://t.co/YhtkDnC6en</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1248304819586183170">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pains</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pains"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 06:37:07</td>
+                <td class ="content_left">@ktbeast8 I have PCOS too! It’s really hard. My PCOS is under control but my fibromyalgia and IBS aren’t at all. I deal with nausea and indigestion constantly + the chronic pain + other <span style="color: yellow;"><span style="color: yellow;">pains</span></span> it’s just awful and tbh I’m scared to go back to work I’m afraid I can’t handle it</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1264082917946462214">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 06:37:07</td>
+                <td class ="content_left">@ktbeast8 I have PCOS too! It’s really hard. My PCOS is under control but my fibromyalgia and IBS aren’t at all. I deal with nausea and indigestion constantly + the chronic <span style="color: yellow;"><span style="color: yellow;">pain</span></span> + other <span style="color: yellow;"><span style="color: yellow;">pain</span></span>s it’s just awful and tbh I’m scared to go back to work I’m afraid I can’t handle it</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1264082917946462214">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 06:34:30</td>
+                <td class ="content_left">This is so true it took me 19 years until they diagnosed me with fibromyalgia and IBS so if you’re experiencing any <span style="color: yellow;"><span style="color: yellow;">pain</span></span> or exhaustion pls try to get medical help https://t.co/CDzaDIm22S</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1264082256215375872">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 02:22:17</td>
+                <td class ="content_left">I love my job SO MUCH but honestly I wish I could be on disability and not work but I know I’d be so depressed without a job. I was denied for disability anyway. My job causes me so much <span style="color: yellow;"><span style="color: yellow;">pain</span></span> though 😔 https://t.co/AhdViHLQeI</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1264018786983776256">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 02:20:49</td>
+                <td class ="content_left">I wake up stiff and I’m always in <span style="color: yellow;"><span style="color: yellow;">pain</span></span>. It causes me horrible brain fog and I can’t focus on ANYTHING. I’m not like other 20 year olds. I’ve accepted that I live with chronic <span style="color: yellow;"><span style="color: yellow;">pain</span></span> + other symptoms. I just wish people believed me.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1264018415100051457">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 02:20:46</td>
+                <td class ="content_left">Fibromyalgia is more <span style="color: yellow;"><span style="color: yellow;">pain</span></span>ful than people think it is. My MRI and CT scans look perfectly fine but the fibromyalgia causes me horrible back and hip <span style="color: yellow;"><span style="color: yellow;">pain</span></span> every day. I just wish people understood that it’s an actual disability.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1264018403947352066">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 03:00:08</td>
+                <td class ="content_left">I’m so tired of being chronically ill and turning 20 life really sucks right now and I’m in <span style="color: yellow;"><span style="color: yellow;">pain</span></span> all day every day and I just wanna be normal but I can’t</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1259317270368657408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 06:01:43</td>
+                <td class ="content_left">since i’m getting my MRI of my spine next week to find out why i have chronic back <span style="color: yellow;"><span style="color: yellow;">pain</span></span> everyday once i get the results i’m gonna start looking into getting the breast reduction surgery bc i feel that’ll help with the <span style="color: yellow;"><span style="color: yellow;">pain</span></span> a lot</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1258275802124292097">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 05:35:14</td>
+                <td class ="content_left">also i have chronic <span style="color: yellow;"><span style="color: yellow;">pain</span></span> every day and it’s so hard and i’m finally trying to accept my chronic illness</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1257181972524384256">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 17:39:40</td>
+                <td class ="content_left">i should be getting my MRI of my back sometime soon to find out if i have ankylosing spondylitis and i’m really really scared because it’s a very scary disease but would explain the <span style="color: yellow;"><span style="color: yellow;">pain</span></span> i have and i’m just so scared</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1256639505806897153">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 18:05:08</td>
+                <td class ="content_left">@BEJUSTFlNE that’s why i’m getting breast reduction it causes breast <span style="color: yellow;"><span style="color: yellow;">pain</span></span> but i also can’t enjoy things like swimsuits and bralettes and just being bra-less in general. i just wanna be able to cover my chest lmaoo</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1255196363064778752">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 14:24:43</td>
+                <td class ="content_left">I woke up with a splitting headache I am in so much <span style="color: yellow;"><span style="color: yellow;">pain</span></span> I just want this medicine to work</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1253691342489825282">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 06:52:39</td>
+                <td class ="content_left">I feel like I can’t breathe or calm down this emotional <span style="color: yellow;"><span style="color: yellow;">pain</span></span> just won’t go away this is so traumatic and so scary I feel like I don’t have the strength to handle this</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1250316085548613634">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 22:28:17</td>
+                <td class ="content_left">Me: is chronically ill and always in <span style="color: yellow;"><span style="color: yellow;">pain</span></span> 
+
+Also me: does 4 5sos shows where I’ll be sitting outside on the concrete in the heat</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1248377219111501824">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 17:39:07</td>
+                <td class ="content_left">Yes that horrible back &amp; neck <span style="color: yellow;"><span style="color: yellow;">pain</span></span> is so sexy 😍🤩</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1247579670473854977">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 17:37:14</td>
+                <td class ="content_left">When you’re getting out of bed in the morning when you have chronic <span style="color: yellow;"><span style="color: yellow;">pain</span></span> due to fibromyalgia https://t.co/CgzDJQxuR9</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1247579200418131974">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nausea</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nausea"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 06:37:07</td>
+                <td class ="content_left">@ktbeast8 I have PCOS too! It’s really hard. My PCOS is under control but my fibromyalgia and IBS aren’t at all. I deal with <span style="color: yellow;"><span style="color: yellow;">nausea</span></span> and indigestion constantly + the chronic pain + other pains it’s just awful and tbh I’m scared to go back to work I’m afraid I can’t handle it</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1264082917946462214">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 02:20:49</td>
+                <td class ="content_left">I’ve had flares where I’m literally RUNNING <span style="color: yellow;">FEVER</span> and I have to stay in bed all day. Even my fingers hurt. I have muscle spasms all the time. It makes it hard to work. Also, fibromyalgia is tied to IBS for a lot of people so I live with that too</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1264018416068964352">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 20:41:50</td>
+                <td class ="content_left">ALSO yes I wore a mask in public!! I wore an N95 which is the masks medical staff use!! So it’s not possible to get anyone sick!! Also I haven’t run a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> in 72 hours anyway https://t.co/32Y2PqNIJn</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1251611919615655936">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 06:20:44</td>
+                <td class ="content_left">I’m starting to run <span style="color: yellow;"><span style="color: yellow;">fever</span></span> again and I feel so bad now so I’m hoping this advil helps me feel better</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1249220891080364032">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 23:53:47</td>
+                <td class ="content_left">My mom is still sick with COVID and running <span style="color: yellow;"><span style="color: yellow;">fever</span></span>, I’m now running a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> of 100 again, and now my brother is running a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> of 100.4! I thought for two weeks I was sick with COVID, but now I’m unsure because I’m getting sick again? Can I get it twice? I’m so confused.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1248398734586568704">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 08:28:58</td>
+                <td class ="content_left">My fibromyalgia is flaring up so bad and I’m running low grade <span style="color: yellow;"><span style="color: yellow;">fever</span></span> again and I’m in so much pain. I can’t sleep. I fall asleep for like 30 minutes and then wake up again. I feel so awful right now.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1248165998492090368">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">painful</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "painful"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 02:20:46</td>
+                <td class ="content_left">Fibromyalgia is more <span style="color: yellow;"><span style="color: yellow;">painful</span></span> than people think it is. My MRI and CT scans look perfectly fine but the fibromyalgia causes me horrible back and hip pain every day. I just wish people understood that it’s an actual disability.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1264018403947352066">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 19:32:04</td>
+                <td class ="content_left">If I see one more boomer, gen x, or old millennial on Facebook say “bye Felicia!” one more time I’ll off myself that is truly so <span style="color: yellow;"><span style="color: yellow;">painful</span></span> to read</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1252319140746006542">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cancer</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cancer"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 02:43:42</td>
+                <td class ="content_left">my <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> Venus, Mars, and mercury 🥺🥺🥺🥺 https://t.co/ku9ZAHSAyu</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1262937012606242818">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">no appetite</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "no appetite"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 22:51:30</td>
+                <td class ="content_left">I’m trying so hard to adjust to my new psych meds and it’s so hard 😭 I’m panicking a little bit and feel so tired because one med knocks me out so I sleep for 12 hours and then wake up exhausted still. And I have <span style="color: yellow;">NO appetite</span> whatsoever. 😭 this is hard but hopefully I’ll adjust</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1262153801135542273">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">exhausted</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "exhausted"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 22:51:30</td>
+                <td class ="content_left">I’m trying so hard to adjust to my new psych meds and it’s so hard 😭 I’m panicking a little bit and feel so tired because one med knocks me out so I sleep for 12 hours and then wake up <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> still. And I have NO appetite whatsoever. 😭 this is hard but hopefully I’ll adjust</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1262153801135542273">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 06:04:46</td>
+                <td class ="content_left">I’m so fucking <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> from crying/being sick myself so here is an update on my mom I sent to my family. She will hopefully be okay. Im at home away from her and I feel so broken. Thank you to the people who checked on us ❤️ https://t.co/Qh77fIZTl1</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1248492098996690949">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 03:22:05</td>
+                <td class ="content_left">Calum please get a <span style="color: yellow;"><span style="color: yellow;">nose</span></span> piercing I am begging @Calum5SOS</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1261859509250797575">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 01:32:37</td>
+                <td class ="content_left">I’ve had my <span style="color: yellow;"><span style="color: yellow;">nose</span></span> piercing for almost a year and my septum for almost 2...it’s crazy I can’t remember what life was like before my piercings. They make me more confident</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1261469572835602433">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 15:54:57</td>
+                <td class ="content_left">I just got tested for COVID and it hurt my (already painful) <span style="color: yellow;"><span style="color: yellow;">nose</span></span> and sinuses so badly that my <span style="color: yellow;"><span style="color: yellow;">nose</span></span> started bleeding</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1249003008379293697">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 02:30:42</td>
+                <td class ="content_left">I posted this picture bc I’m insecure about my <span style="color: yellow;"><span style="color: yellow;">nose</span></span> and I’m trying to push myself out of my comfort zone https://t.co/lzcybWRZPS</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1248075835971645441">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">my nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "my nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 01:32:37</td>
+                <td class ="content_left">I’ve had <span style="color: yellow;"><span style="color: yellow;">my nose</span></span> piercing for almost a year and my septum for almost 2...it’s crazy I can’t remember what life was like before my piercings. They make me more confident</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1261469572835602433">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 15:54:57</td>
+                <td class ="content_left">I just got tested for COVID and it hurt my (already painful) nose and sinuses so badly that <span style="color: yellow;"><span style="color: yellow;">my nose</span></span> started bleeding</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1249003008379293697">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 02:30:42</td>
+                <td class ="content_left">I posted this picture bc I’m insecure about <span style="color: yellow;"><span style="color: yellow;">my nose</span></span> and I’m trying to push myself out of my comfort zone https://t.co/lzcybWRZPS</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1248075835971645441">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">chill</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "chill"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-15 22:44:18</td>
+                <td class ="content_left">I took my new anxiety medication for the first time today and it didn’t hit me hard but I was able to take a small nap and I feel real <span style="color: yellow;"><span style="color: yellow;">chill</span></span> rn. This is the first time in a long time where I’m not dealing with some anxiety. It’s not perfect but it’s better 💕</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1261427211778826240">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 01:22:59</td>
+                <td class ="content_left">@halsey yep drinking my almond milk <span style="color: yellow;"><span style="color: yellow;">cold</span></span> brew right now</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1254944163847647238">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">headache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "headache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 14:24:43</td>
+                <td class ="content_left">I woke up with a splitting <span style="color: yellow;"><span style="color: yellow;">headache</span></span> I am in so much pain I just want this medicine to work</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1253691342489825282">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">medicine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "medicine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 14:24:43</td>
+                <td class ="content_left">I woke up with a splitting headache I am in so much pain I just want this <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> to work</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1253691342489825282">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 04:30:30</td>
+                <td class ="content_left">the song <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> that’s it that’s the tweet</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1252817030467616769">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">run a fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "run a fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 20:41:50</td>
+                <td class ="content_left">ALSO yes I wore a mask in public!! I wore an N95 which is the masks medical staff use!! So it’s not possible to get anyone sick!! Also I haven’t <span style="color: yellow;"><span style="color: yellow;">run a fever</span></span> in 72 hours anyway https://t.co/32Y2PqNIJn</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1251611919615655936">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 01:44:39</td>
+                <td class ="content_left">@BrainInAJar_ I think that antiviral <span style="color: yellow;"><span style="color: yellow;">drug</span></span> you mentioned is pretty hard to come by but the plaquinol is a malaria <span style="color: yellow;"><span style="color: yellow;">drug</span></span> which is shown to help with people with severe COVID complications such as pneumonia so I’m hoping it helps just as much. Thank you for being so supportive ❤️❤️❤️</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1249151412895916032">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 01:28:51</td>
+                <td class ="content_left">They just started my mom on an experimental <span style="color: yellow;"><span style="color: yellow;">drug</span></span> for COVID treatment and I’m really hoping it helps her get through this. We’re unsure if she’ll be at the hospital for a long or short time but I’m glad they’re doing the best they can to get her better. 🤞🏻❤️</td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1249147435571707904">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Blood clots</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Blood clots"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 01:31:33</td>
+                <td class ="content_left">They also did a scan of her lungs and she obv has pneumonia but no <span style="color: yellow;">blood clots</span> which is good. https://t.co/xYYYgEcWwI</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1249148115640365058">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 21:57:05</td>
+                <td class ="content_left">@5sosyafakebetch There’s not much I can take besides Tylenol and <span style="color: yellow;"><span style="color: yellow;">cough</span></span> syrup but I’m hoping I feel better soon</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1249094145123201024">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 20:14:04</td>
+                <td class ="content_left">The doctor was so nice and she called in an antibiotic for me and some <span style="color: yellow;"><span style="color: yellow;">cough</span></span> syrup AND set it up for me to be tested for COVID tomorrow 🥺❤️ blessed</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1248705830666539009">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 01:38:30</td>
+                <td class ="content_left">My mom thinks she has pneumonia and she’s feeling horrible and her <span style="color: yellow;"><span style="color: yellow;">cough</span></span> is getting worse :( they have her on an antibiotic she started today but I’m so worried about her</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1248425089894240260">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 02:06:44</td>
+                <td class ="content_left">@redesertmgc If someone has coronavirus and is wearing a cloth mask they can still spread their germs to people in public because the droplets from when they <span style="color: yellow;"><span style="color: yellow;">cough</span></span> can go through the mask</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1248069804453433346">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Tylenol</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Tylenol"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 21:57:05</td>
+                <td class ="content_left">@5sosyafakebetch There’s not much I can take besides <span style="color: yellow;"><span style="color: yellow;">Tylenol</span></span> and cough syrup but I’m hoping I feel better soon</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1249094145123201024">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">trouble breathing</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "trouble breathing"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 21:29:47</td>
+                <td class ="content_left">My mom is going back to the hospital because she’s having <span style="color: yellow;"><span style="color: yellow;">trouble breathing</span></span> and her oxygen levels are even lower even though she’s on home oxygen. They’re probably gonna admit her. My brother and I are so scared. 😓</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1249087272290566146">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 21:13:49</td>
+                <td class ="content_left">I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1249083255317565444">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 23:58:15</td>
+                <td class ="content_left">@WlLDFLOWERAFl Fuck. I was getting better and doing well and right when that happened my mom got sick (she <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>) and I’ve been the one taking care of her for 6 days now and very close contact. And now I’m having the same symptoms and I’m concerned</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1248399860765622272">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 21:13:49</td>
+                <td class ="content_left">I tested <span style="color: yellow;">positive for COVID</span></td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1249083255317565444">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">antibiotics</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "antibiotics"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 23:53:49</td>
+                <td class ="content_left">I feel like shit and I’m very sick right now. My brother is starting to get symptoms too. My mom is still very sick and she’s starting on <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1248398746070597632">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 05:42:52</td>
+                <td class ="content_left">@feeItoomuch Yes we do we are connected at the hip but my brother and his best friend barely <span style="color: yellow;">touch</span> I have never seen them hug or tell each other that they love one another</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/wildfIowerem/status/1247399424218869760">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

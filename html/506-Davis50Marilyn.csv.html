@@ -1,0 +1,727 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>506-Davis50Marilyn.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 506-Davis50Marilyn.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">506-Davis50Marilyn.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 02:05:26</td>
+                <td class ="content_left">⁦@RealJamesWoods⁩ - OMG!
+
+FBI Finally Caught The Man Behind A $750 Million <span style="color: yellow;">Covid-19</span> Scam – Patriot Powered News https://t.co/WJ4NXSyVVQ</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1265464096713060352">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 13:42:21</td>
+                <td class ="content_left">Thanks @RealJamesWoods for informing the public about this horrible turn of events.The brainiac who put this mentally ill, <span style="color: yellow;">Covid-19</span> positive, non-elderly male in a nursing home instead of the HOSPITAL should be held accountable too! 2 elderly people would not have been assaulted! https://t.co/C2E9qt8Ean</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1264552318378409986">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 13:23:53</td>
+                <td class ="content_left">@RealJamesWoods - Wonder who the brainiac was that sent a mentally Ill - NON-elderly person, with <span style="color: yellow;">Covid-19</span> to a nursing home? Why not a hospital? This nut job assaulted TWO elderly people while in a nursing home, &amp; posted 1 assault on social media!  Brilliant!  Egads! https://t.co/C2E9qt8Ean</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1264547669143367682">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 01:46:06</td>
+                <td class ="content_left">Very nice!  Thank you Iowa for Thanking the efforts of The POTUS, VP, and the <span style="color: yellow;">Covid-19</span> Federal Team! Class Act! https://t.co/EeVbYVsjVH</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1258211474453024768">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 01:43:16</td>
+                <td class ="content_left">God Bless all of the First Responders, Doctors, Nurses, and anyone that helped The USA through <span style="color: yellow;">Covid-19</span> crisis! https://t.co/VC2lrCHXki</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1258210758942437377">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 01:41:43</td>
+                <td class ="content_left">No money for The Democrats to line their own pockets with.  That’s what they do! The Democrat Party has sunk so low, lied &amp; leaked so much, &amp; tried &amp; failed w/Russian hoax, Ukraine coup, &amp; impeachment. Giving the World <span style="color: yellow;">Covid-19</span> via Fauci &amp; Birx won’t work either.TRUMP 11-3-2020! https://t.co/EU1W2mkpfo</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1258210371040694280">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 15:33:06</td>
+                <td class ="content_left">We must stop the Governments from taking away our Freedoms!  This is dry run to Marshall Law/Socialism. Like it?  Me either!  How can we stop this?  I had <span style="color: yellow;">Covid-19</span> &amp; stayed isolated.  Have th3 anti-bodies.  Let me be FREE! https://t.co/ImkWeIDIHL</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1257332432786915329">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 23:18:40</td>
+                <td class ="content_left">Scientists say masks don’t work!  Coved-19 is a virus where a person has to touch the virus, then touch face so it gets to respiratory area.  I think social distancing &amp; face masks are over rated &amp; useless.  I had <span style="color: yellow;">Covid-19</span> &amp; know exactly how I got it. Touched gas pump then face. https://t.co/BiwbxyMeGw</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1254550491100590081">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 16:53:34</td>
+                <td class ="content_left">@realDonaldTrump @RealJamesWoods - remember - “Elites” want to control people.  They use Fear, Panic &amp; Hysteria to do so. <span style="color: yellow;">Covid-19</span> was PLANNED in 2015 under #44. 
+Dr SHIVA Ayyadurai MIT PhD:  Radio Interview - Bill Gates/Fauci/Big Phar... https://t.co/hbfyNrsbfc via @YouTube</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1252641640864460800">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 16:44:13</td>
+                <td class ="content_left">@realDonaldTrump @RealJamesWoods - Don’t get caught up in the “inventor of email” part.  I’ll post that too.
+Dr. Shiva Ayyadurai -- MIT PhD Biologist on Corona virus <span style="color: yellow;">COVID-19</span> - Dr. ... https://t.co/oIdeNsdcDw via @YouTube</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1252639286308089867">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 23:39:50</td>
+                <td class ="content_left">@realDonaldTrump - please make sure all of the dead people are taken off the voting rolls.  It sounds cruel but that’s the Democrats dream! For all of the <span style="color: yellow;">Covid-19</span> victims to vote Democrat! Don’t let that happen! Make all states do their Electoral job! https://t.co/UXabq0HBjg</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1250931941383254017">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 23:34:32</td>
+                <td class ="content_left">Great!  The USA will be as good as new very fast!  <span style="color: yellow;">Covid-19</span> will be gone forever!  You, President Trump MUST make China pay.  They did this to hurt you. I’m sure it hurt you because you trusted China &amp; Xi Jiping.  But, he was in on it too.  He’s your &amp; USA’s enemy.  He’s Jealous! https://t.co/mEkjt60Q18</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1250930608710340610">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 00:14:45</td>
+                <td class ="content_left">@CBSNews I don’t believe her.  No hospital would make anyone working in a <span style="color: yellow;">Covid-19</span> w/o a face mask!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1246954462192775169">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 05:32:34</td>
+                <td class ="content_left">The USA is very grateful for all that you’ve done for USA! <span style="color: yellow;">Covid-19</span> will soon be in the past &amp; USA will prosper again. China needs to pay for lying about # of infected &amp; # of deaths &amp; especially for DELAYING telling THE WORLD about Pandemic when it started - in Oct., 2019! https://t.co/qIkiCip0Yr</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1245947278365462533">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 19:39:56</td>
+                <td class ="content_left">Pelosi is one ignorant, stupid person.  She’s not immune from <span style="color: yellow;">Covid-19</span> herself! Too bad her ignorance could infect her &amp; dozens of others. At least that would shut her up for awhile if she got sick! You can’t fix stupid! https://t.co/OcPbALQ1ss</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1245798139593986048">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 19:36:33</td>
+                <td class ="content_left">@Az56Gary @SKYRIDER4538 @GGard333 @RealJamesWoods I was positive for <span style="color: yellow;">Covid-19</span> on 3/16. Re-tested -twice (swab &amp; blood) &amp; am now Negative for <span style="color: yellow;">Covid-19</span>. Blood test determined I have antibodies for virus. Health Dept. begged me to donate blood.Treated for Hep C in 2002 &amp; am non-detectable but test positive for a Hep C. Cant donate!</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1245797286006980608">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 19:40:44</td>
+                <td class ="content_left">This is just awful how China deceived &amp; lied to The Workd about the Coronavirus!
+
+The Comprehensive Timeline of China’s <span style="color: yellow;">COVID-19</span> Lies https://t.co/FElMl4vQmN</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1245435951796629505">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 23:03:18</td>
+                <td class ="content_left">@kathygriffin Kathy-Pain is NOT 1 of the <span style="color: yellow;">Covid-19</span> symptoms! Did you have a sore throat/Bad cough? No immune system? Underlying illnesses? You’re 59-not over 65! Have a fever? The HOSPITAL made decision NOT to test you-not Trump or Pence! You think they want an undiagnosed <span style="color: yellow;">Covid-19</span> patient?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1244399763090538496">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 05:25:54</td>
+                <td class ="content_left">Happy Birthday!  I turned 69 in September., 2019. I’ll be getting out of isolation on Tuesday (3/30) after re-test. I had a mild case compared with others I’ve seen. I’m very grateful &amp; blessed.  Hope EVERYONE that has <span style="color: yellow;">Covid-19</span> gets better quickly! This too shall pass!  🌺 https://t.co/rcNXySvpYd</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1244133663165624320">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 14:07:55</td>
+                <td class ="content_left">Everyone be cautious about gas pumps!  There usually is no hand sanitizer- just paper towels. If you don’t carry disposable plastic gloves, do so.  I have <span style="color: yellow;">Covid-19</span> &amp; think I got it when pumping gas at a Costco.  If you use disposable gloves to pump gas, throw them when done.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1242090704706383874">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 06:44:06</td>
+                <td class ="content_left">It’s The <span style="color: yellow;">Covid-19</span> virus. https://t.co/yDx31QNaPU</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1240529462984409088">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 01:21:24</td>
+                <td class ="content_left">@brhodes What the Hell are you talking about? #44 = WORST POTUS EVER! Trump hasn’t been in office 8 years - YET.  Trump = BEST POTUS EVER!  You must have TDS (very similar to <span style="color: yellow;">Covid-19</span> but never goes away) or be  a troll or both!</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1238273924804288513">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recover</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recover"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 06:21:36</td>
+                <td class ="content_left">USE COMMON SENSE!  DO NOT LET The Virus WIN! The USA must <span style="color: yellow;"><span style="color: yellow;">recover</span></span> &amp; prosper! We have an awesome leader that wants the American people to win!  Follow Guidelines &amp; be aware Covid exists! Stay Positive &amp; Smart! https://t.co/MP5I1YXzjD</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1264803787027480576">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 22:38:06</td>
+                <td class ="content_left">Wear a clear shield-not face mask.Face masks prevent us from expelling CO2 &amp; prevents proper amount of Oxygen to enter lungs.This lowers your immune system. Face masks are uncomfortable. if there are Covid particles on outside of face mask, you’ll <span style="color: yellow;">touch</span> mask &amp; infect yourself! https://t.co/4GdXLS8IYb</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1264324754057592833">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 23:18:40</td>
+                <td class ="content_left">Scientists say masks don’t work!  Coved-19 is a virus where a person has to <span style="color: yellow;">touch</span> the virus, then <span style="color: yellow;">touch</span> face so it gets to respiratory area.  I think social distancing &amp; face masks are over rated &amp; useless.  I had Covid-19 &amp; know exactly how I got it. <span style="color: yellow;"><span style="color: yellow;">Touch</span></span>ed gas pump then face. https://t.co/BiwbxyMeGw</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1254550491100590081">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 15:01:47</td>
+                <td class ="content_left">@RonDeSantisFL-I live in Palm Beach County &amp; have Covid-19. Thinking about where I was exposed I concluded it was The Costco GAS PUMPS!  There’s No Hand Sanitizer by gas pumps &amp; look how many hands <span style="color: yellow;">touch</span> them! I asked Costco employee to tell management. Use disposable gloves!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1242104261732970499">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-15 02:19:18</td>
+                <td class ="content_left">@kissmygrits8 @RealJamesWoods I think you are a Bot with TDS.  Name 1 lie Trump has told.  Now, name 1 thing he has done that has bettered The USA.  Bet you won’t answer cuz you don’t know anything except what MSM tells you &amp; you are a sheep.  Stick with 1 of the 2 DEMs, please, <span style="color: yellow;"><span style="color: yellow;">Touch</span></span> base with us in a year.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1239013274127085569">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 13:08:22</td>
+                <td class ="content_left">@RJ_LIPPS @JudicialWatch Your Governor is nuts! Here in S Florida, we have the BEST Governor DeSantis. FL is in Phase 2 of re-opening. He took all the elderly in nursing, rehab, &amp; retirement centers that <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for Covid &amp; isolating them in hospitals. Keeps the others calm. Tested every day.</td>
+                <td>1</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1261644664127524865">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 13:08:22</td>
+                <td class ="content_left">@RJ_LIPPS @JudicialWatch Your Governor is nuts! Here in S Florida, we have the BEST Governor DeSantis. FL is in Phase 2 of re-opening. He took all the elderly in nursing, rehab, &amp; retirement centers that tested <span style="color: yellow;">positive for Covid</span> &amp; isolating them in hospitals. Keeps the others calm. Tested every day.</td>
+                <td>1</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1261644664127524865">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 19:36:33</td>
+                <td class ="content_left">@Az56Gary @SKYRIDER4538 @GGard333 @RealJamesWoods I was <span style="color: yellow;">positive for Covid</span>-19 on 3/16. Re-tested -twice (swab &amp; blood) &amp; am now Negative for Covid-19. Blood test determined I have antibodies for virus. Health Dept. begged me to donate blood.Treated for Hep C in 2002 &amp; am non-detectable but test positive for a Hep C. Cant donate!</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1245797286006980608">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Sneeze</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Sneeze"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 18:59:52</td>
+                <td class ="content_left">How right you are! Humans must be exposed to good/bad germs/virus’s! It builds immune system. Face masks lowers your oxygen intake &amp; lowers your immune system. <span style="color: yellow;"><span style="color: yellow;">Sneeze</span></span> &amp; cough into a Kleenex or inside of your arm, then wash  your hands/arm!  Simple. Dems want Trump to fail! https://t.co/AMwtpDj65a</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1261008346947235844">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 18:43:49</td>
+                <td class ="content_left">No! As long as they don’t have virus. If they don’t know, do they have health issues? This is not brain surgery. Do the sensible choice. Cough &amp; <span style="color: yellow;">sneeze</span> into Kleenex/inside arm, then wash your hands.  Don’t over sanitize everything. We need exposure to good/bad germs/virus’s! https://t.co/zcqZVqqHLv</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1261004303990427649">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 18:40:28</td>
+                <td class ="content_left">Facemasks stop the flow of oxygen to people’s lungs. With lower oxygen levels, your immune system goes down fast.  Then you become more susceptible to Covid.  Cover your mouth if you <span style="color: yellow;">sneeze</span> or cough! Wash your hands. You can’t eliminate exposure to all good/bad germs/virus’s. https://t.co/8c5nCm17Rp</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1261003460872491008">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 03:00:02</td>
+                <td class ="content_left">Fauci is part of Deep State. Trump needs to get rid of him.  Hes in the plan to make USA Socialist by keeping us scared, locked up at home, &amp; even wear masks. You <span style="color: yellow;">sneeze</span> or cough - use your arm or Kleenex! Face masks lower our immune systems. That's science! https://t.co/4Trj5jWfpx</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1260404405670760449">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 23:24:18</td>
+                <td class ="content_left">I tweeted my viewpoint. No masks. Forget distancing. Don’t <span style="color: yellow;">sneeze</span> into the air! Use hand sanitizer.Wipe surfaces. Boom! I’m very high risk &amp; checked every box. Only had mild case of it &amp; have the anti-bodies. Wasn’t as bad as the flu. 69, Had cough, sore throat, 103 fever &amp; Chemo https://t.co/Nv5nOL4Xsl</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1254551910423633920">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 18:59:52</td>
+                <td class ="content_left">How right you are! Humans must be exposed to good/bad germs/virus’s! It builds immune system. Face masks lowers your oxygen intake &amp; lowers your immune system. Sneeze &amp; <span style="color: yellow;"><span style="color: yellow;">cough</span></span> into a Kleenex or inside of your arm, then wash  your hands/arm!  Simple. Dems want Trump to fail! https://t.co/AMwtpDj65a</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1261008346947235844">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 18:43:49</td>
+                <td class ="content_left">No! As long as they don’t have virus. If they don’t know, do they have health issues? This is not brain surgery. Do the sensible choice. <span style="color: yellow;">Cough</span> &amp; sneeze into Kleenex/inside arm, then wash your hands.  Don’t over sanitize everything. We need exposure to good/bad germs/virus’s! https://t.co/zcqZVqqHLv</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1261004303990427649">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 03:00:02</td>
+                <td class ="content_left">Fauci is part of Deep State. Trump needs to get rid of him.  Hes in the plan to make USA Socialist by keeping us scared, locked up at home, &amp; even wear masks. You sneeze or <span style="color: yellow;"><span style="color: yellow;">cough</span></span> - use your arm or Kleenex! Face masks lower our immune systems. That's science! https://t.co/4Trj5jWfpx</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1260404405670760449">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 23:24:18</td>
+                <td class ="content_left">I tweeted my viewpoint. No masks. Forget distancing. Don’t sneeze into the air! Use hand sanitizer.Wipe surfaces. Boom! I’m very high risk &amp; checked every box. Only had mild case of it &amp; have the anti-bodies. Wasn’t as bad as the flu. 69, Had cough, sore throat, 103 <span style="color: yellow;"><span style="color: yellow;">fever</span></span> &amp; Chemo https://t.co/Nv5nOL4Xsl</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1254551910423633920">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sore throat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sore throat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 23:24:18</td>
+                <td class ="content_left">I tweeted my viewpoint. No masks. Forget distancing. Don’t sneeze into the air! Use hand sanitizer.Wipe surfaces. Boom! I’m very high risk &amp; checked every box. Only had mild case of it &amp; have the anti-bodies. Wasn’t as bad as the flu. 69, Had cough, <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span>, 103 fever &amp; Chemo https://t.co/Nv5nOL4Xsl</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1254551910423633920">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 23:03:18</td>
+                <td class ="content_left">@kathygriffin Kathy-Pain is NOT 1 of the Covid-19 symptoms! Did you have a <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span>/Bad cough? No immune system? Underlying illnesses? You’re 59-not over 65! Have a fever? The HOSPITAL made decision NOT to test you-not Trump or Pence! You think they want an undiagnosed Covid-19 patient?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1244399763090538496">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">freeze</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "freeze"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 19:39:41</td>
+                <td class ="content_left">@RealJamesWoods - Soros should be charged with ALL his Anti-American shenanigans, and deported back to Hungary with his 2 sons! Plus have US citizenship revoked! Jail would next better step! <span style="color: yellow;">Freeze</span> his money. https://t.co/OyVtOuZGXn</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1252321054988664833">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">test positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "test positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 19:36:33</td>
+                <td class ="content_left">@Az56Gary @SKYRIDER4538 @GGard333 @RealJamesWoods I was positive for Covid-19 on 3/16. Re-tested -twice (swab &amp; blood) &amp; am now Negative for Covid-19. Blood test determined I have antibodies for virus. Health Dept. begged me to donate blood.Treated for Hep C in 2002 &amp; am non-detectable but <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for a Hep C. Cant donate!</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1245797286006980608">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">have a fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "have a fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 23:03:18</td>
+                <td class ="content_left">@kathygriffin Kathy-Pain is NOT 1 of the Covid-19 symptoms! Did you have a sore throat/Bad cough? No immune system? Underlying illnesses? You’re 59-not over 65! <span style="color: yellow;">Have a fever</span>? The HOSPITAL made decision NOT to test you-not Trump or Pence! You think they want an undiagnosed Covid-19 patient?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1244399763090538496">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">bad cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "bad cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 23:03:18</td>
+                <td class ="content_left">@kathygriffin Kathy-Pain is NOT 1 of the Covid-19 symptoms! Did you have a sore throat/<span style="color: yellow;">Bad cough</span>? No immune system? Underlying illnesses? You’re 59-not over 65! Have a fever? The HOSPITAL made decision NOT to test you-not Trump or Pence! You think they want an undiagnosed Covid-19 patient?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1244399763090538496">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 13:45:47</td>
+                <td class ="content_left">@realDonaldTrump - you have been BEST POTUS EVER! China may have sabotaged the world on purpose cuz of USA tariffs &amp; 1st part of Trade Deal. They lost Billions &amp; are vengeful. I’d have a chat w/Xi. I <span style="color: yellow;"><span style="color: yellow;">smell</span></span> a Soros rat in the mix. https://t.co/oS2gBWXjXB</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1240273196831707136">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 17:26:48</td>
+                <td class ="content_left">@MisterToxicMan @xqben I <span style="color: yellow;"><span style="color: yellow;">smell</span></span> a Soros rat.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1239966429761253377">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-29 16:52:38</td>
+                <td class ="content_left">Israel shared this info. w/Trump &amp; promised USA would be 1st to get this new vaccine &amp; formula so USA <span style="color: yellow;"><span style="color: yellow;">drug</span></span> companies can produce it. Dems know. What will new crisis be?
+
+Coronavirus Vaccine? Here is What Israeli Researchers Are Saying. | Outraged Patriot https://t.co/AcBZj86FyO</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1233797236607377414">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-25 02:46:14</td>
+                <td class ="content_left">@NyerinFl I’m being optimistic. If there are mentally ill people, they’ll go elsewhere. <span style="color: yellow;">Drug</span> addicts to re-hab. Once there are sufficient beds available, if homeless won’t avail themselves of them, then the police can arrest them.  But the county has to have sufficient beds. Want JPP back!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1232134680977321984">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-21 15:55:26</td>
+                <td class ="content_left">@Breaking911 I don’t understand why people are saying Trumps Health Plan doesn’t work,or excludes people, cuz Trump DOESN’T have A Health Plan approved yet &amp; The USA is still under #44’s Obamacare (ACA)There is no “Trump care” plan! Trump is trying to lower <span style="color: yellow;"><span style="color: yellow;">drug</span></span> prices &amp; get them from Canada!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1230883738168459264">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-16 06:10:17</td>
+                <td class ="content_left">@JacqueCoward @LG4LG @Alyssa_Milano - isn’t she dead from a <span style="color: yellow;"><span style="color: yellow;">drug</span></span> overdose? Not a very good actress &amp; definitely not a good American.  Who is she?  🤮🤮🤮🤮</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1217690515254185985">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-16 06:08:40</td>
+                <td class ="content_left">@JacqueCoward @LG4LG Who is Alyssa Milano I THOUGHT SHE DIED. FROM A <span style="color: yellow;">DRUG</span> OVERDOSE!</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1217690110780739585">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diabetes</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diabetes"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-22 01:25:50</td>
+                <td class ="content_left">@rachelcaine @Stacy30824469 @Breaking911 @GSDAlpha I have a very rare eye cancer, RA, Hep C, have Type II <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> &amp; am Insulin dependent, had to have all my teeth pulled out &amp; got implants, broke both my legs &amp; have no immune system. Retired from my job after 30 years &amp; pay $700/mo for my secondary insurance. On Medicare. 0 debt</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1231027285068779520">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-30 01:18:44</td>
+                <td class ="content_left">Retweet if you’re <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of this biased impeachment!  It is obvious that The House of Representatives did NOT give The Senate a non-partisan, provable Impeachment.  The House had a private agenda &amp; has had a private agenda since Trump was elected. He wanted to “cheat” in 2020?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1222690576765681666">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-26 17:44:25</td>
+                <td class ="content_left">@johncardillo @AndrewPollackFL President Trump will win his 2nd term on 11-3-2020 by a landslide cuz The Dem. Party is nothing but The Socialist Party &amp; lies, schemes &amp; pay offs are considered the truth to them.  The American people do NOT want The USA to be a Socialist country &amp; are <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of The DEMs games.</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1221489081458339841">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shaking</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shaking"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-17 03:43:39</td>
+                <td class ="content_left">@45BlockedMe @CBS_Herridge @realDonaldTrump @MarkMeadows @Jim_Jordan Temporary inconvenience.Trump will NOT be removed &amp; hope that really ticks you off.  When he gets re-elected on 11-3-2020 - hope The DEMs are <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> in their boots, cuz they should be.  All their lies &amp; schemes &amp; paid for phony stuff to set-up the POTUS, will take them down!</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/Davis50Marilyn/status/1218016001574522880">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

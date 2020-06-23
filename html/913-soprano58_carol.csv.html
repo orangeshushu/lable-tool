@@ -1,0 +1,943 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>913-soprano58_carol.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 913-soprano58_carol.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">913-soprano58_carol.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 10:50:04</td>
+                <td class ="content_left">@LincolnsBible I got sick mid-March and my <span style="color: yellow;"><span style="color: yellow;">cough</span></span> lasted on and off for 5 weeks. Do you have a pulse oxometer? If so take your O2 levels frequently. My doc told me if they’re above 93% you’re ok even if you’re hacking up a lung. This thing is brutal. I still get fatigued easily. 😢</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1265958513303568384">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 18:32:49</td>
+                <td class ="content_left">@DavidLat @JCNSeverino Ugh. It seems that this virus is a tenacious little bugger. My ‘relapse’ is milder on the <span style="color: yellow;"><span style="color: yellow;">cough</span></span> end but the fatigue is worse. I hope your <span style="color: yellow;"><span style="color: yellow;">cough</span></span> is short-lived and goes away. My husband has some fatigue and a slight <span style="color: yellow;"><span style="color: yellow;">cough</span></span> but not like when he first got sick. 😢🥺</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1251941842515570688">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fatigued</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fatigued"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 10:50:04</td>
+                <td class ="content_left">@LincolnsBible I got sick mid-March and my cough lasted on and off for 5 weeks. Do you have a pulse oxometer? If so take your O2 levels frequently. My doc told me if they’re above 93% you’re ok even if you’re hacking up a lung. This thing is brutal. I still get <span style="color: yellow;"><span style="color: yellow;">fatigued</span></span> easily. 😢</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1265958513303568384">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recover</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recover"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 19:11:55</td>
+                <td class ="content_left">@michellerene21 @IXP12526758 @EileenO @grady_nunya Indeed. And it’s so random. Once you <span style="color: yellow;"><span style="color: yellow;">recover</span></span> your think you’re in the clear and then you have a day or two of feeling like crap. It just lingers. 😢</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1264635255341944833">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 19:05:07</td>
+                <td class ="content_left">@IXP12526758 @EileenO @grady_nunya My after effects are mostly intense fatigue and some lingering stomach issues. There are days where I hit a wall and I’ve never had that happen before. Every now and again I still have stomach problems - <span style="color: yellow;"><span style="color: yellow;">pain</span></span> and diarrhea. Hope this helps.</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1264271156590362625">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-01 03:29:11</td>
+                <td class ="content_left">@ThePolitiks @aimeecarrero @CNNPolitics Ah you’re one of those sociopathic Trumpanzees that gets off on people’s <span style="color: yellow;"><span style="color: yellow;">pain</span></span> and unhappiness. Are you proud of yourself? Feel good? Feel powerful? Because your tweet just shows what a small, nasty and ignorant dolt you are. A perfect supporter for the monster in the WH.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1223448181012402185">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fatigue</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fatigue"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 19:05:07</td>
+                <td class ="content_left">@IXP12526758 @EileenO @grady_nunya My after effects are mostly intense <span style="color: yellow;"><span style="color: yellow;">fatigue</span></span> and some lingering stomach issues. There are days where I hit a wall and I’ve never had that happen before. Every now and again I still have stomach problems - pain and diarrhea. Hope this helps.</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1264271156590362625">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 22:42:00</td>
+                <td class ="content_left">@GottaLaff Unbelievably Ed and I had a little relapse. Last week was rough with lots of <span style="color: yellow;"><span style="color: yellow;">fatigue</span></span> and cough. Today I feel better. Ed’s still feeling crummy. This virus is a tenacious little bugger. Plus we tested positive again after 4 weeks. Thanks for asking. 🙄</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1252366937369088003">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 18:32:49</td>
+                <td class ="content_left">@DavidLat @JCNSeverino Ugh. It seems that this virus is a tenacious little bugger. My ‘relapse’ is milder on the cough end but the <span style="color: yellow;"><span style="color: yellow;">fatigue</span></span> is worse. I hope your cough is short-lived and goes away. My husband has some <span style="color: yellow;"><span style="color: yellow;">fatigue</span></span> and a slight cough but not like when he first got sick. 😢🥺</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1251941842515570688">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 15:55:06</td>
+                <td class ="content_left">@DavidLat @JCNSeverino Mostly profound <span style="color: yellow;"><span style="color: yellow;">fatigue</span></span> and bad cough/congestion. So now we’re under another 14-day quarantine. The only reason we were retested was because of the plasma donor program. Otherwise we would be out at the grocery store thinking we were no longer contagious. We must have testing,</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1251902152278228992">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 01:51:51</td>
+                <td class ="content_left">@HelenKennedy That’s a very weasely memo lol. Nowhere does it say that he actually prescribed the <span style="color: yellow;"><span style="color: yellow;">drug</span></span> for Trump or that Trump is taking it haha. I guess he’s worried about his license. 🤣😛</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1262561576382615560">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-12 12:56:59</td>
+                <td class ="content_left">@TrueFactsStated <span style="color: yellow;">Drug</span> is NOT the past tense of drag. Jeesh.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1227577340445839362">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 23:10:14</td>
+                <td class ="content_left">@PumpknSpiceSoul @kurteichenwald @bethanyshondark I’m absolutely out of compassion. You and all y’all trump covidiots are destroying my country. And killing people. I don’t give a damn what excuses you have. They mean nothing. And you’re being blocked because I’m <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of this idiocy.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1258172250542485504">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-04 05:00:03</td>
+                <td class ="content_left">@Caissie @engineer820 I’m on my 12th and I’m fucking sick and <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of ‘settling’ and having candidates forced down my throat. Elizabeth Warren is the best we can do and yet we’re going to be forced to vote for Biden. I’m disgusted and exhausted. 😢😡</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1235067459356499968">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-26 23:45:57</td>
+                <td class ="content_left">@froomkin @HelenKennedy Unsatisfactory? It is absolutely fucking maddening and unacceptable. I am so fucking. <span style="color: yellow;">Tired</span> of this always being about him. Always. 😡😡😡</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1232814085005246469">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-16 18:30:57</td>
+                <td class ="content_left">@RepMarkMeadows You're desperate and it's very apparent. Give it up. Y'all are toast. And it can't come a minute too soon. The American people are sick and <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of your bullshit and your corruption.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1217876910665084933">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 00:15:21</td>
+                <td class ="content_left">@cmclymer My husband and I had <span style="color: yellow;">COVID-19</span> and recovered. We wear masks everywhere we go. Even to walk our dogs on a college campus that is completely empty. We do it out of respect for every other fucking human being. What an asshole he is. 😡🤨🙄</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1257826249965293569">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 12:51:36</td>
+                <td class ="content_left">@JamilSmith @YNB @MittRomney @POTUS I have been diagnosed with <span style="color: yellow;">COVID-19</span> and I have MS and asthma. I don’t mind saying that I’m scared. I’ve been sick since Wednesday and so far it’s been manageable. I hope it stays that way. Trump is a national disgrace. I couldn’t hate him any more than I do.</td>
+                <td>0</td>
+                <td>18</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1242071497490993154">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 17:08:23</td>
+                <td class ="content_left">@rudepundit I’m sure they will be able to pray away my positive <span style="color: yellow;">COVID-19</span> test results. And those of my husband. What a fucking, disgusting piece of shit.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241411342701072384">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 13:21:10</td>
+                <td class ="content_left">@stacyking @teeveedub @harrysiegel @adamklevy @AlexBrookLynn Ok. I suppose that is a good reason. But all of the <span style="color: yellow;">COVID-19</span> tests and treatment are going to be covered, no?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241354163558236166">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 19:11:34</td>
+                <td class ="content_left">@RVAwonk My husband just tested positive for <span style="color: yellow;">COVID-19</span> and I am presumptive positive as well (my test will not be ready until Sunday). We’re both in our 60s and we have underlying conditions. Don’t mind telling you that we are scared. 😢</td>
+                <td>3</td>
+                <td>19</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241079958224723970">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 16:25:02</td>
+                <td class ="content_left">@DavidLat So that’s what probably happens with my husband and me. We <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> twice, about 4 weeks apart. Just got tested this week and it finally came back negative. Hope you are continuing to do well. ❤️👍🏻</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1256258337076903937">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 22:42:00</td>
+                <td class ="content_left">@GottaLaff Unbelievably Ed and I had a little relapse. Last week was rough with lots of fatigue and cough. Today I feel better. Ed’s still feeling crummy. This virus is a tenacious little bugger. Plus we <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> again after 4 weeks. Thanks for asking. 🙄</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1252366937369088003">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 15:53:27</td>
+                <td class ="content_left">@DavidLat @JCNSeverino I hope they got retested. My husband and I got the all clear from our Ulster County DOH, made arrangements to donate plasma, and <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> - again - for the virus. 4 weeks after our initial diagnosis, and after a full week of feeling no symptoms. Some of mine are back.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1251901733422411782">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 20:51:29</td>
+                <td class ="content_left">@NicolleDWallace just saw a segment about the woman who is still testing positive after her recovery. My husband and I just re<span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> after our initial + test 4 weeks ago &amp; a week after last symptoms. We’re back in quarantine because the DOH can’t say we’re not contagious</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1250164798685405187">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 21:45:17</td>
+                <td class ="content_left">@ShannonOMac @DrJenGunter So I’ve <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> and I’m on day 9. I’m feeling worse today than I have since around day 2. Much worse cough, starting to run a fever again, and profound fatigue. Is this ‘normal’? I thought I was past the worst of it. 😢</td>
+                <td>8</td>
+                <td>103</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1243655357978882050">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 21:32:02</td>
+                <td class ="content_left">@crfricke I. Can’t. Anymore. Ed and I have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. I hope if we die because there were no ventilators my children sue this motherfucker for all he’s worth. And more. What a fucking monster. https://t.co/Q0hZUt165r</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1242564858622676996">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 14:30:29</td>
+                <td class ="content_left">My husband and I have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19. I have children and grandchildren for whom I would gladly give my life. This is NOT it.  #notdying4wallstreet</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1242458770896289793">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 22:22:07</td>
+                <td class ="content_left">@GottaLaff I am absolutely going to have a nervous breakdown. Truly. My husband and I have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. This is the most dangerous thing I have ever heard this fucker say. Pleas god. Someone has to cut his mic.</td>
+                <td>5</td>
+                <td>20</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1242215073696882697">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 22:10:58</td>
+                <td class ="content_left">@AndrewFeinberg @realDonaldTrump @CDCgov @FEMA_Pete @Surgeon_General I’m taking a pass and watching episodes of Too Cute on Animal Planet. Much easier on the blood pressure, especially since my husband and I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the goddamn virus. 😡</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241849878214557701">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 19:48:32</td>
+                <td class ="content_left">@ScionFaerie @angelabdreaming @GiancarloKing @AngrierWHStaff @Cocoanilla My husband and I have already <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the virus. I was just letting this person know what we were experiencing. Of course since this is a new virus there’s no such thing as a standard set of symptoms. Nobody knows for sure.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241814034472673280">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 03:14:58</td>
+                <td class ="content_left">@AngrierWHStaff @Cocoanilla I have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the virus and have controlled asthma. IMve has it since Wednesday. So far so good. I’m scared though. I suppose it could turn on a dime at any moment. 😱😢</td>
+                <td>1</td>
+                <td>181</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241563995292733441">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 17:16:12</td>
+                <td class ="content_left">Why isn’t Pence self isolating????? A member of his staff <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. For fuck’s sake.</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241413312061071360">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 14:29:09</td>
+                <td class ="content_left">@SenatorMetzger @JenMetzgerNY @IDMH_NewPaltz If my husband or I can be of any help please let us know. We have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the virus, live in New Paltz, and can relay information about our experience and what resources the county has when one is <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241371270761111559">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 23:14:50</td>
+                <td class ="content_left">@GottaLaff I’m laughing because my husband and I both <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> this week. I’m comforted to know that fucking assholes are getting it too. 😢</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241141175274409986">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 19:11:34</td>
+                <td class ="content_left">@RVAwonk My husband just <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19 and I am presumptive positive as well (my test will not be ready until Sunday). We’re both in our 60s and we have underlying conditions. Don’t mind telling you that we are scared. 😢</td>
+                <td>3</td>
+                <td>19</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241079958224723970">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 19:01:34</td>
+                <td class ="content_left">@PinkPixySprite @HenrikWolff @cmclymer My husband <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. He got a call last nite at 11pm. Which means I have it too. I’m scared too. We have NO idea where he got it from. Meaning that community spread is happening. We need to take this seriously. And stay home.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241077438320455683">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">bad cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "bad cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 15:55:06</td>
+                <td class ="content_left">@DavidLat @JCNSeverino Mostly profound fatigue and <span style="color: yellow;"><span style="color: yellow;">bad cough</span></span>/congestion. So now we’re under another 14-day quarantine. The only reason we were retested was because of the plasma donor program. Otherwise we would be out at the grocery store thinking we were no longer contagious. We must have testing,</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1251902152278228992">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">no symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "no symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 15:53:27</td>
+                <td class ="content_left">@DavidLat @JCNSeverino I hope they got retested. My husband and I got the all clear from our Ulster County DOH, made arrangements to donate plasma, and tested positive - again - for the virus. 4 weeks after our initial diagnosis, and after a full week of feeling <span style="color: yellow;"><span style="color: yellow;">no symptoms</span></span>. Some of mine are back.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1251901733422411782">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 00:38:06</td>
+                <td class ="content_left">@chrislhayes my husband and I got sick with COVID on March 15 and 18. We just got retested on Friday for the plasma donor program (after having <span style="color: yellow;"><span style="color: yellow;">no symptoms</span></span> for at least a week) and our tests came back positive. So the 14 day quarantine plus 72 hrs asymptomatic is not long enough.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1249859439831760896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asymptomatic</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asymptomatic"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 00:38:06</td>
+                <td class ="content_left">@chrislhayes my husband and I got sick with COVID on March 15 and 18. We just got retested on Friday for the plasma donor program (after having no symptoms for at least a week) and our tests came back positive. So the 14 day quarantine plus 72 hrs <span style="color: yellow;"><span style="color: yellow;">asymptomatic</span></span> is not long enough.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1249859439831760896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recovered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recovered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 12:21:08</td>
+                <td class ="content_left">@DavidLat My husband and I have just <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> from the virus. I definitely have survivor guilt. I’m 61, have asthma and diabetes. Why did I survive? And we’re still very careful because we DON’T know if we can get reinfected. It’s still kind of scary for people who have <span style="color: yellow;"><span style="color: yellow;">recovered</span></span>.</td>
+                <td>5</td>
+                <td>136</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1248949199347089408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 22:02:32</td>
+                <td class ="content_left">@GottaLaff @cathleendecker Today is a shitty day. Lots of coughing, congestion and bad tummy troubles. It just lingers on and on. But I am hanging in there. My husband is almost fully <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and has had his quarantine lifted. Thank goodness. ❤️❤️</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1246196410715975685">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asthma</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asthma"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 12:21:08</td>
+                <td class ="content_left">@DavidLat My husband and I have just recovered from the virus. I definitely have survivor guilt. I’m 61, have <span style="color: yellow;"><span style="color: yellow;">asthma</span></span> and diabetes. Why did I survive? And we’re still very careful because we DON’T know if we can get reinfected. It’s still kind of scary for people who have recovered.</td>
+                <td>5</td>
+                <td>136</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1248949199347089408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 20:06:42</td>
+                <td class ="content_left">@DBrychcy @NiseWd @ShannonOMac @DrJenGunter Yes. My husband is on day 13 and he’s had a relatively mild time of it. I’m 3 days behind him and I’ve had a more difficult time with it. I have <span style="color: yellow;"><span style="color: yellow;">asthma</span></span> and diabetes do I think that’s why. I hope you’re on the road to recovery. ❤️</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1243992933705158656">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 00:03:23</td>
+                <td class ="content_left">@NiseWd @ShannonOMac @DrJenGunter Thank you. I appreciate your feedback. I will try not to panic. I have <span style="color: yellow;"><span style="color: yellow;">asthma</span></span> so it’s hard not to be worried but I’m trying to keep the anxiety under control. ❤️</td>
+                <td>0</td>
+                <td>80</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1243690109918162945">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 22:27:02</td>
+                <td class ="content_left">@GottaLaff Not really. Fevers and coughing. Manageable for now but I have <span style="color: yellow;"><span style="color: yellow;">asthma</span></span> and MS so I don’t mind telling you, I’m scared. And her this mofo is up there lying to the American people. Lying. Making light of it. I am homicidal at this point with him. 😡</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1242216312853745666">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 11:27:16</td>
+                <td class ="content_left">@KathyMrsfnulnu @AngrierWHStaff @Cocoanilla I don’t take medication for my <span style="color: yellow;"><span style="color: yellow;">asthma</span></span> but carry an inhaler. I guess ‘controlled’ wasn’t the right word. More like ‘mild’ I guess?</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241687888372342786">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Hydroxychloroquine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Hydroxychloroquine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 00:24:48</td>
+                <td class ="content_left">@shannonrwatts He didn’t let dr. Fauci answer the question about <span style="color: yellow;">hydroxychloroquine</span> question either. Coward.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1246956990816976897">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breathing difficulties</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breathing difficulties"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 23:43:55</td>
+                <td class ="content_left">@MJB8 @MalcolmNance @LouDPhillips @realDonaldTrump Thank you for all you’re doing. I have the virus and was at Vassar ER the other night with <span style="color: yellow;"><span style="color: yellow;">breathing difficulties</span></span> and the nurses were amazing. I don’t know how to thank you enough. Stay safe please. ❤️❤️❤️</td>
+                <td>18</td>
+                <td>111</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1244409988669456391">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breathing difficult</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breathing difficult"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 23:43:55</td>
+                <td class ="content_left">@MJB8 @MalcolmNance @LouDPhillips @realDonaldTrump Thank you for all you’re doing. I have the virus and was at Vassar ER the other night with <span style="color: yellow;"><span style="color: yellow;">breathing difficult</span></span>ies and the nurses were amazing. I don’t know how to thank you enough. Stay safe please. ❤️❤️❤️</td>
+                <td>18</td>
+                <td>111</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1244409988669456391">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diabetes</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diabetes"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 20:06:42</td>
+                <td class ="content_left">@DBrychcy @NiseWd @ShannonOMac @DrJenGunter Yes. My husband is on day 13 and he’s had a relatively mild time of it. I’m 3 days behind him and I’ve had a more difficult time with it. I have asthma and <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> do I think that’s why. I hope you’re on the road to recovery. ❤️</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1243992933705158656">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 21:45:17</td>
+                <td class ="content_left">@ShannonOMac @DrJenGunter So I’ve tested positive and I’m on day 9. I’m feeling worse today than I have since around day 2. Much worse cough, starting to run a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> again, and profound fatigue. Is this ‘normal’? I thought I was past the worst of it. 😢</td>
+                <td>8</td>
+                <td>103</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1243655357978882050">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 11:28:52</td>
+                <td class ="content_left">@AngrierWHStaff @Cocoanilla I have <span style="color: yellow;"><span style="color: yellow;">fever</span></span> and cough, body aches, sore throat. All manageable right now. Thank goodness. My husband got sick with it a week ago and I’ve had it since Wednesday. We both got tested and results came back positive. Surreal.</td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241688289964408832">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 13:43:40</td>
+                <td class ="content_left">@HenrikWolff @cmclymer Yes that’s true. But if you do get the <span style="color: yellow;"><span style="color: yellow;">fever</span></span> and cough, and body aches, it most likely is this damn virus.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1240635052222005249">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">run a fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "run a fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 21:45:17</td>
+                <td class ="content_left">@ShannonOMac @DrJenGunter So I’ve tested positive and I’m on day 9. I’m feeling worse today than I have since around day 2. Much worse cough, starting to <span style="color: yellow;"><span style="color: yellow;">run a fever</span></span> again, and profound fatigue. Is this ‘normal’? I thought I was past the worst of it. 😢</td>
+                <td>8</td>
+                <td>103</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1243655357978882050">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 21:34:33</td>
+                <td class ="content_left">@CapehartJ Just teeeted the same thing. He sounds out of <span style="color: yellow;"><span style="color: yellow;">breath</span></span> and having a hard time completing a sentence.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1243290265353363456">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 14:30:29</td>
+                <td class ="content_left">My husband and I have tested <span style="color: yellow;">positive for COVID</span>-19. I have children and grandchildren for whom I would gladly give my life. This is NOT it.  #notdying4wallstreet</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1242458770896289793">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 19:11:34</td>
+                <td class ="content_left">@RVAwonk My husband just tested <span style="color: yellow;">positive for COVID</span>-19 and I am presumptive positive as well (my test will not be ready until Sunday). We’re both in our 60s and we have underlying conditions. Don’t mind telling you that we are scared. 😢</td>
+                <td>3</td>
+                <td>19</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241079958224723970">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diagnosed with covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diagnosed with covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 12:51:36</td>
+                <td class ="content_left">@JamilSmith @YNB @MittRomney @POTUS I have been <span style="color: yellow;">diagnosed with COVID</span>-19 and I have MS and asthma. I don’t mind saying that I’m scared. I’ve been sick since Wednesday and so far it’s been manageable. I hope it stays that way. Trump is a national disgrace. I couldn’t hate him any more than I do.</td>
+                <td>0</td>
+                <td>18</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1242071497490993154">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sore throat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sore throat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 16:32:18</td>
+                <td class ="content_left">@angelabdreaming @GiancarloKing @ScionFaerie @AngrierWHStaff @Cocoanilla My symptoms are fever, coughing, body aches, <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span> and diarrhea. And just a feeling of exhaustion.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241764653455355905">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 11:28:52</td>
+                <td class ="content_left">@AngrierWHStaff @Cocoanilla I have fever and cough, body aches, <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span>. All manageable right now. Thank goodness. My husband got sick with it a week ago and I’ve had it since Wednesday. We both got tested and results came back positive. Surreal.</td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241688289964408832">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">body ache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "body ache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 16:32:18</td>
+                <td class ="content_left">@angelabdreaming @GiancarloKing @ScionFaerie @AngrierWHStaff @Cocoanilla My symptoms are fever, coughing, <span style="color: yellow;"><span style="color: yellow;">body ache</span></span>s, sore throat and diarrhea. And just a feeling of exhaustion.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241764653455355905">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 11:28:52</td>
+                <td class ="content_left">@AngrierWHStaff @Cocoanilla I have fever and cough, <span style="color: yellow;"><span style="color: yellow;">body ache</span></span>s, sore throat. All manageable right now. Thank goodness. My husband got sick with it a week ago and I’ve had it since Wednesday. We both got tested and results came back positive. Surreal.</td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241688289964408832">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 13:43:40</td>
+                <td class ="content_left">@HenrikWolff @cmclymer Yes that’s true. But if you do get the fever and cough, and <span style="color: yellow;"><span style="color: yellow;">body ache</span></span>s, it most likely is this damn virus.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1240635052222005249">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">body aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "body aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 16:32:18</td>
+                <td class ="content_left">@angelabdreaming @GiancarloKing @ScionFaerie @AngrierWHStaff @Cocoanilla My symptoms are fever, coughing, <span style="color: yellow;"><span style="color: yellow;">body aches</span></span>, sore throat and diarrhea. And just a feeling of exhaustion.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241764653455355905">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 11:28:52</td>
+                <td class ="content_left">@AngrierWHStaff @Cocoanilla I have fever and cough, <span style="color: yellow;"><span style="color: yellow;">body aches</span></span>, sore throat. All manageable right now. Thank goodness. My husband got sick with it a week ago and I’ve had it since Wednesday. We both got tested and results came back positive. Surreal.</td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241688289964408832">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 13:43:40</td>
+                <td class ="content_left">@HenrikWolff @cmclymer Yes that’s true. But if you do get the fever and cough, and <span style="color: yellow;"><span style="color: yellow;">body aches</span></span>, it most likely is this damn virus.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1240635052222005249">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diarrhea</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diarrhea"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 14:41:30</td>
+                <td class ="content_left">@gleaftus @AngrierWHStaff @Cocoanilla I have <span style="color: yellow;"><span style="color: yellow;">diarrhea</span></span> as well. 😢</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241736768023678983">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cancer</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cancer"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 11:32:16</td>
+                <td class ="content_left">@IngrahamAngle What a fucking monster you are. We’re doctors able to tell you in all certainty when or if your <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> might come back? Shut up and stop literally killing people with your insanity.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1241689144964808704">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">test positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "test positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-15 01:03:33</td>
+                <td class ="content_left">@realkatiejow @AOC Good for you sweetie. Aren’t you the proud little girl? Remind me to gloat like hell when you <span style="color: yellow;"><span style="color: yellow;">test positive</span></span>. Idiot.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1238994207517310978">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">chill</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "chill"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-08 20:15:55</td>
+                <td class ="content_left">@theashleyray <span style="color: yellow;">Chill</span> the fuck out. It’s ONE Saturday evening. OMG. Jesus. https://t.co/NtE8UjHN9z</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1236747498301112322">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">my nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "my nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-08 16:50:30</td>
+                <td class ="content_left">@Salacia_sea @samstein @JFKucinich So you can’t do both?? ANY Dem is better than the cretin who’s in office now. And I mean it. Even Bloomberg or Steyer. Or heaven forbid, Tulsi. I may have to hold <span style="color: yellow;"><span style="color: yellow;">my nose</span></span>, but I will vote blue no matter what. This is not about purity. It’s about saving this country.</td>
+                <td>1</td>
+                <td>13</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1226186552503484417">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shaking</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shaking"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-05 14:24:16</td>
+                <td class ="content_left">@JonathanTurley What is the matter with you? This is a criminal enterprise operating out of the a White House. Head <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> and, yes, ripping up a horrid speech is the very LEAST of our problems. 😡</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/soprano58_carol/status/1225062590692216832">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

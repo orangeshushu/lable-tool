@@ -1,0 +1,796 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>633-AsaFlynn_1984.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 633-AsaFlynn_1984.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">633-AsaFlynn_1984.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 21:06:43</td>
+                <td class ="content_left">@SportsFanGirlie @jandrothagreat @CAgovernor My husband was an essential worker as well. The plant where he worked took too long to put the much needed safety precautions in place. He died Saturday. My daughter and I both <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. She is also an essential worker.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1253430122113167365">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 20:59:19</td>
+                <td class ="content_left">@CAgovernor This little virus killed my husband. I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19 and was released from the hospital Tuesday to self isolate at home. I’m exhausted all the time. Shelter in place, practice good hand hygiene.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1253428260089683973">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 18:29:59</td>
+                <td class ="content_left">I was released from the hospital to self isolation at home. My daughter was removed from the ventilator. She also <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1253028291755245569">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 18:53:39</td>
+                <td class ="content_left">I spoke with the Medical Examiner today. My husband was positive for COVID-19. My daughter also <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19. She is now off the ventilator and no longer sedated. I will be going home soon to continue getting well in self isolation. This disease is not a hoax.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1252671860514459648">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 00:08:10</td>
+                <td class ="content_left">My husband died Saturday afternoon. He had underlying conditions. I’m waiting for the results of the Covid-19 test performed by the morgue. I have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for Covid-19. I’ve been in hospital isolation since Saturday evening. I’m also waiting for the test results for my /1</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1252388621111267328">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 20:59:19</td>
+                <td class ="content_left">@CAgovernor This little virus killed my husband. I tested <span style="color: yellow;">positive for COVID</span>-19 and was released from the hospital Tuesday to self isolate at home. I’m exhausted all the time. Shelter in place, practice good hand hygiene.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1253428260089683973">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 18:29:59</td>
+                <td class ="content_left">I was released from the hospital to self isolation at home. My daughter was removed from the ventilator. She also tested <span style="color: yellow;">positive for COVID</span>-19.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1253028291755245569">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 18:53:39</td>
+                <td class ="content_left">I spoke with the Medical Examiner today. My husband was <span style="color: yellow;">positive for COVID</span>-19. My daughter also tested positive for COVID-19. She is now off the ventilator and no longer sedated. I will be going home soon to continue getting well in self isolation. This disease is not a hoax.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1252671860514459648">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 00:08:10</td>
+                <td class ="content_left">My husband died Saturday afternoon. He had underlying conditions. I’m waiting for the results of the Covid-19 test performed by the morgue. I have tested <span style="color: yellow;">positive for Covid</span>-19. I’ve been in hospital isolation since Saturday evening. I’m also waiting for the test results for my /1</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1252388621111267328">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 20:59:19</td>
+                <td class ="content_left">@CAgovernor This little virus killed my husband. I tested positive for <span style="color: yellow;">COVID-19</span> and was released from the hospital Tuesday to self isolate at home. I’m exhausted all the time. Shelter in place, practice good hand hygiene.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1253428260089683973">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 14:40:14</td>
+                <td class ="content_left">@BrianKempGA @AUG_University @GeorgiaGuard Refresh my memory, weren’t you the one who didn’t know <span style="color: yellow;">COVID-19</span> was communicable?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1253332860074770433">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 09:56:05</td>
+                <td class ="content_left">@LA2Ing @Lala11_7 @NickMiller510 Thank you. I’m being well taken care. My daughter has been tested for <span style="color: yellow;">COVID-19</span> and we are waiting for the results. She is diabetic and her body was having problems processing sugars. I’m hopeful for her recovery.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1252536577013747712">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 00:08:11</td>
+                <td class ="content_left">daughter. My daughther is in the ICU, intubated and under sedation. Her diabetes are the problem. Anyone who believes <span style="color: yellow;">Covid-19</span> is a hoax should have their heads examined. We were careful but still caught it. If you think it’s a hoax and later catch it that was your choice. /2</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1252388625431425026">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 00:08:10</td>
+                <td class ="content_left">My husband died Saturday afternoon. He had underlying conditions. I’m waiting for the results of the <span style="color: yellow;">Covid-19</span> test performed by the morgue. I have tested positive for <span style="color: yellow;">Covid-19</span>. I’ve been in hospital isolation since Saturday evening. I’m also waiting for the test results for my /1</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1252388621111267328">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 01:01:31</td>
+                <td class ="content_left">@IAGovernor 25 workers, including my husband, had to leave their shifts early due to illness. The Dakota City Tyson plant was late in taking measures to protect their employees. Are you ready for the explosion of <span style="color: yellow;">Covid-19</span> cases in Iowa?</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1251314885021118466">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-03 15:56:39</td>
+                <td class ="content_left">@ChuckGrassley Why aren’t you tweeting about the <span style="color: yellow;">COVID-19</span> outbreak? Why was the CDC webpage altered yesterday? Will you ever stand up to the rampant corruption and incompetence in the White House?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1234870311109173248">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-03 05:47:14</td>
+                <td class ="content_left">@starincali @KrauseForIowa I don’t think the CDC should receive  all the blame. Trump controls the CDC, and put Mike Pence in charge of the <span style="color: yellow;">COVID-19</span> response team. Those two have proven to be a recipe for disaster.</td>
+                <td>2</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1234716944319893504">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-02 14:38:35</td>
+                <td class ="content_left">@KrauseForIowa @WHNSC @CDCgov At this point, I’m encouraging everyone,  including Trump supporters, to read the CDC and WHO webpages. The time might come when it’s only the WHO, because the CDC will be entirely hampered by the current damage control members of the <span style="color: yellow;">COVID-19</span> response team. Stay well.</td>
+                <td>4</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1234488277778018311">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-02 00:33:52</td>
+                <td class ="content_left">@lori8288 @SpinksSandra @BrandonBeckham_ @AOC @realDonaldTrump <span style="color: yellow;">COVID-19</span> response team. He has shown he can’t make a quick decision in a crisis. We need and deserve talented,  knowledgeable &amp; experienced medical professionals making these life or death decisions for us. I didn’t go a politician to treat my cancer, I went to an oncologist. /5</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1234275696874311681">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-29 12:23:36</td>
+                <td class ="content_left">@BrandonBeckham_ @AOC @realDonaldTrump 45’s highest priority is getting re-elected period. The health and well-being of Americans not so much. Sending <span style="color: yellow;">COVID-19</span> response member, Larry Kudlow out to reassure investors about the stock market speaks volumes about 45’s priorities. As for Pence, he is 45’s lapdog.</td>
+                <td>11</td>
+                <td>113</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1233729532399702022">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-28 22:48:50</td>
+                <td class ="content_left">@realDonaldTrump @RepRatcliffe We’re not the least bit surprised you chose this boot licker. This choice is almost as bad as you choosing Mike Pence to lead the <span style="color: yellow;">COVID-19</span> response team.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1233524488358236160">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-28 21:53:02</td>
+                <td class ="content_left">@realDonaldTrump If <span style="color: yellow;">COVID-19</span> isn’t such a big deal you should be able to shake hands with your supporters at the rally. I like to see you prove it by shaking hands with at least 20 people in the audience.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1233510446289866753">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-28 01:41:38</td>
+                <td class ="content_left">@ChuckGrassley Name 3 men with absolutely nothing to offer in a <span style="color: yellow;">COVID-19</span> response team, Chuck. Mike Pence, Steve Mnuchin, and Larry Kudlow. First it was the three amigos in the Ukraine, now we have the three stooges in a pandemic. Will the corruption and incompetence ever come to an end?</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1233205585996402689">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-27 16:44:23</td>
+                <td class ="content_left">@SenJoniErnst @GeigerReports Fight for a professional to head the <span style="color: yellow;">COVID-19</span> team! Mike Pence is not the least bit qualified to head it. His pathetic handling of the HIV epidemic in Indiana is proof of it. We don’t have 2 months for him to pray on it.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1233070382732791824">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-27 16:34:37</td>
+                <td class ="content_left">@ChuckGrassley Mike Pence is in no way qualified to head this country’s <span style="color: yellow;">COVID-19</span> team. We need professionals who aren’t lackeys more concerned about Trump’s fragile ego than fighting for our survival.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1233067926082740224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-26 21:14:46</td>
+                <td class ="content_left">@BrandonBeckham_ @realDonaldTrump @TeamTrump You do realize you won’t be invited to join 45 and his entourage to the secured location when <span style="color: yellow;">COVID-19</span> breaks loose, don’t you?</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1232776038100426752">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">exhausted</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "exhausted"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 20:59:19</td>
+                <td class ="content_left">@CAgovernor This little virus killed my husband. I tested positive for COVID-19 and was released from the hospital Tuesday to self isolate at home. I’m <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> all the time. Shelter in place, practice good hand hygiene.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1253428260089683973">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diabetes</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diabetes"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 00:08:11</td>
+                <td class ="content_left">daughter. My daughther is in the ICU, intubated and under sedation. Her <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> are the problem. Anyone who believes Covid-19 is a hoax should have their heads examined. We were careful but still caught it. If you think it’s a hoax and later catch it that was your choice. /2</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1252388625431425026">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-29 23:06:43</td>
+                <td class ="content_left">@TheSkeptic65 @GrumpAdam @eyelessgame @jaketapper I was treated for cancer in 2016. Chemo treatments blew my blood pressure sky high. My husband has <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> and we’re both older. Plus our daughter is 20 with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span>. We discussed this last night. We’re taking it seriously but we’ll still find joy in living. Stay well.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1233891378293354496">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">body ache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "body ache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 01:49:52</td>
+                <td class ="content_left">@KrauseForIowa They had to see the company’s nurse first. My husband had a normal temp, but had chills, <span style="color: yellow;"><span style="color: yellow;">body ache</span></span>s and has slept most of the day. I’m watching him closely. We live close to one of the local hospitals.</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1251327050830491648">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">body aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "body aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 01:49:52</td>
+                <td class ="content_left">@KrauseForIowa They had to see the company’s nurse first. My husband had a normal temp, but had chills, <span style="color: yellow;"><span style="color: yellow;">body aches</span></span> and has slept most of the day. I’m watching him closely. We live close to one of the local hospitals.</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1251327050830491648">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 01:49:52</td>
+                <td class ="content_left">@KrauseForIowa They had to see the company’s nurse first. My husband had a normal temp, but had chills, body <span style="color: yellow;"><span style="color: yellow;">aches</span></span> and has slept most of the day. I’m watching him closely. We live close to one of the local hospitals.</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1251327050830491648">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cancer</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cancer"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 16:51:46</td>
+                <td class ="content_left">@atrupar This ranks up there with 45’s remarks on the cure can’t be worse than the illness. Say this to any <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> survivor and expect to be rightfully told where stick it.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1251191634689220608">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-02 14:13:37</td>
+                <td class ="content_left">@Freckles0224 @BrandonBeckham_ @AOC @realDonaldTrump You’re free to believe whatever you want. I believe in the adage of preparing for the worst while hoping for the best. In 2016, I was blessed to be treated for <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> by medical professionals who weren’t being being hampered by cowering  yes men trying to placate a bullying fool.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1234481994639269889">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-29 23:06:43</td>
+                <td class ="content_left">@TheSkeptic65 @GrumpAdam @eyelessgame @jaketapper I was treated for <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> in 2016. Chemo treatments blew my blood pressure sky high. My husband has diabetes and we’re both older. Plus our daughter is 20 with diabetes. We discussed this last night. We’re taking it seriously but we’ll still find joy in living. Stay well.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1233891378293354496">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">vomiting</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "vomiting"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-06 16:24:44</td>
+                <td class ="content_left">@realJohnSMiller @TWIT_ANTHONY @realDonaldTrump Drooling isn’t allowed. Does that mean projectile <span style="color: yellow;"><span style="color: yellow;">vomiting</span></span> is acceptable?</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1235964543702044673">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">medicine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "medicine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-06 04:23:20</td>
+                <td class ="content_left">@TeamTrump @realDonaldTrump Fox News and 45 held another <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> show this evening. 45 has lured a gullible crowd into buying his MAGA elixir once again. It’s expensive, doesn’t live up to 45’s claims but blinds the buyer to reality. He’s making a fortune and taking more than money from them.</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1235782995597983746">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-05 01:32:41</td>
+                <td class ="content_left">@nephthysmoon @Salacia_sea @michaelroam @atrupar I originally thought about using circus to describe a Trump rally but liked dog &amp; pony show more. Next time, I might refer to it as a <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> show which is a better fit. 45 is a shakedown artist luring a gullible crowd into buying his worthless &amp; potentially dangerous cure all.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1235377663960854531">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-13 05:01:06</td>
+                <td class ="content_left">Fellow resisters, I can hardly wait until the Trump regime is out of our government. Dr. Hook &amp; The <span style="color: yellow;">Medicine</span> Show ~ "Sylvia's Mother" https://t.co/vcoo1aZvNI via @YouTube</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1227819967489495041">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-04 14:25:44</td>
+                <td class ="content_left">@VickyJa44165934 @YGalanter @realDonaldTrump Plus we’ll need to keep the windows open for a few windows and keep a generous supply of Febreze on hand for occasional <span style="color: yellow;">touch</span> ups.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1235209819683983360">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">HIV</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "HIV"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-04 12:51:24</td>
+                <td class ="content_left">@rosesmail @BrandonBeckham_ @AOC @realDonaldTrump You might want to look into Mike Pence’s handling of the <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> epidemic while he was governor of Indiana./3</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1235186078371532800">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-03 04:26:00</td>
+                <td class ="content_left">@KrauseForIowa Some of Trump supporters are buying into 45’s downplaying of the seriousness of this situation. Some are defending the choice of Pence as the leader of the response team, even when presented with the facts of Pence’s mishandling of a <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> epidemic as governor of Indiana.</td>
+                <td>1</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1234696501965787137">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-02 00:28:06</td>
+                <td class ="content_left">@lori8288 @SpinksSandra @BrandonBeckham_ @AOC @realDonaldTrump on the Indiana’s <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> epidemic and found that it could have been avoided if Pence and other state officials had acted quickly on the matter. As governor, Pence put his personal beliefs over the well being of his constituents. This is why many are alarmed at Pence is heading the /4</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1234274244013576195">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-02 00:22:12</td>
+                <td class ="content_left">@lori8288 @SpinksSandra @BrandonBeckham_ @AOC @realDonaldTrump science allowed <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> cases to grow at an alarming rate. Pence waited 2 months before he decided to pray on the situation. Under Pence, Indiana had the biggest outbreak of <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> cases in the state’s history. In 2018, Yale University, with federal funding, did a study/3</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1234272759116636165">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-02 00:08:52</td>
+                <td class ="content_left">@lori8288 @SpinksSandra @BrandonBeckham_ @AOC @realDonaldTrump Parenthood. In 2015, the opioid crisis was in full swing in Indiana. New cases of <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> were appearing at an alarming rate due to the use of dirty needles. Health professionals petitioned Pence to lift the state ban on needle exchanges. Pence’s struggle of ideology over/2</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1234269404860469249">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-01 23:59:26</td>
+                <td class ="content_left">@lori8288 @SpinksSandra @BrandonBeckham_ @AOC @realDonaldTrump In 1988, the federal government banned the use  federal funds for needle exchange programs. In 2011,  Congressman Pence voted to strip federal funding to Planned Parenthood. In 2013, the last <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> testing center in Scott County, Indiana closed its doors. It was Planned /1</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1234267029529645056">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-29 20:21:07</td>
+                <td class ="content_left">@melisheath I caught the tail end of the presser. I wasn’t impressed with Pence’s version of his handling of the <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> crisis as the governor of Indiana. What was your view on it?</td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1233849701532872704">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-27 16:44:23</td>
+                <td class ="content_left">@SenJoniErnst @GeigerReports Fight for a professional to head the COVID-19 team! Mike Pence is not the least bit qualified to head it. His pathetic handling of the <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> epidemic in Indiana is proof of it. We don’t have 2 months for him to pray on it.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1233070382732791824">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shaking</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shaking"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-29 20:59:47</td>
+                <td class ="content_left">@jessi_daisy @BrandonBeckham_ @AOC @realDonaldTrump <span style="color: yellow;">Shaking</span> my head at a president who spent the previous evening telling his supporters that the coronavirus was a Democrat hoax. The focus of this administration in this crisis has come off as money first, people second.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1233859431043149824">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-28 21:53:02</td>
+                <td class ="content_left">@realDonaldTrump If COVID-19 isn’t such a big deal you should be able to shake hands with your supporters at the rally. I like to see you prove it by <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> hands with at least 20 people in the audience.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1233510446289866753">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shake</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shake"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-28 21:53:02</td>
+                <td class ="content_left">@realDonaldTrump If COVID-19 isn’t such a big deal you should be able to <span style="color: yellow;"><span style="color: yellow;">shake</span></span> hands with your supporters at the rally. I like to see you prove it by shaking hands with at least 20 people in the audience.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1233510446289866753">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-27 19:58:37</td>
+                <td class ="content_left">@HeshimuK @EdHull8 So, true. Bakker, and others like him,  forget the anger Jesus had for the money changers in the temple. Jesus taught us to care for the sick and the needy, not <span style="color: yellow;"><span style="color: yellow;">shake</span></span> them down to their last dime.</td>
+                <td>3</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1233119262727974917">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-17 03:47:13</td>
+                <td class ="content_left">Fellow resisters, vote the GOP out of DC! The Cars - <span style="color: yellow;">Shake</span> It Up (Official Music Video) https://t.co/k1KZIHzQ5Q via @YouTube</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1229250926382403584">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-24 02:43:13</td>
+                <td class ="content_left">#TheWalkingDead I was holding my <span style="color: yellow;"><span style="color: yellow;">breath</span></span> when Jerry was stuck in the tunnel. Don’t kill Jerry ever!</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1231771531660943360">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">ear ache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "ear ache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-18 03:32:02</td>
+                <td class ="content_left">Fellow resisters, let’s make sure this is 45’s only term in office. Rosanne Cash - Seven Y<span style="color: yellow;">ear Ache</span> (Official Video) https://t.co/CwXOU3Ts7b via @YouTube</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1229609492045848576">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">ache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "ache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-18 03:32:02</td>
+                <td class ="content_left">Fellow resisters, let’s make sure this is 45’s only term in office. Rosanne Cash - Seven Year <span style="color: yellow;">Ache</span> (Official Video) https://t.co/CwXOU3Ts7b via @YouTube</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1229609492045848576">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-17 02:30:14</td>
+                <td class ="content_left">Fellow resisters, the power to stop the corruption in the White House is ours. Vote! <span style="color: yellow;">Fever</span> - Peggy Lee https://t.co/8u7x3z1Art via @YouTube</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1229231550333624321">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-15 04:28:32</td>
+                <td class ="content_left">@forester6291 Some diehard Trump supporter. She got <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of the pushback and blocked me. https://t.co/WTpQ1P3iRY</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1228536546846035969">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-06 22:52:54</td>
+                <td class ="content_left">@BrandonBeckham_ @realDonaldTrump @Astro_Christina @Astro_Jessica Jacob Wohl, is that you? Don’t you ever get <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of kissing 45’s backside? Why chase after an elderly imbecile? Have you ever been on a date? Have you ever kissed a girl? I hate to be the one to tell you this but 45 just isn’t into you.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1225552978486145025">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-13 03:43:09</td>
+                <td class ="content_left">Fellow resisters, strong winds and dropping temperatures here in northwest Iowa. Let’s start with John Legend - Baby, It's <span style="color: yellow;">Cold</span> Outside (Official Audio) ft. Kelly Clarkson https://t.co/Ysa9S31zEJ via @YouTube</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1227800349181906947">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">rash</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "rash"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-09 22:43:09</td>
+                <td class ="content_left">@AhmedBaba_ @realDonaldTrump Thank you. This explains the <span style="color: yellow;"><span style="color: yellow;">rash</span></span> of panic tweets. I knew something was going to surface soon.</td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1226637686791905280">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-08 23:08:24</td>
+                <td class ="content_left">@RepMikeJohnson @realDonaldTrump Good job sucking up to the con in the Oval Office, Mike. Does he make you balance the treat on your <span style="color: yellow;"><span style="color: yellow;">nose</span></span> before you can eat it? https://t.co/aNDo0326OI</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AsaFlynn_1984/status/1226281653418504193">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

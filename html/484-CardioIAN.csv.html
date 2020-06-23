@@ -1,0 +1,1036 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>484-CardioIAN.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 484-CardioIAN.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">484-CardioIAN.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 17:12:38</td>
+                <td class ="content_left">@CardioIAN 
+@JReinerMD on why <span style="color: yellow;">Covid-19</span> killed more then 100.000 Americans. 
+@HeartOTXHeartMD @DocSavageTJU @MihaiTrofenciuc @Pooh_Velagapudi @ethanjweiss @pabeda1 https://t.co/kvWVOLRt0I</td>
+                <td>2</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1266054788237742083">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 10:44:44</td>
+                <td class ="content_left">@CardioIAN   <span style="color: yellow;">COVID-19</span> POLL
+
+Passengers in Holland using Public transport are obligated to wear Masks, but Medical Masks FFP3 or N95 are prohibited and you'll get a 95 euro fine when you use those. People are forced to use masks that don't provide protection.</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1265232392895320064">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 16:02:00</td>
+                <td class ="content_left">@CardioIAN
+
+6 feet away isn’t enough. <span style="color: yellow;">Covid-19</span> risk involves other dimensions, too.  https://t.co/aLTveNXs7G</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1264587462959083521">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 06:05:01</td>
+                <td class ="content_left">@CardioIAN <span style="color: yellow;">Covid-19</span> and clotting https://t.co/DLiRlyBnUZ</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1262987676464144385">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 21:18:17</td>
+                <td class ="content_left"><span style="color: yellow;">Covid-19</span> planning for The Netherlands https://t.co/5j7nqWSbpv</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1262855115976970242">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 11:22:58</td>
+                <td class ="content_left">@Bartissimus Wanneer je liever dood gaat aan een Arrythmia ipv <span style="color: yellow;">Covid-19</span> raad ik dit middel van Harte aan🙄</td>
+                <td>4</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1262342914065170434">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 19:59:32</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> regels in Nederland versoepelt. Het exitplan: https://t.co/Raib0kV4pZ</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1258124257726533633">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 11:38:47</td>
+                <td class ="content_left">@CardioIAN STEMI Management and <span style="color: yellow;">Covid-19</span> 
+@MihaiTrofenciuc @mirvatalasnag @HeartOTXHeartMD @pabeda1 @mmamas1973 @fischman_david
+@Pooh_Velagapudi @AtulPathak31
+@DocSavageTJU @ALEX_MISCHIE
+@drnvanmieghem @Hragy @DavidWienerMD @ethanjweiss
+https://t.co/3W35Ra0aSn</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1255823914158211073">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 16:53:32</td>
+                <td class ="content_left">@CardioIAN <span style="color: yellow;">Covid-19</span> and blood type @MihaiTrofenciuc @pabeda1 https://t.co/EXBBvXhUec</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1255540732930265089">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 09:36:24</td>
+                <td class ="content_left">@CardioIAN <span style="color: yellow;">COVID-19</span> explained in a way your pts will understand. Thanks @pabeda1 for sharing! @MihaiTrofenciuc @DocSavageTJU
+@Bartissimus @HeartOTXHeartMD
+@ALEX_MISCHIE @cpgale3 @J_Hendriks1 @mmamas1973 @AtulPathak31 @mirvatalasnag
+@AnastasiaSMihai
+https://t.co/l1Ps5nnH6c</td>
+                <td>7</td>
+                <td>17</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1254343560750665729">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 01:30:37</td>
+                <td class ="content_left">@DrMarthaGulati @ACCinTouch @statnews @drtaranarula Same at our Hospitals. When <span style="color: yellow;">Covid-19</span> is under control we're going to have a dramatic increase in CVD pts @MihaiTrofenciuc @pabeda1</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1253496536144719874">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 22:41:29</td>
+                <td class ="content_left">@MinPres What do you think Mr. Prime Minister? This must be thé try out that makes you happy. It's a beautiful chance. You have a "Get together Testcase" with highly trained Professionals. A Rai Hall filled with Cardiologists testing your <span style="color: yellow;">Covid-19</span> policy? Let's talk Sir.... https://t.co/sl6RXzE7Bx</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1252729193768640512">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 10:07:19</td>
+                <td class ="content_left">@purviparwani @EkateriniL No school shootings since 2002 and  large Orders for deathtrap Boeing 737MAX have been cancelled.
+What do you know, <span style="color: yellow;">Covid-19</span> saves lives. @MihaiTrofenciuc</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1251089851820228609">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 09:37:22</td>
+                <td class ="content_left">@CardioIAN <span style="color: yellow;">COVID-19</span> FUNDING CASE REPORTS https://t.co/VIwPnRNcKV</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1251082313687019521">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 03:47:31</td>
+                <td class ="content_left">@wordfinga @BoggildLab @CardiacPA1 @fitmslax @jointdocShields @mymomthesurgeon @hitRECordJoe @drnimamehran @_NancyMD @drhaydeebrown @Peds_Ortho @DocMatzkin @PA_C_Life @petiteorthopac @rkh_md @MrsPA_C @kjlmjg @RuralEDPA @slowcode2012 @Blitz_y @KTamirisaMD @VietHeartPA @Dr_Mela @El_Cavarretta @Docbasia @AspriAlexia @drbrowncares @hvanspall @amydjohn @karenerrichetti @DrJenniferCo_Vu @DrHowardLiu @AnkurKalraMD @HeartOTXHeartMD @AnastasiaSMihai @DocSavageTJU @fischman_david @mmamas1973 Thanks for tagging me:
+My Story in 6 words:
+
+"Finally, <span style="color: yellow;">Covid-19</span>  brings us Healthcare Awareness"
+
+I tag @MihaiTrofenciuc @pabeda1 @DocSavageTJU @rahatheart1 @donlemon @CMichaelGibson</td>
+                <td>1</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1250994272339402753">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 16:08:25</td>
+                <td class ="content_left">@escardio and <span style="color: yellow;">Covid-19</span> 
+https://t.co/ZaWURtYM6Q</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1250818336486756357">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 23:17:38</td>
+                <td class ="content_left">@wordfinga @Drshiloh @DocSavageTJU @hvanspall @biljana_parapid @SABOURETCardio @mmamas1973 @AnastasiaSMihai @EkateriniL @iamritu @fischman_david @DrRyanPDaly @DebbeMcCall @aymanka @DrFerNunez @CastlDalmunzie @AVishnevsky_MD @rahatheart1 @ecgrhythms As far as we know till now, <span style="color: yellow;">COVID-19</span> hates soap. 
+Wash your hands, then your face and forearns.
+Wash every time after you've been outside or in touch with anything from outside. Leave papers and mail for 72 hrs, after reading WASH YOUR HANDS!! @MihaiTrofenciuc @ALEX_MISCHIE</td>
+                <td>2</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1250201579669635079">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 15:36:41</td>
+                <td class ="content_left">@fischman_david Excuse me. The Dutch Viro Scientists have looked at this yesterday. They concluded that <span style="color: yellow;">Covid-19</span> doesn't have the power to fly or being blown over Market isles. 
+The majority drops on the floor and the rest hits anything within 5 feet. The leftover 2% lands on the grocery  shelf</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1248998414366527490">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 23:49:13</td>
+                <td class ="content_left">@CardioIAN FDA <span style="color: yellow;">COVID-19</span> DRUG WARNING WARNING WARNING 
+@MihaiTrofenciuc
+https://t.co/E1PiHF3kck</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1248759974467178499">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 12:52:15</td>
+                <td class ="content_left">@CardioIAN <span style="color: yellow;">COVID-19</span> @MihaiTrofenciuc https://t.co/i3ZOy125Sh</td>
+                <td>2</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1248594645858336768">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 23:54:01</td>
+                <td class ="content_left">@CardioIAN BREAKING NEWS 
+UK PRIME MINISTER BORIS JOHNSON HOSPITALIZED WITH <span style="color: yellow;">COVID-19</span> 
+@MihaiTrofenciuc @DocSavageTJU @mmamas1973 @ShelleyWood2 @J_Hendriks1 @rahatheart1</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1246949243321028620">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 20:59:37</td>
+                <td class ="content_left">@CardioIAN <span style="color: yellow;">Covid-19</span> Stats from UK
+@MihaiTrofenciuc https://t.co/TNOrvoTkIK</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1246905354631499776">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 07:42:52</td>
+                <td class ="content_left"><span style="color: yellow;">Covid-19</span> Ventilation instructions by St. Bartholomew's in London. 
+If you want to learn, than learn from one of the best. And Stay Healthy 
+@MihaiTrofenciuc @ALEX_MISCHIE
+@rahatheart1 @mdstbarts @cpgale3 @mmamas1973 @J_Hendriks1
++Thank you: @BartsHospital
+
+https://t.co/eOiETbqLNZ</td>
+                <td>5</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1245980070591827970">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 21:49:41</td>
+                <td class ="content_left">SIGNS OF <span style="color: yellow;">COVID-19</span> VIDEO @MihaiTrofenciuc @rahatheart1
+@pabeda1 @ALEX_MISCHIE
+https://t.co/Ju3gp0EEXJ</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1245830791042662401">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 21:32:37</td>
+                <td class ="content_left">@mmamas1973 @rafa_romaguera @sbrugaletta @secardiologia @shci_sec @PCRonline @WijnsWilliam @escardio @EAPCIPresident @DFCapodanno @djc795 @fischman_david @DocSavageTJU @CMichaelGibson @salutcat @sanidadgob @hect2701 @Drroxmehran In Holland they're predicting a dramatic increase in "secondary" fatalities due to diminished Cardio Care Capacity. Talking cheese steak: 80% of <span style="color: yellow;">Covid-19</span> deaths in Holland are overweight or obese pts. That's a stunning number</td>
+                <td>2</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1245101719689756678">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 07:54:59</td>
+                <td class ="content_left">@CardioIAN <span style="color: yellow;">COVID-19</span> Vaccination Info @MihaiTrofenciuc @pabeda1 @Hragy @J_Hendriks1
+https://t.co/7HvvvZGMXi</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1244895955683618817">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 18:00:31</td>
+                <td class ="content_left">#Covid_19 @CardioIAN 
+Beste @op1npo en collega redacties @EenVandaag en @Nieuwsuur @RTLnieuws 
+Dank u voor de informatie, het laatste nieuws en wijze tips mbt <span style="color: yellow;">Covid-19</span> (Corona). Ga zo door.
+Inmiddels zit ik 19 dagen, in mijn eentje, in quarantaine. Tijd  voor andere onderwerpen..</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1244323565631135749">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 11:56:22</td>
+                <td class ="content_left">@truusjegrover @dekwadepsych @EenVandaag Bij "Incidenten" waarmee Artsen ervaring hebben kun je spreken van een onderbouwd verwachtingspatroon.
+Bij <span style="color: yellow;">COVID-19</span> is dit niet aan de orde. Simpelweg omdat wij onbekend zijn met dit virus en daardoor geen ervaring hebben met comorbidities.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1244231924308226048">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 11:43:08</td>
+                <td class ="content_left">@BabsElectrical2 Thank you for asking. I've no symptoms, but feel frustrated. 
+Forced to stay at home during a time that I can be much more useful at the Hospital. They have a theory about the <span style="color: yellow;">COVID-19</span> attaching itself to the DNA and therefore continues to show up on bloodtests. Weird🤔
+@pabeda1</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1244228594626265090">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 22:12:02</td>
+                <td class ="content_left">@CMichaelGibson User doesn't know if pt is <span style="color: yellow;">Covid-19</span> positive.  
+Yesterday's negative can be today's positive. It needs 1 positive carrier less than a second with pt to transfer contamination.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1243299699802755081">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 21:53:16</td>
+                <td class ="content_left">Queen on <span style="color: yellow;">COVID-19</span> AGAIN AT MULTIPLE REQUESTS.
+Thanks @MihaiTrofenciuc for sharing this. Kept me busy a better part of today 😅 You deserve an annotation in the Twitter Hall Of Fame! https://t.co/2IGVEwjsEX</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1243294977888866305">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 19:49:16</td>
+                <td class ="content_left">@CardioIAN <span style="color: yellow;">COVID-19</span> alternative
+@pabeda1 @DocSavageTJU @Pooh_Velagapudi @ShelleyWood2
+@MihaiTrofenciuc @DrSheilaSahni @escardio @Heart_BMJ @Hragy @mmamas1973 @fischman_david https://t.co/8sbeZvNhnF</td>
+                <td>1</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1243263769582731267">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 03:22:40</td>
+                <td class ="content_left">CardioIAN <span style="color: yellow;">COVID-19</span> 
+https://t.co/xK00XFhibg</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1243015483470811137">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 02:47:41</td>
+                <td class ="content_left">@CardioIAN USA <span style="color: yellow;">COVID-19</span> INITIATIVE. Thanks for the post  @HeartOTXHeartMD
+@MihaiTrofenciuc @CMichaelGibson @Pooh_Velagapudi @fischman_david @mmamas1973 @DocSavageTJU @pabeda1
+https://t.co/COehSLgAG9</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1242644294827233281">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 02:43:41</td>
+                <td class ="content_left">@DavidLBrownMD Used to but got suspended due to <span style="color: yellow;">Covid-19</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1242643288835993600">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 12:46:50</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> 50 yr old male. @MihaiTrofenciuc @pabeda1 @HeartOTXHeartMD @ShelleyWood2 @rahatheart1 @cpgale3 @J_Hendriks1 @Hragy @fischman_david @DocSavageTJU @Bartissimus @ALEX_MISCHIE @mirvatalasnag @CMichaelGibson https://t.co/xNdGvG5yQr</td>
+                <td>17</td>
+                <td>26</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1242432685588570112">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 21:13:03</td>
+                <td class ="content_left">@CardioIAN <span style="color: yellow;">Covid-19</span> https://t.co/XZxvSEgHAx</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1242197691150434304">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 02:57:15</td>
+                <td class ="content_left">@thaiscoutinhoCV @HeartInstitute @uOttawa_SEPH @uOttawaMed @iamritu @purviparwani @pabeda1 @CMichaelGibson @brainheartnexus @acrean_at_UOHI @BeanlandsRob @ottawaheartrob @hvanspall @ShelleyZieroth @amydjohn @mmamas1973 @DrMarthaGulati @ErinMichos <span style="color: yellow;">Covid-19</span> comes in 2 waves</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1241197149670584321">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 00:51:34</td>
+                <td class ="content_left">@CardioIAN <span style="color: yellow;">COVID-19</span> 
+https://t.co/og3pObDaPl</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1241165521376198656">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 21:12:36</td>
+                <td class ="content_left">@fischman_david @nature @mmamas1973 @SVRaoMD @JGrapsa @rwyeh @ajaykirtane @HeartOTXHeartMD @rajivxgulati @mividovich @djc795 @DocSavageTJU @MinnowWalsh @AnastasiaSMihai I'm interested in research of the Dutch <span style="color: yellow;">Covid-19</span> approach
+Avoiding a spike, keeping IC admissions at controllable level while avoiding a 100% shutdown.
+How is this going to work out in the long run. Will we be in time for #ESC2020 ?@cpgale3 @mmamas1973 @MihaiTrofenciuc @pabeda1</td>
+                <td>1</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1240748029776408583">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 10:41:32</td>
+                <td class ="content_left">@CardioIAN <span style="color: yellow;">COVID-19</span> and Heart Disease @MihaiTrofenciuc
+https://t.co/I6rnUyf3ha</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1240226825709801473">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 23:53:38</td>
+                <td class ="content_left"><span style="color: yellow;">Covid-19</span> How long does it stay alive https://t.co/vLH4Wz12Sn</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1240063778638700545">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 23:51:28</td>
+                <td class ="content_left">@CardioIAN <span style="color: yellow;">Covid-19</span> How long does it stay alive, surface list @MihaiTrofenciuc @mirvatalasnag
+@rahatheart1 @CMichaelGibson
+@pabeda1 @HeartOTXHeartMD
+Thanks @ALEX_MISCHIE https://t.co/CczHRlhmb1</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1240063232880058374">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 13:54:45</td>
+                <td class ="content_left">@CardioIAN Important <span style="color: yellow;">Covid-19</span> information. Thanks @ALEX_MISCHIE
+https://t.co/Pz4RUZuRm6
+@MihaiTrofenciuc @pabeda1 @cpgale3</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1239913064755060737">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-06 01:48:03</td>
+                <td class ="content_left">@CardioIAN 
+ACC Helps Secure Telehealth Expansion Legislation in Response to <span style="color: yellow;">COVID-19</span> - American College of Cardiology https://t.co/qddLZbo255</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1235743915895996424">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 20:23:13</td>
+                <td class ="content_left">@pabeda1 @MihaiTrofenciuc @DocSavageTJU @ethanjweiss @HeartOTXHeartMD @fischman_david @mdstbarts @Hragy @purviparwani @rahatheart1 @mirvatalasnag @Pooh_Velagapudi @mmamas1973 Since Thursday I'm on anticoagulants. My bloodwork was a mess without me having symptoms🤷‍♀️
+It's a crazy virus. <span style="color: yellow;">Tested positive</span>, negative and again positive.</td>
+                <td>1</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1256680666948919300">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 23:14:49</td>
+                <td class ="content_left">@CardioIAN Reopen little steps at a time and only after: 3 weeks without increase of fatal Covid cases, widely available testing and strict enforcement 5ft rule. Listen to @ChrisCuomo He knows what he's talking about and so do I. I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>, negative and positive. Killer https://t.co/zvOb8nnFqI</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1252737582565392384">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 08:33:52</td>
+                <td class ="content_left">@ClinChemMD I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>, am in isolation for 3 weeks now and still test positive. But, no symptoms at all. We have no answer other than DNA theory.</td>
+                <td>1</td>
+                <td>12</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1244180965360107520">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 16:14:00</td>
+                <td class ="content_left">@cpgale3 @medshronline @LIDA_UK <span style="color: yellow;">Tested positive</span>, no symptoms</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1242484820854226948">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 12:52:57</td>
+                <td class ="content_left">@pabeda1 @MihaiTrofenciuc @CMichaelGibson @HeartOTXHeartMD @willsuh76 @fischman_david @DocSavageTJU @DavidWienerMD @mmamas1973 @op1npo @cpgale3 @Hragy @J_Hendriks1 @telegraaf @Pooh_Velagapudi Got an insider who called me last night. He/She said: You can't run with this, but you're so upset being <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for Covid-19............. I understand when you let it slip😉</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1242434225699201027">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 02:55:48</td>
+                <td class ="content_left">@HeartOTXHeartMD Did you get <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>?</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1241196785093218307">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 12:21:07</td>
+                <td class ="content_left">@fischman_david @TomAvril1 @PhillyInquirer @DocSavageTJU @praveen520 @DrHowardWeitz @hvanspall In the Netherlands and Germany they're still testing. In Belgium they prescribe the <span style="color: yellow;"><span style="color: yellow;">drug</span></span></td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1255834566088105984">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 04:23:45</td>
+                <td class ="content_left">@rahatheart1 @AnastasiaSMihai @DocSavageTJU @wordfinga @hvanspall @biljana_parapid @SABOURETCardio @mmamas1973 @EkateriniL @iamritu @fischman_david @DrRyanPDaly @DebbeMcCall @aymanka @DrFerNunez @CastlDalmunzie @AVishnevsky_MD @ecgrhythms The prescribe a <span style="color: yellow;"><span style="color: yellow;">drug</span></span> to prevent the side effect of the <span style="color: yellow;"><span style="color: yellow;">drug</span></span> you prescribe for the previous side effect.
+Before you know it pt takes 16 <span style="color: yellow;"><span style="color: yellow;">drug</span></span>s a day @MihaiTrofenciuc</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1249916228832985088">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 14:38:07</td>
+                <td class ="content_left">@CMichaelGibson It's not the best <span style="color: yellow;"><span style="color: yellow;">drug</span></span> for pts with HD CVD but I think that it's better to combine it with azitromycine and more important Zinc.
+@Bartissimus @MihaiTrofenciuc I would very much appreciate the opinion of Prof. Dr. @MaasAngela</td>
+                <td>2</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1248983674068008960">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 23:49:13</td>
+                <td class ="content_left">@CardioIAN FDA COVID-19 <span style="color: yellow;">DRUG</span> WARNING WARNING WARNING 
+@MihaiTrofenciuc
+https://t.co/E1PiHF3kck</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1248759974467178499">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-31 17:42:44</td>
+                <td class ="content_left">@CardioIAN Zolgensma <span style="color: yellow;"><span style="color: yellow;">drug</span></span> @Novartis
+UMC Utrecht vraagt om goedkeuring duur medicijn voor kinderen  via @Telegraaf https://t.co/JiBOHhamni</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1223300596926746624">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">mild symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "mild symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 23:14:05</td>
+                <td class ="content_left">@Libbyextra Tired. Probably stress related. I'm never home for such a long period of time. I had very <span style="color: yellow;"><span style="color: yellow;">mild symptoms</span></span>. Just a little cough and low O2. Created not enough antibodies. Waiting till results from Thursday. Thanks for asking. Stay Healthy 🙋‍♀️</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1255274113649856514">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 23:14:05</td>
+                <td class ="content_left">@Libbyextra Tired. Probably stress related. I'm never home for such a long period of time. I had very mild symptoms. Just a little <span style="color: yellow;"><span style="color: yellow;">cough</span></span> and low O2. Created not enough antibodies. Waiting till results from Thursday. Thanks for asking. Stay Healthy 🙋‍♀️</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1255274113649856514">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-31 18:30:26</td>
+                <td class ="content_left">@VapesDurham @MarcusGKnight1 @DHSCgovuk @MihaiTrofenciuc @mmamas1973 @rahatheart1 @cpgale3 @NHSEngland @mdstbarts Nope, I don't <span style="color: yellow;"><span style="color: yellow;">cough</span></span> or sneeze</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1223312598877245440">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-31 17:34:34</td>
+                <td class ="content_left">@MarcusGKnight1 @DHSCgovuk @MihaiTrofenciuc @mmamas1973 @rahatheart1 @cpgale3 @NHSEngland @mdstbarts No need for, I don't sneeze or <span style="color: yellow;"><span style="color: yellow;">cough</span></span></td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1223298539301801984">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">zinc</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "zinc"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 01:20:52</td>
+                <td class ="content_left">@T7popTommy1954 @rdschaller Ad some <span style="color: yellow;"><span style="color: yellow;">zinc</span></span> and you're in  business 😂</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1253494082405568518">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 23:39:53</td>
+                <td class ="content_left">@DocSavageTJU @elizbillups @WomensAlly @wordfinga @hvanspall @biljana_parapid @SABOURETCardio @mmamas1973 @AnastasiaSMihai @EkateriniL @iamritu @fischman_david @DrRyanPDaly @DebbeMcCall @aymanka @DrFerNunez @CastlDalmunzie @AVishnevsky_MD @rahatheart1 @ecgrhythms Since we at the @CardioIAN LA Desk mentioned <span style="color: yellow;">Zinc</span> in combination with Hydrochloriquine and Azitromycine last Feb a bunch of Pennsylvania Avenue Squatters run with it.
+In the meantime it's been tested and pts with CAD/CVD+ should NOT TAKE  Hydrochloriquine. Peers, please Retweet!</td>
+                <td>5</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1250207179333873665">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 12:56:43</td>
+                <td class ="content_left">@pabeda1 In Holland we give these drugs, but add <span style="color: yellow;"><span style="color: yellow;">zinc</span></span></td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1248595767192936453">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 11:16:24</td>
+                <td class ="content_left">@minhaskh @rahatheart1 @djc795 @rwyeh @venkmurthy @Vilavaite @AlainBouchardmd @sarahhudsonuk @lamelaspablo @willsuh76 @DavidLBrownMD @DocSavageTJU @ImmadSadiq @mirvatalasnag @aayshacader @AliElzieny @Hragy A Dutch doctor has been successful the past week. 9 medium to serious Covid pts free of the disease in 4 days. He used a combo of:
+Hydrochloriquine 
+Azitromycine and <span style="color: yellow;">Zinc</span> 
+It's far from scientific, but 9 pts cured within a week. In these times food for thoughts  🤔</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1247845745539067905">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 23:26:46</td>
+                <td class ="content_left">@Drshiloh @rahatheart1 @DocSavageTJU @wordfinga @hvanspall @biljana_parapid @SABOURETCardio @mmamas1973 @AnastasiaSMihai @EkateriniL @iamritu @fischman_david @DrRyanPDaly @DebbeMcCall @aymanka @DrFerNunez @CastlDalmunzie @AVishnevsky_MD @ecgrhythms WASH YOUR HANDS AND YOUR FOREARMS after you've been outside in contact with others. When you receive mail or a package, 
+leave it un<span style="color: yellow;">touch</span>ed for 72hrs. Open and read it. Do not <span style="color: yellow;">touch</span> your face and neck. 
+WASH YOUR HANDS, FACE AND YOUR FOREARMS. After washing up don't <span style="color: yellow;">touch</span> mail</td>
+                <td>1</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1250203874868244481">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 23:17:38</td>
+                <td class ="content_left">@wordfinga @Drshiloh @DocSavageTJU @hvanspall @biljana_parapid @SABOURETCardio @mmamas1973 @AnastasiaSMihai @EkateriniL @iamritu @fischman_david @DrRyanPDaly @DebbeMcCall @aymanka @DrFerNunez @CastlDalmunzie @AVishnevsky_MD @rahatheart1 @ecgrhythms As far as we know till now, COVID-19 hates soap. 
+Wash your hands, then your face and forearns.
+Wash every time after you've been outside or in <span style="color: yellow;">touch</span> with anything from outside. Leave papers and mail for 72 hrs, after reading WASH YOUR HANDS!! @MihaiTrofenciuc @ALEX_MISCHIE</td>
+                <td>2</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1250201579669635079">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 22:59:12</td>
+                <td class ="content_left">@ALEX_MISCHIE @ShelleyZieroth @AnastasiaSMihai @iamritu @CMichaelGibson @HeartOTXHeartMD @MihaiTrofenciuc @biljana_parapid @purviparwani WASH YOUR HANDS AND FOREARMS. DO NOT <span style="color: yellow;">TOUCH</span> YOUR NECK OR YOUR FACE. Before you put on your masks take a moment of complete relaxation and tell your mind: I'm not going to <span style="color: yellow;">touch</span> my face. Undress in reverse order of dress. WASH YOUR HANDS after every layer! Shower before you go HOME</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1250196937195827208">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 07:08:14</td>
+                <td class ="content_left">@mariavandenbosc @rahatheart1 @MihaiTrofenciuc @pabeda1 
+Please retweet. 200.000 Stranded passengers all over the world can't get in <span style="color: yellow;">touch</span> with @KLM due to a 2000% Call overload. Help KLM get these passengers home please. https://t.co/FWYg5Nz888</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1240897924411908097">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 20:36:52</td>
+                <td class ="content_left">@MihaiTrofenciuc @pabeda1 @mmamas1973 @J_Hendriks1 @escardio Unfortunately yes. I'm currently in <span style="color: yellow;">touch</span> with the authorities in charge. I'll keep you posted</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1239651871180103683">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-04 07:34:51</td>
+                <td class ="content_left">@HeartOTXHeartMD You get more bacteria from ATM machines and other <span style="color: yellow;">touch</span> screens than from a public restroom😝😝😝</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1235106414403751936">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Vitamin C</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Vitamin C"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 04:06:03</td>
+                <td class ="content_left">@AnastasiaSMihai @rahatheart1 @DocSavageTJU @wordfinga @hvanspall @biljana_parapid @SABOURETCardio @mmamas1973 @EkateriniL @iamritu @fischman_david @DrRyanPDaly @DebbeMcCall @aymanka @DrFerNunez @CastlDalmunzie @AVishnevsky_MD @ecgrhythms And to much <span style="color: yellow;">Vitamin C</span> isn't good for the stomach</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1249911770753437697">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">antibiotics</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "antibiotics"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 23:19:21</td>
+                <td class ="content_left">@joshtpm OMG did he really say this😲 @Bartissimus ? Unbelievable. Now we know from @realDonaldTrump : Covid is a germ that beats <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> 🙄 It's a joke if it weren't the WH @MihaiTrofenciuc @pabeda1 @DocSavageTJU @fischman_david @rahatheart1 @mmamas1973 @CMichaelGibson @AtulPathak31</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1248752460312821762">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">test positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "test positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 22:26:18</td>
+                <td class ="content_left">@hvanspall Another side of Covid-19:
+I was declared "cured" 3 weeks ago, but continued to <span style="color: yellow;"><span style="color: yellow;">test positive</span></span>. Feeling fine and no abnormalities other than the bloodtests: Still Positive</td>
+                <td>1</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1248014331280642049">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 08:33:52</td>
+                <td class ="content_left">@ClinChemMD I tested positive, am in isolation for 3 weeks now and still <span style="color: yellow;"><span style="color: yellow;">test positive</span></span>. But, no symptoms at all. We have no answer other than DNA theory.</td>
+                <td>1</td>
+                <td>12</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1244180965360107520">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Chloroquine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Chloroquine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 07:39:47</td>
+                <td class ="content_left">@rahatheart1 @djc795 @rwyeh @venkmurthy @Vilavaite @AlainBouchardmd @sarahhudsonuk @lamelaspablo @willsuh76 @DavidLBrownMD @DocSavageTJU @minhaskh @ImmadSadiq @mirvatalasnag @aayshacader @AliElzieny @Hragy <span style="color: yellow;"><span style="color: yellow;">Chloroquine</span></span> has side effects that have caused serious problems and even mortality in pts with Cardiac incidents</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1247791234208260101">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 23:20:32</td>
+                <td class ="content_left">@DavidLBrownMD @vass_vassiliou @DrMarthaGulati @NEJM @mmamas1973 @ncurzen @rahatheart1 @GARCIAEDINSON95 @ErinMichos @hvanspall A. Pts with discomfort or chest <span style="color: yellow;"><span style="color: yellow;">pain</span></span> refrain from calling 911
+B. Pts refuse to get admitted, they fear the Hospital more than their CVD
+C. Anything else but Covid and ES and ER think twice before admitting</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1245128879867650048">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recovered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recovered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 22:14:02</td>
+                <td class ="content_left">@fischman_david @mmamas1973 @rafa_romaguera @sbrugaletta @secardiologia @shci_sec @PCRonline @WijnsWilliam @escardio @EAPCIPresident @DFCapodanno @djc795 @DocSavageTJU @CMichaelGibson @salutcat @sanidadgob @hect2701 @Drroxmehran Just yesterday we were talking about the fact that we know so little about this virus.
+I actually went as far as: We're oblivious. We know next to nothing.
+Next week we start a trial testing all <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> male Covid pts. Doing extensive bloodwork. Hope to get some answers</td>
+                <td>1</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1245112140802949129">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">freezing</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "freezing"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 11:16:05</td>
+                <td class ="content_left">@AHappyPatriot @ChristianAssad @averywhiteac The virus survives <span style="color: yellow;"><span style="color: yellow;">freezing</span></span></td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1244946565921476608">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">no symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "no symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 11:43:08</td>
+                <td class ="content_left">@BabsElectrical2 Thank you for asking. I've <span style="color: yellow;"><span style="color: yellow;">no symptoms</span></span>, but feel frustrated. 
+Forced to stay at home during a time that I can be much more useful at the Hospital. They have a theory about the COVID-19 attaching itself to the DNA and therefore continues to show up on bloodtests. Weird🤔
+@pabeda1</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1244228594626265090">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 08:33:52</td>
+                <td class ="content_left">@ClinChemMD I tested positive, am in isolation for 3 weeks now and still test positive. But, <span style="color: yellow;"><span style="color: yellow;">no symptoms</span></span> at all. We have no answer other than DNA theory.</td>
+                <td>1</td>
+                <td>12</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1244180965360107520">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 16:14:00</td>
+                <td class ="content_left">@cpgale3 @medshronline @LIDA_UK Tested positive, <span style="color: yellow;"><span style="color: yellow;">no symptoms</span></span></td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1242484820854226948">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 12:52:57</td>
+                <td class ="content_left">@pabeda1 @MihaiTrofenciuc @CMichaelGibson @HeartOTXHeartMD @willsuh76 @fischman_david @DocSavageTJU @DavidWienerMD @mmamas1973 @op1npo @cpgale3 @Hragy @J_Hendriks1 @telegraaf @Pooh_Velagapudi Got an insider who called me last night. He/She said: You can't run with this, but you're so upset being tested <span style="color: yellow;">positive for Covid</span>-19............. I understand when you let it slip😉</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1242434225699201027">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">heart disease</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "heart disease"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 10:41:32</td>
+                <td class ="content_left">@CardioIAN COVID-19 and <span style="color: yellow;">Heart Disease</span> @MihaiTrofenciuc
+https://t.co/I6rnUyf3ha</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1240226825709801473">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-12 21:17:10</td>
+                <td class ="content_left">@mmamas1973 @HelpMyBreathing @DrAfzalSohaib @PHE_uk @DHSCgovuk @RCPLondon @ImperialNHS @NHSBartsHealth @mdstbarts @cpgale3 At least it is. 
+Do you support a ban on visitation. I think we should. It's just for 4 to 6 weeks and can be very helpful containing <span style="color: yellow;"><span style="color: yellow;">covid19</span></span></td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1238212460701798404">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Sneeze</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Sneeze"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-31 18:30:26</td>
+                <td class ="content_left">@VapesDurham @MarcusGKnight1 @DHSCgovuk @MihaiTrofenciuc @mmamas1973 @rahatheart1 @cpgale3 @NHSEngland @mdstbarts Nope, I don't cough or <span style="color: yellow;">sneeze</span></td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1223312598877245440">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-31 17:34:34</td>
+                <td class ="content_left">@MarcusGKnight1 @DHSCgovuk @MihaiTrofenciuc @mmamas1973 @rahatheart1 @cpgale3 @NHSEngland @mdstbarts No need for, I don't <span style="color: yellow;">sneeze</span> or cough</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1223298539301801984">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">medicine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "medicine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-13 12:58:10</td>
+                <td class ="content_left">@Hragy @BBC @HeartOTXHeartMD @pabeda1 @mmamas1973 @DocSavageTJU @CMichaelGibson @J_Hendriks1 @MihaiTrofenciuc @purviparwani @NanetteWenger Thanks for your response. It's important to counter these kind of media reports. They're damaging to the world of Science and <span style="color: yellow;">Medicine</span></td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/CardioIAN/status/1216705999064662016">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

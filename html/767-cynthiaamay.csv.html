@@ -1,0 +1,498 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>767-cynthiaamay.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 767-cynthiaamay.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">767-cynthiaamay.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 17:41:04</td>
+                <td class ="content_left">After drinking mainly Malibu when I was 16, I haven't been able to even <span style="color: yellow;"><span style="color: yellow;">smell</span></span> it let alone drink that nasty stuff. https://t.co/O6k7iBiETB</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1257002248179265536">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 21:08:26</td>
+                <td class ="content_left">After 16 days ya girl <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> again for covid-19 🙄</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1253068165233414150">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 15:46:37</td>
+                <td class ="content_left">A previously covid positive employee returned to work yesterday after being off for 14 days and being symptom free for over 24 hrs. She then <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> again for covid. I understand healthcare is dealing with critical shortages right now, but we are not stopping the spread.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1251175239116967936">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 15:56:09</td>
+                <td class ="content_left">Okay finally got the news that I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for covid-19. Finally.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1248278536521121792">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 18:41:12</td>
+                <td class ="content_left">A girl in my department <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> today, got her results in half a day. My boss has been waiting 5 days. I've been waiting only 1 day. What kind of priority sequence are they testing these swabs exactly???</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1247957685418557440">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 21:08:26</td>
+                <td class ="content_left">After 16 days ya girl tested positive again for <span style="color: yellow;"><span style="color: yellow;">covid-19</span></span> 🙄</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1253068165233414150">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 15:58:43</td>
+                <td class ="content_left">Why did I receive the news of being positive for <span style="color: yellow;"><span style="color: yellow;">covid-19</span></span> at the same time @twentyonepilots comes out with new music. I have conflicting emotions right now 😂 talk about balance</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1248279181051469825">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 22:12:53</td>
+                <td class ="content_left">In the midst of a <span style="color: yellow;"><span style="color: yellow;">covid-19</span></span> outbreak at work: the nurse comes running down the hall to tell me bye and that he likes my outfit today
+Me in the elevator: is he into me
+
+Priorities, people 😂</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1245836628486172672">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 17:35:25</td>
+                <td class ="content_left">My workplace is now in <span style="color: yellow;"><span style="color: yellow;">covid-19</span></span> outbreak. I am terrified. I have fear for the two pregnant nurses working on that unit. For the immunocompromised RTA. The fact that we're running low on PPE. Stay safe everyone.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1245766803567136771">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 01:38:45</td>
+                <td class ="content_left">I feel like my timeline is 20% <span style="color: yellow;"><span style="color: yellow;">covid-19</span></span> and 80% is animal crossing and honestly, I'm not complaining.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1242626946313457668">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recover</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recover"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 19:44:16</td>
+                <td class ="content_left">Terrified of going back to work once I <span style="color: yellow;"><span style="color: yellow;">recover</span></span> from covid because I know we're not going to be out of outbreak for a while. brb on indefinite sick leave https://t.co/D0NqPyrQ6X</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1249423106705444864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 17:35:55</td>
+                <td class ="content_left">Epitome of me having no sense of <span style="color: yellow;"><span style="color: yellow;">taste</span></span> right now thanks to covid: I just drank an entire cup of tea that was quite obviously made with spoiled milk because when I finished it, it was solid at the bottom. I'm going to go throw up now.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1248666030853033985">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 14:53:53</td>
+                <td class ="content_left">My dad brought me a sour cream glazed donut but I still can't even <span style="color: yellow;"><span style="color: yellow;">taste</span></span> it. If anyone knows anything about me, it's that I love food.  My entire family affectionately calls me the Cantonese name for coconut bun. I'm glad this is the worst symptom of covid I have?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1248262864261058560">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 02:56:13</td>
+                <td class ="content_left">Apparently losing your sense of <span style="color: yellow;"><span style="color: yellow;">taste</span></span> is a common symptom of covid and let me tell you, that may not seem all that bad but I literally can't eat because everything just <span style="color: yellow;"><span style="color: yellow;">taste</span></span>s like bland mush. The lack of <span style="color: yellow;"><span style="color: yellow;">taste</span></span> makes me nauseous.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1247719870105518081">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 15:58:43</td>
+                <td class ="content_left">Why did I receive the news of being <span style="color: yellow;">positive for covid</span>-19 at the same time @twentyonepilots comes out with new music. I have conflicting emotions right now 😂 talk about balance</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1248279181051469825">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 15:56:09</td>
+                <td class ="content_left">Okay finally got the news that I tested <span style="color: yellow;">positive for covid</span>-19. Finally.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1248278536521121792">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 02:23:04</td>
+                <td class ="content_left">Currently have a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> and developing some slight respiratory symptoms. Probably covid. Going to get tested tomorrow. Honestly can't say I'm surprised and I'm glad I can stop wondering when I'm going to get it.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1247349140822077441">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 21:13:42</td>
+                <td class ="content_left">My boss, whom I share an office with, currently has a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> and sore throat and getting tested for covid right now. Although I remain asymptomatic, things are not looking for good for me.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1246546512106139650">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">have a fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "have a fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 02:23:04</td>
+                <td class ="content_left">Currently <span style="color: yellow;"><span style="color: yellow;">have a fever</span></span> and developing some slight respiratory symptoms. Probably covid. Going to get tested tomorrow. Honestly can't say I'm surprised and I'm glad I can stop wondering when I'm going to get it.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1247349140822077441">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">respiratory symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "respiratory symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 02:23:04</td>
+                <td class ="content_left">Currently have a fever and developing some slight <span style="color: yellow;"><span style="color: yellow;">respiratory symptoms</span></span>. Probably covid. Going to get tested tomorrow. Honestly can't say I'm surprised and I'm glad I can stop wondering when I'm going to get it.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1247349140822077441">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-12 22:17:41</td>
+                <td class ="content_left">@trench_notalone I think they're bypassing the normal wait time for EI due to a lot of people being out of work and in quarantine. It's what we're telling our staff to do if they end up with <span style="color: yellow;"><span style="color: yellow;">respiratory symptoms</span></span> and consequently quarantine.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1238227692933308417">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 21:27:59</td>
+                <td class ="content_left">When you're not feeling 100% and you can't tell if it's just because you're <span style="color: yellow;"><span style="color: yellow;">tired</span></span> and anxious or if you have covid coming on......Patiently waiting for my work to tell me to self isolate due to close contact with positive cases or for public health to tell me to get tested.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1246550105341267969">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 23:13:59</td>
+                <td class ="content_left">I'm really <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of looking at insta stories and it's all "this or that" lists or bingo cards like goddamnit girls, stop it.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1242590514878316544">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-23 01:03:49</td>
+                <td class ="content_left">@trench_notalone The one that wandered in during a snow storm because the <span style="color: yellow;"><span style="color: yellow;">tired</span></span> dad left the door ajar? And then the neighbour closed the door when he saw it wide open?</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1220150105115893760">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sore throat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sore throat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 21:13:42</td>
+                <td class ="content_left">My boss, whom I share an office with, currently has a fever and <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span> and getting tested for covid right now. Although I remain asymptomatic, things are not looking for good for me.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1246546512106139650">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sweat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sweat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-14 23:24:06</td>
+                <td class ="content_left">UFC is still on? The sport that's closest to softcore porn? The sport where you are literally on top of someone else, with your <span style="color: yellow;"><span style="color: yellow;">sweat</span></span> and saliva dripping on them?</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1238969183532130305">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-14 14:28:32</td>
+                <td class ="content_left">@trench_notalone I had to leave for work at 6:30am so the sun wasn't up and it was just <span style="color: yellow;"><span style="color: yellow;">cold</span></span> and dark and sad out</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1228325154465468417">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shaking</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shaking"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-04 02:22:12</td>
+                <td class ="content_left">All this talk of animal crossing: new horizons is making me want to play new leaf again. 🙈 I will not get sucked into catching bugs and <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> trees again 🙈</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/cynthiaamay/status/1224518487143538689">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

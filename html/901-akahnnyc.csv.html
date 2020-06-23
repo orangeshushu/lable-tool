@@ -1,0 +1,1010 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>901-akahnnyc.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 901-akahnnyc.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">901-akahnnyc.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 23:51:03</td>
+                <td class ="content_left">As <span style="color: yellow;">COVID-19</span> deaths surge, evictions and raids resume - WW commentary https://t.co/K9hbLcx0Qs via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1266155053326499841">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 23:43:11</td>
+                <td class ="content_left">Chechen leader resurfaces after <span style="color: yellow;">COVID-19</span> infection reports https://t.co/y23b0dUtWr via @Instapaper</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1266153073682022400">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 12:19:23</td>
+                <td class ="content_left">NYC Subway Anti-Germ Spray’s <span style="color: yellow;">COVID-19</span> Impact Unclear https://t.co/18USHLuRAM via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1265980992076091392">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 22:46:21</td>
+                <td class ="content_left">New York's Black female AG blocked his release and now he has contracted COVID. FREE JALIL!
+
+Jalil Muntaqim tests positive for <span style="color: yellow;">COVID-19</span> and is hospitalized in New York https://t.co/2UTw6zFdyq</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1265413993864278018">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 12:31:39</td>
+                <td class ="content_left">India among 10 worst-hit <span style="color: yellow;">Covid-19</span> nations as cases jump; air travel reopens https://t.co/6dPnv3kDPE via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1264896913687621632">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 22:33:44</td>
+                <td class ="content_left">CDC Issues Alarming Triple-Fatality Report On <span style="color: yellow;">COVID-19</span> Cases At Arkansas Church https://t.co/UCP86IskZ2 via @Instapaper</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1264686045930622976">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 22:33:28</td>
+                <td class ="content_left">Global report: Wuhan lab says its bat strains were not <span style="color: yellow;">Covid-19</span> as US nears 100,000 deaths https://t.co/hjqTdO3Ony via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1264685978742149121">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 12:17:08</td>
+                <td class ="content_left">Cuomo Order That Sent Estimated 4,300 <span style="color: yellow;">Covid-19</span> Patients to Nursing Homes Denounced as 'Single Dumbest Decision Anyone Could Make' https://t.co/cGvk7Retdn via @Instapaper</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1264168482972798977">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 11:12:18</td>
+                <td class ="content_left">Chinese mainland reports zero new <span style="color: yellow;">COVID-19</span> case and death https://t.co/i8RxT4GAnz via @cgtnofficial</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1264152169898487808">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 02:13:14</td>
+                <td class ="content_left">SWS: Number of hungry Filipino families nearly doubles due to <span style="color: yellow;">COVID-19</span> blow https://t.co/uKqzIyFHba via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1264016508625342465">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 23:21:54</td>
+                <td class ="content_left">Mnuchin sees 'strong likelihood' of needing another <span style="color: yellow;">COVID-19</span> relief bill https://t.co/4JDqKi8JVa via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1263973388764184576">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 11:18:21</td>
+                <td class ="content_left">New Jersey lowers <span style="color: yellow;">Covid-19</span> death toll at long-term care facilities by 1,400 https://t.co/Cf7PmOhG2i via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1263066526611111938">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 23:31:23</td>
+                <td class ="content_left">“Deported Honduran says no water, food or <span style="color: yellow;">COVID-19</span> test in U.S. detention” https://t.co/dyxwyMK01j via @Instapaper</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1262888613769084929">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 02:53:55</td>
+                <td class ="content_left">Swing states become partisan battlegrounds in America's fight against <span style="color: yellow;">Covid-19</span> https://t.co/2eeNl5TwJu via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1262577195425370112">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 20:49:19</td>
+                <td class ="content_left">China restarts more classes, revives flights amid falling <span style="color: yellow;">COVID-19</span> cases https://t.co/aIeWJS9uu3 via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1262485440592056320">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 16:23:27</td>
+                <td class ="content_left">Approximately 1% of those who tested positive initially. If that indicates 95+% immunity once infected originally that would be great news. 
+
+13 sailors on the USS Theodore Roosevelt test positive for <span style="color: yellow;">COVID-19</span> after recovering from the virus https://t.co/w8i1XnpYJ4</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1262418532282839041">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 14:21:03</td>
+                <td class ="content_left">Burundi defies <span style="color: yellow;">COVID-19</span> for election ending a bloody rule https://t.co/I3RxQKmLP2 via @Instapaper</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1262387731646349313">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 13:09:39</td>
+                <td class ="content_left">Fuck them
+
+‘There will be a war if they make us take a vaccine’: Anti-vaxxers defiant as world searches for <span style="color: yellow;">Covid-19</span> cure https://t.co/tjseyNvmbl</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1262007375172636673">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 21:41:46</td>
+                <td class ="content_left">Why East beat West on <span style="color: yellow;">Covid-19</span> (Part 2) https://t.co/Em516cu9ba via @instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1261773862536204288">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 19:50:19</td>
+                <td class ="content_left">Why East beat West on <span style="color: yellow;">Covid-19</span> https://t.co/QhuG7UmzUF via @instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1261745816219406347">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 19:41:21</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Spreads in Yemen With Health System in Shambles https://t.co/gSdBlqVbl1 via @instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1261743561369886720">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 18:32:32</td>
+                <td class ="content_left">NYC transit workers union rolls out 10-point plan to keep New Yorkers, mass transit workers safe during once <span style="color: yellow;">COVID-19</span> crisis passes https://t.co/9Kt7LJl6nE via @Instapaper</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1261726240123297793">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 15:46:54</td>
+                <td class ="content_left">Unraveling U.S.-inspired <span style="color: yellow;">COVID-19</span> conspiracy theories against China https://t.co/xodfMtZ3lv via @instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1261684558199689217">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 11:20:55</td>
+                <td class ="content_left">New Shipment – 43 Tons of Medical Supplies from China to Fight <span style="color: yellow;">Covid-19</span> https://t.co/eVP12hEGKk via @Instapaper</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1260530457172639744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 20:28:42</td>
+                <td class ="content_left">How NYC Schools Officials Played Down the <span style="color: yellow;">COVID-19</span> Threat https://t.co/Gp9xeeLE9M via @instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1260305925988114439">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 15:32:49</td>
+                <td class ="content_left">10 questions on <span style="color: yellow;">COVID-19</span> that must be answered by U.S. politicians_People's Daily Online - News for Mobile https://t.co/iP5Zb9GQu9 via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1260231464802754568">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 15:27:31</td>
+                <td class ="content_left">WHO Chief: Distribution of Vaccines, Not Their Creation, is Key Challenge in <span style="color: yellow;">COVID-19</span> Fight https://t.co/JICGLw4yKa via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1260230128472375296">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 23:17:16</td>
+                <td class ="content_left">France had <span style="color: yellow;">Covid-19</span> in November, hospital says after analysis of chest scans https://t.co/CKeXo6zJC5 via @instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1259623571858456577">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 09:51:20</td>
+                <td class ="content_left">Venezuela and Iran ratify cooperative ties in the face of <span style="color: yellow;">Covid-19</span> pandemic challenges • Ministerio del Poder Popular para Relaciones Exteriores https://t.co/FCoZTrhqU0 via @Instapaper</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1259058362714673152">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 09:38:48</td>
+                <td class ="content_left">Hydroxychloroquine fails to help hospitalized <span style="color: yellow;">COVID-19</span> patients: study https://t.co/oYmlLyOtpX via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1259055209587904513">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 08:57:54</td>
+                <td class ="content_left">Venezuela Showcases Progress in the Containment of <span style="color: yellow;">COVID-19</span> https://t.co/JuY26tME2R via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1259044914710667264">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 16:42:23</td>
+                <td class ="content_left">Cuba in favorable range on <span style="color: yellow;">COVID-19</span> evolutionary curve, but strict preventative measures remain in place https://t.co/biYnILFvDy via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1258437032948502531">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 22:47:42</td>
+                <td class ="content_left">Calls Grow for Mass Release From Ohio’s Marion Prison as 80 Percent of Prisoners Test Positive for <span style="color: yellow;">COVID-19</span> https://t.co/MV56z0JpvC via @Instapaper</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1258166576207011850">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 22:42:33</td>
+                <td class ="content_left">A Native health center asked for <span style="color: yellow;">COVID-19</span> medical supplies. It got body bags instead. https://t.co/Qo7NpbU414 via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1258165284193607684">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 16:14:37</td>
+                <td class ="content_left">Pharma giant Roche gets US go-ahead for <span style="color: yellow;">Covid-19</span> antibody test https://t.co/eTZBSvK9YC via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1256980490642481153">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 00:45:19</td>
+                <td class ="content_left">More global research, evidence prove Chinese <span style="color: yellow;">COVID-19</span> data accurate, virus not from China - Global Times https://t.co/ZgqUgcuFz4 via @Instapaper</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1256746626426732545">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 15:58:53</td>
+                <td class ="content_left">WHO congratulates Wuhan on clearing all <span style="color: yellow;">COVID-19</span> cases_People's Daily Online - News for Mobile https://t.co/VAhdcUDqKj via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1256614145342017537">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 14:45:41</td>
+                <td class ="content_left">Brazil: Manaus Collapses as <span style="color: yellow;">COVID-19</span> Hits Indigenous People https://t.co/qVhCd8mSCO via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1256595724319555585">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 14:36:33</td>
+                <td class ="content_left">Richard Horton: We should work together with China fighting <span style="color: yellow;">COVID-19</span> https://t.co/mgelG69LL3 via @YouTube</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1256593425723469825">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 14:13:41</td>
+                <td class ="content_left">UN asks for authorization to replicate Venezuelan model of suppression of <span style="color: yellow;">Covid-19</span> https://t.co/YqUPit1yMt vía @AVNve</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1256587668185657345">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 13:12:53</td>
+                <td class ="content_left">Russian PM Mikhail Mishustin Tests Positive for <span style="color: yellow;">COVID-19</span> https://t.co/C2IuXYNzX6 via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1256572370422284290">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 15:21:04</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> shot protects monkeys https://t.co/zBWmM9KZy4 via @Instapaper</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1256242241200443394">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 12:14:06</td>
+                <td class ="content_left">Bolivia’s socialist presidential candidate Luis Arce speaks about elections, <span style="color: yellow;">COVID-19</span> and fascist oppression : Peoples Dispatch https://t.co/sPhugvU2wV via @Instapaper</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1255832802156851200">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 00:15:06</td>
+                <td class ="content_left">“No <span style="color: yellow;">COVID-19</span> deaths reported for 13 days on Chinese mainland” https://t.co/2wLZE7nhMw via @Instapaper</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1255651858812715013">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 00:13:46</td>
+                <td class ="content_left">No New Cases of <span style="color: yellow;">Covid-19</span> in Venezuela this Tuesday – Maduro: "We Will Accept Humanitarian Aid From any Country" | Orinoco Tribune https://t.co/ObntJZubJf via @Instapaper</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1255651524602200066">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 11:12:48</td>
+                <td class ="content_left">Sorry, conspiracy theorists. Study concludes <span style="color: yellow;">COVID-19</span> 'is not a laboratory construct' https://t.co/F85xD8jNCI via @instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1254367823708684288">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 11:05:06</td>
+                <td class ="content_left">Even if the antibody surveys show a <span style="color: yellow;">COVID-19</span> death rate well below 1%, says Michael Osterholm, an infectious disease expert at the University of Minnesota, Twin Cities, control measures will be needed for a long time to avoid overwhelmed hospitals.</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1254365884082262016">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 10:57:32</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> vaccine protects monkeys from new coronavirus, Chinese biotech reports https://t.co/PlIB4NWcuS via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1254363978765078530">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 10:50:06</td>
+                <td class ="content_left"><span style="color: yellow;">Covid-19</span> has shattered the global illusion of America - ABDULLAH MURADOĞLU https://t.co/wMHU2c0D98 via @instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1254362111284740096">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 10:45:46</td>
+                <td class ="content_left">Scores to be settled in the aftermath of <span style="color: yellow;">Covid-19</span> https://t.co/KMrTa3yt4d</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1254361021130645504">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 01:18:16</td>
+                <td class ="content_left">70+ Groups Demand Trump Immediately End US Sanctions Against Iran, Venezuela, Cuba, and Others During <span style="color: yellow;">Covid-19</span> Crisis https://t.co/WrijQ3YoVd via @Instapaper</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1253855815452237832">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 22:52:26</td>
+                <td class ="content_left">Pat Robertson Suggests Same-Sex Marriage, Abortion Among Reasons For <span style="color: yellow;">COVID-19</span> https://t.co/C7fVnqiKd0 via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1253819114591866880">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 09:05:33</td>
+                <td class ="content_left">Accusing China of deliberately exporting <span style="color: yellow;">COVID-19</span> absurd - Global Times https://t.co/2riSIRyFpG</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1253611025049489408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 17:25:32</td>
+                <td class ="content_left">South Korea, once a major <span style="color: yellow;">COVID-19</span> hot spot, eases distancing rules https://t.co/DG1aAR38Xq via @Instapaper https://t.co/WXXKOPV2i1</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1252287298508636160">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 17:10:03</td>
+                <td class ="content_left">Mexico: López Obrador's message of optimism to the people on <span style="color: yellow;">Covid-19</span> https://t.co/XKbZbjnv66 via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1252283398808391680">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 17:09:41</td>
+                <td class ="content_left">Cuban Doctors Arrive in Honduras to Fight <span style="color: yellow;">COVID-19</span> https://t.co/x5gytvyCzL via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1252283306055475200">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">medicine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "medicine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 12:11:44</td>
+                <td class ="content_left">Exclusive: Venezuela reaches deal with U.N. to buy food, <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> with gold - central bank https://t.co/GFL6FICSM6 via @Instapaper</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1265979065758035969">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 23:13:31</td>
+                <td class ="content_left">Anyone interested in keeping in <span style="color: yellow;">touch</span> off-Twitter, DM me. Watch Trump shut us all down https://t.co/69g7t6K7PM</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1265783222195171329">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 18:22:48</td>
+                <td class ="content_left">Pastor claimed that if he <span style="color: yellow;">touch</span>ed people they'd be safe from COVID. Since he's dead from COVID I guess he didn't <span style="color: yellow;">touch</span> himself. Thank God he didn't though since masturbation is a sin.
+
+Pastor Who Claimed To Cure Coronavirus With Faith Dies Of Coronavirus https://t.co/MIPWWzo2Qp</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1263535733110964225">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 22:46:21</td>
+                <td class ="content_left">New York's Black female AG blocked his release and now he has contracted COVID. FREE JALIL!
+
+Jalil Muntaqim tests <span style="color: yellow;">positive for COVID</span>-19 and is hospitalized in New York https://t.co/2UTw6zFdyq</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1265413993864278018">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 16:23:27</td>
+                <td class ="content_left">Approximately 1% of those who tested positive initially. If that indicates 95+% immunity once infected originally that would be great news. 
+
+13 sailors on the USS Theodore Roosevelt test <span style="color: yellow;">positive for COVID</span>-19 after recovering from the virus https://t.co/w8i1XnpYJ4</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1262418532282839041">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 22:47:42</td>
+                <td class ="content_left">Calls Grow for Mass Release From Ohio’s Marion Prison as 80 Percent of Prisoners Test <span style="color: yellow;">Positive for COVID</span>-19 https://t.co/MV56z0JpvC via @Instapaper</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1258166576207011850">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 13:12:53</td>
+                <td class ="content_left">Russian PM Mikhail Mishustin Tests <span style="color: yellow;">Positive for COVID</span>-19 https://t.co/C2IuXYNzX6 via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1256572370422284290">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 23:51:26</td>
+                <td class ="content_left">I live in the epicenter of the world for COVID cases in a majority Chinese neighborhood. I'm a healthcare worker in the borough that is currently worst affected by COVID. I contracted COVID and was in isolation for 2 weeks. Several friends contracted and tested <span style="color: yellow;">positive for COVID</span></td>
+                <td>1</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1254196350763352064">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 11:53:40</td>
+                <td class ="content_left">US and China on 'Brink of New <span style="color: yellow;">Cold</span> War', Chinese Foreign Minister Warns https://t.co/qzHVLxNalo via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1264524965547847685">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 23:59:26</td>
+                <td class ="content_left">Pompeo Lays Out the Case For <span style="color: yellow;">Cold</span> War II With China https://t.co/CdROTVLLn2 via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1263982836635271170">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 23:25:04</td>
+                <td class ="content_left">The Murderous Legacy of <span style="color: yellow;">Cold</span> War Anticommunism https://t.co/NwG9voemYo via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1263974189121384449">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 21:48:54</td>
+                <td class ="content_left">Macuto Bay of Pigs: US Led Mercenary Incursion (Part 2) - New <span style="color: yellow;">Cold</span> War: News and Analysis of the Multipolar World https://t.co/Ch3hwYVP3b via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1258151782674563074">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 21:44:14</td>
+                <td class ="content_left">Venezuela: Fishermen detain new armed group attempting coup in coastal state of Aragua - New <span style="color: yellow;">Cold</span> War: News and Analysis of the Multipolar World https://t.co/OhwSBfjGGC via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1258150607069872128">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 21:42:48</td>
+                <td class ="content_left">Don’t buy the lockdown lie – this is a government of business as usual - New <span style="color: yellow;">Cold</span> War: News and Analysis of the Multipolar World https://t.co/FR0RuD9zzS via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1258150246540066816">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 21:41:20</td>
+                <td class ="content_left">US to mobilize military reservists in ‘anti-drug’ operation against Venezuela - New <span style="color: yellow;">Cold</span> War: News and Analysis of the Multipolar World https://t.co/ZbgeVUjnZR via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1258149874954047488">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 16:14:26</td>
+                <td class ="content_left">Yes, Capitalists will exploit COVID but do not fucking pretend thatCOVID is just some overblown <span style="color: yellow;"><span style="color: yellow;">cold</span></span> with sniffles</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1255530893902581767">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 20:27:29</td>
+                <td class ="content_left">@whatisupmydawg @bIondiewasabi Actually he’s talking about future <span style="color: yellow;"><span style="color: yellow;">drug</span></span> use when she’s older. It’s a commentary on the shitshow of what happens to many child “celebrities” who have no actual relevance.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1263567111160545300">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 08:59:38</td>
+                <td class ="content_left">Pharmaceutical Company Pushes New, Unproven COVID Treatment <span style="color: yellow;">Drug</span> https://t.co/Wb0UGhwooE via @Instapaper</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1260857290758008832">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 10:58:56</td>
+                <td class ="content_left">yup me too...caffeine is a <span style="color: yellow;"><span style="color: yellow;">drug</span></span> that will never be banned. https://t.co/3la0gjhZQu</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1253639557653966848">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 10:57:53</td>
+                <td class ="content_left">Coronavirus Study Of <span style="color: yellow;">Drug</span> Pushed By Trump Finds More Deaths, No Benefit https://t.co/pX0gZZ2v1e via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1252914517190881281">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">test positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "test positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 16:23:27</td>
+                <td class ="content_left">Approximately 1% of those who tested positive initially. If that indicates 95+% immunity once infected originally that would be great news. 
+
+13 sailors on the USS Theodore Roosevelt <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for COVID-19 after recovering from the virus https://t.co/w8i1XnpYJ4</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1262418532282839041">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 22:47:42</td>
+                <td class ="content_left">Calls Grow for Mass Release From Ohio’s Marion Prison as 80 Percent of Prisoners <span style="color: yellow;">Test Positive</span> for COVID-19 https://t.co/MV56z0JpvC via @Instapaper</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1258166576207011850">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 22:10:35</td>
+                <td class ="content_left">58 percent of workers at Tyson meat factory <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for coronavirus https://t.co/LpUXFzEEtV via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1258157236934922240">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 16:23:27</td>
+                <td class ="content_left">Approximately 1% of those who <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> initially. If that indicates 95+% immunity once infected originally that would be great news. 
+
+13 sailors on the USS Theodore Roosevelt test positive for COVID-19 after recovering from the virus https://t.co/w8i1XnpYJ4</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1262418532282839041">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 14:02:41</td>
+                <td class ="content_left">@johnsteppling @AlexBerenson As someone in the medical field, yes, I do...as someone in the epicenter of the crisis in NYC I do. And yes, as someone who <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>, had many friends who did as well as two family members who died of it, yes i do.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1255497736977362953">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 23:51:27</td>
+                <td class ="content_left">I have already lost two family members to COVID may they rest in peace.
+
+But please, as someone who never <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>, tell me who I should be blaming and attack me for not attacking China. Y'all are so petty.</td>
+                <td>1</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1254196354127183872">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 23:51:26</td>
+                <td class ="content_left">I live in the epicenter of the world for COVID cases in a majority Chinese neighborhood. I'm a healthcare worker in the borough that is currently worst affected by COVID. I contracted COVID and was in isolation for 2 weeks. Several friends contracted and <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID</td>
+                <td>1</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1254196350763352064">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 20:42:06</td>
+                <td class ="content_left">@Santanasworld88 lol now i'm not calling for erasing Black History Month but you get my point....keep it but teach Black History all year too. Same goes for all groups. <span style="color: yellow;">Tired</span> of the zero sum game that pits non-white groups against each other like "you got more crumbs than us - let's fight!"</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1262121236462817280">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recovered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recovered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 19:11:26</td>
+                <td class ="content_left">@Communista2 @instapaper All <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> thank goodness! Thank you for asking :-)</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1261736031277273089">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Hydroxychloroquine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Hydroxychloroquine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 20:20:43</td>
+                <td class ="content_left"><span style="color: yellow;"><span style="color: yellow;">Hydroxychloroquine</span></span> shows no benefit against coronavirus in N.Y. study https://t.co/gfVYnu6MX8 via @instapaper</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1260303914634788870">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 09:38:48</td>
+                <td class ="content_left"><span style="color: yellow;"><span style="color: yellow;">Hydroxychloroquine</span></span> fails to help hospitalized COVID-19 patients: study https://t.co/oYmlLyOtpX via @Instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1259055209587904513">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">massage</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "massage"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 00:32:02</td>
+                <td class ="content_left">@DillEsq You have anyone who can get you a good <span style="color: yellow;"><span style="color: yellow;">massage</span></span>? Sometimes that deep tissue <span style="color: yellow;"><span style="color: yellow;">massage</span></span> stuff works. Feel better though!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1259642387057565696">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cancer</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cancer"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 00:55:37</td>
+                <td class ="content_left">@keepitrealrn I've always wondered what the purpose of prayer groups are? Is God like "Yo they got more followers so I'mma cure their <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> but not that other dude's <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> who only has himself praying for him?" Is one prayer not enough? Like what's the cutoff?</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1256749215969148929">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asymptomatic</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asymptomatic"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 22:06:35</td>
+                <td class ="content_left">@RosaLuxembourge @FilozofA Define "healthy". There is a delay in symptoms presenting themselves in COVID positive patients and many are <span style="color: yellow;"><span style="color: yellow;">asymptomatic</span></span> but carriers who can easily spread it to others at a higher rate than regular flu.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1256706680139788288">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 03:47:05</td>
+                <td class ="content_left">@yuhline You still have the fresh durian smell imprinted in your <span style="color: yellow;"><span style="color: yellow;">nose</span></span> I'm guessing lol...and yes, fresh is a very subjective term as an adjective for durian</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1256067591724040193">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 03:47:05</td>
+                <td class ="content_left">@yuhline You still have the fresh durian <span style="color: yellow;"><span style="color: yellow;">smell</span></span> imprinted in your nose I'm guessing lol...and yes, fresh is a very subjective term as an adjective for durian</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1256067591724040193">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 18:11:06</td>
+                <td class ="content_left">Does Norway Steppling need to <span style="color: yellow;"><span style="color: yellow;">smell</span></span> the dead bodies of rotting corpses from COVID to care? Or will it still be a manageable number? Will he want us to count the early deaths  in coming years of people whose kidneys and lungs were damaged from COVID?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1255560254710038528">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">illusion</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "illusion"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 10:50:06</td>
+                <td class ="content_left">Covid-19 has shattered the global <span style="color: yellow;"><span style="color: yellow;">illusion</span></span> of America - ABDULLAH MURADOĞLU https://t.co/wMHU2c0D98 via @instapaper</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1254362111284740096">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Chloroquine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Chloroquine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 10:05:26</td>
+                <td class ="content_left">@stscholasticas @StanleyCohenLaw A man died when he ingested <span style="color: yellow;">chloroquine</span> fish bowl cleaner after he and his wife decided that would prevent COVID after Trump was discussing it.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/akahnnyc/status/1253626094059753473">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,881 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>825-3D_Hottie.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 825-3D_Hottie.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">825-3D_Hottie.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 22:43:04</td>
+                <td class ="content_left">It’s hard to know whether or not you will touch a virus you cannot see, especially one that can survive on inanimate for days. 
+Try as much as possible to avoid touching your eyes <span style="color: yellow;"><span style="color: yellow;">nose</span></span> or mouth, you have more control over that, and that’s another way face masks help.</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1254903920507437056">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 19:49:53</td>
+                <td class ="content_left">Subtract another two for those people who constantly tried to force me to hate my nigga <span style="color: yellow;"><span style="color: yellow;">nose</span></span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1250511683262599173">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 22:43:04</td>
+                <td class ="content_left">It’s hard to know whether or not you will <span style="color: yellow;">touch</span> a virus you cannot see, especially one that can survive on inanimate for days. 
+Try as much as possible to avoid <span style="color: yellow;">touch</span>ing your eyes nose or mouth, you have more control over that, and that’s another way face masks help.</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1254903920507437056">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 13:12:02</td>
+                <td class ="content_left">I gave over 200 flu vaccinations last year and something tells me flu season this year it might <span style="color: yellow;">touch</span> a thousand lol</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1239902315131351041">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">mild symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "mild symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 22:38:38</td>
+                <td class ="content_left">Atleast 1 in 10 of cases tested (and reported) are positive and this is minus the deaths in Kano. 
+Now, Kano alone it’s only the deaths that have been speculated, not the positives who are admitted or experiencing <span style="color: yellow;"><span style="color: yellow;">mild symptoms</span></span>. 
+This is terrifying</td>
+                <td>2</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1254902805330038785">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">migraine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "migraine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 12:40:56</td>
+                <td class ="content_left">Woke up with a <span style="color: yellow;"><span style="color: yellow;">migraine</span></span> and I’m big mad</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1254390001820983297">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">ache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "ache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 23:18:18</td>
+                <td class ="content_left">My heart does <span style="color: yellow;"><span style="color: yellow;">ache</span></span> for the Nigerian lgbtq community because the country is already a joke. 
+There’s the aspect that even the fellow oppressed phobes want to oppress you. There’s the little pleasures of love and expression and just being human that you’re being deprived</td>
+                <td>17</td>
+                <td>33</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1254188014085066754">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diarrhoea</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diarrhoea"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 19:32:27</td>
+                <td class ="content_left">@Temipopcorn Lmao I wouldn’t even indulge her because already tried to school her and she’s refusing to learn but a lot of people at @ing me with hot takes, hence the other tweets on the thread. 
+Thank you for getting it!  Can’t believe the flagyl for <span style="color: yellow;"><span style="color: yellow;">diarrhoea</span></span> thing is still going onnnn</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1254131176735981569">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 10:57:03</td>
+                <td class ="content_left">@TheBrainyChic It’s a prescription only medication here. I’ve heard it’s sold for tummy issues in nigeria, <span style="color: yellow;"><span style="color: yellow;">diarrhoea</span></span> or so, VERY problematic lol</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1254001471617667072">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 19:07:20</td>
+                <td class ="content_left">These ones are high and are practically fucking. So I’ve deadass turned my chair to face them, <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of pretending like I’m uncomfortable. If you give me a show, I’m gonna watch.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1254124856167337995">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 18:27:35</td>
+                <td class ="content_left">I said I was too <span style="color: yellow;"><span style="color: yellow;">tired</span></span> to walk, ambulance had brought me there, she said I should use taxi. Taxi that would specifically put others at risk. 
+Also advised me to take ibuprofen, something you’re not ideally supposed to take if you have corona. 
+My life meant nothing.</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1253027689256177664">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 18:20:58</td>
+                <td class ="content_left">&amp; the covid test itself*** I wasn’t even asking for the covid test, just do blood test and see if there is sign of infection, nurse said they’ll come and get blood soon, after four hours this yt doctor came and said no need and that I shouldn’t leave. I was just crying and <span style="color: yellow;"><span style="color: yellow;">tired</span></span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1253026022494212097">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 21:00:14</td>
+                <td class ="content_left">The “real men” trope is nonsensical and <span style="color: yellow;">TIRED</span> https://t.co/XhEWVZWgL4</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1250166999575117826">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 11:23:13</td>
+                <td class ="content_left">@hannah_dee10 I’m better love, thank you. Just hella <span style="color: yellow;"><span style="color: yellow;">tired</span></span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1249297015114207237">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 00:43:09</td>
+                <td class ="content_left">Am I a little <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of living? Maybe.</td>
+                <td>2</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1249135937331879939">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 21:51:21</td>
+                <td class ="content_left">I mean I’ve been <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of clubbing since I turned 25 but, why una dey fear @Oggyoggs @tolubabz 🥴🥴, let’s rub Goya and turnuppppp</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1239670617588277260">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-06 02:58:20</td>
+                <td class ="content_left">I’m <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of having shit to do, I want to just vibe</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1235761602999332864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-05 11:25:30</td>
+                <td class ="content_left">I’m soo triggered I cannot move or do any of the things on my to-do list and I’m <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of beating myself up about it. I am just gonna relax and wait till I’m better, I can afford to do that now so that’s exactly what I’ll do. 
+I don’t have to walk on my knees!</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1235526850127884288">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-28 19:45:53</td>
+                <td class ="content_left">I’m single because I’m going okay baby I’m so <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of it all https://t.co/kW5BOe47f4</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1233478449077116928">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-25 19:05:33</td>
+                <td class ="content_left">@WunmiWonka 😂😂😂 I’m <span style="color: yellow;"><span style="color: yellow;">tired</span></span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1232381135579164672">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">antibiotics</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "antibiotics"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 12:30:44</td>
+                <td class ="content_left">Few things abeg, I do not expect anyone to see a tweet and go and buy <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> because in my own experience, you’d need a prescription + cmon sense. 
+Secondly, in my own experience your symptoms are used to make diagnosis not a test, unless you have other unusual symptoms.</td>
+                <td>8</td>
+                <td>22</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1254025047154573314">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 10:00:21</td>
+                <td class ="content_left">@TheChisomEkechi @AdaUbakala Well, my experience where I am is that no one gets <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> without a prescription. It is also not diagnosed by testing, as the symptoms are quite distinctive. I think it is common sense to attain prescription only medications after seeing a prescriber</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1253987200598978561">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 09:15:46</td>
+                <td class ="content_left">@___siren__ Anyway to answer your question. BV’s main distinguishing feature is the fish smell, along with other symptoms help make a different diagnosis if it doesn’t fit the disease profile. 
+If <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> don’t work, the next thing would be to investigate for other underlying causes</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1253975982056312832">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 08:38:20</td>
+                <td class ="content_left">I’ve noticed a woman having that fishy smell thing and told her quite plainly that we should both go on a date to the clinic.   We did, she got her <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> and it was sorted.
+Odd smells, discharge etc is nothing to be ashamed of.</td>
+                <td>14</td>
+                <td>21</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1253966560479363073">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 22:04:22</td>
+                <td class ="content_left">This second time, I met a kinder team. I tested positive for covid-19, not only that though the infection has spread severely through most of my chest and both my lungs. At some point later than night  I was practically unconscious. 
+Needed fluids, IV <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> etc etc https://t.co/tFOr4kpwlI</td>
+                <td>5</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1246559259892035586">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 10:37:14</td>
+                <td class ="content_left">Hair I made last Sunday, that I’ve taken out because of <span style="color: yellow;"><span style="color: yellow;">pain</span></span> is still causing me <span style="color: yellow;"><span style="color: yellow;">pain</span></span> FFS. Bare injuries on my scalp, untop 8 cornrows</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1253996484644818945">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 17:51:14</td>
+                <td class ="content_left">I have gotten in an argument with a healthcare professional who said if a patient would “stop carrying all that weight around maybe her back wouldn’t hurt so much”. 
+This is a patient whose history of back <span style="color: yellow;"><span style="color: yellow;">pain</span></span> is from an accident and this <span style="color: yellow;"><span style="color: yellow;">pain</span></span> prevents her from exercising.</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1250481824553410561">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 21:24:38</td>
+                <td class ="content_left">Zelie Inan Amari Gombe Sokoto Masked men blood feelings task challenge Jump run <span style="color: yellow;">Pain</span> maji fight jsksKskkzkzkzkkxkzkzkxkdkjjdjdjdjdjjd ITS TOO MUCH</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1250173142087151623">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 22:20:33</td>
+                <td class ="content_left">Prior to my first visit to A and E I had been sick 7 days already and self isolating that long. I knew my symptoms were becoming concerning that’s why I came. I knew my <span style="color: yellow;"><span style="color: yellow;">pain</span></span> was pleuritic <span style="color: yellow;"><span style="color: yellow;">pain</span></span> not <span style="color: yellow;"><span style="color: yellow;">pain</span></span> from pulled muscle while coughing but did anyone listen???</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1246563335694417932">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 22:02:08</td>
+                <td class ="content_left">Update for my Twitter Fam because you have been so relentless in checking in on me. The first time I was in A and E I was practically dismissed. I went home and my case worsened, I was delirious, in <span style="color: yellow;"><span style="color: yellow;">pain</span></span> and worsening. Could barely breath, eat or move</td>
+                <td>2</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1246558697431728128">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 08:45:07</td>
+                <td class ="content_left">Fish <span style="color: yellow;"><span style="color: yellow;">smell</span></span> in the vagina isn’t a big deal. It’s most likely bacterial vaginosis and it goes within the first hours of taking metronidazole, but remember to complete the entire course. 
+Don’t let these olodo suckaway niggas convince you that it’s some terrible shameful thing.</td>
+                <td>136</td>
+                <td>214</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1253968268148256768">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 08:38:20</td>
+                <td class ="content_left">I’ve noticed a woman having that fishy <span style="color: yellow;"><span style="color: yellow;">smell</span></span> thing and told her quite plainly that we should both go on a date to the clinic.   We did, she got her antibiotics and it was sorted.
+Odd <span style="color: yellow;"><span style="color: yellow;">smell</span></span>s, discharge etc is nothing to be ashamed of.</td>
+                <td>14</td>
+                <td>21</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1253966560479363073">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 01:28:42</td>
+                <td class ="content_left">From the parent-child perspective. 
+Oboy the school will <span style="color: yellow;"><span style="color: yellow;">cough</span></span> out $20,500</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1253133665019801602">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 00:41:10</td>
+                <td class ="content_left">The doctor was obvs Nigerian because she kept saying “hayyy God, HAYYY GOD” throughout the call, I was <span style="color: yellow;"><span style="color: yellow;">cough</span></span> laughing</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1242250068922716163">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fatigued</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fatigued"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 18:57:30</td>
+                <td class ="content_left">@tvyxo Thank you so much. Yeah I am, was scared like for like a week after because I was still completely run down and <span style="color: yellow;"><span style="color: yellow;">fatigued</span></span> but I’m a lot better now. Love you!! ♥️♥️♥️♥️</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1253035218371514368">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-12 02:59:15</td>
+                <td class ="content_left">I’m <span style="color: yellow;"><span style="color: yellow;">fatigued</span></span> asH</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1237936164167987202">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recover</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recover"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 18:25:50</td>
+                <td class ="content_left">I’m big, tall, tough and in healthcare too, and I go above and beyond for my own patients. This fucking COVID reduced me to this crying begging mess, begging them to not let me die. 
+BUT SHE SENT ME AWAY
+
+Before my mental health will <span style="color: yellow;"><span style="color: yellow;">recover</span></span> yeah</td>
+                <td>3</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1253027247159742465">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 18:13:50</td>
+                <td class ="content_left">When I tell y’all that this is why <span style="color: yellow;">Covid19</span> almost killed me. I had severe pleuritic pain, couldn’t breath, couldn’t make full sentences, and THEY WOULDN’T EVEN TEST ME, sent me home and told me to be continue paracetamol https://t.co/nSkp2Nj7QB</td>
+                <td>25</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1253024226661076992">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Dizzy</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Dizzy"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 12:31:51</td>
+                <td class ="content_left">Bruv I’m <span style="color: yellow;">dizzy</span> https://t.co/hGczF7vYhq</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1251851000463470595">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Breathless</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Breathless"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 11:48:45</td>
+                <td class ="content_left">Went to get water and I was <span style="color: yellow;">breathless</span> with very slight chest pains for time, makes me wonder if/when I’ll be 100% again.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1251840154114895872">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 00:41:23</td>
+                <td class ="content_left">Lmao still terrified to sleep in case I get <span style="color: yellow;">breathless</span> again and die hehe</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1246961161716862977">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pains</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pains"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 11:48:45</td>
+                <td class ="content_left">Went to get water and I was breathless with very slight chest <span style="color: yellow;"><span style="color: yellow;">pains</span></span> for time, makes me wonder if/when I’ll be 100% again.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1251840154114895872">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Ibuprofen</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Ibuprofen"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 23:09:40</td>
+                <td class ="content_left">Maybe I shouldn’t have taken <span style="color: yellow;">ibuprofen</span> because whew</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1251649123784232960">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">headache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "headache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 21:39:28</td>
+                <td class ="content_left">This <span style="color: yellow;"><span style="color: yellow;">headache</span></span> will go or I must cut my neck</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1250901648559480832">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-14 21:22:52</td>
+                <td class ="content_left"><span style="color: yellow;">Headache</span> and nasal congestion from nowhere</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1238938673984557079">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">My head is pounding</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "My head is pounding"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 15:12:00</td>
+                <td class ="content_left"><span style="color: yellow;"><span style="color: yellow;">My head is pounding</span></span> from everywhere, fucking hell</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1250441753603108866">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">medicine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "medicine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 22:20:28</td>
+                <td class ="content_left">@Akunnamytata Maybe take <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> more specific to the symptoms to help? Eyedrops, nasal sprays etc 🤗</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1250187190451257346">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cancer</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cancer"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 21:54:38</td>
+                <td class ="content_left">If I fall in love with a <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> woman, get me arrested</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1249818301150171138">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 23:42:38</td>
+                <td class ="content_left">@MagnifiKent_ Ander really showed him pepper for NO reason even before the <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> diagnosis</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1241510559272644608">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fatigue</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fatigue"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 01:07:06</td>
+                <td class ="content_left">@thehighmother Yesss💃, I’m better love. Still a lot of <span style="color: yellow;"><span style="color: yellow;">fatigue</span></span> and that but I’m breathing properly again so thank God really</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1249141963095445504">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 22:09:35</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> beat the shit out of me,was seeing my dad was blue Kaftan. That nigga been dead 5 years. Couldn’t inhale without agony, at the worst I was on the hospital floor vomiting clear fluids and pissing myself. I have never experienced anything like this. I won sha, I’m HERE 🥂</td>
+                <td>4</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1246560574860922883">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 21:26:19</td>
+                <td class ="content_left">As an immunocompromised healthcare professional who cannot afford to not work, I would be pissed if <span style="color: yellow;">Covid-19</span> killed me sha</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1239664314627260418">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">vomiting</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "vomiting"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 22:09:35</td>
+                <td class ="content_left">COVID-19 beat the shit out of me,was seeing my dad was blue Kaftan. That nigga been dead 5 years. Couldn’t inhale without agony, at the worst I was on the hospital floor <span style="color: yellow;"><span style="color: yellow;">vomiting</span></span> clear fluids and pissing myself. I have never experienced anything like this. I won sha, I’m HERE 🥂</td>
+                <td>4</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1246560574860922883">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 22:04:22</td>
+                <td class ="content_left">This second time, I met a kinder team. I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for covid-19, not only that though the infection has spread severely through most of my chest and both my lungs. At some point later than night  I was practically unconscious. 
+Needed fluids, IV antibiotics etc etc https://t.co/tFOr4kpwlI</td>
+                <td>5</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1246559259892035586">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 22:04:22</td>
+                <td class ="content_left">This second time, I met a kinder team. I tested <span style="color: yellow;">positive for covid</span>-19, not only that though the infection has spread severely through most of my chest and both my lungs. At some point later than night  I was practically unconscious. 
+Needed fluids, IV antibiotics etc etc https://t.co/tFOr4kpwlI</td>
+                <td>5</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1246559259892035586">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">painful</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "painful"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 09:44:02</td>
+                <td class ="content_left">Your fucking lackadaisical attitude can potentially kill people almost as if you had a gun to their head and shot them, except it would be slower, more <span style="color: yellow;"><span style="color: yellow;">painful</span></span> and several lives can consequently end BECAUSE OF YOU!! what’s not clicking</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1241661909851672577">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-14 21:49:22</td>
+                <td class ="content_left">I, like other fatties have about 5 minutes to spare before going out of <span style="color: yellow;"><span style="color: yellow;">breath</span></span> but it will be a good 5 mins.... insha Allah</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1238945342328057863">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Nasal congestion</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Nasal congestion"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-14 21:22:52</td>
+                <td class ="content_left">Headache and <span style="color: yellow;">nasal congestion</span> from nowhere</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1238938673984557079">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">inhaler</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "inhaler"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 15:02:51</td>
+                <td class ="content_left">@The_Nenye I’m sorry, I saw that you use ventolin, do you have another <span style="color: yellow;"><span style="color: yellow;">inhaler</span></span>? Or an aerochamber device? (helps to get more of the <span style="color: yellow;"><span style="color: yellow;">inhaler</span></span> to your lungs)</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1238480648878411778">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shivering</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shivering"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-06 03:52:08</td>
+                <td class ="content_left">Wet towel on my feet 3:51, rest of me is <span style="color: yellow;"><span style="color: yellow;">shivering</span></span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1235775143105921024">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-06 01:45:07</td>
+                <td class ="content_left">I’m so <span style="color: yellow;"><span style="color: yellow;">cold</span></span> and warm at the same time, and my feet feels temperature completely differently to the rest of me</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/3D_Hottie/status/1235743179258892289">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

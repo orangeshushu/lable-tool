@@ -1,0 +1,1842 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>184-Diabetescouk.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 184-Diabetescouk.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">184-Diabetescouk.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recovered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recovered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 14:33:07</td>
+                <td class ="content_left">I had my second baby nearly 7 weeks ago with a requested c-section which I <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> from with no complications at all. I had very good control before and during this pregnancy. She weighed 9lbs! This is them together last week x
+
+📷 Phillippa
+
+(2/2)</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1266014645426556930">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 12:26:21</td>
+                <td class ="content_left">A 26-year old woman with #type1diabetes who has <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> from #COVID19 has shared her experience 🦠⬇️ #coronavirus #GBDoc
+
+https://t.co/x6MzQE781G</td>
+                <td>13</td>
+                <td>34</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1244964246565400576">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">antibiotics</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "antibiotics"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 10:50:01</td>
+                <td class ="content_left">We had to stay in hospital for 8 days, he had iv <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> and so did I. I had tight control throughout, it was hard work but so so worth it 🥰 We are at home now and he is 11 days old 🙂
+
+📷 Jessica
+
+(2/2)</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1265958498862608384">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 13:28:31</td>
+                <td class ="content_left">When Sally was in hospital she had her bloods taken which showed she had an infection. The doctors did some X-rays and confirmed she had pneumonia so she originally was put on <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> to help treat this.
+
+You can read Sally's full story here ➡️ https://t.co/HBwgk66u6P 😊</td>
+                <td>2</td>
+                <td>17</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1245342281516945409">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 13:23:23</td>
+                <td class ="content_left">@T1D_AWARENESS Hi, when Sally was in hospital she had her bloods taken which showed she had an infection. The doctors did some X-rays and confirmed she had pneumonia so she originally was put on <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> to help treat this.
+
+You can ready Sally's full story here ➡️ https://t.co/HBwgk66u6P 😊</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1245340988513619974">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 12:27:21</td>
+                <td class ="content_left">@djlexius1986 Hi, when Sally was in hospital she had her bloods taken which showed she had an infection. The doctors did some X-rays and confirmed she had pneumonia so she originally was put on <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> to help treat this.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1245326886881894400">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diabetes</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diabetes"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 12:01:10</td>
+                <td class ="content_left">Choose from 6 designs ➡️https://t.co/UHglOSoVDW
+
+▪️ Slow Down Sugar Lips, I'm Diabetic
+▪️ Jelly Babies Save Lives
+▪️ Pass Me The Bacon, I Low Carb
+▪️ Fingertips of Steel
+▪️ <span style="color: yellow;">Diabetes</span> Awareness
+▪️ Naturally Sweet https://t.co/RG8i8qY1gj</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1264889241202556928">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 09:30:13</td>
+                <td class ="content_left">If you have been newly diagnosed with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span>, you may find themselves in a state of shock. However, being diagnosed with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> doesn’t prevent you from leading a ‘normal’ life.
+
+https://t.co/GVDOKjVLzt</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1264851252812357632">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 19:15:02</td>
+                <td class ="content_left">You can find support, ask questions and share your experiences with 319,863 forum members 💻
+
+Having support from others who know what it’s like to have <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> can be very reassuring 💙
+
+Join here ➡️https://t.co/zlLzD6laGI https://t.co/blRssaKb1d</td>
+                <td>1</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1264273652582883330">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 10:30:00</td>
+                <td class ="content_left">It can be easy to forget that <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> isn’t just about eating the right things &amp; managing #bloodsugars, it can also take an emotional toll &amp; impact on our #mentalhealth &amp; #wellbeing.
+
+#MentalHealthAwarenessWeek 
+
+https://t.co/qWoybPgH4d</td>
+                <td>2</td>
+                <td>12</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1264141523412758531">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 19:00:25</td>
+                <td class ="content_left">"Whether #T1D or #T2D this app is invaluable. The education you get from the various forums is insightful and the support from everyone is amazing...I wouldn’t be without it!" 💬 Katie
+
+Join the <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> family here ➡️https://t.co/UUcsyKOh4E https://t.co/IgtNjYN5j7</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1262820422028013571">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 17:30:15</td>
+                <td class ="content_left">This is a general guide to <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> and #COVID19, pulling together all the key, current advice to create a help point 🦠⬇️ 
+
+https://t.co/vhkPu9gZ3L</td>
+                <td>9</td>
+                <td>15</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1262072957456781313">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 16:00:01</td>
+                <td class ="content_left">My beautiful boy was born at 35.3 weeks 5.3lbs had the best control of my <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> till the very end as this bubba wanted all my sugars. Spent 10 days in ICU and is now a healthy 3 month old x
+
+📷Danny https://t.co/GtfF8q938s</td>
+                <td>3</td>
+                <td>72</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1260238309713944577">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 10:45:03</td>
+                <td class ="content_left">Choose from 6 designs ➡️ https://t.co/YmqNApux4A
+
+▪️ Slow Down Sugar Lips, I'm Diabetic
+▪️ Jelly Babies Save Lives
+▪️ Pass Me The Bacon, I Low Carb
+▪️ Fingertips of Steel
+▪️ <span style="color: yellow;">Diabetes</span> Awareness
+▪️ Naturally Sweet https://t.co/Ov8PTxjrgd</td>
+                <td>1</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1258709494718136321">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 18:05:01</td>
+                <td class ="content_left">Have you had <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> burnout before? And what are your tips to overcome it? #<span style="color: yellow;"><span style="color: yellow;">diabetes</span></span>discussion</td>
+                <td>2</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1258457825413644290">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 16:39:00</td>
+                <td class ="content_left"><span style="color: yellow;">Diabetes</span> burnout – you are not alone 💙💪
+
+https://t.co/Fiv4jRBlTc</td>
+                <td>1</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1258436180695269377">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 16:47:00</td>
+                <td class ="content_left"><span style="color: yellow;">Diabetes</span> tests which are critical for “preventive care” have fallen by 65% in America amid the #COVID19 pandemic, a new report has shown. #DOC 
+
+https://t.co/S0OVEq6Gw9</td>
+                <td>1</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1257351030146322442">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 11:19:02</td>
+                <td class ="content_left">From simple breakfasts &amp; tasty snacks to indulgent dinners &amp; healthy desserts, this book will help you take control of your health &amp; cook meals the whole family will enjoy. 
+
+Get your #LowCarb <span style="color: yellow;">Diabetes</span> Cookbook here ➡️https://t.co/GMAjQgUBi1 https://t.co/OowCAUtm5l</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1257268493629743104">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 10:05:02</td>
+                <td class ="content_left">One day I would love to say that I used to have <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> 🙏
+
+#StarWarsDay #MayTheFourthBeWithYou
+
+📷 @<span style="color: yellow;">Diabetes</span>_DRI https://t.co/Oo36d5rFrX</td>
+                <td>5</td>
+                <td>60</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1257249872727674881">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 08:45:02</td>
+                <td class ="content_left">I've been dx with #T1D for 20 yrs, which is a secondary condition for me that comes from having Melas (mitochondrial disorder). My biggest achievement is having my son in 2017, who was born healthy despite battling with my 'inner monster' that is <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> &amp; keeping it calm 💪
+Zoe https://t.co/ppQm4HaaSH</td>
+                <td>0</td>
+                <td>29</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1256504961841717248">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 09:30:15</td>
+                <td class ="content_left">This is a general guide to <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> and #COVID19, pulling together all the key, current advice to create a help point 🦠⬇️ 
+
+https://t.co/vhkPu9gZ3L</td>
+                <td>3</td>
+                <td>17</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1256153954817277952">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 16:00:02</td>
+                <td class ="content_left">And a huge round of applause to all the parents who are looking after children with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> and everyone who have been diagnosed or affected by <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span>. You are all warriors 👏🏼💙
+
+#NationalSuperheroDay 🦸‍♀️🦸‍♂️ https://t.co/zOerixzFMn</td>
+                <td>5</td>
+                <td>29</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1255164881705336834">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 19:01:04</td>
+                <td class ="content_left">Reverse Your <span style="color: yellow;">Diabetes</span> books provide all the information and support you need to take control of #type2<span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> &amp; potentially, put it into #remission 📙🧡📗💚
+
+Get your hands on this fantastic bundle here ➡️ https://t.co/Osl4UVpGes https://t.co/UEo8ZvCE6M</td>
+                <td>1</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1254848054596861953">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 12:15:02</td>
+                <td class ="content_left">The Low-Carb <span style="color: yellow;">Diabetes</span> Cookbook is back in stock! 🙌❤️
+
+Get yours here ➡️ https://t.co/fshBrFJLhw https://t.co/V4izbRvzU5</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1254021094488576000">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 20:13:20</td>
+                <td class ="content_left">One of the key concerns for people with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> during this time is whether they are classed as more at risk of #COVID19 or not.
+
+https://t.co/oJzbG8s826</td>
+                <td>3</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1253779077481353217">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 14:30:16</td>
+                <td class ="content_left">Happy #WorldBookDay! 🤓📚
+
+Looking for books to support you through your <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> journey?
+
+Then look no further, get all our best books available on our website here ➡️https://t.co/p7JQlst55o https://t.co/ziOm84MXPe</td>
+                <td>1</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1253330351612518403">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 14:30:35</td>
+                <td class ="content_left">Tell us a tip which has helped you manage your <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> better? 💙 #GBDoc #<span style="color: yellow;"><span style="color: yellow;">diabetes</span></span>discussion</td>
+                <td>1</td>
+                <td>15</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1252968046383304705">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 12:29:00</td>
+                <td class ="content_left">I'm 39 yrs old &amp; I was diagnosed with #Type1 6 yrs ago. It's been a frustrating 6 yrs but I have a great supporting family. I had signed up to my first triathlon for this summer as a 'goodbye' to my thirties &amp; to prove to myself that <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> isn't a barrier 💪🏻
+
+💬Mark</td>
+                <td>0</td>
+                <td>38</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1252212672776613888">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 14:00:17</td>
+                <td class ="content_left">I will have been diagnosed with #type1<span style="color: yellow;"><span style="color: yellow;">diabetes</span></span>  for 7 years next month. I’m a Paediatric <span style="color: yellow;">Diabetes</span> Specialist Nurse and I'm still working 👩‍⚕️Stay safe everyone! ❤️
+
+📷Jessica https://t.co/IyRt9l8w5w</td>
+                <td>15</td>
+                <td>320</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1251873255079772161">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 13:15:03</td>
+                <td class ="content_left">Get your Unite for <span style="color: yellow;">Diabetes</span> Wristband Colour Pack here ➡️ https://t.co/7hEwwy1zYG
+
+Pack includes:
+
+▪️ 1 x Royal Blue
+▪️ 1 x Baby Blue
+▪️ 1 x Orange
+▪️ 1 x Yellow
+▪️ 1 x Purple https://t.co/rW0UhKdcV7</td>
+                <td>3</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1250774707944804353">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 15:49:02</td>
+                <td class ="content_left">Join the 🌍's largest <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> community with over 317k forum members! The community are here for you no matter what questions or worries you may have ❤ #StaySafeStayHome 🏠
+
+Find support, ask questions &amp; share your experiences ➡️https://t.co/XT0sejlhul https://t.co/ncE1pB0seh</td>
+                <td>4</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1250451072692424709">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 08:45:00</td>
+                <td class ="content_left">Dr Kristen Stakelin from a top #<span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> centre affiliated with the @universityofky has issued a series of suggestions to help those with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> prepare should they become infected with #COVID19.
+
+https://t.co/crNBBSGOjt</td>
+                <td>2</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1249257196417941504">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 14:30:41</td>
+                <td class ="content_left">Get your wristbands here ➡️ https://t.co/CALvFPnhbQ
+
+- Unite For <span style="color: yellow;">Diabetes</span>
+- Type 1 <span style="color: yellow;">Diabetes</span>
+- Type 2 <span style="color: yellow;">Diabetes</span>
+- Insulin Dependent Diabetic
+- Insulin Pumper
+- I Know I Look High, But I'm Low
+- I'm Not Drunk, I'm Diabetic
+- Someone I Love Has <span style="color: yellow;">Diabetes</span> ♡
+- Diabetic and Proud https://t.co/9ELo3sBkS2</td>
+                <td>4</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1248619415651770371">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 18:40:04</td>
+                <td class ="content_left">Frontline healthcare staff are being urged to be “more vigilant” when it comes to assessing people with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> (PWD) who are presenting #COVID19 symptoms.
+
+https://t.co/zEoVocSUOE</td>
+                <td>8</td>
+                <td>17</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1247232625183522827">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 12:14:30</td>
+                <td class ="content_left">Choose from 6 designs ➡️ https://t.co/YmqNApux4A
+
+▪️ Slow Down Sugar Lips, I'm Diabetic
+▪️ Jelly Babies Save Lives
+▪️ Pass Me The Bacon, I Low Carb
+▪️ Fingertips of Steel
+▪️ <span style="color: yellow;">Diabetes</span> Awareness
+▪️ Naturally Sweet https://t.co/A9Z1ciRtb6</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1247135593584365573">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 07:30:17</td>
+                <td class ="content_left">A top NHS England <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> expert is urging people to avoid face-to-face clinical appointments amid the #COVID19 pandemic.
+
+https://t.co/fO6v9TPkaM</td>
+                <td>2</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1244527350693445632">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 20:00:19</td>
+                <td class ="content_left">Foot doctors have been advising a major online shoe company about making suitable footwear for people with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> who have vulnerable feet.
+
+https://t.co/uTq0eSRq47</td>
+                <td>2</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1243266551001812992">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 19:30:02</td>
+                <td class ="content_left">This is my little diamond who was diagnosed with #type1<span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> at 17 yrs old, she is now 33. She has always kept her <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> under control and naturally took it all in her stride. She's an inspiration to the world of <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span>. She's given me 2 beautiful grandchildren.
+
+📷Tracey https://t.co/WwaQTi01QZ</td>
+                <td>2</td>
+                <td>70</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1242896544099115008">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 13:07:06</td>
+                <td class ="content_left">Save £2 and get your Low-Carb <span style="color: yellow;">Diabetes</span> Cookbook today 📕➡️ https://t.co/2DfWhKtqHO
+
+Save £6 and get your RYD Book Bundle today 📙📗➡️ https://t.co/wGHQH3KSNi https://t.co/e3EYElRYq3</td>
+                <td>2</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1242800175069962240">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 15:00:33</td>
+                <td class ="content_left">This is my beautiful boy Sapphire. He's my unofficial therapy cat and a great help not just because of my <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> but also my mental health. Bless our fur babies x
+
+📷 Jeanette https://t.co/a1UQ3fXNgH</td>
+                <td>0</td>
+                <td>16</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1241741562431901701">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 16:45:02</td>
+                <td class ="content_left">Here’s my <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> tattoo, the ups and downs of <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span>. Ride the storm ⛈️
+
+📷Carl https://t.co/Mar9sK4RFx</td>
+                <td>0</td>
+                <td>16</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1241405466619580417">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 16:44:03</td>
+                <td class ="content_left">I got my <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> tattoo in June ❤️
+📷 Tanya https://t.co/N7XHfdLfOk</td>
+                <td>5</td>
+                <td>27</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1240680443994943488">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 17:25:48</td>
+                <td class ="content_left">@lott_karl Hi Karl, according to information from the @NHSuk and @PHE_uk, people with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> are listed in the vulnerable/at risk group and social distancing/self-isolation is strongly advised for a period of 12 weeks.
+
+For more information please visit ⬇️
+https://t.co/KW6uLwtTK1</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1240328562894307338">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 17:21:19</td>
+                <td class ="content_left">@indiaemilyyy Hi India, according to information from the @NHSuk and @PHE_uk, people with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> are listed in the vulnerable/at risk group and social distancing/self-isolation is strongly advised for a period of 12 weeks.
+
+For more information please visit ⬇️
+https://t.co/KW6uLwtTK1</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1240327436723720195">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 17:19:24</td>
+                <td class ="content_left">@joeybrame4 Hi Joe, according to information from the @NHSuk and @PHE_uk, people with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> are listed in the vulnerable/at risk group and social distancing/self-isolation is strongly advised for a period of 12 weeks.
+
+For more information please visit ⬇️
+https://t.co/KW6uLwtTK1</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1240326951631564809">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 17:17:12</td>
+                <td class ="content_left">After 100s of hospital appointments and an extremely good pregnancy I gave birth to 2 little boys. They were very early at 32 weeks due to an infection (not <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> related). I monitor my #bloodsugars extremely well so didn't have to change much, I just continue as I always did.</td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1240326401141673987">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 17:15:02</td>
+                <td class ="content_left">@nekromantik09 Hi Ricky, according to information from the @NHSuk and @PHE_uk, people with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> are listed in the vulnerable/at risk group and social distancing/self-isolation is strongly advised for a period of 12 weeks.
+
+For more information please visit ⬇️
+https://t.co/KW6uLwtTK1</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1240325856293261313">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 17:13:25</td>
+                <td class ="content_left">@Katie_Rose1977 @<span style="color: yellow;">Diabetes</span>UK Hi Katie, according to information from the @NHSuk and @PHE_uk, people with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> are listed in the vulnerable/at risk group and social distancing/self-isolation is strongly advised for a period of 12 weeks.
+
+For more information please visit: https://t.co/KW6uLwtTK1</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1240325449236054017">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 17:11:25</td>
+                <td class ="content_left">@lizzyhappyfox Hi, according to information from the @NHSuk and @PHE_uk, people with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> are listed in the vulnerable/at risk group and social distancing/self-isolation is strongly advised for a period of 12 weeks.
+
+For more information please visit: https://t.co/KW6uLwtTK1</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1240324942387970049">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 17:09:15</td>
+                <td class ="content_left">@abbyreflexology @<span style="color: yellow;">Diabetes</span>UK Hi Abby, according to information from the NHS and PHE, people with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> are listed in the vulnerable/at risk group and social distancing/self-isolation is strongly advised for a period of 12 weeks.
+
+For more information please visit:
+https://t.co/KW6uLwtTK1</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1240324399712133120">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 17:05:13</td>
+                <td class ="content_left">@mbosano @<span style="color: yellow;">Diabetes</span>UK @<span style="color: yellow;">Diabetes</span>Glos Hi, according to information from the @NHSuk and @PHE_uk, people with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> are listed in the vulnerable/at risk group and social distancing/self-isolation is strongly advised for a period of 12 weeks.
+
+For more information please visit: https://t.co/KW6uLwtTK1</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1240323384686383109">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 11:45:05</td>
+                <td class ="content_left">Older people who experience excessive sleepiness in the daytime could be at a greater risk of developing type 2 <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> 😴
+
+#SleepAwarenessWeek #NationalBedMonth
+
+https://t.co/sLIHTvXPS0</td>
+                <td>6</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1239518042557689856">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-14 18:30:24</td>
+                <td class ="content_left">From simple breakfasts &amp; tasty snacks to indulgent dinners &amp; healthy desserts, this book will help you take control of your health &amp; cook meals the whole family will enjoy. 
+
+Get your #LowCarb <span style="color: yellow;">Diabetes</span> Cookbook here ➡️https://t.co/GMAjQgUBi1 https://t.co/rBM4McjJA3</td>
+                <td>2</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1238895269539971072">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-10 18:30:22</td>
+                <td class ="content_left">Low-calorie drinks only create an increased risk of type 2 <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> if a carbohydrate is added to the beverage, according to researchers from @Yale. 
+
+https://t.co/HxEAl4hqbW</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1237445709185585155">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-10 17:00:54</td>
+                <td class ="content_left">New copies of our best selling Low Carb <span style="color: yellow;">Diabetes</span> Cookbook are back in house!
+
+Get yours today 📕➡️ https://t.co/p2uiTrnIAf https://t.co/SifBh5wdeh</td>
+                <td>6</td>
+                <td>13</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1237423196254736385">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-09 10:30:28</td>
+                <td class ="content_left">I'm 44 and was re-classified #Type1 2 years ago having gone through Latent Autoimmune <span style="color: yellow;">Diabetes</span> of Adulthood (LADA).
+
+I'm a Mandalorian Merc and used to struggle when trooping, but I think I've just about got the balance of activity/food/insulin right🤞
+
+📷Simon https://t.co/hyGxqEyReI</td>
+                <td>1</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1236962552418111491">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-08 09:45:03</td>
+                <td class ="content_left">Hi, I was diagnosed with #type1<span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> over 22 years ago at 11 years old. I'm hoping to earn my black belt soon but it's getting harder due to nerve damage getting worse. I've always tried to look after my <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> but we all know it's does its damage anyway. https://t.co/0gLNl0ISaZ</td>
+                <td>3</td>
+                <td>34</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1236588733262188544">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-06 18:30:31</td>
+                <td class ="content_left">Research indicates that people with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> have a higher risk of oral health problems, including gum disease, thrush and dry mouth.
+
+Here's how you can lower the chance of complications developing ⬇️ 
+
+#NationalDentistsDay 🦷 
+https://t.co/OsAvJal1GR</td>
+                <td>3</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1235996194322763777">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-01 15:17:00</td>
+                <td class ="content_left">“I just want to say that having <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> can’t stop you from doing anything, you can meet the same expectations as someone living without <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span>."
+
+Read more of Grace's story here ⬇️
+
+https://t.co/B5JVwutcfM</td>
+                <td>5</td>
+                <td>28</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1234135557367832577">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-29 11:30:15</td>
+                <td class ="content_left">Neonatal <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> is a very rare form of <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> that is usually diagnosed in children under 6 months of age, occurring in around 1 in 300,000 to 400,000 births.
+
+#RareDiseaseDay
+
+https://t.co/aFwnJBbS2A</td>
+                <td>2</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1233716104633180161">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-20 11:55:42</td>
+                <td class ="content_left">Women with #gestational <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> who breastfeed are less likely to develop #type2<span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> in later life, researchers have said.
+
+https://t.co/jFVZQ5v7bE</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1230461018935037953">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-19 19:30:13</td>
+                <td class ="content_left">Nicole tells us of her ups &amp; downs with #<span style="color: yellow;"><span style="color: yellow;">diabetes</span></span>; from her diagnosis as a child, to battling an eating disorder &amp; then to helping her others with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> through her volunteering.
+
+https://t.co/t9cuxrbjRz</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1230213014114197504">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-18 21:00:18</td>
+                <td class ="content_left">I'm a #type1 diabetic, diagnosed in 2015. Since then, my life has never been the same. <span style="color: yellow;">Diabetes</span> has brought upon and increased my anxiety and depression. It may be doom and gloom but I'm a fighter, and life goes on! 💪🏻
+
+📷Christian https://t.co/LSTX8dOTUY</td>
+                <td>0</td>
+                <td>29</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1229873296839188480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-16 16:45:03</td>
+                <td class ="content_left">#SundayMotivation 🚨
+
+New copies of our best selling Low Carb <span style="color: yellow;">Diabetes</span> Cookbook are back in house!
+
+Get yours today 📕➡️ https://t.co/p2uiTrnIAf https://t.co/gPFrRmpqDr</td>
+                <td>2</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1229084283668660225">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-13 12:32:58</td>
+                <td class ="content_left">We believe no one with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> should have to hide. Moreover, no one who has to inject life-saving medication on a daily basis should be made to feel embarrassed. With your help we will continue to raise awareness! 💙
+
+Do you inject in public? 💉 - https://t.co/0aor5H3L4D https://t.co/ocpSoho1NR</td>
+                <td>70</td>
+                <td>187</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1227933681970536449">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-12 11:45:03</td>
+                <td class ="content_left">Looking for books to support you through your <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> journey? 
+
+Then look no further, get all our books available on our website here ➡️https://t.co/p7JQlsbudQ https://t.co/3djqniMYgT</td>
+                <td>1</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1227559236911144960">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-11 11:45:02</td>
+                <td class ="content_left">New copies of our best selling Low Carb <span style="color: yellow;">Diabetes</span> Cookbook are back in house!
+
+Get yours now 🚨➡️ https://t.co/p2uiTrnIAf https://t.co/n3S7SU5AdP</td>
+                <td>1</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1227196845119754240">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-10 17:00:16</td>
+                <td class ="content_left">Get your wristbands here ➡️ https://t.co/CALvFPESAq
+
+- Unite For <span style="color: yellow;">Diabetes</span>
+- Type 1 <span style="color: yellow;">Diabetes</span>
+- Type 2 <span style="color: yellow;">Diabetes</span>
+- Insulin Dependent Diabetic
+- Insulin Pumper
+- I Know I Look High, But I'm Low
+- I'm Not Drunk, I'm Diabetic
+- Someone I Love Has <span style="color: yellow;">Diabetes</span> ♡
+- Diabetic and Proud https://t.co/kUFxc1FTBB</td>
+                <td>2</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1226913787317563393">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-10 15:30:33</td>
+                <td class ="content_left">It is possible for people to have both #<span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> &amp; #epilepsy, but the relationship between <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> and epilepsy can be unclear.
+
+Read more ➡️ https://t.co/UWsUxWGSwK 
+
+#InternationalEpilepsyDay 💜 https://t.co/HsQpL7XvJ1</td>
+                <td>2</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1226891211312594945">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-10 13:00:55</td>
+                <td class ="content_left">One of our forum members who was diagnosed with #type1<span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> talks about how his <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> has been an emotional curve ⬇️ #GBDoc
+
+https://t.co/PdT9gV3Y2m</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1226853553366544386">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-09 15:00:10</td>
+                <td class ="content_left">Looking for books to support you through your <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> journey? 
+
+Then look no further, get all our books available on our website here ➡️https://t.co/p7JQlsbudQ https://t.co/uN1XDVpMdB</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1226521173929988096">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-06 20:30:12</td>
+                <td class ="content_left">Sleep Apnea is a common breathing disorder that affects many people whilst they sleep &amp; could be an early warning that <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> development is underway.
+
+https://t.co/fmcPIYEXLi</td>
+                <td>3</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1225517065580228615">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-04 20:15:03</td>
+                <td class ="content_left">Some of the recipes included:
+
+❤️ Baked eggs in avocado with roasted fennel &amp; tomatoes
+💗 One-pan blueberry pancake
+💛 Roasted aubergine &amp; garlic salad with olive oil, basil and tomato
+💜 Mexican-style fajitas
+
+Get your #LowCarb <span style="color: yellow;">Diabetes</span> Cookbook ➡️ https://t.co/jGt9VLvLGR https://t.co/2OmbFgHQGq</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1224788480930336769">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-03 16:47:04</td>
+                <td class ="content_left">New copies of our best selling #LowCarb <span style="color: yellow;">Diabetes</span> Cookbook are back in house! 
+
+Get yours now 🚨➡️ https://t.co/GMAjQgUBi1 https://t.co/vX5NG62KIa</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1224373749182533635">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-03 14:15:02</td>
+                <td class ="content_left"><span style="color: yellow;">Diabetes</span> and #mentalhealth is a serious issue that needs better consideration as the condition can have quite large emotional implications for children.
+
+Take a look at them here ➡️ https://t.co/QNlWRrFzKO 
+
+#ChildrensMentalHealthWeek https://t.co/w4pYzFEAc9</td>
+                <td>12</td>
+                <td>28</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1224335491409072128">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-03 13:14:50</td>
+                <td class ="content_left">Get your hands on our newest bundle ➡️ https://t.co/p8PuItUGvg
+
+The Take Control of Type 1 <span style="color: yellow;">Diabetes</span> Book presents invaluable advice that will offer genuine hope to adults with #type1<span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> and their families 📘 https://t.co/75P3tTuxip</td>
+                <td>1</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1224320339372576768">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-29 17:00:05</td>
+                <td class ="content_left">I'm the happiest girl right now! I've finally got some <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> tech to help me keep my blood sugars at bay. I've been working towards this for years! At times it's been hard, but I carried on and succeeded 🤗 I feel like I'm a kid with a new toy 😂😁
+
+📷 Jamie https://t.co/bdZLZUmG6I</td>
+                <td>4</td>
+                <td>50</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1222565085127827457">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-29 14:15:13</td>
+                <td class ="content_left">Get your wristbands here ➡️ https://t.co/CALvFPESAq
+
+- Unite For <span style="color: yellow;">Diabetes</span>
+- Type 1 <span style="color: yellow;">Diabetes</span>
+- Type 2 <span style="color: yellow;">Diabetes</span>
+- Insulin Dependent Diabetic
+- Insulin Pumper
+- I Know I Look High, But I'm Low
+- I'm Not Drunk, I'm Diabetic
+- Someone I Love Has <span style="color: yellow;">Diabetes</span> ♡
+- Diabetic and Proud https://t.co/RJt20WxioL</td>
+                <td>7</td>
+                <td>18</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1222523597404680192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-27 20:00:33</td>
+                <td class ="content_left">Tell us a tip which has helped you manage your <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> better. 🙌
+#GBDoc #<span style="color: yellow;"><span style="color: yellow;">diabetes</span></span>discussion</td>
+                <td>3</td>
+                <td>16</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1221885725945274369">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-27 14:15:00</td>
+                <td class ="content_left">We've taken a look at the FAQs about <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> and breastfeeding, and have provided the answers you need to know here ⬇️
+
+#WorldBreastPumpingDay 👶 
+https://t.co/c1wVwDQZLS</td>
+                <td>4</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1221798765868277760">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-25 18:30:04</td>
+                <td class ="content_left">For support, tips, help, new friends and much more, the largest and most engaging <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> community awaits you ➡️ https://t.co/jIFtKHDub5 💙 https://t.co/07Il0HJKjm</td>
+                <td>3</td>
+                <td>20</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1221138182017888256">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-24 09:35:42</td>
+                <td class ="content_left">Children born to mothers who experience #gestational <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> and pre-eclampsia during pregnancy are at a greater risk of a higher BMI during childhood.
+
+https://t.co/dwnpKyDPVJ</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1220641314045382656">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-22 20:32:01</td>
+                <td class ="content_left"><span style="color: yellow;">Diabetes</span> drug costs have soared in South Essex, following the continued climb of the prevalence of the condition.
+
+https://t.co/DASUclEO2N</td>
+                <td>3</td>
+                <td>12</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1220081704951480320">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-15 12:45:00</td>
+                <td class ="content_left">Knowing and recognising the symptoms of #<span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> is essential. Catching <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> at an early stage can delay or prevent the development of serious complications.
+
+https://t.co/AqUZTVNANe</td>
+                <td>2</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1217427464110166017">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-14 21:15:08</td>
+                <td class ="content_left">You can find support, ask questions and share your experiences with 312,105 forum members 💻
+-
+Having support from others who know what it’s like to have <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> can be very reassuring 💙
+-
+Join here ➡️ https://t.co/Uy065woGBT https://t.co/SLRlkzfL9a</td>
+                <td>1</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1217193454565982214">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-14 14:25:26</td>
+                <td class ="content_left">From simple breakfasts &amp; tasty snacks to indulgent dinners &amp; healthy desserts, this book will help you take control of your health &amp; cook meals the whole family will enjoy. 
+
+Get your #LowCarb <span style="color: yellow;">Diabetes</span> Cookbook here ➡️ https://t.co/GMAjQgUBi1 https://t.co/VpKMEjvSmO</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1217090351665688577">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-13 13:24:45</td>
+                <td class ="content_left">Reverse Your <span style="color: yellow;">Diabetes</span> books provide all the information and support you need to take control of #type2<span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> &amp; potentially, put it into #remission 📙🧡📗💚
+
+Get your hands on this fantastic bundle here ➡️ https://t.co/Osl4UVpGes https://t.co/XRqLnsfXgE</td>
+                <td>2</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1216712690506391557">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-12 13:15:02</td>
+                <td class ="content_left">Get your hands on our newest bundle ➡️ https://t.co/p8PuItUGvg
+
+The Take Control of Type 1 <span style="color: yellow;">Diabetes</span> Book presents invaluable advice that will offer genuine hope to adults with #type1<span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> and their families 📘 https://t.co/486Qj73LCc</td>
+                <td>1</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1216347856132542465">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-12 09:45:02</td>
+                <td class ="content_left">Through our many years of experience, we know which #insurance providers have the best underwriting rules to help you get the right cover at the right price.
+
+Get a free <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> life insurance quote ➡️ https://t.co/thnlDsMvkA https://t.co/MroFyf6oYw</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1216295009986793472">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-08 20:45:02</td>
+                <td class ="content_left">Looking for support or can support others?  Look no further than the world's largest <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> community! 🎉
+
+Join the 313,855 amazing members on the forum ➡️ https://t.co/7r6rr0xyFQ https://t.co/1S8JNrMghd</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1215011550370639872">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-08 13:40:02</td>
+                <td class ="content_left">From simple breakfasts &amp; tasty snacks to indulgent dinners &amp; healthy desserts, this book will help you take control of your health &amp; cook meals the whole family will enjoy. 
+
+Get your #LowCarb <span style="color: yellow;">Diabetes</span> Cookbook here ➡️ https://t.co/GMAjQgUBi1 https://t.co/K7l7eC9td4</td>
+                <td>3</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1214904598978334720">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 19:00:02</td>
+                <td class ="content_left">I had this t-shirt custom made...the chemical breakdown of #insulin — without it well it's not worth thinking about. It's a life changing <span style="color: yellow;"><span style="color: yellow;">drug</span></span> and my partner and I are very proud of him being #type1diabetes since he was 1.
+
+📷 Marie https://t.co/u9AfsAsYu5</td>
+                <td>2</td>
+                <td>38</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1256297343793668096">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-16 18:30:19</td>
+                <td class ="content_left">A newly discovered combination of two <span style="color: yellow;"><span style="color: yellow;">drug</span></span> classes that boosts beta cell production is an important step to seeking future #type1diabetes treatment, researchers have said.
+
+https://t.co/Eb036ovPxx</td>
+                <td>19</td>
+                <td>47</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1229110775119216640">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-22 20:32:01</td>
+                <td class ="content_left">Diabetes <span style="color: yellow;"><span style="color: yellow;">drug</span></span> costs have soared in South Essex, following the continued climb of the prevalence of the condition.
+
+https://t.co/DASUclEO2N</td>
+                <td>3</td>
+                <td>12</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1220081704951480320">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-22 13:00:20</td>
+                <td class ="content_left">My beautiful daughter at her graduation. She was dx with #T1D at 16 months old. We've struggled, she has struggled &amp; no 2 days are the same but was determined not to allow her #type1 to hold her back. Science degree with <span style="color: yellow;"><span style="color: yellow;">drug</span></span> discovery &amp; also accepted onto her Masters.  📷 Neil https://t.co/ucOBwcvICR</td>
+                <td>7</td>
+                <td>88</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1219968036402352133">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-10 18:30:06</td>
+                <td class ="content_left">A #type2diabetes <span style="color: yellow;"><span style="color: yellow;">drug</span></span> could help women who have endured recurrent #miscarriages improve their chances of a healthy #pregnancy, researchers have said.
+
+https://t.co/QSs47abAN0</td>
+                <td>5</td>
+                <td>15</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1215702370845327361">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asthma</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asthma"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 12:00:06</td>
+                <td class ="content_left">I'm #Type1 with <span style="color: yellow;"><span style="color: yellow;">asthma</span></span> on a positive ward at the moment normally acute medical endocrine ward. Stay safe people! 💙
+
+📷Anthony https://t.co/rVJEN4NZMB</td>
+                <td>5</td>
+                <td>111</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1252567786959917057">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">prone</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "prone"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 13:49:01</td>
+                <td class ="content_left">Why might you be more <span style="color: yellow;"><span style="color: yellow;">prone</span></span> to skin problems?🤔
+
+This guide shows you the why, what and the tips you can use to take care of your skin 🙌⬇️
+
+https://t.co/l5Yu4eSAGx</td>
+                <td>1</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1252232807381962752">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-17 20:30:09</td>
+                <td class ="content_left">Why might you be more <span style="color: yellow;"><span style="color: yellow;">prone</span></span> to skin problems?🤔
+
+This guide shows you the why, what and the tips you can use to take care of your skin 🙌⬇️
+
+https://t.co/l5Yu4eSAGx</td>
+                <td>5</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1218269295748243457">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cancer</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cancer"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 09:30:00</td>
+                <td class ="content_left">Older people or those who are obese are more likely to be admitted to hospital with #COVID19 than those with <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> or lung disease, research has shown.
+
+https://t.co/k7i5QVk2Ap</td>
+                <td>4</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1251080460601626624">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-11 15:30:03</td>
+                <td class ="content_left">All 6ft 5 of him, born 17 years ago and was 5 weeks early with stupid #bloodsugars!! It's definitely worth it, I'd do it all over again. I also had <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> at the same time.
+
+📷 Justine https://t.co/TYYb14kJy3</td>
+                <td>1</td>
+                <td>33</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1227253471029669889">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">autoimmune</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "autoimmune"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 13:55:40</td>
+                <td class ="content_left">Each one of us here has #type1diabetes, a hidden <span style="color: yellow;"><span style="color: yellow;">autoimmune</span></span> chronic condition that puts us at high risk of #COVID19 &amp; therefore we have been asked to observe #socialdistancing for a minimum of 12 weeks!
+
+(1/3) ⬇️ https://t.co/BRzQnBHnNF</td>
+                <td>31</td>
+                <td>61</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1250784929190944768">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-09 10:30:28</td>
+                <td class ="content_left">I'm 44 and was re-classified #Type1 2 years ago having gone through Latent <span style="color: yellow;">Autoimmune</span> Diabetes of Adulthood (LADA).
+
+I'm a Mandalorian Merc and used to struggle when trooping, but I think I've just about got the balance of activity/food/insulin right🤞
+
+📷Simon https://t.co/hyGxqEyReI</td>
+                <td>1</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1236962552418111491">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sweating</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sweating"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 19:15:01</td>
+                <td class ="content_left">A member of the community could use your help!
+
+Hi, I was just wondering if anyone else ever gets stomach cramps or a slight pain in their stomach when they’re having a hypo? This is one of my main symptoms as well as shaking, <span style="color: yellow;"><span style="color: yellow;">sweating</span></span> and blurred vision.
+
+Thank you,
+Blair</td>
+                <td>6</td>
+                <td>13</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1249415743847968770">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Blurred vision</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Blurred vision"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 19:15:01</td>
+                <td class ="content_left">A member of the community could use your help!
+
+Hi, I was just wondering if anyone else ever gets stomach cramps or a slight pain in their stomach when they’re having a hypo? This is one of my main symptoms as well as shaking, sweating and <span style="color: yellow;">blurred vision</span>.
+
+Thank you,
+Blair</td>
+                <td>6</td>
+                <td>13</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1249415743847968770">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-18 11:57:33</td>
+                <td class ="content_left">High #bloodpressure could result in:
+
+✖️Headaches
+✖️Nosebleed
+✖️<span style="color: yellow;"><span style="color: yellow;">Blurred vision</span></span>
+✖️Difficulty breathing
+
+So it is important that your blood pressure level is checked each year ➡️ https://t.co/gLqB8dBvFV https://t.co/d7ARKLZmGq</td>
+                <td>2</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1229736710474477568">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 19:15:01</td>
+                <td class ="content_left">A member of the community could use your help!
+
+Hi, I was just wondering if anyone else ever gets stomach cramps or a slight <span style="color: yellow;"><span style="color: yellow;">pain</span></span> in their stomach when they’re having a hypo? This is one of my main symptoms as well as shaking, sweating and blurred vision.
+
+Thank you,
+Blair</td>
+                <td>6</td>
+                <td>13</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1249415743847968770">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-08 20:02:06</td>
+                <td class ="content_left">Hi 👋 I've been diagnosed with #type1diabetes for 33 years and things have changed a bit over the years regarding #diabetes and control for the better. I suffer with low bloods in the morning, which is just as much as a <span style="color: yellow;"><span style="color: yellow;">pain</span></span> as highs. https://t.co/fBQ8hiCvC4</td>
+                <td>0</td>
+                <td>12</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1236744021327872002">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-20 10:30:31</td>
+                <td class ="content_left">My boy on my knee while I am high! I know he can’t lower my #bloodsugar levels and take the <span style="color: yellow;"><span style="color: yellow;">pain</span></span> away but he definitely makes me smile! 🐾❤️ #LoveYourPetDay 
+
+📷 Suzannah https://t.co/MxtRhQIj5z</td>
+                <td>0</td>
+                <td>19</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1230439582719672320">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-11 14:15:14</td>
+                <td class ="content_left">Do you suffer from back <span style="color: yellow;"><span style="color: yellow;">pain</span></span>?
+
+Here are 7 treatment methods that have been shown to help with tackling back <span style="color: yellow;"><span style="color: yellow;">pain</span></span> ⬇️
+
+https://t.co/ikmjAG6KBp</td>
+                <td>2</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1227234642564132866">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 07:00:04</td>
+                <td class ="content_left">Although this #EasterWeekend is quite different this year, we still wish you all a good &amp; #HappyEaster! Make it fun &amp; keep in <span style="color: yellow;">touch</span> with your friends &amp; family, especially now! You are not alone &amp; we will all get through this together. ❤️
+
+#EasterAtHome #EasterSunday 🐰🐥 https://t.co/nRUrZIaeUc</td>
+                <td>3</td>
+                <td>16</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1249230788887040002">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-26 18:01:37</td>
+                <td class ="content_left">Busy schedules can often make it difficult to keep in <span style="color: yellow;">touch</span> with friends &amp; family, but maintaining relationships are important for support &amp; keeping a positive mood. Whether it be through text messaging, a phone call or social media, try &amp; chat whenever you can. #BeKind 💙</td>
+                <td>8</td>
+                <td>19</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1232727431200550912">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-07 09:36:29</td>
+                <td class ="content_left">@John33Myers Dear John, 
+
+I am sorry to hear that but I think you are looking for @DiabetesUK as we do not conduct the swim challenge on https://t.co/OFfLEcEKrs. I hope you are able to get in <span style="color: yellow;">touch</span> with them. I hope you have a good day!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1225714940885061632">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 14:51:57</td>
+                <td class ="content_left">UK researchers have suggested that a loss of taste or <span style="color: yellow;"><span style="color: yellow;">smell</span></span> could be a sign of #coronavirus (#COVID19).
+
+https://t.co/1WBdOkaxPu</td>
+                <td>2</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1245725664063479812">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 14:51:57</td>
+                <td class ="content_left">UK researchers have suggested that a loss of <span style="color: yellow;"><span style="color: yellow;">taste</span></span> or smell could be a sign of #coronavirus (#COVID19).
+
+https://t.co/1WBdOkaxPu</td>
+                <td>2</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1245725664063479812">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-11 16:45:02</td>
+                <td class ="content_left">We take a look at what options are available and compare their <span style="color: yellow;"><span style="color: yellow;">taste</span></span> and nutritional value ➡️ https://t.co/ZeO0dmrvTX 
+
+#NationalMilkDay 🥛 https://t.co/MFzoBzVaCh</td>
+                <td>3</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1216038317738905600">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 11:58:14</td>
+                <td class ="content_left">With today being the 1st day of feeling normal, I thought I would share with everyone that I'VE BEATEN #COVID19 WITH AN UNDERLYING HEALTH CONDITION! (#T1D)🥳🎉I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19 on Sunday, but I'm on strong antibiotics, keeping my BGs in range &amp; on the mend💪
+📷 Sally https://t.co/zJZw9ewSCL</td>
+                <td>75</td>
+                <td>625</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1245319557931294722">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 11:58:14</td>
+                <td class ="content_left">With today being the 1st day of feeling normal, I thought I would share with everyone that I'VE BEATEN #COVID19 WITH AN UNDERLYING HEALTH CONDITION! (#T1D)🥳🎉I tested <span style="color: yellow;">positive for COVID</span>-19 on Sunday, but I'm on strong antibiotics, keeping my BGs in range &amp; on the mend💪
+📷 Sally https://t.co/zJZw9ewSCL</td>
+                <td>75</td>
+                <td>625</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1245319557931294722">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 11:58:14</td>
+                <td class ="content_left">With today being the 1st day of feeling normal, I thought I would share with everyone that I'VE BEATEN #COVID19 WITH AN UNDERLYING HEALTH CONDITION! (#T1D)🥳🎉I tested positive for <span style="color: yellow;">COVID-19</span> on Sunday, but I'm on strong antibiotics, keeping my BGs in range &amp; on the mend💪
+📷 Sally https://t.co/zJZw9ewSCL</td>
+                <td>75</td>
+                <td>625</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1245319557931294722">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 11:15:02</td>
+                <td class ="content_left">My Cat Floyd knows when I'm having a hypo 😣He lays by me and rubs his <span style="color: yellow;"><span style="color: yellow;">nose</span></span> against mine ❤️
+
+📷Nicola https://t.co/BBfisEKHFu</td>
+                <td>4</td>
+                <td>35</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1244583912246034432">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-16 11:30:32</td>
+                <td class ="content_left">Our amazing Mr Marvin bites my husband's <span style="color: yellow;"><span style="color: yellow;">nose</span></span> until he wakes up. We have 4 cats but he's the only one that seems to know when he's low 😻
+
+📷 Kim https://t.co/WTs2szUtXC</td>
+                <td>1</td>
+                <td>14</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1217771108537114624">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Vitamin C</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Vitamin C"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 15:30:09</td>
+                <td class ="content_left">Did you know that there are foods higher in <span style="color: yellow;">vitamin C</span> than an orange? 🤯
+
+Here are 9 for you to get familiar with 😋🙌 ⬇️
+
+https://t.co/fS7ioc5Zfk</td>
+                <td>2</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1243198562021883907">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-27 13:47:23</td>
+                <td class ="content_left">Did you know that strawberries are higher in <span style="color: yellow;">vitamin C</span> than an orange? 🤯🍓
+
+Here are 8 more foods for you to get familiar with 😋 🙌 ⬇️
+
+https://t.co/fS7ioc5Zfk</td>
+                <td>8</td>
+                <td>29</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1233025840826527745">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-27 12:18:03</td>
+                <td class ="content_left">DCUK's Pug Kyra wuffs strawberries berry much🍓❤️
+
+Fresh fruit helps with ageing, strengthens the immune system &amp; helps with weight management. They are full of antioxidants, <span style="color: yellow;">Vitamin C</span>, Fibre &amp; contain an enzyme that can help whiten your pup’s teeth. 
+
+#NationalStrawberryDay https://t.co/jq02I7nc0F</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1233003357020676096">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-31 12:42:34</td>
+                <td class ="content_left">Did you know that there are foods higher in <span style="color: yellow;">vitamin C</span> than an orange? 🤯
+
+Here are 9 for you to get familiar with😋 🙌 ⬇️
+
+https://t.co/4O24fsVBF9</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1223225057583017984">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">runny nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "runny nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 12:53:20</td>
+                <td class ="content_left">The most common symptoms of #COVID19 include:
+
+▪️ Fever
+▪️ Tiredness
+▪️ Dry cough
+
+Some patients may have aches and pains, nasal congestion, <span style="color: yellow;"><span style="color: yellow;">runny nose</span></span>, sore throat or diarrhoea.
+
+Read more here ➡️ https://t.co/h2mHwwZLGq https://t.co/Rr8UfFMIKb</td>
+                <td>8</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1240984770831622144">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Nasal congestion</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Nasal congestion"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 12:53:20</td>
+                <td class ="content_left">The most common symptoms of #COVID19 include:
+
+▪️ Fever
+▪️ Tiredness
+▪️ Dry cough
+
+Some patients may have aches and pains, <span style="color: yellow;">nasal congestion</span>, runny nose, sore throat or diarrhoea.
+
+Read more here ➡️ https://t.co/h2mHwwZLGq https://t.co/Rr8UfFMIKb</td>
+                <td>8</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1240984770831622144">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">dry cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "dry cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 12:53:20</td>
+                <td class ="content_left">The most common symptoms of #COVID19 include:
+
+▪️ Fever
+▪️ Tiredness
+▪️ <span style="color: yellow;">Dry cough</span>
+
+Some patients may have aches and pains, nasal congestion, runny nose, sore throat or diarrhoea.
+
+Read more here ➡️ https://t.co/h2mHwwZLGq https://t.co/Rr8UfFMIKb</td>
+                <td>8</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1240984770831622144">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sore throat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sore throat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 12:53:20</td>
+                <td class ="content_left">The most common symptoms of #COVID19 include:
+
+▪️ Fever
+▪️ Tiredness
+▪️ Dry cough
+
+Some patients may have aches and pains, nasal congestion, runny nose, <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span> or diarrhoea.
+
+Read more here ➡️ https://t.co/h2mHwwZLGq https://t.co/Rr8UfFMIKb</td>
+                <td>8</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1240984770831622144">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">aches and pains</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "aches and pains"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 12:53:20</td>
+                <td class ="content_left">The most common symptoms of #COVID19 include:
+
+▪️ Fever
+▪️ Tiredness
+▪️ Dry cough
+
+Some patients may have <span style="color: yellow;"><span style="color: yellow;">aches and pains</span></span>, nasal congestion, runny nose, sore throat or diarrhoea.
+
+Read more here ➡️ https://t.co/h2mHwwZLGq https://t.co/Rr8UfFMIKb</td>
+                <td>8</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1240984770831622144">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 12:53:20</td>
+                <td class ="content_left">The most common symptoms of #COVID19 include:
+
+▪️ Fever
+▪️ Tiredness
+▪️ Dry cough
+
+Some patients may have <span style="color: yellow;"><span style="color: yellow;">aches</span></span> and pains, nasal congestion, runny nose, sore throat or diarrhoea.
+
+Read more here ➡️ https://t.co/h2mHwwZLGq https://t.co/Rr8UfFMIKb</td>
+                <td>8</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1240984770831622144">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">vegetarians</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "vegetarians"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 18:30:09</td>
+                <td class ="content_left">Suitable for <span style="color: yellow;"><span style="color: yellow;">vegetarians</span></span> and non-<span style="color: yellow;"><span style="color: yellow;">vegetarians</span></span> ➡️https://t.co/HoVcRd81bx
+
+The Low Carb Kickstarter includes:
+🍳 45 recipes (15 breakfasts, 15 mains &amp; 15 desserts)
+📆 A brand new 7-day meal plan
+➕ So much more to help you on your journey https://t.co/PzagsLYwkp</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1240707145189838848">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sleepiness</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sleepiness"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 11:45:05</td>
+                <td class ="content_left">Older people who experience excessive <span style="color: yellow;"><span style="color: yellow;">sleepiness</span></span> in the daytime could be at a greater risk of developing type 2 diabetes 😴
+
+#SleepAwarenessWeek #NationalBedMonth
+
+https://t.co/sLIHTvXPS0</td>
+                <td>6</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1239518042557689856">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">excessive sleep</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "excessive sleep"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 11:45:05</td>
+                <td class ="content_left">Older people who experience <span style="color: yellow;"><span style="color: yellow;">excessive sleep</span></span>iness in the daytime could be at a greater risk of developing type 2 diabetes 😴
+
+#SleepAwarenessWeek #NationalBedMonth
+
+https://t.co/sLIHTvXPS0</td>
+                <td>6</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1239518042557689856">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-10 09:38:43</td>
+                <td class ="content_left">He’s an absolute warrior, never complains, just gets on with it and is never <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of Jelly Babies to help treat his hypos 😜
+
+📷 Sharon</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1237311913949908994">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Itching</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Itching"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-21 14:53:43</td>
+                <td class ="content_left"><span style="color: yellow;"><span style="color: yellow;">Itching</span></span> of the feet, legs or ankles is a common complaint in people with #diabetes that may occur as a result of high #bloodsugar levels ⬇️ #GBDoc
+
+https://t.co/k5pRS1uDcN</td>
+                <td>2</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1230868205230534658">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Difficulty breathing</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Difficulty breathing"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-18 11:57:33</td>
+                <td class ="content_left">High #bloodpressure could result in:
+
+✖️Headaches
+✖️Nosebleed
+✖️Blurred vision
+✖️<span style="color: yellow;"><span style="color: yellow;">Difficulty breathing</span></span>
+
+So it is important that your blood pressure level is checked each year ➡️ https://t.co/gLqB8dBvFV https://t.co/d7ARKLZmGq</td>
+                <td>2</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1229736710474477568">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Difficulty breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Difficulty breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-18 11:57:33</td>
+                <td class ="content_left">High #bloodpressure could result in:
+
+✖️Headaches
+✖️Nosebleed
+✖️Blurred vision
+✖️<span style="color: yellow;"><span style="color: yellow;">Difficulty breath</span></span>ing
+
+So it is important that your blood pressure level is checked each year ➡️ https://t.co/gLqB8dBvFV https://t.co/d7ARKLZmGq</td>
+                <td>2</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1229736710474477568">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fatigue</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fatigue"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-19 16:45:01</td>
+                <td class ="content_left"><span style="color: yellow;">Fatigue</span> can be caused by a number of different factors, take a look at them here 😴➡️https://t.co/2K6SiZ4YAZ https://t.co/353dz3r4Ao</td>
+                <td>5</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1218937418184843264">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-07 11:04:13</td>
+                <td class ="content_left">My little girl Dolly checks my grandson's <span style="color: yellow;"><span style="color: yellow;">breath</span></span> and sleeps with him when he stays with us, she never leaves his side. Animals are so clever.
+📷 Barbara https://t.co/jBg06d9ivy</td>
+                <td>0</td>
+                <td>17</td>
+                <td><a href="https://twitter.com/Diabetescouk/status/1214502997859934209">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

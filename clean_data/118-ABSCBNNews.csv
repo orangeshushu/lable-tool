@@ -1,0 +1,325 @@
+twitter_id,screen_name,created_at,verified,location,followers_count,friends_count,favourites_count,statuses_count
+15872418,ABSCBNNews,Sat Aug 16 10:09:33 +0000 2008,True,"Manila, Philippines",6939885,1073,1144,785306
+ 
+created_at,full_text,retweet_count,favorite_count,twitter_url
+covid-19
+2020-05-28 15:53:16,"• Indonesia reports 687 new coronavirus infections, bringing the country's total to 24,538; total number of fatalities at 1,496
+
+More updates on COVID-19 here: https://t.co/CMJ1iz8FKO",2,13,https://twitter.com/ABSCBNNews/status/1266034814773157889
+2020-05-28 15:52:18,"• Malaysia logs 10 new COVID-19 cases with no new deaths; total cases at 7,629 with death toll still at 115
+
+• Singapore confirms 373 new COVID-19 cases, none of them are Singaporeans or permanent residents; the city-state’s tally of infections stands at 33,249",2,27,https://twitter.com/ABSCBNNews/status/1266034573411901442
+2020-05-28 15:52:17,"• South Korea reports biggest spike in COVID-19 cases in nearly 2 months; with 79 new cases, nation's tally now at 11,344 https://t.co/H8huIOvdee",1,15,https://twitter.com/ABSCBNNews/status/1266034566365458434
+2020-05-28 15:52:16,"• Brazil's COVID-19 death toll tops 25,000, as total number of cases spike to 410,000 https://t.co/atMbBMEoW9",1,10,https://twitter.com/ABSCBNNews/status/1266034564142526464
+2020-05-28 15:52:15,"• US COVID-19 death toll crosses 100,000 with 1.69 million infections https://t.co/A7hXipA8I4",3,13,https://twitter.com/ABSCBNNews/status/1266034561663684609
+2020-05-28 15:52:15,• Red Cross raises alarm over 200 violent attacks on health workers connected with COVID-19 crisis reported across more than a dozen countries since pandemic began https://t.co/lVpaaBeibg,0,4,https://twitter.com/ABSCBNNews/status/1266034559281324034
+2020-05-28 15:52:14,• US Embassy in Manila cancels all scheduled immigrant and non-immigrant visa interviews until further notice amid continuing COVID-19 crisis https://t.co/fF2giN5cpr,3,12,https://twitter.com/ABSCBNNews/status/1266034553887485953
+2020-05-28 15:52:13,• Number of callers to PH's mental health center soar amid COVID-19 pandemic https://t.co/fDkNWvq3Hs,5,14,https://twitter.com/ABSCBNNews/status/1266034551706357761
+2020-05-28 15:52:12,• Education department expects decline in student enrollment amid COVID-19 pandemic https://t.co/E5mxBx32nu,8,7,https://twitter.com/ABSCBNNews/status/1266034548288057344
+2020-05-28 15:52:09,"• Metro Manila needs to conduct 15,000 COVID-19 tests daily and 1,800 contact tracers to offset expected increase in cases once lockdown eases, researchers say https://t.co/TwcF2yZMeF",2,4,https://twitter.com/ABSCBNNews/status/1266034534174224385
+2020-05-28 15:52:08,• Health department says PH needs more than P11 billion to hire and retain enough contact tracers for COVID-19 outbreak https://t.co/YCcKdVXLCZ,0,2,https://twitter.com/ABSCBNNews/status/1266034531410182145
+2020-05-28 15:52:08,• Health Secretary Duque admits PH Red Cross undertaking more COVID-19 tests than government due to technological advancement https://t.co/aXk5lle2ab,4,8,https://twitter.com/ABSCBNNews/status/1266034528914563072
+2020-05-28 15:52:06,• Duterte confident China will be first to develop COVID-19 vaccine and will be available by September https://t.co/FatfWPocU9,4,15,https://twitter.com/ABSCBNNews/status/1266034524065902592
+2020-05-28 15:52:05,"• 17 more people died of COVID-19 in PH, raising the total number of fatalities to 921
+https://t.co/ANzxGBmOdc",1,3,https://twitter.com/ABSCBNNews/status/1266034517342445568
+2020-05-28 15:52:02,"• PH's total recorded coronavirus infections reach 15,588 with 11,069 still active cases 
+
+• Metro Manila still accounts for majority of today's new cases with 330 patients
+
+• Recovered COVID-19 patients in PH rise by 92 to 3,598
+https://t.co/gl7mCDa7sP",3,9,https://twitter.com/ABSCBNNews/status/1266034506806353928
+2020-05-28 14:50:00,PBA: San Miguel Corp. teams undergo COVID-19 swab testing https://t.co/vbATVpvNeB,5,37,https://twitter.com/ABSCBNNews/status/1266018892943671297
+2020-05-28 14:26:27,DILG Secretary Eduardo Año: Kung meron pong isang positive itong COVID-19 crisis na ito ay sa larangan ng peace and order. Mula nag-lockdown tayo bumaba ang ating 8 focus crimes ng 60% | via @pia_gutierrez https://t.co/sAmO3q7L35,1,17,https://twitter.com/ABSCBNNews/status/1266012968862355458
+2020-05-28 14:15:59,"National Action Plan Against #COVID19 Chief Implementer Secretary Carlito Galvez, Jr. says eyeing gradual restarting of the domestic tourism when COVID-19 situation in PH improves
+
+WATCH: https://t.co/cTZgd7Yy2O https://t.co/4MIvxtgH31",5,15,https://twitter.com/ABSCBNNews/status/1266010332389990401
+2020-05-28 13:38:58,"DepEd Sec. Leonor Briones discusses blended learning possibilities which schools may adapt amid the COVID-19 crisis
+
+https://t.co/cTZgd7Yy2O https://t.co/9qlf6r7qVi",8,26,https://twitter.com/ABSCBNNews/status/1266001019965599745
+2020-05-28 13:33:07,@pia_gutierrez Duterte says he expects China to be among the first to come up with a vaccine against COVID-19 | via @pia_gutierrez,3,37,https://twitter.com/ABSCBNNews/status/1265999546674409478
+2020-05-28 13:05:00,The Department of Education plans to use TV and radio channels as mode of education amid the persisting COVID-19 threat https://t.co/aBFzJMoadZ,11,80,https://twitter.com/ABSCBNNews/status/1265992469054971906
+2020-05-28 12:30:00,DepEd expects enrollment decline amid COVID-19 pandemic https://t.co/8jEYMZ8bVP,11,67,https://twitter.com/ABSCBNNews/status/1265983660718776322
+2020-05-28 11:57:30,"PH’s accredited #COVID19 labs were able to test 8,496 samples yesterday. Individuals who tested positive for COVID-19 reached 22,543. | via @kristinesabillo  https://t.co/WrEkpXBnSK",34,81,https://twitter.com/ABSCBNNews/status/1265975482291326977
+2020-05-28 11:50:00,Buy luxury shoes of Vice Ganda or Liza Soberano to help fund COVID-19 test kits https://t.co/zwbib1BGKT,117,311,https://twitter.com/ABSCBNNews/status/1265973594569363456
+2020-05-28 11:40:00,SBP continues to work on World Cup hosting amid COVID-19 pandemic https://t.co/9CECeDsYVv,3,20,https://twitter.com/ABSCBNNews/status/1265971077714374657
+2020-05-28 11:35:00,"School uniform-related businesses bear the brunt of the COVID-19 crisis
+https://t.co/dptETXk5hH",3,32,https://twitter.com/ABSCBNNews/status/1265969819637211137
+2020-05-28 11:00:25,"A disinfecting misting booth was set up at the entrance of the UP Diliman NISMED building, which houses doctors, nurses, and health workers who are treating COVID-19 patients at the Kanlungan Palma. 
+
+📷 Jonathan Cellona, ABS-CBN News https://t.co/zlhe2tLKqT",4,14,https://twitter.com/ABSCBNNews/status/1265961117584482304
+2020-05-28 11:00:24,"PHOTO: Mini-tents with mattresses and beddings are set up inside the Kalinga Center at the University of the Philippines Diliman gym where COVID-19 patients, including health workers, await results of their secondary tests on Thursday. https://t.co/dqvK4xhmDk",13,42,https://twitter.com/ABSCBNNews/status/1265961114916941824
+2020-05-28 10:20:00,"Angel Locsin teams up with Tropical Disease Foundation, Ayala group for COVID-19 testing mission https://t.co/JZ6YZdEdLV",107,813,https://twitter.com/ABSCBNNews/status/1265950945357094912
+2020-05-28 09:50:00,DepEd discourages physical enrollment in June as COVID-19 crisis continues https://t.co/nmgwYRZkO7,21,122,https://twitter.com/ABSCBNNews/status/1265943395446341639
+2020-05-28 08:50:00,Singaporean gets four months jail for COVID-19 Facebook post https://t.co/lkTBpoC7uT,9,32,https://twitter.com/ABSCBNNews/status/1265928296027394049
+2020-05-28 08:46:09,"NOW: Department of Health gives COVID-19 updates
+
+WATCH: https://t.co/71A3i3hZV0",1,21,https://twitter.com/ABSCBNNews/status/1265927326186958850
+2020-05-28 00:04:14,"* A Japanese firm says its deep UV light deactivates COVID-19 99.9% 
+
+* An infectious diseases expert stressed that a coronavirus vaccine cannot be rushed. #COVID19
+
+* Some experts are not convinced on placing Metro Manila to general community quarantine starting June 1.",6,20,https://twitter.com/ABSCBNNews/status/1265795983885004800
+2020-05-28 00:04:13,"DAY 75. Here are the stories you need to watch out for today, May 28, 2020, amid the #COVID19 pandemic: 
+
+* Philippines' COVID-19 cases breach 15,000 after 380 new cases reported https://t.co/kgzPNSDGL1",19,53,https://twitter.com/ABSCBNNews/status/1265795980865073152
+2020-05-27 23:40:00,"US passes dire milestone of 100,000 COVID-19 deaths https://t.co/T9cO9mU6YF",7,30,https://twitter.com/ABSCBNNews/status/1265789883819405313
+2020-05-27 17:00:00,Wanted in Hollywood: COVID-19 consultants to help keep sets safe https://t.co/v1nqCv1j2A,4,20,https://twitter.com/ABSCBNNews/status/1265689222184402944
+2020-05-27 15:37:28,More updates on COVID-19 here: https://t.co/CMJ1iz8FKO,2,5,https://twitter.com/ABSCBNNews/status/1265668453538525185
+2020-05-27 15:37:28,"• Indonesia logs 686 new COVID-19 cases and 55 new fatalities; tally of confirmed cases climb to 23,851 with death toll at 1,473
+
+• Malaysia reports 15 new coronavirus infections with no new death; total cases at 7,619 with 115 fatalities",3,11,https://twitter.com/ABSCBNNews/status/1265668451609088000
+2020-05-27 15:37:27,"• South Korea reports highest daily number of new COVID-19 cases in 49 days, as one of country's largest e-commerce companies fights outbreak linked to a now-shuttered facility https://t.co/zOMm0jyx49",1,7,https://twitter.com/ABSCBNNews/status/1265668447125422081
+2020-05-27 15:37:26,"• Falling numbers of active COVID-19 cases in Australia and New Zealand paving way for easing of travel restrictions between two countries, health officials said",2,7,https://twitter.com/ABSCBNNews/status/1265668444894015488
+2020-05-27 15:37:25,• Hollywood counting on COVID-19 consultants for future productions https://t.co/z7Yvgyl3bV,0,8,https://twitter.com/ABSCBNNews/status/1265668440527794177
+2020-05-27 15:37:24,"• Brazil logs more than 1,000 COVID-19 fatalities in past 24 hours, raising its death toll to 24,512 https://t.co/cjyqb3QoiJ",1,4,https://twitter.com/ABSCBNNews/status/1265668435754639361
+2020-05-27 15:37:23,• France halts treatment of COVID-19 patients with hydroxychloroquine https://t.co/sV27Bxc5X3,3,12,https://twitter.com/ABSCBNNews/status/1265668431216443394
+2020-05-27 15:37:23,• Spain's food aid queues grow as poverty soars during COVID-19 pandemic https://t.co/nljC7GbvBR,2,3,https://twitter.com/ABSCBNNews/status/1265668428955652097
+2020-05-27 15:37:22,• UN's patent agency warns against allowing copyright rows to overshadow and delay process of producing COVID-19 vaccine https://t.co/5jClsPL4Wk,2,9,https://twitter.com/ABSCBNNews/status/1265668426858520578
+2020-05-27 15:37:20,"• Casino resort Okada Manila says to lay off some 1,000 workers, citing severe losses due to COVID-19 crisis https://t.co/c0cmw4yz7u",2,7,https://twitter.com/ABSCBNNews/status/1265668419250081792
+2020-05-27 15:37:20,• 1 in 5 young people lost their jobs since onset of COVID-19 pandemic https://t.co/wN20sk7W7h,2,6,https://twitter.com/ABSCBNNews/status/1265668416976719873
+2020-05-27 15:37:19,• An expert says there’s no certainty COVID-19 vaccine would be ready in 2021 https://t.co/YCSuch3Nni,3,21,https://twitter.com/ABSCBNNews/status/1265668412711133186
+2020-05-27 15:37:18,"• Health workers in PH who recovered from COVID-19 up by 30 to 1,193 https://t.co/PsHTJTsvUE",4,10,https://twitter.com/ABSCBNNews/status/1265668407837376512
+2020-05-27 15:37:16,• Island province of Basilan logs first COVID-19 case https://t.co/aCs1zs8JGG,1,4,https://twitter.com/ABSCBNNews/status/1265668403227840512
+2020-05-27 15:37:16,"• 18 more people died of COVID-19 in PH, raising the total number of fatalities to 904
+
+• Patients who recovered from COVID-19 in PH now at 3,506 with 94 new recoveries",0,6,https://twitter.com/ABSCBNNews/status/1265668400509890562
+2020-05-27 15:37:15,"• PH logs 380 new COVID-19 cases, highest reported in a day since April 6; total coronavirus infections at 15,049 
+
+• 10,639 are still active cases
+
+• Majority of today's new recorded coronavirus infections come from Metro Manila with 254 new patients
+https://t.co/fA7t508Wum",5,13,https://twitter.com/ABSCBNNews/status/1265668396399517696
+2020-05-27 13:45:00,International Labor Organization: 1 in 5 young people out of work due to COVID-19 https://t.co/izBoOdl1hX,4,32,https://twitter.com/ABSCBNNews/status/1265640147594379264
+2020-05-27 11:55:00,"LOOK: Angel's car, Anne's luxury bag up for auction to raise funds for COVID-19 test kits https://t.co/aWgYQtgVop",213,1653,https://twitter.com/ABSCBNNews/status/1265612464764465155
+2020-05-27 10:30:00,Vietnam assures PH of unimpeded rice supply as COVID-19 crisis persists - Palace https://t.co/8Vk5LYV7R8,6,39,https://twitter.com/ABSCBNNews/status/1265591074552070144
+2020-05-27 10:26:33,"Samples tested for COVID-19 was at 7,589 on May 26. Meanwhile, individuals who tested positive for COVID-19 at 22,000. Results have to undergo validation before being considered confirmed cases (at 15k today). | via @kristinesabillo https://t.co/pfCMY1qLPe",6,25,https://twitter.com/ABSCBNNews/status/1265590207081934849
+2020-05-27 09:41:38,Newly-appointed PDEA chief Wilkins Villanueva calls his appointment a 'silver lining' amid the COVID-19 pandemic: Its a silver lining. I was surprised na bigla talaga naibigay. | via @angelmovido  https://t.co/mHLU4DpqwI,2,36,https://twitter.com/ABSCBNNews/status/1265578904892379136
+2020-05-27 09:14:32,"The latest number of individuals who tested positive for #COVID19 was already over 21,000 on Monday. This means, there are still 7,000 test results waiting for validation so they can be considered new cases or part of the total number of COVID-19 cases. | via @kristinesabillo",12,15,https://twitter.com/ABSCBNNews/status/1265572084958277634
+2020-05-27 08:49:19,"No new #COVID19-related deaths among health workers since May 10. 
+
+DOH Usec. Vergeire: ""Patuloy na tumataas ang bilang ng ating COVID-19 survivors mula sa hanay ng mga health care workers."" | via @kristinesabillo https://t.co/D5uRb1MxyG",5,14,https://twitter.com/ABSCBNNews/status/1265565736573046785
+2020-05-27 08:43:57,"NOW: Department of Health gives COVID-19 updates
+
+WATCH:: https://t.co/CNwoIGNVNs https://t.co/LsR770kXbu",2,34,https://twitter.com/ABSCBNNews/status/1265564388045570050
+2020-05-26 16:30:00,Tech companies target temperature-monitoring patches for COVID-19 https://t.co/iyDwjFbvgJ,7,29,https://twitter.com/ABSCBNNews/status/1265319284135337984
+2020-05-26 16:20:00,Thailand extends state of emergency ahead of COVID-19 lockdown easing https://t.co/Ff9dStYFy2,30,188,https://twitter.com/ABSCBNNews/status/1265316766537793537
+2020-05-26 16:10:00,House deliberates economic stimulus package vs COVID-19 pandemic https://t.co/f5QMPWjRx3,3,25,https://twitter.com/ABSCBNNews/status/1265314249821298688
+2020-05-26 15:41:13,"• Singapore confirms 383 new coronavirus infections, raising its total confirmed cases to 32,343
+
+More updates on COVID-19 here: https://t.co/CMJ1iz8FKO",3,20,https://twitter.com/ABSCBNNews/status/1265307006379819009
+2020-05-26 15:41:12,"• Indonesia logs 415 new COVID-19 cases, bringing the country's total to 23,165 with death toll at 1,418
+
+• Indonesian President Widodo says military and police will be activated to enforce physical distancing under 'new normal'",1,15,https://twitter.com/ABSCBNNews/status/1265307002814689281
+2020-05-26 15:41:11,"• Malaysia's health ministry to continue use of hydroxychloroquine in trials to treat COVID-19 patients, as authorities closely monitor any side effects",1,7,https://twitter.com/ABSCBNNews/status/1265306999719211008
+2020-05-26 15:41:10,"• Malaysia reports 187 new COVID-19 cases, with illegal migrants held at a detention center accounting for most of them; total cases now at 7,604 with death toll at 115",1,5,https://twitter.com/ABSCBNNews/status/1265306993708818432
+2020-05-26 15:41:07,"• Thailand records 3 new coronavirus infections with no new fatality; total cases at 3,045 with death toll still at 57
+
+• Thailand extends state of emergency until end of June as it prepares for further easing of COVID-19 restrictions https://t.co/ir24lgHLY1",1,12,https://twitter.com/ABSCBNNews/status/1265306983353085953
+2020-05-26 15:41:06,• An Indian pharmaceuticals firm is set to begin clinical trial of a combination of 2 antiviral drugs as a potential COVID-19 treatment https://t.co/toymkhMn95,2,11,https://twitter.com/ABSCBNNews/status/1265306976650620929
+2020-05-26 15:41:04,"• UK to provide anti-viral drug Remdesivir to certain COVID-19 patients
+
+• Germany eyeing to end travel warning for tourist trips to 31 European countries",0,3,https://twitter.com/ABSCBNNews/status/1265306969058889728
+2020-05-26 15:41:03,"• Global COVID-19 cases top 5.5 million, according to AFP's tally
+
+• Spanish government declares 10-day mourning to honor nearly 30,000 people who died of COVID-19 in one of world's worst-hit countries
+
+• UK's COVID-19 death toll tops 47,000",0,5,https://twitter.com/ABSCBNNews/status/1265306965950914562
+2020-05-26 15:41:00,• Airline industry group appeals for government aid under bill aiming to stimulate economic activity following disruptions caused by COVID-19 pandemic https://t.co/tCOX7R3KOT,1,6,https://twitter.com/ABSCBNNews/status/1265306954794020865
+2020-05-26 15:40:59,• Group in PH pushes for COVID-19 tests for expectant mothers to avoid infection among health workers and other patients in hospitals https://t.co/TG72F8s570,0,6,https://twitter.com/ABSCBNNews/status/1265306950813618177
+2020-05-26 15:40:58,"• Health department says COVID-19 laboratories facing operational issues as PH yet to meet target 30,000 actual tests a day https://t.co/atxkj3jFMc",0,4,https://twitter.com/ABSCBNNews/status/1265306944807399425
+2020-05-26 15:40:53,"• PH's total coronavirus infections now at 14,669, with 10,371 active cases 
+
+• 13 more people died of COVID-19 in PH raising total fatalities to 886
+
+• Patients who recovered from COVID-19 in PH now at 3,412 with 89 new recoveries
+https://t.co/yeavF0a9E8",6,22,https://twitter.com/ABSCBNNews/status/1265306924834189312
+2020-05-26 15:20:00,'You are not mercenaries': Duterte thanks military officers for service amid COVID-19 crisis https://t.co/oUo6Cszy45,3,23,https://twitter.com/ABSCBNNews/status/1265301666955329537
+2020-05-26 14:55:00,Indian pharma to study potential COVID-19 drug combination https://t.co/lkkoG4Tqd5,11,52,https://twitter.com/ABSCBNNews/status/1265295375453360128
+2020-05-26 13:12:01,"""Sarap ng buhay,"" says Sen. Bato dela Rosa touting ""more efficient"" web sessions as Senate adjourns early on Tuesday.
+
+Some were not pleased with the senator'exclamation, with netizens saying it was an insensitive remark as thousands suffered during the COVID-19 pandemic. https://t.co/8LOzy7ePx1",198,803,https://twitter.com/ABSCBNNews/status/1265269460904013825
+2020-05-26 12:30:00,"A visual artist from Nueva Ecija creates ""leaf art"" to honor COVID-19 frontliners. #SalamatFrontliners https://t.co/ulmmoySBpi",39,243,https://twitter.com/ABSCBNNews/status/1265258886304616449
+2020-05-26 11:50:00,Drilon: Poor students 'at a disadvantage' in virtual classes during COVID-19 crisis https://t.co/IkV40ziFA8,15,120,https://twitter.com/ABSCBNNews/status/1265248819060420610
+2020-05-26 08:20:00,UP's COVID-19 chatbot now available in ‘bekispeak’ https://t.co/uhRiNL8wV2,11,79,https://twitter.com/ABSCBNNews/status/1265195970628894720
+2020-05-26 07:30:00,"Supreme Court starts COVID-19 rapid testing of officials, employees https://t.co/gSJVoWWIR4",3,26,https://twitter.com/ABSCBNNews/status/1265183387469447168
+2020-05-26 07:27:00,House cluster approves P1.5-trillion COVID-19 stimulus bill https://t.co/LLCkJHBnro,8,29,https://twitter.com/ABSCBNNews/status/1265182632616181761
+2020-05-26 00:07:17,"* A WHO official urged PH government to speed up tracing people who came in close contact w/ #COVID19 patients. 
+
+* COVID-19 has killed at least 344,107 people since the outbreak first emerged in China last December, according to a tally compiled by AFP on Monday.",2,8,https://twitter.com/ABSCBNNews/status/1265071974629306371
+2020-05-26 00:07:15,"DAY 73. Here are the stories you need to watch out for today, May 26, 2020, amid the #COVID19 pandemic:
+
+* DOH has reported 284 new confirmed cases COVID-19 on Monday. This is highest number of new cases announced in 2 weeks. https://t.co/pG3jIAbn4n",12,41,https://twitter.com/ABSCBNNews/status/1265071968094613504
+2020-05-25 17:23:44,"• After days of no new reported cases, Thailand confirms 2 new coronavirus infections with 1 additional death; total cases at 3,042 while total number of fatalities at 57 
+
+More updates on COVID-19 here: https://t.co/CMJ1iz8FKO",1,13,https://twitter.com/ABSCBNNews/status/1264970419926208512
+2020-05-25 17:23:44,"• Malaysia reports 172 new COVID-19 cases, most of them foreigners held at immigration depots; total cases at 7,417 while death toll unchanged at 115
+
+• Singapore logs 344 more coronavirus cases, pushing the city-state's total to 31,960",0,9,https://twitter.com/ABSCBNNews/status/1264970417954885632
+2020-05-25 17:23:43,"• India's total COVID-19 cases now at 138,845 while death toll tops 4,000
+
+• Russian President Putin says improvements in coronavirus situation may allow country to re-open some tourist resorts soon and relax restrictions in many regions",1,7,https://twitter.com/ABSCBNNews/status/1264970416096829440
+2020-05-25 17:23:43,"• Germany's confirmed COVID-19 cases increase by 289 to 178,570 with death toll at 8,257 
+
+• India posts biggest single-day jump in COVID-19 cases with 6,977 new infections, overtaking Iran to become one of the 10 worst-hit nations",0,7,https://twitter.com/ABSCBNNews/status/1264970414150676480
+2020-05-25 17:23:42,• Prime Minister Shinzo Abe says state of emergency due to COVID-19 crisis is over in Japan https://t.co/N36dWook6M,3,18,https://twitter.com/ABSCBNNews/status/1264970409553694721
+2020-05-25 16:20:00,"COVID-19 deaths top 4,000 in under-fire Sweden https://t.co/GiuaPuQ7uL",3,29,https://twitter.com/ABSCBNNews/status/1264954378617667584
+2020-05-25 16:13:51,"@pia_gutierrez @kristinesabillo Duterte: Ang COVID-19 ho nandito pa, and yung pagpalabas ng mga tao hindi ibig sabihin tapos na ang COVID. Nandito pa rin. Kung gusto mong lumabas sa ngayon, wala pang medisina, wala pang vaccine, at your own risk yan. | via @pia_gutierrez",8,32,https://twitter.com/ABSCBNNews/status/1264952832009973760
+2020-05-25 15:10:00,DepEd rejects proposals to postpone classes pending COVID-19 vaccine https://t.co/8JB2QaEZdO,293,2119,https://twitter.com/ABSCBNNews/status/1264936762683473920
+2020-05-25 15:00:00,• Malacañang says distribution of second tranche of cash aid for those affected by COVID-19 crisis can already start https://t.co/qsw3svsG1F,2,5,https://twitter.com/ABSCBNNews/status/1264934249078992896
+2020-05-25 15:00:00,• Philippine Health Insurance Corp. denies COVID-19 testing packages in the country are overpriced but driven by market-dictated prevailing rates https://t.co/4LeU9BG2Oz,1,5,https://twitter.com/ABSCBNNews/status/1264934245002211329
+2020-05-25 14:59:59,• PH gov't urged to invest more in automated PCR testing to increase COVID-19 testing capacity and help laboratory workers https://t.co/0zKQLNGWov,1,6,https://twitter.com/ABSCBNNews/status/1264934242816909312
+2020-05-25 14:59:59,• A PH gov't adviser on pandemic response says the country is flattening the COVID-19 curve https://t.co/BsgPxEf1Rp,2,5,https://twitter.com/ABSCBNNews/status/1264934240832983046
+2020-05-25 14:59:58,• Batangas opens COVID-19 isolation facility for persons deprived of liberty https://t.co/Zt2rAVwaS8,2,6,https://twitter.com/ABSCBNNews/status/1264934238698131460
+2020-05-25 14:59:57,• Health department approves COVID-19 testing laboratory in Region I https://t.co/IGbDSuLFiU,0,6,https://twitter.com/ABSCBNNews/status/1264934236546461697
+2020-05-25 14:59:56,• A World Health Organization official alerts PH gov't to speed up tracing people who came in close contact with COVID-19 patients https://t.co/IvUNkWHQqS,6,16,https://twitter.com/ABSCBNNews/status/1264934231576154112
+2020-05-25 14:59:53,"• PH's total COVID-19 cases reach 14,319 
+
+• 10,123 are active cases 
+
+• With 5 new COVID-19 fatalities, PH's death toll continues its downward trend 
+
+• PH logs 74 new COVID-19 recoveries, raising the total to 873
+https://t.co/TN0Jyvkcu5",2,15,https://twitter.com/ABSCBNNews/status/1264934217470730242
+2020-05-25 14:59:52,"284 NEW COVID-19 CASES, HIGHEST IN 2 WEEKS. The Philippines continues to record new confirmed coronavirus infections as the country contemplates on whether to ease quarantine measures starting June. 
+
+More on today's rundown of biggest stories on the pandemic here: 
+
+THREAD https://t.co/UXwFq7t5o4",55,145,https://twitter.com/ABSCBNNews/status/1264934214589272069
+2020-05-25 10:53:47,READ: Duterte's 9th weekly report to Congress on COVID-19 response https://t.co/cmM3QTxhDZ,11,32,https://twitter.com/ABSCBNNews/status/1264872286538076160
+2020-05-25 10:10:00,98 of 115 Filipinos sickened with COVID-19 in Malaysia have recovered: envoy https://t.co/p2tE1IFCQF,11,48,https://twitter.com/ABSCBNNews/status/1264861265010102273
+2020-05-25 08:15:00,TikTok hosts K-Pop concert series as part of global COVID-19 relief efforts https://t.co/Bl3oh6TGuP,14,53,https://twitter.com/ABSCBNNews/status/1264832324262260737
+2020-05-25 00:00:45,"DAY 72. Here are the stories you need to watch out for this Monday, May 25, 2020, amid the #COVID19 pandemic:
+
+* The Philippines reported 258 new confirmed cases of COVID-19 on Sunday bringing the country’s total to 14,035. https://t.co/YTaNi8o0m7 https://t.co/TDToYsfDS5",15,49,https://twitter.com/ABSCBNNews/status/1264707944186142721
+2020-05-24 20:00:00,Majority of jobs vital to economy are high-risk COVID-19 spreaders: UP study https://t.co/DY9nVjf7cc,23,47,https://twitter.com/ABSCBNNews/status/1264647357746098176
+2020-05-24 14:19:39,More updates on COVID-19 here: https://t.co/CMJ1iyR4Tg,2,10,https://twitter.com/ABSCBNNews/status/1264561705318854656
+2020-05-24 14:19:36,• Coronavirus infection rates in France have slowed further and the number of COVID-19 patients in hospital and intensive care continued to fall https://t.co/dQ6axhg0d3,0,5,https://twitter.com/ABSCBNNews/status/1264561692333277185
+2020-05-24 14:19:34,"• South America is labelled ""a new epicentre"" of COVID-19 by the World Health Organization https://t.co/p2cStm7wLM",0,2,https://twitter.com/ABSCBNNews/status/1264561682631626752
+2020-05-24 14:19:31,"• UP study showed majority of ""highly important"" jobs that will sustain the Philippine economy in the next 18 months have a high risk of spreading COVID-19 https://t.co/d1CAxUGqPQ",3,18,https://twitter.com/ABSCBNNews/status/1264561671315484678
+2020-05-24 14:19:29,"• PH COVID-19 task force said gatherings are allowed during a lockdown, as long as they are involved in government services and relief programs https://t.co/y0niZJ043k",0,6,https://twitter.com/ABSCBNNews/status/1264561660854857728
+2020-05-24 14:19:27,• Filipino Muslims celebrate Eid'l Fitr at home as COVID-19 threat lingers https://t.co/56bn0tj9ay,0,8,https://twitter.com/ABSCBNNews/status/1264561656358559745
+2020-05-24 14:19:25,• DFA reports only 1 new COVID-19 case among Filipinos abroad https://t.co/SSRFvstQMV,0,10,https://twitter.com/ABSCBNNews/status/1264561646069968896
+2020-05-24 14:19:24,"• PH logs 258 new confirmed COVID-19 cases, total now at 14,035 https://t.co/yMHbYqIoHq
+
+• Of the more than 14,000 total coronavirus infections, 9,918 remain active cases
+
+• 5 more people died of COVID-19 in PH
+
+• 72 more patients in PH recovering from COVID-19 https://t.co/gjXduoBrDq",5,21,https://twitter.com/ABSCBNNews/status/1264561641024188417
+2020-05-24 14:19:23,"COVID-19 CASES IN THE PH BREACH 14,000-MARK.  Confirmed cases of #COVID19 in the Philippines are still increasing over a week after the government started gradually easing quarantine measures.
+
+Here's a rundown of the biggest news on the pandemic (May 24, 2020). https://t.co/mlnm36VepT",45,130,https://twitter.com/ABSCBNNews/status/1264561636620161024
+2020-05-23 23:15:08,"* 17 million families to benefit from second tranche of #COVID19 cash aid: Palace https://t.co/HZ8cQewQYN
+
+* PH to participate in COVID-19 vaccine trials https://t.co/7vmBso6M37",2,10,https://twitter.com/ABSCBNNews/status/1264334077072564224
+2020-05-23 15:16:20,"Steelers' pandemic planning includes selling only half their seats https://t.co/Yaz2aWiVw2
+
+More updates on COVID-19 here: https://t.co/YMmmj0Xr2g",2,4,https://twitter.com/ABSCBNNews/status/1264213581756633088
+test positive
+2020-05-28 15:52:14,"• 157 more overseas Filipinos test positive for coronavirus as total tops 2,800 https://t.co/a3WAp42cSD",1,8,https://twitter.com/ABSCBNNews/status/1266034556970270721
+2020-05-28 15:52:07,"• 15 more health workers in PH test positive for coronavirus, raising total to 2,452 https://t.co/Mjs0qM80r3",1,2,https://twitter.com/ABSCBNNews/status/1266034526603456512
+2020-05-28 13:10:00,2 family members of a woman who dies of #COVID19 in Cagayan de Oro City also test positive for coronavirus. https://t.co/CCnWd5gcUa,10,55,https://twitter.com/ABSCBNNews/status/1265993727111127040
+2020-05-28 00:04:15,"* The number of health care workers in the Philippines who recovered from #COVID19 had gone up by 30 to 1,193, the DOH reported. 
+
+* DFA: 29 more overseas Filipinos test positive for COVID-19; total now at 2,664",0,5,https://twitter.com/ABSCBNNews/status/1265795987953430528
+2020-05-27 15:37:22,"• 29 more overseas Filipinos test positive for coronavirus, bringing the total to 2,664 https://t.co/vtcDXxL0jd",1,8,https://twitter.com/ABSCBNNews/status/1265668424631369729
+2020-05-27 15:37:17,• 161 inmates in two of PH's penal facilities test positive for coronavirus https://t.co/vSu9RexK7K,2,10,https://twitter.com/ABSCBNNews/status/1265668405656293376
+2020-05-27 10:35:00,"DFA: 29 more overseas Filipinos test positive for #COVID19; total now at 2,664 https://t.co/A0wM3IosDy",4,30,https://twitter.com/ABSCBNNews/status/1265592332340137985
+2020-05-27 01:05:00,12 students test positive for #COVID19 in Maguindanao https://t.co/7etLZI6uom,34,104,https://twitter.com/ABSCBNNews/status/1265448887373922306
+2020-05-26 15:40:56,"• 12 students test positive for coronavirus in Maguindanao, health officials say https://t.co/D1d7RhPlHP",4,14,https://twitter.com/ABSCBNNews/status/1265306935747702785
+2020-05-26 15:40:55,"• 26 more health workers in PH test positive for coronavirus, pushing the total to 2,420 https://t.co/G0Jt9BxgX2",0,8,https://twitter.com/ABSCBNNews/status/1265306931637305345
+2020-05-26 13:05:00,12 students test positive for #COVID19 in Maguindanao https://t.co/7etLZHOSZM,45,138,https://twitter.com/ABSCBNNews/status/1265267693424218117
+2020-05-26 12:05:00,"26 more doctors, nurses, other health workers test positive for #COVID19 in PH https://t.co/lXD992OVvC",9,37,https://twitter.com/ABSCBNNews/status/1265252594001289217
+2020-05-26 11:05:00,"DFA: 18 more overseas Filipinos test positive for coronavirus; total now at 2,635
+#COVID19 https://t.co/yJgH0bPXAD",2,27,https://twitter.com/ABSCBNNews/status/1265237494636752899
+2020-05-25 17:23:41,• 98 Filipinos in Malaysia out of 115 who test positive for coronavirus already recovered https://t.co/EhKRh5tv3p,2,19,https://twitter.com/ABSCBNNews/status/1264970407540490241
+2020-05-25 15:00:01,"• 94 more overseas Filipinos test positive for coronavirus, raising the total to 2,617 https://t.co/ySHftPMbJ5",2,11,https://twitter.com/ABSCBNNews/status/1264934251075497986
+recovered
+2020-05-28 15:52:02,"• PH's total recorded coronavirus infections reach 15,588 with 11,069 still active cases 
+
+• Metro Manila still accounts for majority of today's new cases with 330 patients
+
+• Recovered COVID-19 patients in PH rise by 92 to 3,598
+https://t.co/gl7mCDa7sP",3,9,https://twitter.com/ABSCBNNews/status/1266034506806353928
+2020-05-28 06:53:01,"PLDT Inc said it's @PLDT_Cares Twitter account has been recovered shortly after being hacked on May 28.
+
+""We would like to assure our customers that the security issue was limited only to the Twitter account and did not affect PLDT's network and services,"" PLDT said. | @JessFenol",11,130,https://twitter.com/ABSCBNNews/status/1265898858392895489
+2020-05-28 00:04:15,"* The number of health care workers in the Philippines who recovered from #COVID19 had gone up by 30 to 1,193, the DOH reported. 
+
+* DFA: 29 more overseas Filipinos test positive for COVID-19; total now at 2,664",0,5,https://twitter.com/ABSCBNNews/status/1265795987953430528
+2020-05-28 00:04:14,"* There are 94 new recovered patients, the highest in 8 days, or a total of 3,506 recoveries, DOH reported. https://t.co/fbYG9EHOg4",1,8,https://twitter.com/ABSCBNNews/status/1265795982605737984
+2020-05-27 15:37:18,"• Health workers in PH who recovered from COVID-19 up by 30 to 1,193 https://t.co/PsHTJTsvUE",4,10,https://twitter.com/ABSCBNNews/status/1265668407837376512
+2020-05-27 15:37:16,"• 18 more people died of COVID-19 in PH, raising the total number of fatalities to 904
+
+• Patients who recovered from COVID-19 in PH now at 3,506 with 94 new recoveries",0,6,https://twitter.com/ABSCBNNews/status/1265668400509890562
+2020-05-27 04:25:00,"Almost half of the frontliners contracted the #COVID19 have recovered from the virus. 1,163 frontliners have survived the coronavirus based on the DOH data released last May 25.
+
+READ: https://t.co/LdJBRLzGuN https://t.co/5CQkbyfzSs",14,40,https://twitter.com/ABSCBNNews/status/1265499218921156608
+2020-05-26 23:56:24,"* A baby in Bataan has recovered from the #COVID19. https://t.co/lGKTbKSKCW
+
+* The Philippines has yet to meet the contact tracing standard set by WHO, due to its shortage of 94,000 contact tracers, the DOH said. https://t.co/89tbWjlZ5a",1,4,https://twitter.com/ABSCBNNews/status/1265431625560502272
+2020-05-26 23:56:24,"* DOH recorded 89 new recoveries, raising the number of recovered patients to 3,412. https://t.co/jUdB9L98QP",0,3,https://twitter.com/ABSCBNNews/status/1265431624381894657
+2020-05-26 15:40:53,"• PH's total coronavirus infections now at 14,669, with 10,371 active cases 
+
+• 13 more people died of COVID-19 in PH raising total fatalities to 886
+
+• Patients who recovered from COVID-19 in PH now at 3,412 with 89 new recoveries
+https://t.co/yeavF0a9E8",6,22,https://twitter.com/ABSCBNNews/status/1265306924834189312
+2020-05-26 10:15:00,"Russia on Tuesday recorded its highest daily coronavirus death toll of 174 but said more than 12,000 people had also recovered over the past 24 hours. #COVID19 https://t.co/puMRyTkE44",7,38,https://twitter.com/ABSCBNNews/status/1265224911276126208
+2020-05-26 00:07:16,"* DOH also reported 74 new recoveries, pushing the total number of Filipinos who recovered from the disease to 3,323. #COVID19 https://t.co/WCMxsEwn2a",1,6,https://twitter.com/ABSCBNNews/status/1265071969675776000
+2020-05-25 17:23:41,• 98 Filipinos in Malaysia out of 115 who test positive for coronavirus already recovered https://t.co/EhKRh5tv3p,2,19,https://twitter.com/ABSCBNNews/status/1264970407540490241
+tested positive
+2020-05-28 14:20:00,Go defends Balik Probinsya program after beneficiary tested positive for #COVID19 https://t.co/dtHIbVnyIZ,9,19,https://twitter.com/ABSCBNNews/status/1266011343355813889
+2020-05-28 11:57:30,"PH’s accredited #COVID19 labs were able to test 8,496 samples yesterday. Individuals who tested positive for COVID-19 reached 22,543. | via @kristinesabillo  https://t.co/WrEkpXBnSK",34,81,https://twitter.com/ABSCBNNews/status/1265975482291326977
+2020-05-27 10:26:33,"Samples tested for COVID-19 was at 7,589 on May 26. Meanwhile, individuals who tested positive for COVID-19 at 22,000. Results have to undergo validation before being considered confirmed cases (at 15k today). | via @kristinesabillo https://t.co/pfCMY1qLPe",6,25,https://twitter.com/ABSCBNNews/status/1265590207081934849
+2020-05-27 09:14:32,"The latest number of individuals who tested positive for #COVID19 was already over 21,000 on Monday. This means, there are still 7,000 test results waiting for validation so they can be considered new cases or part of the total number of COVID-19 cases. | via @kristinesabillo",12,15,https://twitter.com/ABSCBNNews/status/1265572084958277634
+2020-05-26 22:00:12,A baby from Bataan who tested positive for the #COVID19 when it was still 17 days old has now recovered. https://t.co/ouQwj1lWzx,19,155,https://twitter.com/ABSCBNNews/status/1265402383015673856
+2020-05-25 00:00:46,"* The US CDC on Sunday reported 1,622,114 cases of the new coronavirus, an increase of 26,229 cases from its previous count. https://t.co/HAwbm1pO6I
+
+* A 9-month-old baby has tested positive for the novel coronavirus in Cotabato City. https://t.co/5so9o3o1k3",2,5,https://twitter.com/ABSCBNNews/status/1264707947361218562
+positive for Covid
+2020-05-28 11:57:30,"PH’s accredited #COVID19 labs were able to test 8,496 samples yesterday. Individuals who tested positive for COVID-19 reached 22,543. | via @kristinesabillo  https://t.co/WrEkpXBnSK",34,81,https://twitter.com/ABSCBNNews/status/1265975482291326977
+2020-05-28 00:04:15,"* The number of health care workers in the Philippines who recovered from #COVID19 had gone up by 30 to 1,193, the DOH reported. 
+
+* DFA: 29 more overseas Filipinos test positive for COVID-19; total now at 2,664",0,5,https://twitter.com/ABSCBNNews/status/1265795987953430528
+2020-05-27 10:26:33,"Samples tested for COVID-19 was at 7,589 on May 26. Meanwhile, individuals who tested positive for COVID-19 at 22,000. Results have to undergo validation before being considered confirmed cases (at 15k today). | via @kristinesabillo https://t.co/pfCMY1qLPe",6,25,https://twitter.com/ABSCBNNews/status/1265590207081934849
+drug
+2020-05-28 04:50:00,A father and a son were found not guilty to drug charges by a court through online hearing. https://t.co/8uUjw5NFWG,13,66,https://twitter.com/ABSCBNNews/status/1265867898083356672
+2020-05-28 04:32:29,"@Nikobaua Deakin was arrested with the help of the FBI in Pampanga. He was monitored for producing and selling sex videos involving minors. Hard drives of videos were retrieved along with drug paraphernalia, sex toys, ropes, costumes and children’s clothes. | @Nikobaua https://t.co/wg3oB9p0co",5,33,https://twitter.com/ABSCBNNews/status/1265863491539234821
+2020-05-27 14:35:00,'Baka naman may gumagana.' Presidential Spokesperson Harry Roque says President Duterte ordered the Food and Drug Administration to hasten the process of accrediting Chinese traditional medicines that are potential treatment for #COVID19. https://t.co/xnCg7t29wg,14,60,https://twitter.com/ABSCBNNews/status/1265652730590384128
+2020-05-27 10:08:00,"@angelmovido Villanueva on the war on drugs: Double time kami, at the same time there should always be transparency in our anti drug operations and be professional in dealing with suspects. Hindi magiging isyu ang pondo lalo na sa mga bigtime drug syndicate, yun ang sisiguraduhin namin.",1,4,https://twitter.com/ABSCBNNews/status/1265585540293963777
+2020-05-27 10:02:18,"Villanueva also gave a stern warning to PDEA agents/officials who will be involved in illegal drugs and corruption: Latigo sila sa akin. Kung maikli ang pasensya ko sa mga drug syndicates at drug user, mas maikli pasensya ko sa mga drug enforcers ng PDEA. | via @angelmovido",0,2,https://twitter.com/ABSCBNNews/status/1265584103325405185
+2020-05-27 09:49:37,"Villanueva sees advantage on illegal drug trafficking ops with Aquino's new appointment as Clark Intl Airport Corp's board member: Tamang tama yun, kasi international airport din yung Clark, so madali coordination namin. | via @angelmovido",1,1,https://twitter.com/ABSCBNNews/status/1265580913100050432
+2020-05-27 03:40:00,New top drug-buster no stranger to drug law enforcement: Palace https://t.co/tHwWvZ5ysT,6,12,https://twitter.com/ABSCBNNews/status/1265487894086639619
+2020-05-26 15:41:04,"• UK to provide anti-viral drug Remdesivir to certain COVID-19 patients
+
+• Germany eyeing to end travel warning for tourist trips to 31 European countries",0,3,https://twitter.com/ABSCBNNews/status/1265306969058889728
+2020-05-26 14:55:00,Indian pharma to study potential COVID-19 drug combination https://t.co/lkkoG4Tqd5,11,52,https://twitter.com/ABSCBNNews/status/1265295375453360128
+2020-05-26 13:10:49,"BREAKING: Itinalaga ni Pangulong Rodrigo Duterte si PDEA Region 10 Chief Wilkins Villanueva bilang bagong director general ng Philippine Drug Enforcement Agency o PDEA. | via Jeffrey Hernaez, ABS-CBN News https://t.co/HzqcAsVBRa",6,56,https://twitter.com/ABSCBNNews/status/1265269159031500801
+2020-05-26 02:27:26,Health Usec Rosette Vergeire says the DOH will heed recommendations from the World Health Organization which has temporarily suspended the trial of hydroxychloroquine in the Solidarity Trial; says they will stop use of the drug for #COVID19 patients. | via @raphbosano https://t.co/qRkmDD7ubJ,6,24,https://twitter.com/ABSCBNNews/status/1265107246326800386
+medicine
+2020-05-28 01:20:00,"Venezuela reaches deal with UN to buy food, medicine with gold https://t.co/zO7SAQLkYu",2,26,https://twitter.com/ABSCBNNews/status/1265815049735561216
+2020-05-28 00:04:14,* President Duterte is rushing the FDA to process the registration of Chinese traditional medicine that may be used to cure #COVID19 patients. https://t.co/fWUkear8qF,1,5,https://twitter.com/ABSCBNNews/status/1265795985176883200
+2020-05-24 07:40:00,Medicine price cap may cause gov't to lose P28 billion in taxes: pharma group https://t.co/xHZYsgildn,10,32,https://twitter.com/ABSCBNNews/status/1264461128391782400
+Hydroxychloroquine
+2020-05-27 15:37:23,• France halts treatment of COVID-19 patients with hydroxychloroquine https://t.co/sV27Bxc5X3,3,12,https://twitter.com/ABSCBNNews/status/1265668431216443394
+2020-05-27 11:15:00,"France halts hydroxychloroquine for coronavirus treatment
+#COVID19 https://t.co/QD3pwPiCMT",12,41,https://twitter.com/ABSCBNNews/status/1265602398644506629
+2020-05-27 04:14:23,DOH Usec Vergeire on hydroxychloroquine trials for Filipinos: Para sa mga nag-uundergo ng trial maaari namang ituloy ito pero kailangan close monitoring ng mga physician. Pero pwede namang itigil kapag magkaroon ng adverse effects | via @pia_gutierrez,1,19,https://twitter.com/ABSCBNNews/status/1265496549909504002
+2020-05-26 15:41:11,"• Malaysia's health ministry to continue use of hydroxychloroquine in trials to treat COVID-19 patients, as authorities closely monitor any side effects",1,7,https://twitter.com/ABSCBNNews/status/1265306999719211008
+2020-05-26 04:05:00,"Hydroxychloroquine is normally used to treat arthritis but pronouncement from public figures including US President Donald Trump— who announced last week he is taking the drug—has prompted governments to bulk buy the medicine. 
+
+READ: https://t.co/gOE60sQzZ5 https://t.co/CdFNegTZUZ",10,46,https://twitter.com/ABSCBNNews/status/1265131797710622720
+2020-05-26 03:45:00,Philippines to stop using hydroxychloroquine for coronavirus patients #COVID19  https://t.co/GcV2j4gW65,21,56,https://twitter.com/ABSCBNNews/status/1265126764445085696
+2020-05-26 02:27:26,Health Usec Rosette Vergeire says the DOH will heed recommendations from the World Health Organization which has temporarily suspended the trial of hydroxychloroquine in the Solidarity Trial; says they will stop use of the drug for #COVID19 patients. | via @raphbosano https://t.co/qRkmDD7ubJ,6,24,https://twitter.com/ABSCBNNews/status/1265107246326800386
+2020-05-25 21:20:00,WHO suspends hydroxychloroquine trial as #COVID19 treatment https://t.co/6ZVEcKSTUX,10,31,https://twitter.com/ABSCBNNews/status/1265029875980738560
+pain
+2020-05-27 13:20:00,Japan approves fresh $1.1 trillion stimulus to combat pandemic pain https://t.co/gPXJ3BJwEV,6,43,https://twitter.com/ABSCBNNews/status/1265633856092360704
+breathing difficult
+2020-05-27 00:55:00,"Children under the age of two shouldn't wear masks because they can make breathing difficult and increase the risk of choking, a Japan medical group said. https://t.co/HPZchbLmjc",27,81,https://twitter.com/ABSCBNNews/status/1265446370422468608
+covid19
+2020-05-25 08:46:36,"@kristinesabillo #Philippines records 284 new COVID19 cases, highest in two weeks https://t.co/TqlvRYTwTy",8,20,https://twitter.com/ABSCBNNews/status/1264840276050235392
+HIV
+2020-05-24 19:00:00,Top HIV scientist says he wouldn't count on a vaccine for coronavirus soon https://t.co/OtQkV7eleX,31,93,https://twitter.com/ABSCBNNews/status/1264632257144209408
+cold
+2020-05-24 07:27:52,US and China nearing 'brink of new Cold War': Chinese foreign minister | via @AFP,20,94,https://twitter.com/ABSCBNNews/status/1264458077077565440

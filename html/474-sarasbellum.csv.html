@@ -1,0 +1,720 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>474-sarasbellum.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 474-sarasbellum.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">474-sarasbellum.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 04:05:22</td>
+                <td class ="content_left">History: ....so this was the year of the <span style="color: yellow;">COVID-19</span> pandemic when society deemed fear more important than human lives.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1263319953362628614">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 18:24:42</td>
+                <td class ="content_left">Test results are back - I'm positive for <span style="color: yellow;">COVID-19</span>. My symptoms: fever (that waxes and wanes), anosmia, nausea, diarrhea, tremors, malaise, chills, sinus congestion, &amp; deep body/joint aches. So far, lungs are clear. We'll see in a week.🤞
+
+I work on a <span style="color: yellow;">COVID-19</span> unit.
+
+#StayHome</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1248678307555655681">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 18:53:17</td>
+                <td class ="content_left">@BultCarrie @GovHolcomb You really don't get it. What you're suggesting will kill people. Could you live with that? Do you want to catch something that has the potential to kill you or your family? I work in a <span style="color: yellow;">COVID-19</span> unit. This is NOT a selective virus. Healthy people are dying, too. Don't be selfish.</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1248323112178978816">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 00:14:32</td>
+                <td class ="content_left">I have a fever (100.5°F), deep body aches, congestion, and I've lost the ability to taste and smell. Tested negative for flu. Now in quarantine awaiting <span style="color: yellow;">COVID-19</span> results. I'm told results will take 5-7 business days. And the battle begins. ☹️</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1248041569678229507">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 18:58:17</td>
+                <td class ="content_left">@NYGovCuomo Just be glad you are able to have cabin fever. I work on a <span style="color: yellow;">COVID-19</span> unit. Some of these folks are alone and struggling to stay alive. Don't end up like this. Please.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1246874817900490752">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 19:39:35</td>
+                <td class ="content_left">@DennisChristo4 I work on a med-surg floor that's been converted to a <span style="color: yellow;">COVID-19</span> unit. This is my work day until this pandemic ends. https://t.co/OvAu4kWKmN</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1246160437835694084">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 23:11:36</td>
+                <td class ="content_left">@HamillHimself Same. 
+I work on what is now a <span style="color: yellow;">COVID-19</span> unit. https://t.co/OZRuMzJ7Y0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1244764242525458432">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 18:01:14</td>
+                <td class ="content_left">I am now working in a <span style="color: yellow;">COVID-19</span> unit. Severe cases go to ICU. Negatives go elsewhere. I took care of a <span style="color: yellow;">COVID-19</span>+ husband &amp; wife, recently, in separate rooms. We sent the wife to ICU when her oxygen tanked but before she left she said, "I know I won't make it." 
+1/3</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1244686135068155904">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 19:43:22</td>
+                <td class ="content_left">I was tested a week ago for <span style="color: yellow;">COVID-19</span>. My results came back today - negative. I work as a bedside RN. We have cases of <span style="color: yellow;">COVID-19</span> where I work. No one knows how their body will respond. Healthy, young people can die from it. I'm at a higher risk for complications. 
+
+I'm scared.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1242537511953596417">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 17:27:58</td>
+                <td class ="content_left">@lubdubscrubs I had a patient's family totally freak out when they heard the hospital now has a <span style="color: yellow;">COVID-19</span> patient in isolation - a half a block away in a different section of the facility. Family wanted patient discharged despite her serious issues. Ugh.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1239604333857116164">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-09 16:21:43</td>
+                <td class ="content_left">@GovAndyBeshear Please tell people DO NOT go to the Emergency Room if you have symptoms! Call your doctor or call the ER first. You could potentially expose sick people in the ER to <span style="color: yellow;">COVID-19</span> causing their death.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1237050947517534208">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 21:24:35</td>
+                <td class ="content_left">I'm having a fair amount of fatigue and deep muscle <span style="color: yellow;"><span style="color: yellow;">aches</span></span> post COVID-19. 
+
+There is sparse information on people who've recovered. I'm guessing studies are being done but I can't find info on that either.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1258145662836846594">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 18:52:27</td>
+                <td class ="content_left">@lynnv378 "The WHO initially recommended using acetaminophen instead of ibuprofen to help reduce fever and <span style="color: yellow;"><span style="color: yellow;">aches</span></span> and pains related to this coronavirus infection, but now states that either acetaminophen or ibuprofen can be used." 
+https://t.co/flmEWf3wMa</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1246873352481972224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fatigue</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fatigue"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 21:24:35</td>
+                <td class ="content_left">I'm having a fair amount of <span style="color: yellow;"><span style="color: yellow;">fatigue</span></span> and deep muscle aches post COVID-19. 
+
+There is sparse information on people who've recovered. I'm guessing studies are being done but I can't find info on that either.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1258145662836846594">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 16:30:25</td>
+                <td class ="content_left">OMG I can <span style="color: yellow;"><span style="color: yellow;">smell</span></span> again!!!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1251548651043905536">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 00:57:06</td>
+                <td class ="content_left">I will never take <span style="color: yellow;"><span style="color: yellow;">smell</span></span> or taste for granted again.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1249864223687049218">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 00:36:37</td>
+                <td class ="content_left">@CDCgov says if we're <span style="color: yellow;"><span style="color: yellow;">fever</span></span> free for 72 hours we can return to work. What about people who never had a <span style="color: yellow;"><span style="color: yellow;">fever</span></span>? What about someone like me whose baseline is 97.5° but I'm consistently fluctuating b/t 98.9°-100° with nausea, diarrhea, and anosmia?? #COVID19</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1250221455666749442">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 01:37:27</td>
+                <td class ="content_left">5 days in. Still dealing with anosmia, intermittent nausea, tremors, and malaise but, <span style="color: yellow;"><span style="color: yellow;">fever</span></span> is down. I'll know more after a week has passed. Fingers crossed.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1249511987991793668">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 18:24:42</td>
+                <td class ="content_left">Test results are back - I'm positive for COVID-19. My symptoms: <span style="color: yellow;"><span style="color: yellow;">fever</span></span> (that waxes and wanes), anosmia, nausea, diarrhea, tremors, malaise, chills, sinus congestion, &amp; deep body/joint aches. So far, lungs are clear. We'll see in a week.🤞
+
+I work on a COVID-19 unit.
+
+#StayHome</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1248678307555655681">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 17:33:58</td>
+                <td class ="content_left">Today <span style="color: yellow;"><span style="color: yellow;">fever</span></span> continues to wax and wane. Tremors, headache, body aches, nausea, anosmia &amp; weakness. Coughing makes me dizzy. Hoping this is all I have to deal with but time will tell. Still waiting for test results. 🤞</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1248303154128728066">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 00:14:32</td>
+                <td class ="content_left">I have a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> (100.5°F), deep body aches, congestion, and I've lost the ability to taste and smell. Tested negative for flu. Now in quarantine awaiting COVID-19 results. I'm told results will take 5-7 business days. And the battle begins. ☹️</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1248041569678229507">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 18:52:27</td>
+                <td class ="content_left">@lynnv378 "The WHO initially recommended using acetaminophen instead of ibuprofen to help reduce <span style="color: yellow;"><span style="color: yellow;">fever</span></span> and aches and pains related to this coronavirus infection, but now states that either acetaminophen or ibuprofen can be used." 
+https://t.co/flmEWf3wMa</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1246873352481972224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 00:57:06</td>
+                <td class ="content_left">I will never take smell or <span style="color: yellow;"><span style="color: yellow;">taste</span></span> for granted again.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1249864223687049218">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 00:14:32</td>
+                <td class ="content_left">I have a fever (100.5°F), deep body aches, congestion, and I've lost the ability to <span style="color: yellow;"><span style="color: yellow;">taste</span></span> and smell. Tested negative for flu. Now in quarantine awaiting COVID-19 results. I'm told results will take 5-7 business days. And the battle begins. ☹️</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1248041569678229507">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 18:24:42</td>
+                <td class ="content_left">Test results are back - I'm <span style="color: yellow;">positive for COVID</span>-19. My symptoms: fever (that waxes and wanes), anosmia, nausea, diarrhea, tremors, malaise, chills, sinus congestion, &amp; deep body/joint aches. So far, lungs are clear. We'll see in a week.🤞
+
+I work on a COVID-19 unit.
+
+#StayHome</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1248678307555655681">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Sinus Congestion</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Sinus Congestion"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 18:24:42</td>
+                <td class ="content_left">Test results are back - I'm positive for COVID-19. My symptoms: fever (that waxes and wanes), anosmia, nausea, diarrhea, tremors, malaise, chills, <span style="color: yellow;">sinus congestion</span>, &amp; deep body/joint aches. So far, lungs are clear. We'll see in a week.🤞
+
+I work on a COVID-19 unit.
+
+#StayHome</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1248678307555655681">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">joint ache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "joint ache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 18:24:42</td>
+                <td class ="content_left">Test results are back - I'm positive for COVID-19. My symptoms: fever (that waxes and wanes), anosmia, nausea, diarrhea, tremors, malaise, chills, sinus congestion, &amp; deep body/<span style="color: yellow;"><span style="color: yellow;">joint ache</span></span>s. So far, lungs are clear. We'll see in a week.🤞
+
+I work on a COVID-19 unit.
+
+#StayHome</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1248678307555655681">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">joint aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "joint aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 18:24:42</td>
+                <td class ="content_left">Test results are back - I'm positive for COVID-19. My symptoms: fever (that waxes and wanes), anosmia, nausea, diarrhea, tremors, malaise, chills, sinus congestion, &amp; deep body/<span style="color: yellow;"><span style="color: yellow;">joint aches</span></span>. So far, lungs are clear. We'll see in a week.🤞
+
+I work on a COVID-19 unit.
+
+#StayHome</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1248678307555655681">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">anosmia</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "anosmia"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 17:33:58</td>
+                <td class ="content_left">Today fever continues to wax and wane. Tremors, headache, body aches, nausea, <span style="color: yellow;"><span style="color: yellow;">anosmia</span></span> &amp; weakness. Coughing makes me dizzy. Hoping this is all I have to deal with but time will tell. Still waiting for test results. 🤞</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1248303154128728066">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">body ache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "body ache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 17:33:58</td>
+                <td class ="content_left">Today fever continues to wax and wane. Tremors, headache, <span style="color: yellow;"><span style="color: yellow;">body ache</span></span>s, nausea, anosmia &amp; weakness. Coughing makes me dizzy. Hoping this is all I have to deal with but time will tell. Still waiting for test results. 🤞</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1248303154128728066">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 00:14:32</td>
+                <td class ="content_left">I have a fever (100.5°F), deep <span style="color: yellow;"><span style="color: yellow;">body ache</span></span>s, congestion, and I've lost the ability to taste and smell. Tested negative for flu. Now in quarantine awaiting COVID-19 results. I'm told results will take 5-7 business days. And the battle begins. ☹️</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1248041569678229507">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">body aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "body aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 17:33:58</td>
+                <td class ="content_left">Today fever continues to wax and wane. Tremors, headache, <span style="color: yellow;"><span style="color: yellow;">body aches</span></span>, nausea, anosmia &amp; weakness. Coughing makes me dizzy. Hoping this is all I have to deal with but time will tell. Still waiting for test results. 🤞</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1248303154128728066">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 00:14:32</td>
+                <td class ="content_left">I have a fever (100.5°F), deep <span style="color: yellow;"><span style="color: yellow;">body aches</span></span>, congestion, and I've lost the ability to taste and smell. Tested negative for flu. Now in quarantine awaiting COVID-19 results. I'm told results will take 5-7 business days. And the battle begins. ☹️</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1248041569678229507">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">have a fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "have a fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 00:14:32</td>
+                <td class ="content_left">I <span style="color: yellow;"><span style="color: yellow;">have a fever</span></span> (100.5°F), deep body aches, congestion, and I've lost the ability to taste and smell. Tested negative for flu. Now in quarantine awaiting COVID-19 results. I'm told results will take 5-7 business days. And the battle begins. ☹️</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1248041569678229507">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 14:23:28</td>
+                <td class ="content_left">@noxeout @MisterKenny @HamillHimself We're finding the <span style="color: yellow;"><span style="color: yellow;">drug</span></span> works on a few - not most - and it has serious side effects 
+
+We are in uncharted waters people. We can only treat symptoms. And we're doing the best we can to save lives.</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1247168048236310528">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">aches and pains</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "aches and pains"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 18:52:27</td>
+                <td class ="content_left">@lynnv378 "The WHO initially recommended using acetaminophen instead of ibuprofen to help reduce fever and <span style="color: yellow;"><span style="color: yellow;">aches and pains</span></span> related to this coronavirus infection, but now states that either acetaminophen or ibuprofen can be used." 
+https://t.co/flmEWf3wMa</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1246873352481972224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pains</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pains"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 18:52:27</td>
+                <td class ="content_left">@lynnv378 "The WHO initially recommended using acetaminophen instead of ibuprofen to help reduce fever and aches and <span style="color: yellow;"><span style="color: yellow;">pains</span></span> related to this coronavirus infection, but now states that either acetaminophen or ibuprofen can be used." 
+https://t.co/flmEWf3wMa</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1246873352481972224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Ibuprofen</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Ibuprofen"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 18:52:27</td>
+                <td class ="content_left">@lynnv378 "The WHO initially recommended using acetaminophen instead of <span style="color: yellow;">ibuprofen</span> to help reduce fever and aches and pains related to this coronavirus infection, but now states that either acetaminophen or <span style="color: yellow;">ibuprofen</span> can be used." 
+https://t.co/flmEWf3wMa</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1246873352481972224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breathlessness</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breathlessness"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 18:01:14</td>
+                <td class ="content_left">Her husband is worried about her but he is getting worse. He teeters on sepsis. I spend a few minutes holding the man's hand, listening &amp; trying to comfort him through the coughing &amp; <span style="color: yellow;"><span style="color: yellow;">breathlessness</span></span> &amp; it breaks my heart. 
+2/3</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1244686136070606848">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Difficulty breathing</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Difficulty breathing"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 04:11:29</td>
+                <td class ="content_left">@Maui I am so very sorry the virus has reached you. Please watch your symptoms closely and get to a hospital if you have <span style="color: yellow;">difficulty breathing</span>. All my best.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1241578218504798215">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Difficulty breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Difficulty breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 04:11:29</td>
+                <td class ="content_left">@Maui I am so very sorry the virus has reached you. Please watch your symptoms closely and get to a hospital if you have <span style="color: yellow;">difficulty breath</span>ing. All my best.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1241578218504798215">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 17:46:41</td>
+                <td class ="content_left">@jennmalinchalk Coconut oil. Slather it on at night. Hands are softer in the morning. 
+
+The issue stems more from touching something then touching your eyes, mouth, and/or <span style="color: yellow;"><span style="color: yellow;">nose</span></span> before they've been washed. Too much washing can do harm.  https://t.co/nx68gliZeC</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1241420984801992709">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">no symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "no symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 06:54:48</td>
+                <td class ="content_left">@MingNa Going to keep saying this: I work as a bedside RN. Some people exhibit little or <span style="color: yellow;"><span style="color: yellow;">no symptoms</span></span>. Telling people to wait until they meet a list of strictly enforced symptoms is causing sickness and death. Those statistics being rattled off? They are human lives. #TestKitsNow</td>
+                <td>1</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1239807377836310528">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">test positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "test positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 02:17:04</td>
+                <td class ="content_left">"We have a simple message for all countries: test, test, test. Test every suspected case, if they <span style="color: yellow;"><span style="color: yellow;">test positive</span></span>, isolate them and find out who they have been in contact with two days before they developed symptoms and test those people, too."
+Wake up @NIH @CDCgov #COVID19 https://t.co/5rHrZwOPMm</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/sarasbellum/status/1239737484575215620">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

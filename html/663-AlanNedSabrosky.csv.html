@@ -1,0 +1,520 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>663-AlanNedSabrosky.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 663-AlanNedSabrosky.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">663-AlanNedSabrosky.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 12:55:59</td>
+                <td class ="content_left">However inaccurate the tabulations on the <span style="color: yellow;">COVID-19</span> pandemic (or whatever), the cross-national comparisons are startling. With just over 4% of the global population, the US has had about one-third of the total registered cases &amp; nearly one-third of the deaths. Pure chance or...?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1262366321775456258">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 09:12:05</td>
+                <td class ="content_left">President of Federal Reserve Bank of Minneapolis: On <span style="color: yellow;">COVID-19</span> and the economy, "The worst is yet to come." Chilling. Keep your powder VERY dry:
+https://t.co/eTYXdPerte</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1260135646871588864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 21:05:13</td>
+                <td class ="content_left">Schumer &amp; Pelosi have affirmed that the next <span style="color: yellow;">COVID-19</span> stimulus package will include provisions permitting the states to use mail-in ballots in November, or they will block the bill. Democrats are willing to wreck the country if it improves their chances in November. Treason?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1259227951834566656">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 20:57:31</td>
+                <td class ="content_left">A re-post of that excellent video on <span style="color: yellow;">COVID-19</span> on a website that does not censor (!):
+
+https://t.co/Lnus5ruANa</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1258501238389342210">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 10:13:43</td>
+                <td class ="content_left">Sweden's refusal to lock down its society and close its borders during the <span style="color: yellow;">COVID-19</span> pandemic is being widely praised. Why is that, when its death rate is higher than that of many others, including the U.S.?
+https://t.co/qef1SnME6n</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1257976831392743424">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 21:17:55</td>
+                <td class ="content_left">SOMETHING ON THE <span style="color: yellow;">COVID-19</span> VIRUS &amp; a vaccine for it, offered for your viewing. I am not an epidemiologist, but the person making this brief (5 mins) video is an ER doctor with 29 years experience. I would wager he knows whereof he speaks.
+https://t.co/T4ODqsm0pC</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1257781593898450956">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 09:09:50</td>
+                <td class ="content_left">A SILVER LINING in the very dark <span style="color: yellow;">COVID-19</span> cloud. Looks like the Soros-funded NGOs that have been flying "migrants" from Africa into the US and chartering ships to take them into Europe (and buses to both) may have been derailed.
+https://t.co/Qa1RcCj8i7</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1257598366344716289">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 19:01:11</td>
+                <td class ="content_left">A retired Russian military intelligence colonel on the strategic dimensions of the <span style="color: yellow;">COVID-19</span> crisis and the response to it. In Russian with English subs:
+https://t.co/2T2mznD42Z</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1255935245003534336">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 15:43:38</td>
+                <td class ="content_left">There is a bright side to the whole <span style="color: yellow;">COVID-19</span> pandemic, at least in the US: The whole SJW/PC/open borders dementia has largely been submerged by the practical need to first survive and then recover medically &amp; economically. A platinum lining to a very dark cloud, indeed.</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1255523144883937281">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 18:14:02</td>
+                <td class ="content_left">At least there is one very bright spot in the <span style="color: yellow;">COVID-19</span> pandemic: illegal asylum seeking has been brought to a halt:
+https://t.co/dkRswvwVaC</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1254111441579380737">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 18:48:44</td>
+                <td class ="content_left">What is really interesting about <span style="color: yellow;">COVID-19</span> (of which I had a mild case) is the disposition of closed cases (death &amp; recovery). Globally, about 20% of closed cases resulted in death. In the US, it is 37% and in Germany it is 6%. Other variations elsewhere. Why?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1253757785906597896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 08:35:38</td>
+                <td class ="content_left">Recall that it is now about 46,000 from <span style="color: yellow;">COVID-19</span> in 3 months. Last flu season was about 14 months. SLight difference. But let's move to another topic, OK? &lt;G&gt; https://t.co/EyKzjIkHWp</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1253241104448749568">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 10:48:53</td>
+                <td class ="content_left">No idea. I am not at that hospital. Nor would I care. This is a real bear. I tested positive for <span style="color: yellow;">COVID-19</span> about 2 weeks ago, and fortunately it was a mild case. But it was bad enough up front that I pity those who get more serious infections. Go contract it yourself and find out. https://t.co/ZInBYCyX0Q</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1252912251583049729">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 07:02:30</td>
+                <td class ="content_left">Many people compare <span style="color: yellow;">COVID-19</span> and its consequences (including death) to those of a seasonal flu. What they forget is that <span style="color: yellow;">COVID-19</span> is not IN PLACE of a seasonal flu, it is IN ADDITION to it. Think of it as a viral surtax exacerbated by the usual vaccines.
+https://t.co/BiLcNZbDWh</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1252492894323212294">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 08:40:38</td>
+                <td class ="content_left">A SILVER LINING TO THE <span style="color: yellow;">COVID-19</span> PANDEMIC? There may well be one in political and cultural terms, at least in Western Europe &amp; the US: This is the crash of the entire "political correctness" agenda in the face of real tragedy.
+https://t.co/HI2BmW68Z4</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1251792811571232768">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 07:47:29</td>
+                <td class ="content_left">CULTURES MATTER ESPECIALLY IN CRISES: Densely packed Japan as of today has about 10,000 confirmed <span style="color: yellow;">COVID-19</span> cases &amp; 200 deaths. The US, with a much larger population and a hell of a lot more land area, has about 710,000 cases &amp; 37,000 deaths. Think about it.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1251417049747853314">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 12:30:20</td>
+                <td class ="content_left">I presume Deborah will be part of the barbecue being served? I recall from reading journals of sailing ship days that people <span style="color: yellow;"><span style="color: yellow;">taste</span></span> quite a bit like pork, but because the muscls &amp; bones are longer it was called "long pork." Be warned!🙀🥶😲 https://t.co/bwygqwMHjj</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1259098376630648833">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-15 10:06:47</td>
+                <td class ="content_left">I hear you. Be glad at this point it is only private investigators. Trust me, soon it will be the FBI, which is visibly no longer the really professional and very trustworthy agency it once was - just scan "FBI Lovebirds" to get a <span style="color: yellow;"><span style="color: yellow;">taste</span></span> of what I mean. https://t.co/B8PaVbwctO</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1228621668588957697">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nauseated</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nauseated"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 19:11:28</td>
+                <td class ="content_left">How very un-American of him &lt;G&gt; - last US president that did anything approachable was Harry Truman (a Democrat who would be <span style="color: yellow;"><span style="color: yellow;">nauseated</span></span> by today's Democratic Party, and a WWI veteran). He was known to walk around Washington alone with a pistol in his pocket to get a drink! https://t.co/PEDRtgJpHZ</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1257024995986997248">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recover</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recover"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 15:43:38</td>
+                <td class ="content_left">There is a bright side to the whole COVID-19 pandemic, at least in the US: The whole SJW/PC/open borders dementia has largely been submerged by the practical need to first survive and then <span style="color: yellow;"><span style="color: yellow;">recover</span></span> medically &amp; economically. A platinum lining to a very dark cloud, indeed.</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1255523144883937281">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-02 10:53:18</td>
+                <td class ="content_left">For the cost of the wars in Afghanistan &amp; Iraq (to say nothing of our savaging of Libya &amp; Somalia &amp; Syria), we could end homelessness &amp; <span style="color: yellow;"><span style="color: yellow;">recover</span></span> a lot of our decayed urban areas. End those wars - but how can you, when Israel thru AIPAC wants them? https://t.co/znHAq53gNL</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1223922332382699522">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">painful</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "painful"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 14:04:45</td>
+                <td class ="content_left">A <span style="color: yellow;">PAINFUL</span> FORK IN THE ROAD FOR AMERICANS: We now have a stark choice: We stand with the 1st Amendment, or we fall with the top-down dictated (and variable) authoritarian social media "community standards." At least in the US, if the 1st Amendment fails, there is still the 2nd.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1255498260120317953">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-28 20:35:02</td>
+                <td class ="content_left">James Taylor (singer): "They (Afghans) fought against the Russians, they fought against the Brits...Hell, they fought old Alexander, been talking about him ever since. After 9/11, here comes old Uncle Sam, another <span style="color: yellow;"><span style="color: yellow;">painful</span></span> lesson in far Afghanistan." https://t.co/epNXUxtFc8</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1222256792710918145">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 10:41:02</td>
+                <td class ="content_left">Back in the 1980s, a French colleague opined that a Soviet victory in the <span style="color: yellow;">Cold</span> War would be a disaster for the world, but an American victory would be catastrophic. She (a socialist) was absolutely correct. Herewith an example:
+https://t.co/U11z7nSXG5</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1254722216081731585">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 08:15:52</td>
+                <td class ="content_left">Those speedboats (NOT gunboats) are intended for coastal interdiction of <span style="color: yellow;"><span style="color: yellow;">drug</span></span> smugglers. They are zero threat to any warship. Remember the Tonkin Gulf (1964) non-event that led to the Vietnam War and be very afraid. https://t.co/39wHPDTuMN</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1253236132625727489">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 08:50:04</td>
+                <td class ="content_left">Those speedboats are largely intended to intercept <span style="color: yellow;"><span style="color: yellow;">drug</span></span> smugglers. Probably why the US Government hates them so much, cuts into CIA assets. Besides, what are they doing so close to the US? Er, what are we doing so close to them? (Hint: it is called "provocation.") https://t.co/s9ITXViz7u</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1251070411799920640">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-02 10:40:55</td>
+                <td class ="content_left">Somehow fitting: a war criminal sprung a <span style="color: yellow;"><span style="color: yellow;">drug</span></span> dealer. The pity is that Putin did it. Guess my hopes are goiig to have to shift to China. https://t.co/JIgG6z04I8</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1223919216199393280">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 10:48:53</td>
+                <td class ="content_left">No idea. I am not at that hospital. Nor would I care. This is a real bear. I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19 about 2 weeks ago, and fortunately it was a mild case. But it was bad enough up front that I pity those who get more serious infections. Go contract it yourself and find out. https://t.co/ZInBYCyX0Q</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1252912251583049729">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 10:48:53</td>
+                <td class ="content_left">No idea. I am not at that hospital. Nor would I care. This is a real bear. I tested <span style="color: yellow;">positive for COVID</span>-19 about 2 weeks ago, and fortunately it was a mild case. But it was bad enough up front that I pity those who get more serious infections. Go contract it yourself and find out. https://t.co/ZInBYCyX0Q</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1252912251583049729">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pains</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pains"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 00:12:47</td>
+                <td class ="content_left">Endorsing a guy with raging dementia. Way to go, Tulsi. Spread your political legs for anyone lately? Respected you greatly, sent you flowers, regret both. Going to Trump bo matter how much it <span style="color: yellow;"><span style="color: yellow;">pains</span></span> me to do so. https://t.co/Tw6j6RAmd9</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1240793372417196033">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">headaches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "headaches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-31 19:31:13</td>
+                <td class ="content_left">So I guess "traumatic brain injury" is newspeak for <span style="color: yellow;"><span style="color: yellow;">headaches</span></span>? <span style="color: yellow;">Headaches</span> from explosions I could believe, anything else is sheer nonsense - unless the whole area is littered with bodies and body parts. https://t.co/1HVN1X57mr</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1223327898196758529">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-28 21:02:51</td>
+                <td class ="content_left">I can imagine in my dreams the ghosts of FDR, Truman &amp; JFK coming out of their graves and driving these demonocrats into the wilderness. Guess 'ole Pete is just too <span style="color: yellow;"><span style="color: yellow;">tired</span></span> from corn-holing to think clearly. https://t.co/Qeiwig0chq</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/AlanNedSabrosky/status/1222263791104221186">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

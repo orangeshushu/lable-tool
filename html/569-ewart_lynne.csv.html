@@ -1,0 +1,600 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>569-ewart_lynne.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 569-ewart_lynne.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">569-ewart_lynne.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 20:56:46</td>
+                <td class ="content_left">@ljlittleson Blood boils with indignation that another human being could missthr obvious.. convinced the Emperor's wearing a lovely new set of clothes.. share your <span style="color: yellow;"><span style="color: yellow;">pain</span></span></td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1265024030089805824">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 16:06:54</td>
+                <td class ="content_left">@MOTSI_MABUSE Some people project their envy, which is sad. And sometimes family members get envious of a "celebrated' sibling and become destroyers.. no amount of kindness to the destroyer changes their mindset. Karma eventually rebalances, leaving work to do to heal the <span style="color: yellow;"><span style="color: yellow;">pain</span></span> of betrayal.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1245744527526309891">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-15 22:22:50</td>
+                <td class ="content_left">Crying, reading this truth from Miranda, because of the <span style="color: yellow;"><span style="color: yellow;">pain</span></span> of thinking of what we humans do to each other..no physical weapons required. 💔 https://t.co/uOopWePzuN</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1228806904111083521">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-02 18:03:24</td>
+                <td class ="content_left">@RealGrayOBrien Wish we had a button on here that sent immediate soothing and healing. I love the movie Avatar for that concept. Watching things that make you laugh is great for releasing natural <span style="color: yellow;"><span style="color: yellow;">pain</span></span> relief. Just know that no matter if you know your tweeters or not, they tune in and care 🤗</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1212796548616208384">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 16:40:24</td>
+                <td class ="content_left">@EmmaKennedy I had <span style="color: yellow;">Covid-19</span> and I couldn't bear to look at my phone or a TV.. I'm not irresponsible enough to have driven. .</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1264959514555621377">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 16:34:59</td>
+                <td class ="content_left">Aw he took his wife and child into an unpleasant concrete block.. that's fine then,we get it now.Why jump in car and drive 270 mileswhen you are aware you very likely have <span style="color: yellow;">Covid-19</span> and could very rapidly become seriously unwell endangering your wife and child.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1264958151532711936">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 14:59:58</td>
+                <td class ="content_left">@JimpLowe @berniespofforth I'm in Scotland very glad to be in my much loved home, as recovering from <span style="color: yellow;">Covid-19</span> which I can recommend catching if folk don't see anything to worry about. Over a month now and still far from back to wellness.#COVID19sucks</td>
+                <td>1</td>
+                <td>18</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1261672748482531328">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 18:47:51</td>
+                <td class ="content_left">@stefanomod @NicolaSturgeon It's terrifying. Some here might decide they can follow his rules because they suit better...chaotic potential. <span style="color: yellow;">Covid-19</span> is a very nasty virus. When it hits you or someone close you realise...</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1259555769093107716">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 15:52:24</td>
+                <td class ="content_left">Lockdown:  Not prison.. we're in the equivalent of an air raid shelter, a much more comfortable one than when folk huddled together on underground floors for hours on end, for years.  Count your blessings if <span style="color: yellow;">Covid-19</span> hasn't come close 🤞❤️ https://t.co/ZdbnozZGE7</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1258786838883512320">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 19:00:14</td>
+                <td class ="content_left">@KarMurdoch They've now been in touch, sorted it for us thanks Karen💐❤️. It's probably an idea for them to have an option on their website to declare yourself as vulnerable rather than them using age 70+ as a yardstick. We're catching <span style="color: yellow;">Covid-19</span> at all ages &amp; loyal customers need CV support.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1257746946468577280">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 19:25:20</td>
+                <td class ="content_left">@sainsburys Hi called customer service 3 days ago as tested positive <span style="color: yellow;">Covid-19</span>  cannot get to my local KA9 Sainsbury's. Kind gal arranged delivery slot Fri 1pm said slot would show on my  account. Just gone on to start shopping and no delivery slot for me. Can you please help? Many thanks</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1257390874021027843">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 08:07:52</td>
+                <td class ="content_left">@burglars_dug @Jeggit I was tested at Glasgow airport drive through centre on Sunday ..(am <span style="color: yellow;">Covid-19</span> positive) and testing is easily available here.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1255408447891427330">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 22:45:09</td>
+                <td class ="content_left">@NicolaSturgeon Absolutely. I'm (finally, 5wks on) recovering from Covid-19, I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> day 11, He was reckless with public health. I also would not have been got or safe to drive any distance as oxygen lack makes you dizzy, light sensitive and blinding headache. His story doesn't add up.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1264688916420050954">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 21:46:08</td>
+                <td class ="content_left">@Annie__McGuire My sister a retired RGN has ordered some for her and husband as they were very unwell CV symptoms in March. She bought them from forthlife.. won't do URL as I'm not promoting anything here just responding. I had all symptoms and <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> at Glasgow airport April 26th</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1262137351612104705">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 14:37:20</td>
+                <td class ="content_left">My teddy heard I'd <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> a couple of weeks back and he's still wearing this..#StaySafeStayHome https://t.co/Zz7jI7JHs6</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1260942275762421766">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 19:58:08</td>
+                <td class ="content_left">@Ind3pendent7 Absolutely agree. The virus and its method are SO complex. We need more intelligence from scientific analysis, which takes time. I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> (on day 11) for the virus. It is nasty. Avoid.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1258486294579154950">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 11:04:05</td>
+                <td class ="content_left">@NicolaSturgeon thankyou so very much for all you do, for the clarity you give to us in this challenging time. Is it possible the test window could be widened as many tested too early show false negative and could infect more. I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> on day 11 of being obviously ill</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1258351894398992390">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 20:33:05</td>
+                <td class ="content_left">@piersmorgan @GMB I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> at day 11 of symptoms..hope docs make sure you really are well. False negative is too common. Take care and best wishes</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1257407924416253960">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 19:25:20</td>
+                <td class ="content_left">@sainsburys Hi called customer service 3 days ago as <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> Covid-19  cannot get to my local KA9 Sainsbury's. Kind gal arranged delivery slot Fri 1pm said slot would show on my  account. Just gone on to start shopping and no delivery slot for me. Can you please help? Many thanks</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1257390874021027843">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 22:55:18</td>
+                <td class ="content_left">As someone about to feature in Nicola's numbers (I have been quite poorly, hence quieter of late and just <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>) can the eejit bampots please just leave our FM to get on with her job. She's doing a brilliant job. Westminster journos are cutting to HER for clarity. https://t.co/T4Pad1z7GS</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1254906999684374528">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">light sensitive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "light sensitive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 22:45:09</td>
+                <td class ="content_left">@NicolaSturgeon Absolutely. I'm (finally, 5wks on) recovering from Covid-19, I tested positive day 11, He was reckless with public health. I also would not have been got or safe to drive any distance as oxygen lack makes you dizzy, <span style="color: yellow;"><span style="color: yellow;">light sensitive</span></span> and blinding headache. His story doesn't add up.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1264688916420050954">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 14:51:15</td>
+                <td class ="content_left">@LicityTrip @JosefK2020 @AngelaHaggerty But you <span style="color: yellow;">touch</span> the pumps.. everything you <span style="color: yellow;">touch</span> ...</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1264207267873861633">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 17:15:21</td>
+                <td class ="content_left">@colinjustin Yes! My lovely son is calling lots, and my 94yr old dad is WhatsApp calling and texting.. everyone is in <span style="color: yellow;">touch</span> more. And neighbours all going walks they never used to, chatting to each other. Not a mobile in sight..xx</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1246848917112791045">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 15:24:00</td>
+                <td class ="content_left">@carolvorders @brianjford Thankyou!! Very helpful. Our Sainsbury's is doing an amazing job of sanitising trolleys,baskets, <span style="color: yellow;">touch</span> screens for self check.out but assistant <span style="color: yellow;">touch</span>ed the screen I was using (to clear stuck message)..I use pinky knuckle &amp; have a wee spray at the ready..#cantbetoocareful 😷😂</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1245008953894895616">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 21:16:04</td>
+                <td class ="content_left">@merrymunky She should definitely ask for that to be refunded.. they'll do it quietly. I bought a whole package to be able to stay in <span style="color: yellow;">touch</span> and gladly used it to go on forums to let families know all well. Your folks may be a bit happier today...🙂</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1240024123767734273">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">mild symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "mild symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 10:28:47</td>
+                <td class ="content_left">@colinmccredie His mum's birthday..and his wife said in an interview with Spectator mag that she had <span style="color: yellow;"><span style="color: yellow;">mild symptoms</span></span> and was perfectly able  to care for her children and no need of childcare.</td>
+                <td>1</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1264141217614397440">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 00:42:10</td>
+                <td class ="content_left">@mandaqu @eliistender10 Haha.. very droll..we should do a blindfold <span style="color: yellow;"><span style="color: yellow;">taste</span></span> challenge..</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1263993591648657408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 15:48:53</td>
+                <td class ="content_left">Just nearing the end of this.. stopped to get a cuppa (Earl Grey..I can <span style="color: yellow;"><span style="color: yellow;">taste</span></span> again! Nasty #COVID19) set out all of my baking ingredients to make something divine from Nigella's infinite repertoire to cheer me up when I have no more pages left to read of this magnificent tome. https://t.co/TfxJX8PHq2</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1260960280525393922">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 16:09:07</td>
+                <td class ="content_left">@annscott2 @annasmithauthor Good <span style="color: yellow;"><span style="color: yellow;">taste</span></span> fellow fishy! Finished it to my dismay, have to wait to find out how things go...till her next book..but have Where the Crawdads Sing,  plus Little Disasters by Sarah Vaughan to console me. Enjoy!</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1252268067440209923">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">headache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "headache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 16:25:00</td>
+                <td class ="content_left">@JimMooreJourno Day 33. Waves still, <span style="color: yellow;"><span style="color: yellow;">headache</span></span> from hell wonderful when it lifts. Thanks for sharing experiences. It's a strange place of constant guilt about not wanting to respond truthfully to U better now?.Chest still tight,exhaustion. Am I infectious? Is my worry. Healing wishes all 🤗</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1262056534990819330">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-14 20:36:03</td>
+                <td class ="content_left">@reallorraine @AlloaAthleticFC @dundeeunitedfc @bbcscotlandtv Jim's watching BBC Alba.. Thistle nil..Raith Rovers 1.. he's given me a <span style="color: yellow;"><span style="color: yellow;">headache</span></span> with his groaning.. but he's still my Valentine .just. Enjoy Dundee! 💕</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1228417643801186306">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 19:50:23</td>
+                <td class ="content_left">@chazchana1201 @piersmorgan Stupid irresponsible eejits. They can all come visit me. I'm Covid positive. It's a horrible virus not like flu in its stealth mode infiltration of your immune system..comes in waves, you think you just have a <span style="color: yellow;"><span style="color: yellow;">cold</span></span> then it goes away then comes back far worse, then repeats. AVOID</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1258484341862207488">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">rash</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "rash"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 11:16:42</td>
+                <td class ="content_left">@IrishSuzy @AngieBest There are children..they present with different symptoms including <span style="color: yellow;"><span style="color: yellow;">rash</span></span> and vomiting. We have much to learn and understand, but I do hear you....</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1257630294187933701">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 16:18:46</td>
+                <td class ="content_left">As the next week is bringing the swelling full Moon peak, please, if you have that luxury, stay home and if out, be safe, sanitise, distance, maybe even use a scarf round your <span style="color: yellow;"><span style="color: yellow;">nose</span></span> n mouth, protect, protect. Let's try to reduce this mountain to a molehill as fast as we can. https://t.co/j37HUdz3Nq</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1245385123119464450">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shivered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shivered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-25 08:33:32</td>
+                <td class ="content_left">@SallyAbbott3 Week. I actually <span style="color: yellow;"><span style="color: yellow;">shivered</span></span> with anxiety reading that..can I help? I have a case or two I can pop into that dream for you x</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1232222081665945600">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">weary</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "weary"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-20 15:23:35</td>
+                <td class ="content_left">@snowangelmrsp I'm always reading your posts and sending warmth, like so many others.Might not be much but every little spark might help relight a <span style="color: yellow;"><span style="color: yellow;">weary</span></span> fire xx</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1230513333670903812">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cancer</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cancer"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-04 13:46:00</td>
+                <td class ="content_left">@SeeingWithStars And with Jupiter heading there in December, hopefully research leading to remedies..already been reading of stunning science breakthroughs in targeting of and reprogramming of <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> cells. Excited and hopeful..</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1224690569701740545">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-13 16:10:22</td>
+                <td class ="content_left">@keldreamer UK 1801 chart has Moon in 10th at 19.24 <span style="color: yellow;">Cancer</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1216754370114740225">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-09 10:04:34</td>
+                <td class ="content_left">@Matthew_Wright 💕The thing is..we never know what's going on inside a fellow human, although my work shows the likely energies afoot. Those with <span style="color: yellow;">Cancer</span> and Capricorn strong in their charts have been pounded. Cap rising Harry has serious childhood PTSD. Break needed.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1215212762487492611">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sinusitis</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sinusitis"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-16 11:46:26</td>
+                <td class ="content_left">@JeanJohansson @jwc498 Botox apparently seems to work more for chronic <span style="color: yellow;"><span style="color: yellow;">sinusitis</span></span> which can feel similar but not as severe. It appears to have the effect you might get from acupressure on the forehead. Daily Record health editor did a piece on it years back.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1217775110716870656">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Acupressure</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Acupressure"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-16 11:46:26</td>
+                <td class ="content_left">@JeanJohansson @jwc498 Botox apparently seems to work more for chronic sinusitis which can feel similar but not as severe. It appears to have the effect you might get from <span style="color: yellow;">acupressure</span> on the forehead. Daily Record health editor did a piece on it years back.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/ewart_lynne/status/1217775110716870656">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,839 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>538-MelissaStone4.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 538-MelissaStone4.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">538-MelissaStone4.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cancer</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cancer"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 16:05:16</td>
+                <td class ="content_left">Pay it forward instead of being a petty piece of shit. I can't imagine if Marc had <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> instead of Gregg. U would've needed everyone's undivided attention. You have Brooklyn &amp; u had her close to 50. Is that not enough to make u happy???</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1260964403857494019">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 04:12:37</td>
+                <td class ="content_left">@NeNeLeakes Thank u so much for reminding everyone that <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> doesn't just stop bc of the Pandemic. My step dad is fighting <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> right now &amp; he &amp; my mom r at the Cleveland Clinic everyday amongst this Covid outbreak. They r fighting a double fight. Thanks again 💜</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1244839994252038150">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 07:10:38</td>
+                <td class ="content_left">@MichaelRapaport Fucking selfish idiots. I am sooo over ppl like this. I'm trying to keep my son with asthma alive, my husband with diabetes alive, my step dad with <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> alive, &amp; my 70 yr old mother alive. I have a lot of anger, but I really believe they will get their's.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1241985689476042752">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 01:55:59</td>
+                <td class ="content_left">@mama_senior Being a breast <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> survivor, I know ur very strong!My mom beat it twice, once in '01 &amp; she got it again in '12. We live in the South &amp; my parents live in Ohio. My step dad is going through chemo right now at the Cleveland Clinic.I'm petrified that we may never see them again🥺</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1241544119329132545">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 06:02:49</td>
+                <td class ="content_left">@mrjaxtaylor Thank https://t.co/aR4NBhm1BH step dad just got diagnosed with lung <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> 3 weeks ago &amp; is starting chemo.They live 16 hrs away &amp; bc of my husband's diabetes,we can't travel there.I'm devastated that my son may not b able to see him b4 he dies. He's 14 &amp; has already lost my dad.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1240881460837482498">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 03:53:44</td>
+                <td class ="content_left">@WXMinh I'm sure that people dying from <span style="color: yellow;">COVID-19</span> are really concerned about this😒</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1257156431461187584">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 11:10:02</td>
+                <td class ="content_left">@JustJared Definitely not focusing on all their family. I would be terrified if one of my elderly parents had <span style="color: yellow;">COVID-19</span> &amp; thay my grandmother bbn had been around so many ppl that have it. I suppose whatever makes them happy. Hope Harry likes L.A. He is definitely dedicated to his wife.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1245307429329473537">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 05:04:30</td>
+                <td class ="content_left">@DannyDeraney I'm really wanting to watch the Tiger King thing on Netflix, but I'm sleeping a lot. Got a positive test result from the <span style="color: yellow;">COVID-19</span> test the day b4 yesterday. Had started running fever on the 15th. Figured it was sinus infection, but I'm quarantined &amp; it just actually hit me today.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1242678723482128385">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 05:34:11</td>
+                <td class ="content_left">@PavlosTouliatos @PaulGavigan4 @washingtonpost Oh wow. Just had to Google that. Yup, it's ppl like him that's getting so many sick. We had already quarantined for a little over a week by I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. It's people like him that gets people killed.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1253195441543483393">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 09:56:37</td>
+                <td class ="content_left">@matthaig1 Any words of advice that u can extend to me that <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> on the 23rd? Has asked u earlier, but I didn't respond, but the vibe I've gotten from u is that you want to help ppl. Having a hard time being away from my husband &amp; son.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1244926566146158592">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 08:45:03</td>
+                <td class ="content_left">@MattieLBreaux Haven't been able to sleep til the sun comes up. <span style="color: yellow;">Tested positive</span> for Covid on the 23rd...maybe I'm afraid to die during the night, but it's irrational. I have a mild case. Plus my husband can't sleep with me &amp; I miss my son. Sleeping in the day has just been easier all around...</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1244908556182261761">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 08:28:05</td>
+                <td class ="content_left">@matthaig1 I hear you.Your not ramping up my anxiety. It's been crazy.I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for Covid on the 23rd.I actually called California Psychics just to have someone to talk to since it's the middle of the night.Miss my husband &amp; son so much. Any words of wisdom you give me?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1244904284719906816">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 02:48:45</td>
+                <td class ="content_left">@Rosie I need somebody to relate to. I feel so alone. Got sent home. Was told to stay in my bedroom &amp; make sure no one uses my bathroom. Also have to self distance myself from my 2 dogs &amp; my cat bc it's possible I could infect them. <span style="color: yellow;">Tested positive</span> on the 13th. I'm really feeling alone.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1244456502364188672">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 03:41:11</td>
+                <td class ="content_left">@ShirazMaher I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> Mon. I was sick for 8 days b4 I got tested, but my symptoms were very much the same.I woke up with 102 fever. Only lasted a day.I think bc of sinus drainage, my cough wasn't quite as dry, tho constant. My chest is still very tight.Hope u continue to get better.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1243744921095413760">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 17:08:19</td>
+                <td class ="content_left">@stassi That sucks. Can't even imagine having one over seas! We eloped 14 yrs ago June. If it makes u feel any better, I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for Corona on Mon. It's fun. Definitely recommend. Lol. Just teasing u. I'm thru the worst of it. U will have a great wedding bc ur u &amp; Beau is Beau.💜</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1243223266086531072">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 05:15:46</td>
+                <td class ="content_left">@nypost Bless his heart. I know where he's coming from. I had the same symptoms &amp; a few others &amp; <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> the day before yesterday. I'm staying in my master bath &amp; bed rm. I have 1 son, Aidan, 14 &amp; my husband I'm trying to not infect. Also got instructions to not touch my pets.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1242681558546423808">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 03:58:07</td>
+                <td class ="content_left">@KimKardashian R u ever going to realize ur too old for this b.s.?I've <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. We immediately volunteered for the nursing homes here in Louisiana&amp;made sure food banks stayed open.I have a 14 yr old. U could b doing so much. Have watched ur show a lot.Ain't nobody now tho. Dumb bitch.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1242662019284832259">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 03:44:06</td>
+                <td class ="content_left">@KimKardashian You have ruined everything that you were trying to do&amp;ur Oxygen special by feeding into this bullshit.I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> 2 days ago for COVID-19.I'm worrying about my son &amp; my husband &amp; even my pets.Pull it together.U can help so many ppl. Ur pathetic &amp; selfish.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1242658490243571713">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 23:28:26</td>
+                <td class ="content_left">@Andy I hate to hear the news that you <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the coronavirus. Thinking about u &amp; Benjamin &amp; the rest of ur family. Please take care of yourself!!! You mean so much to us. Love &amp; prayers🙏❤</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1241144598912798723">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diagnosed with covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diagnosed with covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 04:08:55</td>
+                <td class ="content_left">@PaulGavigan4 @PavlosTouliatos @washingtonpost Better than being dead or killing someone.We live in a red state, own our own business, can't keep all of the bills paid, &amp; we thank God that we are alive. I got <span style="color: yellow;">diagnosed with COVID</span> on March 13th.All that matters is that I'm alive &amp; my family is ok.When did u have it?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1253173983027085312">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 04:46:52</td>
+                <td class ="content_left">@chrissyteigen Oh my goodness, I always love watching u cook, but I've been <span style="color: yellow;">diagnosed with COVID</span>-19, so I can't wash the dishes, let alone cook for my husband &amp; son. I am so jealous!!! First the banana bread &amp; now this. I'm starving girl!!!</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1242674288433520644">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 19:37:42</td>
+                <td class ="content_left">@colonelwheel Agee. Yeah, I think it was in poor <span style="color: yellow;"><span style="color: yellow;">taste</span></span> &amp; he was being negligent to the women's safety, but I don't think he was attacking her.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1247247126364651525">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 06:52:50</td>
+                <td class ="content_left">@Zatarains <span style="color: yellow;">Tired</span> of this shit... It's too much. We can't have either!!! We're quarantined. R u trying to make us suicidal. Cut it out assholes. Living off canned beans &amp; rice!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1247054641537462277">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 03:24:55</td>
+                <td class ="content_left">@CNN Ugh...so <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of them! Harry is deeply damaged from losing his mother &amp; Meghan stepped in to tell him what to do. She was never going to leave acting...just watch her interviews from before Harry. Harry made her more famous.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1244465604544913408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-06 00:46:21</td>
+                <td class ="content_left">@people Dude, you wanted to step away from the royal family...do it already!!! Disappear. We are <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of seeing you &amp; your wife. Read the room! Normal ppl don't feel sorry for you bc ur rich &amp; royal!</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1235728391619227648">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-22 17:28:30</td>
+                <td class ="content_left">@DorindaMedley Dorinda....catching up on some Real Housewives. <span style="color: yellow;">Tired</span> of watching some of these Real "FAKE" Housewives. Can't wait til New York's season starts! Have missed ya girl❤</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1231269544905334792">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-22 07:09:02</td>
+                <td class ="content_left">@BrandiRedmond Don't be too hard on yourself. Everyone makes mistakes &amp; I  think it's obvious that you were not coming from a place of hate! LeeAnne was though. Please pass along the message to @Andy that we r sooo <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of her and tell Kam to get up off Steph. Kam is so fake!!!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1219879627432386561">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 01:25:05</td>
+                <td class ="content_left">@DanFlynn I'm glad that God forbid, you will have her. I hope you both stay well! I know that you're both dog lovers. I live in Nachitoches. Work from home, but somehow I got https://t.co/LWVPzD1uNk husband is taking great care of our 14 yrs old, but they told me I couldn't <span style="color: yellow;">touch</span> my pets.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1246609771484131329">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 05:15:46</td>
+                <td class ="content_left">@nypost Bless his heart. I know where he's coming from. I had the same symptoms &amp; a few others &amp; tested positive the day before yesterday. I'm staying in my master bath &amp; bed rm. I have 1 son, Aidan, 14 &amp; my husband I'm trying to not infect. Also got instructions to not <span style="color: yellow;">touch</span> my pets.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1242681558546423808">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-07 05:01:44</td>
+                <td class ="content_left">@Pinky81949548 @RealityTVBliss Fully agree. Reza is outta control w/ all of his B.S. he's spreading around CONSTANTLY. He is so out of <span style="color: yellow;">touch</span> with actual reality.He is obviously very unhappy.Adam saying that he doesn't know if he wants kids or not now is a good indicator that their relationship isn't as it was.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1236155046674305024">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-21 13:19:55</td>
+                <td class ="content_left">@_BG_Gomes Just bc u r of color gives you no right to use the N-word. You are very privileged. You don't even know what real work &amp; poverty are. Quit playing pretty boy. You are out of <span style="color: yellow;">touch</span> with reality completely.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1230844602841731072">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">test positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "test positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 21:32:40</td>
+                <td class ="content_left">@lisabarber @Sean_C_Larkin Huh?"Nothing"?I am in an extremely rural place living with testing positive on the 23rd.I think I think that  there's a chance I may learn how others are dealing with the virus.I am the first to <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> in my county.Nobody else has gotten their results yet.We have no facts.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1245826506682662917">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 10:33:24</td>
+                <td class ="content_left">@DanaGoldstein Still have a lot of fatigue, muscle aches, &amp; coughing. Thankfully I had that high <span style="color: yellow;"><span style="color: yellow;">fever</span></span> &amp; self isolated. I work from home, so it was easier for me. Woke up w the <span style="color: yellow;"><span style="color: yellow;">fever</span></span> on the 13th, still feel like crap, but I've gotten no info on when I'll get tested to see if I'm negative.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1245298208961634304">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 10:29:36</td>
+                <td class ="content_left">@DanaGoldstein These were my same symptoms at first except I ran around 102 <span style="color: yellow;"><span style="color: yellow;">fever</span></span> for a day&amp;a half&amp;had a bad headache.A few days later the pressure on my chest started, difficulty breathing, &amp; muscle aches.Took Amox-Clav that I had at home.Finally went to dr who tested me bc my <span style="color: yellow;"><span style="color: yellow;">fever</span></span> came back.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1245297255055265792">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 15:58:04</td>
+                <td class ="content_left">@pulidoj6 @MaiseyToons @DannyPellegrino I woke up with 102 <span style="color: yellow;"><span style="color: yellow;">fever</span></span> about 10 days ago. Had the chills. Only had a high <span style="color: yellow;"><span style="color: yellow;">fever</span></span> for a day and a 1/2. Developed a bad cough &amp; kept a bad headache. Have stayed really tired. Finally was able to get tested when it started to feel like someone was sitting on my chest.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1242843201817456643">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 05:04:30</td>
+                <td class ="content_left">@DannyDeraney I'm really wanting to watch the Tiger King thing on Netflix, but I'm sleeping a lot. Got a positive test result from the COVID-19 test the day b4 yesterday. Had started running <span style="color: yellow;"><span style="color: yellow;">fever</span></span> on the 15th. Figured it was sinus infection, but I'm quarantined &amp; it just actually hit me today.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1242678723482128385">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 08:31:57</td>
+                <td class ="content_left">@matthaig1 Have been self isolating since February 28th, but have been running a high <span style="color: yellow;"><span style="color: yellow;">fever</span></span> since the 13th with a cough &amp; headache &amp; runny nose. Day before yesterday I started having a hard time breathing so having to go to the dr tomorrow. Scared half to death. Turned 36 on the 17th.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1242006156937252864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">high fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "high fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 10:33:24</td>
+                <td class ="content_left">@DanaGoldstein Still have a lot of fatigue, muscle aches, &amp; coughing. Thankfully I had that <span style="color: yellow;"><span style="color: yellow;">high fever</span></span> &amp; self isolated. I work from home, so it was easier for me. Woke up w the fever on the 13th, still feel like crap, but I've gotten no info on when I'll get tested to see if I'm negative.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1245298208961634304">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 15:58:04</td>
+                <td class ="content_left">@pulidoj6 @MaiseyToons @DannyPellegrino I woke up with 102 fever about 10 days ago. Had the chills. Only had a <span style="color: yellow;"><span style="color: yellow;">high fever</span></span> for a day and a 1/2. Developed a bad cough &amp; kept a bad headache. Have stayed really tired. Finally was able to get tested when it started to feel like someone was sitting on my chest.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1242843201817456643">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 08:31:57</td>
+                <td class ="content_left">@matthaig1 Have been self isolating since February 28th, but have been running a <span style="color: yellow;"><span style="color: yellow;">high fever</span></span> since the 13th with a cough &amp; headache &amp; runny nose. Day before yesterday I started having a hard time breathing so having to go to the dr tomorrow. Scared half to death. Turned 36 on the 17th.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1242006156937252864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Difficulty breathing</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Difficulty breathing"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 10:29:36</td>
+                <td class ="content_left">@DanaGoldstein These were my same symptoms at first except I ran around 102 fever for a day&amp;a half&amp;had a bad headache.A few days later the pressure on my chest started, <span style="color: yellow;">difficulty breathing</span>, &amp; muscle aches.Took Amox-Clav that I had at home.Finally went to dr who tested me bc my fever came back.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1245297255055265792">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Difficulty breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Difficulty breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 10:29:36</td>
+                <td class ="content_left">@DanaGoldstein These were my same symptoms at first except I ran around 102 fever for a day&amp;a half&amp;had a bad headache.A few days later the pressure on my chest started, <span style="color: yellow;">difficulty breath</span>ing, &amp; muscle aches.Took Amox-Clav that I had at home.Finally went to dr who tested me bc my fever came back.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1245297255055265792">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 08:45:03</td>
+                <td class ="content_left">@MattieLBreaux Haven't been able to sleep til the sun comes up. Tested <span style="color: yellow;">positive for Covid</span> on the 23rd...maybe I'm afraid to die during the night, but it's irrational. I have a mild case. Plus my husband can't sleep with me &amp; I miss my son. Sleeping in the day has just been easier all around...</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1244908556182261761">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 08:28:05</td>
+                <td class ="content_left">@matthaig1 I hear you.Your not ramping up my anxiety. It's been crazy.I tested <span style="color: yellow;">positive for Covid</span> on the 23rd.I actually called California Psychics just to have someone to talk to since it's the middle of the night.Miss my husband &amp; son so much. Any words of wisdom you give me?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1244904284719906816">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">headache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "headache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 03:50:19</td>
+                <td class ="content_left">@ShirazMaher Oh &amp; I've had a constant <span style="color: yellow;"><span style="color: yellow;">headache</span></span> too &amp; have had a hard time breathing. The dr gave me an inhaler. Not sure if it's helping. Always feel drained. My family dr nor the ER will see me either. It's very lonely to not have comfort from healthcare &amp; my family doesn't know what to do.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1243747221100802048">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 08:31:57</td>
+                <td class ="content_left">@matthaig1 Have been self isolating since February 28th, but have been running a high fever since the 13th with a cough &amp; <span style="color: yellow;"><span style="color: yellow;">headache</span></span> &amp; runny nose. Day before yesterday I started having a hard time breathing so having to go to the dr tomorrow. Scared half to death. Turned 36 on the 17th.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1242006156937252864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 03:41:11</td>
+                <td class ="content_left">@ShirazMaher I tested positive Mon. I was sick for 8 days b4 I got tested, but my symptoms were very much the same.I woke up with 102 fever. Only lasted a day.I think bc of sinus drainage, my <span style="color: yellow;"><span style="color: yellow;">cough</span></span> wasn't quite as dry, tho constant. My chest is still very tight.Hope u continue to get better.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1243744921095413760">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 15:58:04</td>
+                <td class ="content_left">@pulidoj6 @MaiseyToons @DannyPellegrino I woke up with 102 fever about 10 days ago. Had the chills. Only had a high fever for a day and a 1/2. Developed a bad <span style="color: yellow;"><span style="color: yellow;">cough</span></span> &amp; kept a bad headache. Have stayed really tired. Finally was able to get tested when it started to feel like someone was sitting on my chest.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1242843201817456643">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 08:31:57</td>
+                <td class ="content_left">@matthaig1 Have been self isolating since February 28th, but have been running a high fever since the 13th with a <span style="color: yellow;"><span style="color: yellow;">cough</span></span> &amp; headache &amp; runny nose. Day before yesterday I started having a hard time breathing so having to go to the dr tomorrow. Scared half to death. Turned 36 on the 17th.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1242006156937252864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 14:01:02</td>
+                <td class ="content_left">@Real_EllieBrown @kathygriffin Hoping the best for you!I was extremely sick for 8 days before I got a test &amp; it took 7 more days to get the results. Got the results Mon. Still a lot of tightness in my chest &amp; muscle <span style="color: yellow;"><span style="color: yellow;">aches</span></span> &amp; tiredness. Live a rural area tho. 🤞 u get can better attention in the city. God bless!</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1243176133719396354">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 11:35:59</td>
+                <td class ="content_left">@RexChapman @E60 Thank u so much for sharing. My step son became addicted to <span style="color: yellow;"><span style="color: yellow;">pain</span></span> meds at 13 yrs old b4 we even knew what happened. He's been clean for 7 yrs. We didn't realize till he was 17. Got him help &amp; r very glad that the problem never turned into a heroin addiction like many ppl we knew.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1243139633241866240">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 22:55:50</td>
+                <td class ="content_left">@irishlibby @AishaS Mine are 16 hrs away. My step dad starts chemo in 2 weeks in Cleveland. I'm so scared I'll never get to see them again. So sorry about u not being able to see yours. Can't imagine the <span style="color: yellow;"><span style="color: yellow;">pain</span></span> u feel with being close, but still not able to see them❤</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1241498784804323334">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-21 13:42:21</td>
+                <td class ="content_left">@ThePettyMess_ So, so sorry for your loss. I lost my dad &amp; brother &amp; u r right, Bravo has helped me through so much of the <span style="color: yellow;"><span style="color: yellow;">pain</span></span> to take my mind away from my own reality. You are in my thoughts. So sorry for your <span style="color: yellow;"><span style="color: yellow;">pain</span></span>🙏❤</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1230850247389319170">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-07 17:35:07</td>
+                <td class ="content_left">@GayleKing I hate to hear of the <span style="color: yellow;"><span style="color: yellow;">pain</span></span> that you are going through with the death threats, but you are so respected &amp; are such a force of nature. You can't blame it all on the network &amp; editing. It was so BAD, but I pray for you &amp; your family. I don't think you're a bad person.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1225835394899509248">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-21 03:06:14</td>
+                <td class ="content_left">@RealityTVBliss @capthlr That's completely true. I was just replying to ur tweet that said he had <span style="color: yellow;"><span style="color: yellow;">pain</span></span> pills all season &amp; you were wondering if he had mixed those with alcohol. Hope his back problems serious! 
+Either way, we should pray for him &amp; Amen, he's a horrible drunk!!!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1219456136912355329">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-21 02:45:29</td>
+                <td class ="content_left">@RealityTVBliss @capthlr I never thought of that, but it did hit me when he said that he had "strong <span style="color: yellow;"><span style="color: yellow;">pain</span></span> killers" at the head of his bed. That definitely could be a reason for his irrational behavior. Especially mixed with alcohol!!!</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1219450918057467907">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">bad cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "bad cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 15:58:04</td>
+                <td class ="content_left">@pulidoj6 @MaiseyToons @DannyPellegrino I woke up with 102 fever about 10 days ago. Had the chills. Only had a high fever for a day and a 1/2. Developed a <span style="color: yellow;"><span style="color: yellow;">bad cough</span></span> &amp; kept a bad headache. Have stayed really tired. Finally was able to get tested when it started to feel like someone was sitting on my chest.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1242843201817456643">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">runny nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "runny nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 08:31:57</td>
+                <td class ="content_left">@matthaig1 Have been self isolating since February 28th, but have been running a high fever since the 13th with a cough &amp; headache &amp; <span style="color: yellow;"><span style="color: yellow;">runny nose</span></span>. Day before yesterday I started having a hard time breathing so having to go to the dr tomorrow. Scared half to death. Turned 36 on the 17th.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1242006156937252864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asthma</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asthma"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 07:10:38</td>
+                <td class ="content_left">@MichaelRapaport Fucking selfish idiots. I am sooo over ppl like this. I'm trying to keep my son with <span style="color: yellow;"><span style="color: yellow;">asthma</span></span> alive, my husband with diabetes alive, my step dad with cancer alive, &amp; my 70 yr old mother alive. I have a lot of anger, but I really believe they will get their's.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1241985689476042752">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diabetes</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diabetes"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 07:10:38</td>
+                <td class ="content_left">@MichaelRapaport Fucking selfish idiots. I am sooo over ppl like this. I'm trying to keep my son with asthma alive, my husband with <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> alive, my step dad with cancer alive, &amp; my 70 yr old mother alive. I have a lot of anger, but I really believe they will get their's.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1241985689476042752">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 19:50:56</td>
+                <td class ="content_left">@SieglerKelly So ready for another episode of <span style="color: yellow;">Cold</span> Justice tonight!!! Been waiting all week! Thank you for all that you do Kelly.❤</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1241452249798320134">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shaking</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shaking"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-15 10:54:42</td>
+                <td class ="content_left">@markjlewis Hi @matthaig1 always helps me stay so calm.He is one person on Twitter that always does, but I'm <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> uncontrollably with anxiety &amp; I know he is having his own problems right now with MH. Please help him.He helps us all. I see where he's coming from.We r terrified.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1239142974765834241">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sweating</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sweating"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-04 01:05:13</td>
+                <td class ="content_left">@matthaig1 @jonronson It really is sooo hard to leave the house sometimes because I literally can't breathe, am shaking, and <span style="color: yellow;"><span style="color: yellow;">sweating</span></span> profusely.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1235008360753360896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Sweating profusely</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Sweating profusely"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-04 01:05:13</td>
+                <td class ="content_left">@matthaig1 @jonronson It really is sooo hard to leave the house sometimes because I literally can't breathe, am shaking, and <span style="color: yellow;">sweating profusely</span>.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1235008360753360896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-27 18:25:57</td>
+                <td class ="content_left">@dayna_kathan You are beautiful the way you are!!! I see nothing at all wrong with your <span style="color: yellow;"><span style="color: yellow;">nose</span></span> girl! These r haters that are probably overweight. If not they r definitely not as pretty as you &amp; never leave their couch. The jealousy is real. Fuck all of them!!!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MelissaStone4/status/1233095945090486275">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,816 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>335-robertjdenault.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 335-robertjdenault.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">335-robertjdenault.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 20:26:15</td>
+                <td class ="content_left">Trump accusing a talk-show host of murder is probably his most obvious attempt yet to distract us from the deaths of 100,000+ of our own citizens under his inept leadership. He said <span style="color: yellow;">COVID-19</span> was 5 people, soon to be 0. He said it was a hoax. He told us to inject bleach. Enough.</td>
+                <td>12</td>
+                <td>43</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1265741124569882626">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 18:33:23</td>
+                <td class ="content_left">@jo_jofuller The data on reinfection indicates the virus being detected post-recovery is actually just dead virus cells, not a new infection or a recurrence. Where patients have become symptomatic scientists believe initial infection was likely not a <span style="color: yellow;">COVID-19</span> infection.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1264625558262071306">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 02:28:59</td>
+                <td class ="content_left">Reupping this thread I posted 8 days ago predicting Florida was lying about its <span style="color: yellow;">COVID-19</span> numbers in light of this important news from the @TB_Times. Someone needs to investigate Florida Governor @RonDeSantisFL for the coverup here.
+https://t.co/XZR5K2khgQ https://t.co/KvwPhR03g1</td>
+                <td>17</td>
+                <td>27</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1255685548800380929">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 13:59:50</td>
+                <td class ="content_left">@Pravduh15 Speaking as a <span style="color: yellow;">COVID-19</span> patient who got sick, thought I was better, then got sick again, I can say that many of those NY stories are not reinfection or recurrence but rather the natural course of the virus. That’s pretty much everyone’s experience who is symptomatic.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1254409857932898305">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 13:20:39</td>
+                <td class ="content_left">@ProudMary4 Just so you know, it is very likely there will be some cases of reinfection due to immune system compromises or case-specific anomalies, regardless of whether <span style="color: yellow;">COVID-19</span> generally confers short-term immunity to infection or not.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1254399998084734977">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 18:25:56</td>
+                <td class ="content_left">There will be a flood of litigation on behalf of inmates who die from <span style="color: yellow;">COVID-19</span>. For prisons to act like they still don’t know what to do is totally unacceptable. <span style="color: yellow;">COVID-19</span> is lethal and spreading in jails. No one deserves to die for a parole violation or drug offense. Act now.</td>
+                <td>8</td>
+                <td>36</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1253752050027913217">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 14:28:16</td>
+                <td class ="content_left">CDC Director warned things could get worse with <span style="color: yellow;">COVID-19</span> this winter and 800,000 Americans could die by the time it’s all over. 
+
+Trump is making him take it back, but <span style="color: yellow;">COVID-19</span> doesn’t care about statements or deep state or fake news or even Trump. He just doesn’t get that. https://t.co/eYk4HOZkPg</td>
+                <td>38</td>
+                <td>77</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1252967462326480896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 15:58:43</td>
+                <td class ="content_left">One way you know Trump’s promotion of hydroxychloroquine was motivated by corruption is that the antiviral Remdesivir has had shown promising results for beating back <span style="color: yellow;">COVID-19</span> in multiple studies published in recent days. Trump hasn’t said a word.</td>
+                <td>58</td>
+                <td>146</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1252265449544433666">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 17:17:16</td>
+                <td class ="content_left">Today, the Supreme Court was supposed to hear 2 cases: subpoenas of Trump’s tax returns and his Deutsche Bank records. <span style="color: yellow;">COVID-19</span> halted the cases, but we don’t wait. Here’s what we’ve found, starting w/ a whistleblower who says Russia funded Trump’s loans. https://t.co/AE5hs5hbZZ</td>
+                <td>462</td>
+                <td>647</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1245037456782766081">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-14 17:51:09</td>
+                <td class ="content_left">Ernie is my oldest MAGA troll. I don’t know how old you are Ernie, but be careful. <span style="color: yellow;">COVID-19</span> is dangerous and Trump has not contained it. Nor has he done much to save lives. You will disagree (“HE BANNED TRAVEL FROM CHINA”) but his administration can’t even test right. Be careful. https://t.co/6UFt087aJx</td>
+                <td>2</td>
+                <td>26</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1238885390318215170">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-14 16:40:51</td>
+                <td class ="content_left">Trump just said he is awaiting results of his <span style="color: yellow;">COVID-19</span> test, hours after his physician drafted a memo saying he Trump was “low risk” and thus wasn’t in need of a test. Raises question about whether he really took test. Here’s the memo. https://t.co/RvfLWmDVxa https://t.co/MtAsYZk8HK</td>
+                <td>56</td>
+                <td>73</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1238867700568461312">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-14 15:17:44</td>
+                <td class ="content_left">Currently in South Florida (Miami). Despite a spike in <span style="color: yellow;">COVID-19</span> cases, Florida doesn’t seem to be reacting the same as other American locales. No stores closed, no long lines at supermarkets, restaurants ALL open. Nightclubs shut down just last night.
+
+https://t.co/G5ZVws2U90</td>
+                <td>3</td>
+                <td>16</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1238846782299348993">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-14 15:13:11</td>
+                <td class ="content_left">Spain reportedly implementing a nationwide quarantine like Italy’s in response to <span style="color: yellow;">COVID-19</span> outbreak. This after infections rose to more than 5,000 people, mostly in Madrid.</td>
+                <td>16</td>
+                <td>25</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1238845637338238981">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recovered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recovered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 17:25:35</td>
+                <td class ="content_left">Good news: monkeys <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> from Coronavirus are showing resistance to reinfection, evidence supporting some form of immunity in <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> cases. A month ago WHO asserted “no evidence” supported immunity theory (but also said it didn’t look for evidence).
+https://t.co/HtdhA5gs5g</td>
+                <td>7</td>
+                <td>29</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1264608497347502084">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 14:15:07</td>
+                <td class ="content_left">@Pravduh15 Agreed—probably why nobody is printing them yet, despite all the talk! 
+
+All for more testing, more data, and caution. Currently participating in a study of <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> patients. 
+
+But publishing papers that imply research you haven’t done is absurd.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1254413703564480513">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 00:41:28</td>
+                <td class ="content_left">It’s not just that Michael Flynn is stone <span style="color: yellow;"><span style="color: yellow;">cold</span></span> guilty of what he pleaded guilty to. It’s not just that Flynn was never set up.
+
+Flynn is dangerous beyond what is publicly understood. He is guilty of crimes DOJ didn’t prosecute because he promised to cooperate. Stay tuned.</td>
+                <td>73</td>
+                <td>215</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1256745658591182850">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Chloroquine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Chloroquine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 19:32:24</td>
+                <td class ="content_left">Maggie, halfway through the article this woman admits she didn’t tell her husband she put poisonous <span style="color: yellow;">chloroquine</span> in his drink... don’t you think that’s worth noting? https://t.co/GK12SNqT6D</td>
+                <td>9</td>
+                <td>38</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1253768776971059200">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 18:25:56</td>
+                <td class ="content_left">There will be a flood of litigation on behalf of inmates who die from COVID-19. For prisons to act like they still don’t know what to do is totally unacceptable. COVID-19 is lethal and spreading in jails. No one deserves to die for a parole violation or <span style="color: yellow;"><span style="color: yellow;">drug</span></span> offense. Act now.</td>
+                <td>8</td>
+                <td>36</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1253752050027913217">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Hydroxychloroquine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Hydroxychloroquine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 15:58:43</td>
+                <td class ="content_left">One way you know Trump’s promotion of <span style="color: yellow;">hydroxychloroquine</span> was motivated by corruption is that the antiviral Remdesivir has had shown promising results for beating back COVID-19 in multiple studies published in recent days. Trump hasn’t said a word.</td>
+                <td>58</td>
+                <td>146</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1252265449544433666">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 00:36:41</td>
+                <td class ="content_left">Hey @JoyceWhiteVance — did you know one huge producer of <span style="color: yellow;"><span style="color: yellow;">Hydroxychloroquine</span></span> is Novartis? Remember Novartis? The “client” who paid Michael Cohen $1.2 million for “access” to Trump?
+
+https://t.co/SE7os6IYCC https://t.co/5fSQ7bBt3d</td>
+                <td>58</td>
+                <td>107</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246959979057287170">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">no symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "no symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 21:01:00</td>
+                <td class ="content_left">Some good news to flag:
+
+~80% of cases = <span style="color: yellow;"><span style="color: yellow;">no symptoms</span></span>, mild cases. We treat at home. It’s bad (believe me, I know) but manageable.
+
+~74% of the *worst* cases in NY have resulted in discharge from the hospital.
+
+Most people are recovering. It’s not perfect, but it’s good news. 🙏. https://t.co/P67Whs2LpE</td>
+                <td>15</td>
+                <td>64</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246905701093519360">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:29</td>
+                <td class ="content_left">I also feel pretty good—yesterday I had a couple beers for the first time in 20 days. If I have 3 more days with <span style="color: yellow;"><span style="color: yellow;">no symptoms</span></span>, I can end my personal quarantine.</td>
+                <td>1</td>
+                <td>33</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137511337955328">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:29</td>
+                <td class ="content_left">Then this morning—got the call that I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. It came as a relief. I knew I had been really sick, and it felt validating to know I wasn’t crazy.</td>
+                <td>3</td>
+                <td>29</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137509656002565">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-09 01:34:52</td>
+                <td class ="content_left">As Judge Jeanine says coronavirus is just the flu and drunkenly shouts at America to calm down, two Republican Congressman have quarantined themselves due to interactions with someone who <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. How long can the echo chamber survive when a virus penetrates its walls? https://t.co/BYQ6e8lAiT</td>
+                <td>30</td>
+                <td>119</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1236827764923207682">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">no fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "no fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:28</td>
+                <td class ="content_left">After a few more days of rest and water, the cough dissipated. <span style="color: yellow;">No fever</span>. Tightness gone. No more fatigue. Stopped sweating at night. My appetite returned. I felt like myself for the first time in weeks yesterday.</td>
+                <td>2</td>
+                <td>25</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137508460728321">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:27</td>
+                <td class ="content_left">Toward the end of the illness I suffered from night sweats. They weren’t awful, but I’d wake up and my shirt—only my shirt—would be soaking. I’d have to change it. But <span style="color: yellow;"><span style="color: yellow;">no fever</span></span> at that point, which I found strange (I always thought sweats were a signal of fever).</td>
+                <td>2</td>
+                <td>27</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137503184228357">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 15:55:00</td>
+                <td class ="content_left">@janetmtobin I feel ok! Fatigued, still coughing a good amount for being 15 days in. Night sweats. But <span style="color: yellow;"><span style="color: yellow;">no fever</span></span>, no aches, which I had last week. It’s possible that this is another illness. But testing mixups like the one above don’t give me confidence in the results, whatever they be.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1245016755765948418">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sweating</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sweating"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:28</td>
+                <td class ="content_left">After a few more days of rest and water, the cough dissipated. No fever. Tightness gone. No more fatigue. Stopped <span style="color: yellow;"><span style="color: yellow;">sweating</span></span> at night. My appetite returned. I felt like myself for the first time in weeks yesterday.</td>
+                <td>2</td>
+                <td>25</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137508460728321">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:28</td>
+                <td class ="content_left">After a few more days of rest and water, the <span style="color: yellow;"><span style="color: yellow;">cough</span></span> dissipated. No fever. Tightness gone. No more fatigue. Stopped sweating at night. My appetite returned. I felt like myself for the first time in weeks yesterday.</td>
+                <td>2</td>
+                <td>25</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137508460728321">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:28</td>
+                <td class ="content_left">Like I said, the symptoms didn’t hit me all at once. <span style="color: yellow;">Cough</span> and aches came first, with a 99.5 fever and the loss of smell. <span style="color: yellow;">Cough</span> got a bit better, aches went away. I thought I was on the mend. Not totally 100%, but getting better. This is around March 25-26.</td>
+                <td>2</td>
+                <td>27</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137506183118853">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:26</td>
+                <td class ="content_left">It started with tightness, then a <span style="color: yellow;"><span style="color: yellow;">cough</span></span>. The <span style="color: yellow;"><span style="color: yellow;">cough</span></span> was deeper than any I’ve ever had. I am not kidding when I say it lasted 17 full days. The mucus I <span style="color: yellow;"><span style="color: yellow;">cough</span></span>ed up was dark and occasionally had blood in it. Early on, I did get a headache that caused sensitivity behind my eyes.</td>
+                <td>3</td>
+                <td>29</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137500629979136">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:26</td>
+                <td class ="content_left">This virus was no joke. It lasted a LONG time and took a few different shapes. There’s a reason everyone is confused about COVID: it presents differently in everyone. I never had a 103 fever, my max was 100. My <span style="color: yellow;"><span style="color: yellow;">cough</span></span> was junky, not dry. But a host of other symptoms matched up.</td>
+                <td>3</td>
+                <td>30</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137498004307974">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 16:31:03</td>
+                <td class ="content_left">Took me 13 days to qualify for a test even though I had:
+
+- chills
+- aches
+- <span style="color: yellow;"><span style="color: yellow;">cough</span></span> (mucus + blood)
+- chest pain
+- low-grade fever (99.5)
+- *total* loss of sense of smell
+
+My fever wasn’t high enough to qualify til it hit 100 yesterday. Lack of testing here is out of control. 2/3</td>
+                <td>84</td>
+                <td>210</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1244301053832634378">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:28</td>
+                <td class ="content_left">But then I felt more fatigued. By March 27, aches returned with a more dry cough, chest tightness, <span style="color: yellow;"><span style="color: yellow;">fever</span></span> and night sweats. My temp finally hit 100, and we called the hotline and got a test scheduled. We got the test March 28. That was six days ago.</td>
+                <td>2</td>
+                <td>26</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137507261173764">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:28</td>
+                <td class ="content_left">Like I said, the symptoms didn’t hit me all at once. Cough and aches came first, with a 99.5 <span style="color: yellow;"><span style="color: yellow;">fever</span></span> and the loss of smell. Cough got a bit better, aches went away. I thought I was on the mend. Not totally 100%, but getting better. This is around March 25-26.</td>
+                <td>2</td>
+                <td>27</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137506183118853">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:27</td>
+                <td class ="content_left">Toward the end of the illness I suffered from night sweats. They weren’t awful, but I’d wake up and my shirt—only my shirt—would be soaking. I’d have to change it. But no <span style="color: yellow;"><span style="color: yellow;">fever</span></span> at that point, which I found strange (I always thought sweats were a signal of <span style="color: yellow;"><span style="color: yellow;">fever</span></span>).</td>
+                <td>2</td>
+                <td>27</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137503184228357">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 16:31:03</td>
+                <td class ="content_left">Took me 13 days to qualify for a test even though I had:
+
+- chills
+- aches
+- cough (mucus + blood)
+- chest pain
+- low-grade <span style="color: yellow;"><span style="color: yellow;">fever</span></span> (99.5)
+- *total* loss of sense of smell
+
+My <span style="color: yellow;"><span style="color: yellow;">fever</span></span> wasn’t high enough to qualify til it hit 100 yesterday. Lack of testing here is out of control. 2/3</td>
+                <td>84</td>
+                <td>210</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1244301053832634378">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">dry cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "dry cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:28</td>
+                <td class ="content_left">But then I felt more fatigued. By March 27, aches returned with a more <span style="color: yellow;"><span style="color: yellow;">dry cough</span></span>, chest tightness, fever and night sweats. My temp finally hit 100, and we called the hotline and got a test scheduled. We got the test March 28. That was six days ago.</td>
+                <td>2</td>
+                <td>26</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137507261173764">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:28</td>
+                <td class ="content_left">But then I felt more fatigued. By March 27, <span style="color: yellow;"><span style="color: yellow;">aches</span></span> returned with a more dry cough, chest tightness, fever and night sweats. My temp finally hit 100, and we called the hotline and got a test scheduled. We got the test March 28. That was six days ago.</td>
+                <td>2</td>
+                <td>26</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137507261173764">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:28</td>
+                <td class ="content_left">Like I said, the symptoms didn’t hit me all at once. Cough and <span style="color: yellow;"><span style="color: yellow;">aches</span></span> came first, with a 99.5 fever and the loss of smell. Cough got a bit better, <span style="color: yellow;"><span style="color: yellow;">aches</span></span> went away. I thought I was on the mend. Not totally 100%, but getting better. This is around March 25-26.</td>
+                <td>2</td>
+                <td>27</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137506183118853">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fatigue</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fatigue"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:27</td>
+                <td class ="content_left"><span style="color: yellow;">Fatigue</span> was another. I try to be a good law student; more than once, I found myself resting my head on a table and dozing off from exhaustion during virtual Zoom class. At one point I laid on the floor to get our cat out from under the bed; I accidentally fell asleep for 10 mins!</td>
+                <td>2</td>
+                <td>27</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137504467759105">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sweats</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sweats"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:27</td>
+                <td class ="content_left">Toward the end of the illness I suffered from night <span style="color: yellow;"><span style="color: yellow;">sweats</span></span>. They weren’t awful, but I’d wake up and my shirt—only my shirt—would be soaking. I’d have to change it. But no fever at that point, which I found strange (I always thought <span style="color: yellow;"><span style="color: yellow;">sweats</span></span> were a signal of fever).</td>
+                <td>2</td>
+                <td>27</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137503184228357">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">my nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "my nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:27</td>
+                <td class ="content_left">At the same time, I completely lost my sense of smell for about two weeks. And I mean completely. Aftershave on my face, cookies out of the oven, candle under <span style="color: yellow;"><span style="color: yellow;">my nose</span></span>—not a whiff. My smell has returned to a small degree. Now it improves every day.</td>
+                <td>2</td>
+                <td>30</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137501812699142">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:27</td>
+                <td class ="content_left">At the same time, I completely lost my sense of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> for about two weeks. And I mean completely. Aftershave on my face, cookies out of the oven, candle under my nose—not a whiff. My <span style="color: yellow;"><span style="color: yellow;">smell</span></span> has returned to a small degree. Now it improves every day.</td>
+                <td>2</td>
+                <td>30</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137501812699142">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">headache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "headache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:26</td>
+                <td class ="content_left">It started with tightness, then a cough. The cough was deeper than any I’ve ever had. I am not kidding when I say it lasted 17 full days. The mucus I coughed up was dark and occasionally had blood in it. Early on, I did get a <span style="color: yellow;"><span style="color: yellow;">headache</span></span> that caused sensitivity behind my eyes.</td>
+                <td>3</td>
+                <td>29</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137500629979136">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 18:08:24</td>
+                <td class ="content_left">UPDATE: This morning I got the results of my test back and I am <span style="color: yellow;">positive for COVID</span>-19. First and foremost: I am doing okay. I’m hopeful that I am near the end of my COVID journey. I was sick for about 17 days, with a few false recoveries, but I really turned a corner yesterday. https://t.co/WvfJ2xCnl7</td>
+                <td>57</td>
+                <td>323</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1246137491247292418">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 21:47:48</td>
+                <td class ="content_left">my heart goes out to these stories the most, from italy china america and everywhere. people losing family they can’t see, be near, hold close. unable to bury them, can’t say goodbye. the <span style="color: yellow;"><span style="color: yellow;">pain</span></span> must be unfathomable. the rest of the world is here for you
+
+💔👫🌎🌏🌍👫💔 https://t.co/zjRjVGWCDy</td>
+                <td>5</td>
+                <td>30</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1245105541803921414">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">little symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "little symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 00:22:25</td>
+                <td class ="content_left">@jonview First and foremost I’m still awaiting results, so I don’t know for sure whether I have it. If I do, I suspect I picked it up in an airport traveling in early March. Biggest advice—monitor your health closely. Don’t ignore <span style="color: yellow;"><span style="color: yellow;">little symptoms</span></span>; address them with medicine if you can.</td>
+                <td>1</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1244419674542149632">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">medicine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "medicine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 00:22:25</td>
+                <td class ="content_left">@jonview First and foremost I’m still awaiting results, so I don’t know for sure whether I have it. If I do, I suspect I picked it up in an airport traveling in early March. Biggest advice—monitor your health closely. Don’t ignore little symptoms; address them with <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> if you can.</td>
+                <td>1</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1244419674542149632">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">freeze</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "freeze"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-10 14:05:13</td>
+                <td class ="content_left">President Trump:
+
+🚨initiated hiring <span style="color: yellow;"><span style="color: yellow;">freeze</span></span> resulting in 700 vacancies at CDC
+
+🚨disbanded Nat. Sec. Council and Homeland Sec. global health teams
+
+🚨cut global epidemic prevention aid from 49 countries to 10
+
+🚨cut $500 million from CDC
+
+Read @ImagineWorldas1’s big story here ⬇️ https://t.co/tl6ma5j5pk</td>
+                <td>49</td>
+                <td>51</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1237378981458051072">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-06 21:12:12</td>
+                <td class ="content_left">Since we’ve started publishing about Deutsche Bank, Russia and Trump:
+
+- our site has been hacked
+- Pay Pal tried to <span style="color: yellow;"><span style="color: yellow;">freeze</span></span> our business
+- our lead journalist has been kicked off Twitter
+
+This is crazy. Mainstream media, where are you? https://t.co/lJxwOK5bKN</td>
+                <td>5054</td>
+                <td>7931</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1225527638619496448">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">HIV</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "HIV"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-26 23:51:07</td>
+                <td class ="content_left">The first real test of Trump’s presidency, and he puts his VP in charge. A VP who doesn’t have the best record on health crises (see: <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> outbreak in Indiana). 
+
+Still, glad Trump isn’t our response to #caronavirusoutbreak. Trump is not a real President. He’s just not. https://t.co/B13WRiY5jp</td>
+                <td>21</td>
+                <td>69</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1232815386825023489">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-25 20:11:02</td>
+                <td class ="content_left">Why haven’t you pardoned him yet @realDonaldTrump? Because you know even your supporters don’t support Stone? Or Manafort? Or Flynn? 
+
+They’re criminals. You won’t <span style="color: yellow;">touch</span> them because you’re scared, but you owe them for staying quiet. So you go crazy and attack the system. 
+
+Sad. https://t.co/Z2zFViFxNM</td>
+                <td>16</td>
+                <td>66</td>
+                <td><a href="https://twitter.com/robertjdenault/status/1232397612508119041">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

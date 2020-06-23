@@ -1,0 +1,676 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>783-MeljayTurner.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 783-MeljayTurner.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">783-MeljayTurner.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 18:02:45</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Herbs Cure what are you waiting for? https://t.co/HYp8VrJxNS  Sharing #Madagascar tweet, but my blog will give you more help what you can use to help get rid of the #covid19 #coronavirusuk #COVID19ireland #covidsafe #covid19kenya #Covid_19india #covid19Tanzania https://t.co/UkQ3eAGIoL</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1262443523548168192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 21:45:36</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Herbs Cure what are you waiting for? https://t.co/HYp8VrJxNS   I had COVID19, I tested #COVID19 I found positive results. No money involved, just want to be a #helpinghand @WhiteHouse @10DowningStreet @BorisJohnson @realDonaldTrump</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1261050054728536065">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 21:24:57</td>
+                <td class ="content_left">I also found what is feeding the virus and making it spread so fast.  <span style="color: yellow;">COVID-19</span> Herbs Cure what are we waiting for? @vanguardngrnews https://t.co/HYp8VrJxNS #HERBS #cure #COVID19</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1261044855125405696">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 20:39:13</td>
+                <td class ="content_left">If tomorrow never comes. #4mylove #love  #missingyou <span style="color: yellow;">COVID-19</span> sucks when we are worlds apart. Sending my love in a song. Goodnight sweetheart, dont let the bed bugs bit!  #keepsmiling you are in my #heartandsoul  https://t.co/0VhmEoOyzA</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1260308572702998529">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 17:41:17</td>
+                <td class ="content_left">Not sure why the public is confused, keep your distance, wash your hands, work from home if you can. It is quite simple really Boris, @BorisJohnson I work from home anyway so happy already!  <span style="color: yellow;">COVID-19</span> survived! https://t.co/w44FwL4wQV</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1259901404124233730">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 15:24:13</td>
+                <td class ="content_left">I hope that's not with the <span style="color: yellow;">COVID-19</span>? there is an equine COVID  it is passed around in mouths, and horses manure. Not enough research with <span style="color: yellow;">COVID-19</span> to confirm if an issue now https://t.co/hmV5WLVfvu</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1258417360442200064">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 15:21:58</td>
+                <td class ="content_left">Yes I had <span style="color: yellow;">COVID-19</span> I  quarantine isolation for 22 days. But I have a small science degree so I studied it too and found  what kills it.  Chilli, nice and simple. I tested too what feeds it. - sugars so keep sugars out the diet. X https://t.co/goGxOV5tkl</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1258416793997246464">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 17:58:18</td>
+                <td class ="content_left">https://t.co/i78dNxQPdZ I found chilli and herbs to Kill the <span style="color: yellow;">COVID-19</span> virus. Hope it helps!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1257731359721820161">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 04:48:06</td>
+                <td class ="content_left">All paid and I am in @DARRENHARDY  how you have changed my life these last 20 months is totally amazing! Thank you for giving back, heaven knows you are comfortable enough never to work again, yet you still keep helping us all! Thank you #workingfromhome #WorkFromHome  <span style="color: yellow;">COVID-19</span> https://t.co/yEmOdy2eGj</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1257532500110344192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 18:41:59</td>
+                <td class ="content_left">I am in @DARRENHARDY  glad I did not miss the last live event. Cannot wait to see what treasures you share this time.  Post <span style="color: yellow;">COVID-19</span> where will business go!  Thankfully we have a guide that studies hard to give the information we need!  Thank you Dazza, #appreciation  😻🙀😸😹😹 https://t.co/1aOaFXkhur</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1257379966695747592">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 18:37:41</td>
+                <td class ="content_left">Helping Ghana - this I found to help kill the <span style="color: yellow;">COVID-19</span> @NAkufoAddo  Spices to increase into the foods. Chilli having a very positive effect!  Hope it helps!  I had the <span style="color: yellow;">COVID-19</span> and healed using herbs.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1257378884590460929">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 13:38:11</td>
+                <td class ="content_left">Healing th <span style="color: yellow;">COVID-19</span> with our food!  https://t.co/3NrPCKhXcn Yes I tested it, and found what foods kill it. You can do it too! #AWayForward #BeaconOfHope</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1257303512733507585">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 10:22:49</td>
+                <td class ="content_left">PARFAITE!!!! @SE_Rajoelina   100% agree #AWayForward #BeaconOfHope   I have healed myself with herbs too from the <span style="color: yellow;">COVID-19</span> virus!  Keep getting that tea out there!   WHO is only confirming that herbs are medication and that herbs succeed!   #healtheworld2020 #BeTheException https://t.co/fXdjn5TJcM</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1256529570188201984">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 09:12:32</td>
+                <td class ="content_left">@Diegochuene @CyrilRamaphosa What is in it and where are the tests to show it works?  I have run tests on the <span style="color: yellow;">COVID-19</span> and have results of what is killing it and more.  I have a science degree so this will be interesting to see what is in this tea?    Please advise more!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1256511884989251584">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 06:33:08</td>
+                <td class ="content_left">#Protecting the children, this is amazing.  <span style="color: yellow;">COVID-19</span> https://t.co/uiEt19T4zb</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1253210277102997506">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 06:27:59</td>
+                <td class ="content_left">And this is an Orphan village during the <span style="color: yellow;">COVID-19</span> experience. Amazing work @orphansinneed My heart goes out to every one of the children who have lost their parents. &lt;3 https://t.co/XbE6H0uQ0P</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1253208983546011649">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 12:38:31</td>
+                <td class ="content_left">This is brilliant advice, I have been using Ginger as part of my recovery from the <span style="color: yellow;">COVID-19</span> Good share @singshobhasing  #jsl #JSLAprilChallenge https://t.co/0e6SLKHZ8J</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1250765515670290432">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 22:57:42</td>
+                <td class ="content_left">Well Done @realDonaldTrump  I agree. My tests over the last 16 days confirm SUGAR is feeding the virus. We can stop this!!!! My test today on myself, as I have the <span style="color: yellow;">COVID-19</span> shows sugar increased symptoms.  Cut sugars out and the nation will heal!!! https://t.co/ZzHyfevMFm</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1247659845983100928">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 22:51:24</td>
+                <td class ="content_left">I did, I tested the <span style="color: yellow;">COVID-19</span> virus and can confirm that sugar is feeding the virus. Have contacted various departments that are conducting research, noone answering. 16 days of testing and I have positive results. https://t.co/TJY1FKSMfe</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1247658259609198598">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 05:01:51</td>
+                <td class ="content_left">To confirm 31st December 2019 
+With my training and success Mentor @DARRENHARDY 
+I do beleive you both know him well @realDonaldTrump and @BorisJohnson 
+His training is the reason why I have been able to find what is feeding the <span style="color: yellow;">COVID-19</span> and what can kill it! @WhiteHouse https://t.co/Fv3JkXVFrA</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1247389100962971648">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 04:57:13</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> @realDonaldTrump @WhiteHouse  #BeaconOfHope #AWayForward https://t.co/GHMmlmQ6ct</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1247387933767880704">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 13:40:25</td>
+                <td class ="content_left">So is not answering messages when someone tells you that I have run a study that shows potential for not only what is feeding the <span style="color: yellow;">COVID-19</span> but also what can kill it! @realDonaldTrump What is the point of doing a degree if no one listens. https://t.co/CteEiKmLGD</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1247157211798704133">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 10:15:07</td>
+                <td class ="content_left">Well that's good isn't it @TheSun I put out a post that I have had the <span style="color: yellow;">COVID-19</span> virus, have runs tests, found out what is feeding  the virus, found out what can kill the virus, shared it with the government and nothing. You put a stupid cat post and get 9♡'s in less than 2 min https://t.co/hDrO3EIFKS https://t.co/EER6AQABMf</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1247105549851860993">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 05:36:34</td>
+                <td class ="content_left">@CDCgov @WhiteHouse I have data and results that we can turn the <span style="color: yellow;">COVID-19</span> around in under 48 hours. Will someone please respond. Do you not want to stop this?  UK not responding to my messages so reaching out to the USA, is anyone listening? https://t.co/99DvoiM9o0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1247035450398736385">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 10:29:09</td>
+                <td class ="content_left">Well Done Gary, @GRHOP1 I've been in quarantine for 12 days now I picked up the <span style="color: yellow;">COVID-19</span> from a karaoke bar of all days Friday 13th March, that'll teach me to go out on that day again ;)   22 days since first infections and although in recovery symptoms still persist. Tracking :D https://t.co/UrY22U2zJ1</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1246384305741410305">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 21:49:09</td>
+                <td class ="content_left">Thinking of all those separated  from loved ones tonight.  #4mylove #ILoveYou  #FridayFeeling  #longdistantrelationships <span style="color: yellow;">COVID-19</span> time to end! #Reunite #lovers #reunitethe #world #datenight  https://t.co/I3NVf3Qmmu</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1246193045168697347">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 17:20:45</td>
+                <td class ="content_left">No, I took 3 years out from Social Media, got a BSc degree, published a book and got hit by the <span style="color: yellow;">COVID-19</span> Now in recovery and bored with how Social Media has changed! :D  @ThereseBouwman: 
+Great to see you my friend, saw a little video, you're looking good!! 💪😘</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1244675947082678279">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 16:48:30</td>
+                <td class ="content_left">Love this, even before <span style="color: yellow;">COVID-19</span> hit the world @DARRENHARDY was still giving free advice!  Best advice to make decisions.  Fireside Chat #1: Where to Find Your Dream Business or Job https://t.co/GryhFzlhZ7 via @YouTube it's #FREE</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1244667831884689408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 08:44:29</td>
+                <td class ="content_left">Day 6  quarantine and in recovery  <span style="color: yellow;">COVID-19</span> let's keep moving  forward no matter what! #AWayForward  #BeaconOfHope  #ILoveYou #longdistantrelationship #4mylove  https://t.co/IKNaOEtyRN</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1244183635730870272">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 13:31:34</td>
+                <td class ="content_left">The Equine Semaphore Code - 
+The first  communication tracking system for horses based on the Maritime Semaphore Code! I have results  #BeaconOfHope https://t.co/Rfv9IjbdeF  <span style="color: yellow;">COVID-19</span> tracking recovery ... . ./ __. 🐒brain #BeTheException @realDonaldTrump @BorisJohnson get well! https://t.co/ZvXebc1731</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1243893495514804224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 13:13:37</td>
+                <td class ="content_left">#SocialDistanacing hang in there guys!   I have had the <span style="color: yellow;">COVID-19</span> and am now in recovery.... .. / ... . . / -- ./  🐒brain in action #BeTheException 
+@realDonaldTrump @BorisJohnson #StayAtHomeAndStaySafe 
+https://t.co/hYbHsvuyvw</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1243888976676761607">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 14:31:46</td>
+                <td class ="content_left">I'm in recovery, <span style="color: yellow;">COVID-19</span> took 4 days to change around.  been tracking and details on my YouTube account spreadsheet and data available in YouTube description. Speedy recovery!  #AWayForward #BeaconOfHope #BeTheEcception #Success  @BorisJohnson  https://t.co/6bApAE8jUX</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1243546258956079112">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 08:41:20</td>
+                <td class ="content_left">Hiya, Horses can catch and pass on to humans the coronavirus but there are vaccines available for older strains, but as I am aware there is no vaccine for the current <span style="color: yellow;">COVID-19</span> for horses. They spread in their saliva and manure. We have closed @PaddockSanctury @0DegreesCelsius https://t.co/AmfpbABpxy</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1243095682405273601">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 17:45:16</td>
+                <td class ="content_left">You are welcome @MorrowJammeh  What is like your part of the world, we are in what is called 'May Weathers', we just do not know what will happen, hot days, <span style="color: yellow;"><span style="color: yellow;">cold</span></span> wet windy days. Then we get June and it starts to go hot. https://t.co/tq9lMHozNd</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1259902407653326857">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 10:15:05</td>
+                <td class ="content_left">maybe this one @mindymilers VDay celebrations not happening due to the <span style="color: yellow;">COVID19</span> https://t.co/pvjWqzzTMa</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1258701951262429186">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 06:08:14</td>
+                <td class ="content_left">@9and10News I have sent you a direct message re the <span style="color: yellow;">COVID19</span> virus, I have positive results of how we can turn this around.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1247043419119198211">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 16:07:42</td>
+                <td class ="content_left">So GOOD You Can <span style="color: yellow;">TASTE</span> IT! - LOVE The SOUND Of Your OWN VOICE! https://t.co/hp7Es85jrD via @YouTube #live singing lessons with @kentamplin now!</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1254079649115713538">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 15:14:36</td>
+                <td class ="content_left">So feeling much better from the #COVID19 from my testing sugar is feeding the virus, cut all sugars out of diet if ill, including <span style="color: yellow;"><span style="color: yellow;">cough</span></span> mixture, and hospitals check drips #dextrose is sugar!! 
+Who am I? - Creator of https://t.co/Rfv9IjsODf 1st code ever equine language, baseline. https://t.co/KfINcDbiff</td>
+                <td>2</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1247905690733154304">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 13:03:59</td>
+                <td class ="content_left">Everything you have in here is feeding it @wheelbrookmill  one common denominator that is also in drips in hospitals and <span style="color: yellow;"><span style="color: yellow;">cough</span></span> mixtures #sugar!  What breaks down the virus, I physically observed it happening on mucus samples over a period of 25 hours is hz frequency music 741. https://t.co/bEL50KmWZp</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1247148043230683143">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 13:04:59</td>
+                <td class ="content_left">@wheelbrookmill Thank you Debbie, glad to see someone is here really on Social Media. I am still working on getting in <span style="color: yellow;">touch</span> with the right teams in the government to see my research. #BeaconOfHope</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1247148298261200909">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-03 11:57:00</td>
+                <td class ="content_left">Lets brighten the day shall we?  #lovesongs ;) #Washroom #singing when on holiday in Miami.  Sometimes when we <span style="color: yellow;">touch</span> ~ Meljay Turner washroom singing https://t.co/HFhhU2nfvU via @YouTube  
+ #goodmorningbritain</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1234809999999803393">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-16 01:33:51</td>
+                <td class ="content_left">Watch "Sometimes when we <span style="color: yellow;">touch</span> ~ Meljay Turner washroom singing" on YouTube https://t.co/CysdalC89I</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1228854974215598080">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-04 10:18:02</td>
+                <td class ="content_left">Adding a little <span style="color: yellow;">touch</span> to your home, look out for the special offers an handy gadgets to make life easier.  https://t.co/MND8oDqy5S 😁 😎 https://t.co/QPbz4EQikb</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1224638233587470337">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-12 11:06:01</td>
+                <td class ="content_left">#washroom #singing #4mylove
+Sometimes when we <span style="color: yellow;">touch</span> ~ Meljay Turner   https://t.co/HFhhU2nfvU via @YouTube</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1216315387291283456">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recover</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recover"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 17:36:12</td>
+                <td class ="content_left">Hi @jack I would just love to get a whole song out  without a
+Having to upload to YouTube first. Hugs and smiles. Quarantine now 13 days  bedroom away from the family in  <span style="color: yellow;"><span style="color: yellow;">recover</span></span> #COVID2019 x https://t.co/jnsxI8Lxot</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1246854164875010059">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">throat pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "throat pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 14:09:03</td>
+                <td class ="content_left">@RichardBranson @virgingalactic I am in recovery from the @COVID-19 and have been tracking it. #BeTheException My early warning signs were upper <span style="color: yellow;"><span style="color: yellow;">throat pain</span></span>s, followed by brief throat infection then into the upper lungs. Spreadsheet available at https://t.co/NPfU1zsUMu https://t.co/IlJyL9vVJm</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1245352478566232067">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Sneezes</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Sneezes"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 07:57:32</td>
+                <td class ="content_left">Hi Peter, @AcademyOfRock  no I am not troubled, thankfully I am an introvert and enjoy the solitude it brings, online shopping, and being out in nature at @PaddockSanctury has benefits of achievement! You keep away from the <span style="color: yellow;">sneezes</span> and diseases! ;)   Good morning :D &lt;3 https://t.co/Z9WmVLgP1I</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1241997495091236864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Sneeze</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Sneeze"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 06:45:51</td>
+                <td class ="content_left">#fromnowonwewill take time to wash our hand more regularly and stop coughing over people. One study I looked at in 2014 showed that <span style="color: yellow;">sneeze</span> particles can travel as far as 200 feet, 1-meter gaps in shops is not enough if you are already coughing and sneezing.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1241979454559260672">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-10 05:26:03</td>
+                <td class ="content_left">Eliminating Chronic <span style="color: yellow;">Pain</span> https://t.co/KLt5qwEOiz  #health #success #awayforward</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1226739080282722304">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shaking</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shaking"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-12 00:40:42</td>
+                <td class ="content_left">Wow haven't heart <span style="color: yellow;">Shaking</span> Steven's in years. Totally love this one! &lt;3 what ever happened to him. https://t.co/qWzNwovHhe</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1216158021853773824">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sore throat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sore throat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-07 23:00:23</td>
+                <td class ="content_left">Which do you prefer slow?  Wanted - revamp  https://t.co/hsx0ioTYr4 
+<span style="color: yellow;"><span style="color: yellow;">sore throat</span></span> version! https://t.co/VOrDM6nEC8</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1214683227471929347">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-03 23:42:00</td>
+                <td class ="content_left">Song time - It's your love!
+Just a bit of fun sing time, had a <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span> at the time. https://t.co/SIhCawfDU9</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1213244149736099847">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-02 23:26:01</td>
+                <td class ="content_left">Although sung with a <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span>, still enjoy listening to this one. :D   Wanted!  https://t.co/aeQNkcXwQG</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/MeljayTurner/status/1212877736580124672">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

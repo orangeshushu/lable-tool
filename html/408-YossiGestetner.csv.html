@@ -1,0 +1,824 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>408-YossiGestetner.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 408-YossiGestetner.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">408-YossiGestetner.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cancer</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cancer"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 13:16:26</td>
+                <td class ="content_left">@melissadderosa The idea that prolonged lockdowns, never tried on a mass scale in modern times, is a net life saver while opening is about profits, is false! Look at the reports of suicides and fatal ODs rising in recent months while doctor care for <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> etc dropping.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1265995346234269705">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 19:38:40</td>
+                <td class ="content_left">@rorynyc @AlexBerenson @BuckSexton @JordanSchachtel @dbongino @brithume @NolteNC No. The argument against a lockdown is not Economic. The argument is that prolonged lockdowns are causing a reduction in vaccinations, <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> screenings and healthcare employment, while increasing suicides, fatal ODs and domestic abuse.</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1265004374029451269">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 05:25:44</td>
+                <td class ="content_left">It’s insane to implement policies which lead to a cut in vaccination, <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> screening, and health care jobs; and a rise in suicides, fatal ODs and domestic violence until we know it all. The less we know, the less these policies make sense. I am not sure what you are arguing. https://t.co/Y0MuAn7MSk</td>
+                <td>8</td>
+                <td>36</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1264789729360388096">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 03:15:22</td>
+                <td class ="content_left">@RonwellQDobbs @MelissaRusso4NY @Tom_Winter No one’s child should die from lack of access to care created by the lockdowns! 1.4 MILLION healthcare workers nationwide lost their jobs in April! <span style="color: yellow;">Cancer</span> screening etc are not happening normal! Calls to suicide hotline and ODs are rising. Need balanced policies.</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1260408267320238081">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 23:45:09</td>
+                <td class ="content_left">@AndrewDesiderio @burgessev @marianne_levine “Eager to revive the flailing economy”? More like eager to reduce suicides, ODs and lack of care to non-Covid items such as for <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> patients. See this short clip. Thank you. https://t.co/q6fqY5xFaf</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1260355362353528832">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 19:40:19</td>
+                <td class ="content_left">@curaffairs Did you see stats of recent calls to suicide hotlines and the spike in ODs? Seen studies from past downturns showing that prolonged unemployment brings death from despair and from lack of care (for <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> patients, etc)? Lockdows are not a one-way street you arrogant duck!</td>
+                <td>8</td>
+                <td>15</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1258119423455608832">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 15:07:37</td>
+                <td class ="content_left">- NEW STUDY: 1.4 MILLION are expected to die globally from tuberculosis due to lockdown delaying needed care. https://t.co/uPic6Barvo
+
+- OLDER STUDY: economic downturn (of 2008) linked with at least 260K excess global <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> deaths. https://t.co/kZCkeBwCJx
+
+#LockdownGovernors</td>
+                <td>38</td>
+                <td>58</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1258050795263713282">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 02:56:08</td>
+                <td class ="content_left">@TextHQ @speechboy71 <span style="color: yellow;">Cancer</span> pateints are suffering now from the lockdown.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1257866710767542274">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 23:36:03</td>
+                <td class ="content_left">Cuomo keeps repeating - as late as today! - that Covid cost are lives but shutdown costs are only economic. Really? See years of data showing the human cost to economic downturns: Suicides, Drug ODs to more <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> deaths. Forget studies. See news from NY of April 2020! https://t.co/v7vFr4GuKS</td>
+                <td>28</td>
+                <td>81</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1257816357229428742">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 22:21:43</td>
+                <td class ="content_left">Global economic downturn (of 2008) linked with at least 260,000 excess <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> deaths, per a study by multiple colleges including Imperial. 
+
+https://t.co/kZCkeBwCJx
+
+@speechboy71 how many LockdownDeaths are ok with you?</td>
+                <td>8</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1257797653246640136">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 00:43:59</td>
+                <td class ="content_left">@RMConservative @JordanSchachtel A NY <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> patient with whom I spoke mid/late-March, could not go to Baltimore to treat a flare up becasue everything non-Corona was shut. He was instead sent to a local hospital. He is now six feet under.</td>
+                <td>19</td>
+                <td>31</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1257108676755800068">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Difficulty breathing</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Difficulty breathing"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 01:54:16</td>
+                <td class ="content_left">.@Cernovich Stone-cold killer ignored a 2 minute pea of <span style="color: yellow;">difficulty breathing</span> and like a mindless robot kept his knee for another FOUR MINUTES after the victim became quiet. What did that mentally-challenged thug and his co-thugs think happened that the person became quiet?</td>
+                <td>8</td>
+                <td>44</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1265823674780790784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Difficulty breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Difficulty breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 01:54:16</td>
+                <td class ="content_left">.@Cernovich Stone-cold killer ignored a 2 minute pea of <span style="color: yellow;">difficulty breath</span>ing and like a mindless robot kept his knee for another FOUR MINUTES after the victim became quiet. What did that mentally-challenged thug and his co-thugs think happened that the person became quiet?</td>
+                <td>8</td>
+                <td>44</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1265823674780790784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asymptomatic</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asymptomatic"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 03:37:08</td>
+                <td class ="content_left">Shutdowns were done with the thinking that Covid is 10 to 34 deadlier than the flu. CDC last week puts it at 4 times the flu. It drops to under 3 times the flu when adding <span style="color: yellow;"><span style="color: yellow;">asymptomatic</span></span> cases. This is huge/great news but nobody is home.</td>
+                <td>78</td>
+                <td>194</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1265124785207607303">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 03:37:02</td>
+                <td class ="content_left">.@Noahpinion Or... <span style="color: yellow;">Covid-19</span> is not the mass contagion that you think it is. Otherwise the no/low lockdowm Sweeden would have had a much higher rate. https://t.co/BUuxgFHuQb</td>
+                <td>9</td>
+                <td>39</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1264762373719588866">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 13:26:46</td>
+                <td class ="content_left">“Professor Adrian Hill said an upcoming Oxford vaccine trial, involving 10,000 volunteers, threatened to return ‘no result’ because of low transmission of <span style="color: yellow;">COVID-19</span> in the community.” - 5/24/20 https://t.co/IYcQKQHYbZ
+
+cc @kerpen @AlexBerenson @jeffmason1 @kaitlancollins</td>
+                <td>16</td>
+                <td>41</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1264548398272831488">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 12:46:36</td>
+                <td class ="content_left">@NYCGreenfield NY/NJ combiend have only 8.6% of the US population but they have 40.7% of <span style="color: yellow;">Covid-19</span> deaths as of now.
+
+https://t.co/7GlJcsL6RW</td>
+                <td>16</td>
+                <td>38</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1264538286300844037">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 14:02:08</td>
+                <td class ="content_left">Of 22,843 Coronavirus deaths in NY, 14 are under the age of 20. This is 0.061% of all Coronavirus deaths. In 2017, children this age were 1.15% of all deaths in NY which is 18.8 times worse than their portion among <span style="color: yellow;">Covid-19</span> deaths. https://t.co/BcXpNVG1Xm</td>
+                <td>31</td>
+                <td>76</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1263107744988569603">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 17:02:07</td>
+                <td class ="content_left">@bern_hogan I just spoke to <span style="color: yellow;">Covid-19</span> of the Southern Tier via phone and it promised me not to cross into Fingner Lakes becasus a human being decided that it’s a different region and a region that is ready to open. Coivd tells me that its decision is data/science-based. https://t.co/CDjuATU9H5</td>
+                <td>2</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1259891547363041280">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 14:53:29</td>
+                <td class ="content_left">@LizMair @NYCHealthCommr @MarkLevineNYC @mnholcombe @DavidOlson11 @GannettAlbany @sarbetter @NickReisman @ZackFinkNews @NYCSpeakerCoJo @StephenLevin33 @SEichenstein @Pinnyringel @NYSEDNews @Dani_Lever @melissadderosa @RichAzzopardi @KarinGoldmark @lesliebrody Per a 4/29/20 article in Sky, Switzerland's <span style="color: yellow;">COVID-19</span> response leader says scientists now know “young children don't transmit the virus.” He says brief physical contacts between young children and grandparents is ok.
+
+https://t.co/7N1EYaB4jz</td>
+                <td>5</td>
+                <td>14</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1259859175682834434">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 17:49:10</td>
+                <td class ="content_left">@brithume @kerpen Switzerland's <span style="color: yellow;">COVID-19</span> response leader says scientists now know “young children don't transmit the virus.” He says brief physical contacts between youmg children and grandparents is ok per a 4/29/20 article in Sky. https://t.co/7N1EYaB4jz</td>
+                <td>9</td>
+                <td>38</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1259541003247202304">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 21:29:13</td>
+                <td class ="content_left">Oy. @realDonaldTrump says: 'Possible there will be some' <span style="color: yellow;">COVID-19</span> deaths as country reopens.
+
+The line to use is “endless lockdowns  lead to deaths as seen from a spike in calls to suicide hotlines and an increased number in ODs, so we need to open in a smart way.”
+
+THREAD: https://t.co/HZfUYjTARy</td>
+                <td>10</td>
+                <td>37</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1257784440480247808">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 19:10:43</td>
+                <td class ="content_left">“Far fewer children are affected by <span style="color: yellow;">COVID-19</span> and transmissions from... children to adults is far less [than the flu]. - Australia’s Deputy Medical Chief 5/3/20. https://t.co/U1WrKBHMtn
+
+Scientists "now know young children don't transmit the virus.” - Swiss https://t.co/7N1EYaB4jz</td>
+                <td>9</td>
+                <td>20</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1257749583842680832">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 06:05:52</td>
+                <td class ="content_left">“Overdose deaths skyrocket in Pennsylvania during <span style="color: yellow;">COVID-19</span> pandemic.” - 4/22/20 https://t.co/JJ6TuXMxej
+
+In Jacksonville FL, OD calls were up 20% in March from Feb levels. https://t.co/jJayKkRNFV
+
+If these lockdowns can save one life.
+
+Reckless idiots!</td>
+                <td>39</td>
+                <td>92</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1257189684574326784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 17:49:07</td>
+                <td class ="content_left">Open Letter: Our Mom Survived <span style="color: yellow;">COVID-19</span> But Died Of Hopelessness, All Alone.
+
+Name: Lea Neuman.
+
+Hospital: Good Samaritan.
+
+Room: Loria 305.
+
+Date of death: April 23
+
+#NoPatientLeftAlone
+
+#CompanionsSaveLives 
+
+https://t.co/R83speakwN</td>
+                <td>75</td>
+                <td>89</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1254467556569755657">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 17:24:00</td>
+                <td class ="content_left">Moreover, CDC says the next <span style="color: yellow;">Covid-19</span> wave can be worse. Ok, so continue to build up Covid-only hospitals to be at the ready when needed. Nobody on his team is keeping track why we shutdown to begin with? Odd.</td>
+                <td>6</td>
+                <td>26</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1253011685968941056">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 13:18:15</td>
+                <td class ="content_left">“Why a study showing that <span style="color: yellow;"><span style="color: yellow;">covid-19</span></span> is everywhere is good news: If millions of people were infected weeks ago without dying, the virus must be less deadly than official data suggest.” (The Economist, Apr 11th 2020).
+
+The Yossi 3/19/20: https://t.co/BJe8gmtJXP</td>
+                <td>10</td>
+                <td>35</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1251862677846179843">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 13:17:49</td>
+                <td class ="content_left">“Why a study showing that <span style="color: yellow;"><span style="color: yellow;">covid-19</span></span> is everywhere is good news: If millions of people were infected weeks ago without dying, the virus must be less deadly than official data suggest.” (The Economist, Apr 11th 2020).
+
+The Yossi 3/24/20: https://t.co/csCr1uWUD0</td>
+                <td>71</td>
+                <td>143</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1251862568760721408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 20:52:16</td>
+                <td class ="content_left">Imagine the lives that could have been saved if for the last 10 days just a fraction of the focus that was given on so many things related to <span style="color: yellow;">Covid-19</span> was given to care at hospitals. Please read this thread and make a difference. Thank you! https://t.co/6jZrBCYm1M</td>
+                <td>14</td>
+                <td>23</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1251252160601432070">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 05:48:19</td>
+                <td class ="content_left">I did not spend much time on the fact that many <span style="color: yellow;">Covid-19</span> deaths are not lab-tested; it’s people who officials assume died from Covid.
+
+NY added 3,778 “probable” cases to its death count. This is more than 10% of the UNITED STATES count which is at 33K when counting those 3,778. https://t.co/6MIaUAf1ta</td>
+                <td>7</td>
+                <td>20</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1251024672617103361">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 14:47:36</td>
+                <td class ="content_left">They said 14 days is enough to crush <span style="color: yellow;">Covid-19</span> and that hospitalizations run two weeks behind infections. Ok. Italy and Spain a month+ into full lockdowns are still losing 10 times more people a day than pre-lockdown. At what point do we get answers beyond “could have been worse”? https://t.co/C3yCrdvmnC</td>
+                <td>42</td>
+                <td>110</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1249348447985176580">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 01:53:09</td>
+                <td class ="content_left">At the time you became AG, the IC - per Brennon and Clapper - had no evidence of collusion despite an unprecedented spying operation involving FISA and human sources. You had the power and duty to tell Comey at al to <span style="color: yellow;"><span style="color: yellow;">cough</span></span> up or shut up. Instead, you rolled over. https://t.co/nnLm0tABsp</td>
+                <td>45</td>
+                <td>109</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1264373841167560705">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">illusion</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "illusion"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 15:52:05</td>
+                <td class ="content_left">Until today, Cuomo’s lockdown policies are driven by his <span style="color: yellow;"><span style="color: yellow;">illusion</span></span> that we had 20K hospitalizations (not 150K) and 5,100 ICUs (not 30,000+) because the lockdowns worked and not because Coronavirus’ hospital/ICU rates are way lower than what he thought it is.</td>
+                <td>3</td>
+                <td>15</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1263860190182608899">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 14:34:15</td>
+                <td class ="content_left">Heartless thugs. Stone <span style="color: yellow;"><span style="color: yellow;">cold</span></span> henchmen! https://t.co/wdxdGuWa0c</td>
+                <td>8</td>
+                <td>22</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1262028662678990850">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 01:26:47</td>
+                <td class ="content_left"><span style="color: yellow;">Cold</span> blooded thugs. https://t.co/8AToiZuGQS</td>
+                <td>32</td>
+                <td>66</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1259293775542837249">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 06:03:19</td>
+                <td class ="content_left">It will be <span style="color: yellow;"><span style="color: yellow;">cold</span></span> in hell if we R all judged by the brass knuckle &amp; trolling language used on Twitter.
+
+In 2016, @realDonaldTrump hosted a roundtable with reps from the (mostly Orthodox) Jewish Community. I chaired it. @MichaelRCaputo arranged it. See:
+
+https://t.co/SezMeepF68
+
+👆🏼 https://t.co/jiWzuyRiHy</td>
+                <td>5</td>
+                <td>31</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1254289940206272515">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 07:59:27</td>
+                <td class ="content_left">It’s 18 times worse in the fu despite the vaccine! Every life is precious including the lives of children upended because their parents have mental breakdowns, return to alcohol/drug or commit suicide due to an economic calamity. Mr @NYGovCuomo, as <span style="color: yellow;"><span style="color: yellow;">cold</span></span> as it may appear, govrnmnt</td>
+                <td>3</td>
+                <td>25</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1251057673405173761">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">medicine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "medicine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 02:06:26</td>
+                <td class ="content_left">@esqonfire Shows you the deficiency of testing testing testing this late in an outbreak with no <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> to it. Any time you will feel off you will think maybe you have it. Will stay home for a few days and then test again and then what?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1261840468201046017">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 14:51:05</td>
+                <td class ="content_left">@DanG_NYC @GarethRhodes Lack of a better option does not make the current process prudent or achievable. Real “fix” is to keep reasonable distancing/hygiene; doctors to guide the public what exercise/vitamin routines may limit Covid from being strong; coming up with <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> &amp; upping hopsital capacity.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1257684246833106949">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-15 19:52:46</td>
+                <td class ="content_left">@JonCampbellGAN @markpoloncarz Yes Jon. Missing the spike in <span style="color: yellow;"><span style="color: yellow;">drug</span></span> overdoses in WNY. This sends more people to the hospital so if they have Corona they are counted as Corona despite being there due to lockdown-induced <span style="color: yellow;">Drug</span> ODs. Read in Spectrum for the OD issue.
+
+https://t.co/gPSkSbGhzb</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1261384045583163392">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 17:22:01</td>
+                <td class ="content_left">“As many as 75,000 Americans could die because of <span style="color: yellow;"><span style="color: yellow;">drug</span></span> or alcohol misuse and suicide as a result of the coronavirus pandemic, according to an analysis conducted by the national public health group Well Being Trust.” - CNN 5/8/20 https://t.co/BW095jEsQu
+
+If we can save one life... https://t.co/WvaUGI4UC1</td>
+                <td>11</td>
+                <td>41</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1259534168221986816">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 23:36:03</td>
+                <td class ="content_left">Cuomo keeps repeating - as late as today! - that Covid cost are lives but shutdown costs are only economic. Really? See years of data showing the human cost to economic downturns: Suicides, <span style="color: yellow;">Drug</span> ODs to more cancer deaths. Forget studies. See news from NY of April 2020! https://t.co/v7vFr4GuKS</td>
+                <td>28</td>
+                <td>81</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1257816357229428742">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 14:15:42</td>
+                <td class ="content_left">@davidharsanyi @redsteeze David, your tweet assums that lockdowns don’t lead to deaths. Look at the spike in <span style="color: yellow;"><span style="color: yellow;">drug</span></span> ODs across the US. So the counter to @secupp is not that we risk lives in hundreds of ways every day.’ Instead, LOCKDOWNS LEAD TO DEATHS TOO!
+
+Thread of recent stories: https://t.co/eLJX2wDug1 https://t.co/ds1mZUyiUZ</td>
+                <td>4</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1257675339360358400">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 01:21:08</td>
+                <td class ="content_left">@DanaBashCNN @GovChristie Dana, you are totally ignoring the massive spike in suicide issues and <span style="color: yellow;"><span style="color: yellow;">drug</span></span> OD desths caused by the lockdowns! Most reports (late March-mid April) are from only a few weeks of lockdowns. This is sadly just getting started!
+
+THREAD:
+
+https://t.co/8FrpLkABQG https://t.co/HZfUYjTARy</td>
+                <td>9</td>
+                <td>26</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1257480414878478337">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 16:26:13</td>
+                <td class ="content_left">@AlexPilotUSA Financial? How about <span style="color: yellow;"><span style="color: yellow;">drug</span></span> ODs! 
+
+https://t.co/oeE1P9kv8T https://t.co/5NDg0hJqan</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1257345799383650307">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 05:43:49</td>
+                <td class ="content_left">“In Franklin County, Ohio, the coroner is warning of a continued spike in <span style="color: yellow;"><span style="color: yellow;">drug</span></span> deaths, including six on April 24. One week before, the coroner announced that five people died in a span of 12 hours.“ - https://t.co/1vBzkWJwPJ
+
+If we can save one life from Corona...</td>
+                <td>21</td>
+                <td>53</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1257184135665324032">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 16:23:47</td>
+                <td class ="content_left">@NYGovCuomo @RichAzzopardi @melissadderosa Mr Governor what do data &amp; science tell you about suicides and <span style="color: yellow;"><span style="color: yellow;">drug</span></span> ODs when unemployment is high (now in part because parents can’t work due to endless lockdowns and children at home)? Furgeson is the most bleak predictor on Corona and has been very wrong too, but according to</td>
+                <td>11</td>
+                <td>28</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1256258023401668608">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 01:24:09</td>
+                <td class ="content_left">@VolatilityRoad Suicides and <span style="color: yellow;"><span style="color: yellow;">drug</span></span> ODs are on the way up due to lockdown. That’s a few bullets for every Corona bullet.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1254219681885454336">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 16:53:41</td>
+                <td class ="content_left">About the US:
+
+In 2017, <span style="color: yellow;">Drug</span> ODs killed 70K.
+
+In 2018, 48K died from suicide.
+
+Every 1% increase in Unemployment (that holds for a year), increases ODs by 3.3% and suicides by 0.99%.
+
+If unemployment averages 20% for 2020 instead of 3.5% it will add 38K ODs and 8K suicides. https://t.co/5WIRcBaWKE</td>
+                <td>42</td>
+                <td>76</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1253004057977016321">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 17:27:14</td>
+                <td class ="content_left">About the US:
+
+In 2017, <span style="color: yellow;">Drug</span> ODs killed 70K.
+
+In 2018, 48K died from suicide.
+
+Every 1% increase in Unemployment (that holds for a year), increases ODs by 3.3% and suicides by 0.99%.
+
+If unemployment averages 20% for 2020 instead of 3.5% it will add 38K ODs and 8K suicides. https://t.co/C6GyhN30b0</td>
+                <td>99</td>
+                <td>150</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1252287722330390530">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 02:22:37</td>
+                <td class ="content_left">Power-abusing thug getting a <span style="color: yellow;"><span style="color: yellow;">taste</span></span> of his own cruelty. What a degenerate! Instead of using his oversight powers to hold the 2016 Gang accountable, he hauled in people to his committee at great financial/reputation costs. Will @senatemajldr ask @SenatorBurr to give up Intel chair? https://t.co/huIwZErAcm</td>
+                <td>44</td>
+                <td>93</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1260757378041069568">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diabetes</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diabetes"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 15:16:14</td>
+                <td class ="content_left">@TheStalwart @MattZeitlin @StephenLevin33 @BuckSexton @elonmusk @AlexBerenson @Betsy_McCaughey @NYCHealthCommr Data show that underlying health issues - especially issues that result from being overweight such as <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> - contribute to Covid death. As such, if you are any of the ISTS (economISTS; ScientISTS; epidemiologISTS), you need to factor demographics when comparing two countries.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1259864900681240576">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 00:11:11</td>
+                <td class ="content_left">BBC quotes @neil_ferguson: "I acted in the belief that I was immune, having <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for coronavirus and completely isolated myself for almost two weeks after developing symptoms.” Cool. So Neil Lockdown believes that once you have it, you are immune and R free to go out. https://t.co/WJ4Gk7GRkp</td>
+                <td>9</td>
+                <td>23</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1257825198058934273">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diagnosed with covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diagnosed with covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 15:48:47</td>
+                <td class ="content_left">Cuomo said that the number of new hospitalizations includes people that were already in a hospital but were now tested and also <span style="color: yellow;">diagnosed with Covid</span>. (This means people who are in hospital for other stuff but have Corona are counted).
+
+@JRubinBlogger Science; not gut. Right? https://t.co/ZPIiCQAfjR</td>
+                <td>12</td>
+                <td>25</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1257698768000036864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">painful</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "painful"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 14:54:22</td>
+                <td class ="content_left">@ykahan A Hasidic person from Monsey, NY stopped to help a stranger the other side of the country, but his life was snuffed out from one second to the next. This is a <span style="color: yellow;"><span style="color: yellow;">painful</span></span> incident. May his memory be a blessing and may God comfort the family.</td>
+                <td>16</td>
+                <td>53</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1257322683504619521">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 02:33:51</td>
+                <td class ="content_left">@Brian_Verlinde That’s <span style="color: yellow;"><span style="color: yellow;">painful</span></span></td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1253512446884577287">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 17:25:27</td>
+                <td class ="content_left">So stay locked in until after New Year’s. (Oh and your math is way off too but I am too <span style="color: yellow;"><span style="color: yellow;">tired</span></span> to explain it). https://t.co/nq9pctTMMc</td>
+                <td>5</td>
+                <td>25</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1253012052400054274">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 15:51:01</td>
+                <td class ="content_left">.@DavidLimbaugh Before long, loads - I mean LOADS - of New Yorkers will start to travel West amd South for a change of scenery/vacation with their family while no one from the rest of the country will want to <span style="color: yellow;">touch</span> NY with a ten foot pole. Fun days/weeks are coming.</td>
+                <td>4</td>
+                <td>16</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1251901121804881921">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">no symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "no symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 02:30:16</td>
+                <td class ="content_left">.@NYGovCuomo BTW, the likelihood that NY has now easily 1-2 million cases with symptoms does not include those who have/had Coronavirus but have/had <span style="color: yellow;"><span style="color: yellow;">no symptoms</span></span> so they did not even check. Furthermore, for a few weeks before the lockdown, New Yorkers were told to quarantine for</td>
+                <td>7</td>
+                <td>40</td>
+                <td><a href="https://twitter.com/YossiGestetner/status/1250974833237688321">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

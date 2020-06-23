@@ -1,0 +1,1131 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>375-thakur_shivangi.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 375-thakur_shivangi.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">375-thakur_shivangi.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 08:07:52</td>
+                <td class ="content_left">For healthcare team to give proper treatment on time. Now just imagine, one patient not only has serious symptoms of <span style="color: yellow;">Covid-19</span> but he is also a diabetic and trying hard to get admitted in both private/govt. hospitals from last 24hrs. No one is ready to treat him and (2/2)</td>
+                <td>45</td>
+                <td>161</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1265917695498821632">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 15:12:47</td>
+                <td class ="content_left">#Mumbai Corona Updates:
+ 
+- 1044 new corona positive cases reported today in mumbai.
+
+- 32 patients lost their lives due to <span style="color: yellow;"><span style="color: yellow;">covid-19</span></span> and 240 recovered/discharged.
+
+- City total stands at 33835 with 1097 deaths.
+
+#maharashtralockdown #coronavirusinindia</td>
+                <td>13</td>
+                <td>87</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1265662240503369728">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 07:15:01</td>
+                <td class ="content_left">This video is from Rajawadi Hospital where one dead body kept near other female patients. One patient says, lady who died and wrapped in plastic was tested positive for <span style="color: yellow;">Covid-19</span> and from last 12hrs dead body kept like this and no hospital staff visited the ward. VC: @NiteshNRane https://t.co/IIkDgYi74S</td>
+                <td>25</td>
+                <td>84</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1264454844179451904">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 13:22:48</td>
+                <td class ="content_left">Actor Akshay Kumar donates 1000 wrist bands to @MumbaiPolice to help detect <span style="color: yellow;">COVID-19</span> symptoms. He is the brand ambassador of a leading health brand who announced a major breakthrough in early covid detection through its wrist band with sensors to detect <span style="color: yellow;">COVID-19</span> symptoms.</td>
+                <td>181</td>
+                <td>1044</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1260923519199670272">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 12:21:09</td>
+                <td class ="content_left"><span style="color: yellow;">Covid-19</span> counts inches closer to 1000 in #Dharavi. 46 new corona positive cases reported today with one death. Dharavi total cases stands at 962 with 31 deaths so far.</td>
+                <td>10</td>
+                <td>98</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1260183230092677122">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 03:26:48</td>
+                <td class ="content_left">21 serving personnel have been tested positive for <span style="color: yellow;">Covid-19</span> within Navy Premises in Mumbai. This number includes 20 Sailors of INS Angre. There are no cases of infection onboard Ships and Submarines. #coronaupdatesindia #MumbaiLockdown</td>
+                <td>13</td>
+                <td>90</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1251351446521438213">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 13:18:31</td>
+                <td class ="content_left">#Dharavi corona positive cases crosses 100. Today 15 new cases reported and dharavi total stands at 101. As of now 10 people lost their lives due to <span style="color: yellow;">Covid-19</span> from the area.</td>
+                <td>26</td>
+                <td>132</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1251137969009815553">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 10:07:45</td>
+                <td class ="content_left"><span style="color: yellow;">Covid-19</span> is a current crisis for the entire world n every administration is trying their best to deal with it but in mumbai apart from this virus, we have to be also prepared for upcoming monsoon season. Every year we face many problems and it's an important issue for mumbaikars.</td>
+                <td>15</td>
+                <td>191</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1251089962923028480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 18:20:04</td>
+                <td class ="content_left">As of now 194 people died in Maharashtra due to <span style="color: yellow;">Covid-19</span> out of which 116 patients are form Mumbai.</td>
+                <td>28</td>
+                <td>109</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1250851469919543296">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 12:57:29</td>
+                <td class ="content_left">Lots of people worry about taking <span style="color: yellow;">Covid-19</span> test, but that's the only way to know your status. I am a field reporter and as many journalists tested positive here in mumbai, I also......continued
+
+https://t.co/tqtPyao3Qu https://t.co/rg6ibuCINX</td>
+                <td>77</td>
+                <td>914</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1250770287114612736">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 19:16:41</td>
+                <td class ="content_left">It's late but this information is as important as anything else. Maharashtra corona positive cases rise to 2684 out of which 1756 cases reported from Mumbai. 11 people lost their lives due to <span style="color: yellow;">Covid-19</span> today in Mumbai and 204 new cases reported. 23 people recovered and discharged.</td>
+                <td>43</td>
+                <td>233</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1250140939156258817">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 13:55:36</td>
+                <td class ="content_left">Death toll reaches 100 in mumbai, 9 people died today due to <span style="color: yellow;">Covid-19</span> #Maharashtra</td>
+                <td>19</td>
+                <td>182</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1249697748380598275">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 12:30:25</td>
+                <td class ="content_left">4 new corona virus positive cases reported today from asia's largest slum #Dharavi. One 60 years old man died due to <span style="color: yellow;">Covid-19</span> and its a 5th death from the area. It's also difficult for cops to maintain social-distancing. Watch my on ground report.
+
+Link: https://t.co/7JqpI1HRIj https://t.co/bt0aeVSq3i</td>
+                <td>22</td>
+                <td>189</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1249676312785989633">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 14:37:29</td>
+                <td class ="content_left">BIG: Mumbai sees highest one day death toll from corona virus. 16 people lost their lives in mumbai today due to <span style="color: yellow;">Covid-19</span> and 217 new cases reported. 26 patients recovered and discharged. Mumbai corona virus cases now stands at 1399. #Mumbailockdown</td>
+                <td>22</td>
+                <td>124</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1249345904219308033">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 13:55:09</td>
+                <td class ="content_left">189 new cases and 11 deaths related to <span style="color: yellow;">Covid-19</span> reported today in Mumbai, taking the total number of Corona Virus cases in the city to 1182 with 75 deaths.</td>
+                <td>20</td>
+                <td>172</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1248972859096981504">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 12:32:51</td>
+                <td class ="content_left">Another death in mumbai's #Dharavi due to corona virus. One 70year old lady lost her life today in KEM hospital. This is the third death in dharavi due to <span style="color: yellow;">Covid-19</span> and total cases stands at 14.</td>
+                <td>19</td>
+                <td>145</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1248227372903452672">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 18:44:24</td>
+                <td class ="content_left">Mumbai's NSCI dome being transformed into a huge quarantine centre after BMC step up for contact tracing and testing. Just in two days BMC converted NSCI in large <span style="color: yellow;">Covid-19</span> Quarantine Centre which can accommodate around 400-500 patients. https://t.co/99T0NjLr0f</td>
+                <td>17</td>
+                <td>120</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1247958489017626624">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 15:15:34</td>
+                <td class ="content_left">In maharashtra, there were 8 deaths reported due to <span style="color: yellow;">Covid-19</span> today. Out of which 5 from Mumbai, 2 from Pune and 1 from Kalyan-Dombivali. Mostly people who died today was also diabetic and suffering from lung infections. #maharashtralockdown</td>
+                <td>17</td>
+                <td>93</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1247905932849188872">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 16:19:22</td>
+                <td class ="content_left">One 38 year old pregnant lady from Nalasopara area tested positive and died in Mumbai. This lady lost her life of 4th of April but her <span style="color: yellow;">Covid-19</span> test results came out today where she tested positive. Municipal Corporation sent everyone to isolation who came in contact with her.</td>
+                <td>50</td>
+                <td>254</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1247197213781970944">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 12:16:03</td>
+                <td class ="content_left">मुंबईः धारावी में <span style="color: yellow;">Covid-19</span> से मरने वाले शख्स ने अपने घर दी थी तबलीगी जमातियों को पनाह. https://t.co/WiHfTDSG6w</td>
+                <td>29</td>
+                <td>106</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1246411206690250757">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 15:42:47</td>
+                <td class ="content_left">In this corona crisis, BMC and Health Department are performing their duties well, but individually. Because the numbers related to <span style="color: yellow;">Covid-19</span> given by Health Department n BMC never match exactly. Why is this miscommunication n why u are not on the same page? @mybmc @rajeshtope11</td>
+                <td>6</td>
+                <td>31</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1244651292162527234">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 12:37:29</td>
+                <td class ="content_left">All MPs of BJP will release Rs 1crore from their MPLADS fund to the Central Relief Fund in support to fight against <span style="color: yellow;">Covid-19</span> : JP Nadda #Coronaindia</td>
+                <td>9</td>
+                <td>90</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1243879883605864450">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">mild symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "mild symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 08:07:03</td>
+                <td class ="content_left">Private hospitals are not even touching the patient if they have any symptoms of Covid-19. Government hospitals are full. Administration says people should come forward when they have <span style="color: yellow;"><span style="color: yellow;">mild symptoms</span></span>, so it will be easy (1/3)</td>
+                <td>91</td>
+                <td>379</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1265917489587896320">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 08:08:48</td>
+                <td class ="content_left">As of now in maharashtra we have done 66,800 corona virus test out of which 95% tested negative. 
+
+70-75% people have <span style="color: yellow;"><span style="color: yellow;">mild symptoms</span></span>. From 6 months infant to 90yr old patient recovered and discharged : #UddhavThackeray</td>
+                <td>11</td>
+                <td>82</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1251784802602291200">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 19:49:16</td>
+                <td class ="content_left">Patient is in the ambulance and still waiting for the medical assistance. His BP is high and now he got <span style="color: yellow;"><span style="color: yellow;">fever</span></span> also. It's an emergency case, please tell your team to do something as soon as possible. There is no response yet. https://t.co/XgK6S6CzU3</td>
+                <td>51</td>
+                <td>183</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1265731817987952640">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 15:51:38</td>
+                <td class ="content_left">2 members of filmmaker #KaranJohar's household staff <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for Covid-19.</td>
+                <td>28</td>
+                <td>254</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1264947242823188485">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 17:25:38</td>
+                <td class ="content_left">One more minister from maha vikas aghadi in maharashtra <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for Covid-19.</td>
+                <td>35</td>
+                <td>419</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1264608508193824768">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 07:15:01</td>
+                <td class ="content_left">This video is from Rajawadi Hospital where one dead body kept near other female patients. One patient says, lady who died and wrapped in plastic was <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for Covid-19 and from last 12hrs dead body kept like this and no hospital staff visited the ward. VC: @NiteshNRane https://t.co/IIkDgYi74S</td>
+                <td>25</td>
+                <td>84</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1264454844179451904">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 14:36:03</td>
+                <td class ="content_left">BEST employees are doing their best in this pandemic and just like mumbai police officials, they are also getting affected by Covid-19. 9 more best workers have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for #COVID19 today. Total positive cases in BEST is now 137 and 62 recovered and discharged.</td>
+                <td>15</td>
+                <td>133</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1262753891386458112">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 14:49:21</td>
+                <td class ="content_left">Out of 1,90,879 laboratory samples, 1,73,838 were negative and 16,758 have been <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for corona virus until today in maharashtra.</td>
+                <td>19</td>
+                <td>146</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1258046198532861953">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 09:08:33</td>
+                <td class ="content_left">Finally time has come for second test for Covid-19. It's been a week under isolation as i <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> in my first test. Fingers crossed. Thanks for all the blessings and prayers for my speedy recovery 🙏</td>
+                <td>220</td>
+                <td>3435</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1253974163926245376">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 15:36:56</td>
+                <td class ="content_left">Dear All, 
+
+Many are trying to reach out to me and wanted to know whether I am ok or not. Unfortunately I am one of those mumbai journalist who <span style="color: yellow;">tested POSITIVE</span> for corona virus but I am doing well as of now. I keep praying, hoping and believing that soon I will win this battle.</td>
+                <td>3069</td>
+                <td>35009</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1252622356297789442">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 07:35:02</td>
+                <td class ="content_left">24 more staff from Wockhardt Hospital <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>, taking the tally to 80. 
+
+31 nurses and 5 doctors from Jaslok Hospital <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>.
+
+25 staff from Bhatia Hospital <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> as of now.
+
+Many other hospital of mumbai have corona positive staff. It's scary!</td>
+                <td>127</td>
+                <td>298</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1251776303591636992">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 12:30:26</td>
+                <td class ="content_left">16 new cases reported from #Dharavi today and area total stands at 117. As of now 10 people died due to Covid-19. One man from baliga nagar area of dharavi attended markaz recently and <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>, later died. Now his niece also <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>.</td>
+                <td>17</td>
+                <td>122</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1251488257428213760">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 10:21:22</td>
+                <td class ="content_left">21 Indian Navy Personnel of #INSAngre (which is shore based logistical and administrative support depot for operations of the western naval command) <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for Corona Virus. They have been quarantined at a naval hospital in colaba. Watch my ground report #IndianNavy https://t.co/EW0dCOIsTY</td>
+                <td>12</td>
+                <td>138</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1251455774384992257">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 03:29:47</td>
+                <td class ="content_left">5 more constables in Mumbai <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for Covid-19. In last 24hrs, policemen from Khar, Juhu, Bangur Nagar and Kurar Village police station <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. Total corona positive cases in Mumbai Police Department reaches 14. #CoronaInMaharashtra</td>
+                <td>28</td>
+                <td>128</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1251352198908280833">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 03:26:48</td>
+                <td class ="content_left">21 serving personnel have been <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for Covid-19 within Navy Premises in Mumbai. This number includes 20 Sailors of INS Angre. There are no cases of infection onboard Ships and Submarines. #coronaupdatesindia #MumbaiLockdown</td>
+                <td>13</td>
+                <td>90</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1251351446521438213">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 18:29:06</td>
+                <td class ="content_left">Out of 56,673 lab samples, 52,762 were negative and 3202 have been <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for corona virus until today in Maharashtra.</td>
+                <td>27</td>
+                <td>203</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1250853741105778690">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 12:57:29</td>
+                <td class ="content_left">Lots of people worry about taking Covid-19 test, but that's the only way to know your status. I am a field reporter and as many journalists <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> here in mumbai, I also......continued
+
+https://t.co/tqtPyao3Qu https://t.co/rg6ibuCINX</td>
+                <td>77</td>
+                <td>914</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1250770287114612736">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 12:33:24</td>
+                <td class ="content_left">Breaking: One 55 years old Jamati from Mumbai's #Dharavi who recently visited Markaz in Nizamuddin, Delhi died in Sion Hospital today. This is 8th death count from the area and 60 <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>.</td>
+                <td>31</td>
+                <td>223</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1250401837880090627">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 14:27:39</td>
+                <td class ="content_left">Another TV journalist <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> in mumbai along with his cameraman.</td>
+                <td>186</td>
+                <td>1196</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1249705813750366210">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 13:33:00</td>
+                <td class ="content_left">25 staff members of a hospital in mumbai have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for Corona Virus. Their treatment is going on in the same hospital and all are stable. High risk contacts are quarantined in hospital itself and low risk are quarantined at their home. #MumbaiLockdown #coronavirus</td>
+                <td>20</td>
+                <td>126</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1249692063492263942">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 04:55:36</td>
+                <td class ="content_left">5th death in #Dharavi due to corona virus. One 60 years old male died in sion hospital. 4 news cases reported today, out of which one 34yr old nurse also <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. Total corona positive cases in dharavi stands at 47.</td>
+                <td>26</td>
+                <td>149</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1249561853308456960">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 03:45:28</td>
+                <td class ="content_left">3 journalists <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> in mumbai! https://t.co/xgSDKENMGf</td>
+                <td>169</td>
+                <td>709</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1249181818533875712">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 03:44:13</td>
+                <td class ="content_left">APMC market in vashi shuts down from today after one trader who runs masala shop <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. APMC market is the largest supplier of fruit, vegetables, spices and other edible commodities to Mumbai. #maharashtralockdown</td>
+                <td>45</td>
+                <td>208</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1248819115915014144">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 13:11:36</td>
+                <td class ="content_left">Breaking: Today in mumbai 9 people died who <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for novel corona virus and undergoing treatment for it. 79 new cases reported in last 24hrs and 6 people recovered. Mumbai total corona cases stands at 775. #MumbaiLockdown</td>
+                <td>24</td>
+                <td>141</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1248237124064702465">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 14:56:06</td>
+                <td class ="content_left">I clicked these pictures of @MumbaiPolice outside CM's residence matoshree. After a tea-seller who <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> in the area, all security personnel deployed for CM's safety has been sent to quarantine centres and these new police personnel replaced them. Salute their courage!! https://t.co/iQJzIrohZM</td>
+                <td>6</td>
+                <td>83</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1247901035760201732">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 11:06:12</td>
+                <td class ="content_left">One 50 year old female medical intensive care unit staff who lives in #Dharavi and works in mumbai's KEM hospital <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> today for corona virus. She is being shifted to Rajiv Gandhi Sports Complex for treatment. This is the 10th corona positive case from Dharavi.</td>
+                <td>18</td>
+                <td>93</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1247843181594460161">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 10:23:41</td>
+                <td class ="content_left">After his two daughters Shaza and Zoa, Bollywood producer #KarimMorani also <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for novel corona virus and being shifted to the hospital.</td>
+                <td>21</td>
+                <td>173</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1247832478124929024">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 06:26:24</td>
+                <td class ="content_left">Another journalist <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for novel corona virus in madhya pradesh.</td>
+                <td>179</td>
+                <td>942</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1247772764657729540">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 05:06:03</td>
+                <td class ="content_left">2 more new cases reported in world's largest slums #Dharavi. 25 year male from mukund nagar slum and another 35 year male from dhanwada chawl in Dharavi <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. Dharavi total cases stand at 9.</td>
+                <td>21</td>
+                <td>198</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1247752543490281473">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 11:21:10</td>
+                <td class ="content_left">BEST staff quarters has been sealed in parel area of Mumbai as some of the relatives of one bus conductor <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. Co-workers of this best employee has been also home quarantined. #Covid_19</td>
+                <td>18</td>
+                <td>98</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1247484559614083072">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 04:16:43</td>
+                <td class ="content_left">Breaking : 2 more corona positive cases reported in #Dharavi. Father-son due <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the novel corona virus. Daughter of the same family was earlier <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> and kept in isolation. Now dharavi corona positive case tally stands at 7.</td>
+                <td>24</td>
+                <td>150</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1247377740380155906">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 17:28:42</td>
+                <td class ="content_left">One 56 years old constable in Hyderabad <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. He was posted for lockdown enforcement duty and started feeling unwell. After his reports, many cops sent to quarantine. #CoronaUpdates</td>
+                <td>17</td>
+                <td>138</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1247214662623485955">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 16:19:22</td>
+                <td class ="content_left">One 38 year old pregnant lady from Nalasopara area <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> and died in Mumbai. This lady lost her life of 4th of April but her Covid-19 test results came out today where she <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. Municipal Corporation sent everyone to isolation who came in contact with her.</td>
+                <td>50</td>
+                <td>254</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1247197213781970944">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 05:59:43</td>
+                <td class ="content_left">First person from #dharavi, 56 years old male who <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> and died later hosted 5 to 6 people who attended #TabligiJamaat at Nizamuddin. Mumbai police is now tracing the details of this deceased man as well n trying to find out whether he also attended the jamaat or not.</td>
+                <td>15</td>
+                <td>101</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1246316498458677248">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 03:58:35</td>
+                <td class ="content_left">Breaking : first case of corona virus from BEST bus reported. One employee of BEST who was posted in wadala as a foreman <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. He is admitted in SRV Hospital. #MumbaiLockdown</td>
+                <td>27</td>
+                <td>133</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1245923628232757262">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 02:58:51</td>
+                <td class ="content_left">Another corona virus case reported from world's largest slum #Dharavi. One 35 years old Doctor from wockhardt hospital who lives in dharavi <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. Building where he stays will be quarantined and all high risk contacts will be find out. No travel history.</td>
+                <td>12</td>
+                <td>92</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1245908596237275137">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 06:44:02</td>
+                <td class ="content_left">Breaking : Second case from #Dharavi of Corona Virus, where one BMC sweeper <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. His treatment is going on in Seven Hills Hospital.</td>
+                <td>83</td>
+                <td>285</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1245602876442857475">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 14:10:28</td>
+                <td class ="content_left">Breaking : First case of corona positive from world's largest slum area #Dharavi, Mumbai are being found. 56 years old male patient with no travel history <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> and currently he is in Sion Hospital. His family of 7 member is also under observation. BMC seals the area.</td>
+                <td>59</td>
+                <td>260</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1245352835803262976">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 04:29:28</td>
+                <td class ="content_left">First cases of Covid 19 in paramilitary forces. One 57 year old BSF second-in-command rank officer who is posted in Gwalior <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. Another CISF head constable who is posted at Mumbai International Airport also <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> #CoronaUpdate</td>
+                <td>12</td>
+                <td>77</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1244119459482054656">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 19:12:31</td>
+                <td class ="content_left">5 more people <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for corona virus in maharashtra. 3 from Sangli, 1 from Kolhapur and 1 from Pune. Total number of confirmed corona cases in the state rise to 130 #coronavirusinindia</td>
+                <td>11</td>
+                <td>74</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1243254522010451968">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 10:19:16</td>
+                <td class ="content_left">Maharashtra positive tested cases for coronovirus is now 125. One more patient <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> in Nagpur #coronavirusindia</td>
+                <td>5</td>
+                <td>68</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1243120326080262144">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 04:28:57</td>
+                <td class ="content_left">One more death in mumbai. One 68 year old philippines citizen, initially <span style="color: yellow;">tested Positive</span> but subsequently become Negative, expired yesterday night in Kasturba Hospital, Mumbai. He was also diabetic and suffering from asthma #coronaupdatesindia</td>
+                <td>3</td>
+                <td>55</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1241945001640132610">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 07:57:11</td>
+                <td class ="content_left">How irresponsible !! One bollywood singer hidden her foreign travelling and her corona symptoms. On top of it she visited her home town too, threw party also attended one dinner party. During this process she came in contact with more than 500 people. Now she is <span style="color: yellow;">tested POSITIVE</span>.</td>
+                <td>136</td>
+                <td>509</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1240910241681657856">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 05:21:48</td>
+                <td class ="content_left">3 more people <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> in maharashtra and corona positive numbers rise to 52 in the state.
+
+#CoronaInMaharashtra #COVID</td>
+                <td>5</td>
+                <td>73</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1240871141058609153">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-14 01:03:59</td>
+                <td class ="content_left">A massive quarantine was carried out in Mumbai's #hindujahospital after a patient who had been admitted to the hospital <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> 4 #coronavirus. Now the patient transferred to Kasturba. 74 (low risk) people quarantined at home while 8 (high risk) isolated in the Hospital. https://t.co/tQ21J6LkLE</td>
+                <td>26</td>
+                <td>93</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1238631930448363522">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 17:19:40</td>
+                <td class ="content_left">Breaking : 2nd death in india due to #coronavirus. A 69 year old woman who <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for coronavirus infection dies in Delhi. https://t.co/mNOaj6UPgw</td>
+                <td>4</td>
+                <td>41</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1238515079865229312">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 11:05:21</td>
+                <td class ="content_left">Numbers are just increasing in our state and four more samples <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> in Nagpur(2) and Pune(2). Total numbers of #coronavirus reaches 17 in Maharashtra. 
+
+Pune - 10
+Mumbai - 3
+Thane - 1
+Nagpur - 3
+
+#coronavirusindia #coronavirusinindia</td>
+                <td>16</td>
+                <td>60</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1238420883351277568">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 04:18:15</td>
+                <td class ="content_left">Breaking : Google employee <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for #Covid_19 in Bangalore. Company told their employees in bangalore to work from home.</td>
+                <td>11</td>
+                <td>87</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1238318431490830339">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 02:22:25</td>
+                <td class ="content_left">Canada government officially announced that their Prime Minister #JustinTrudeau's wife Sophie Gregoire <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the #coronavirus.</td>
+                <td>8</td>
+                <td>76</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1238289282407649280">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-11 17:14:57</td>
+                <td class ="content_left">The total number of positive cases of #coronavirus in Maharastra rises to 11. After Mumbai and Pune one more sample in Nagpur <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>.
+
+8 - Pune
+2 - Mumbai
+1 - Nagpur
+ 
+#Corona #coronavirusinindia https://t.co/hxlkhcQ4UZ</td>
+                <td>15</td>
+                <td>39</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1237789117989007364">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-11 13:49:44</td>
+                <td class ="content_left">Breaking : Numbers have increased in maharashtra as there are 7 positive cases of #coronavirus in the the state now. 2 more patients admitted at Mumbai hospital have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. Already 5 positive cases were there from Pune. Be safe folks !!!</td>
+                <td>12</td>
+                <td>75</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1237737475725905920">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-04 16:44:29</td>
+                <td class ="content_left">#Paytm decided to shut their offices in Noida and Gurugram after one of its employee <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> with #coronavirus. This employee recently travelled to Italy. Now company advised all their employees to work from home while their offices get sanitized.</td>
+                <td>11</td>
+                <td>82</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1235244736807489536">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-21 05:34:57</td>
+                <td class ="content_left">#SAP shuts their india's offices as precautionary measures after two of their employees <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for H1N1 virus (Swine flu). Offices in Mumbai, Bangalore n Gurugram are temporarily closed n employee have been asked to work from home till the office premises are sanitised.</td>
+                <td>2</td>
+                <td>23</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1230727586256322560">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-03 06:58:21</td>
+                <td class ="content_left">Breaking : 3rd case of #coronavirus in India. Patient <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> in Kerala. All 3 cases of India corona virus is from #Kerala. https://t.co/KHPFyOtnhM</td>
+                <td>10</td>
+                <td>46</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1224225596332371969">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 15:51:38</td>
+                <td class ="content_left">2 members of filmmaker #KaranJohar's household staff tested <span style="color: yellow;">positive for Covid</span>-19.</td>
+                <td>28</td>
+                <td>254</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1264947242823188485">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 17:25:38</td>
+                <td class ="content_left">One more minister from maha vikas aghadi in maharashtra tested <span style="color: yellow;">positive for Covid</span>-19.</td>
+                <td>35</td>
+                <td>419</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1264608508193824768">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 07:15:01</td>
+                <td class ="content_left">This video is from Rajawadi Hospital where one dead body kept near other female patients. One patient says, lady who died and wrapped in plastic was tested <span style="color: yellow;">positive for Covid</span>-19 and from last 12hrs dead body kept like this and no hospital staff visited the ward. VC: @NiteshNRane https://t.co/IIkDgYi74S</td>
+                <td>25</td>
+                <td>84</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1264454844179451904">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 03:29:47</td>
+                <td class ="content_left">5 more constables in Mumbai tested <span style="color: yellow;">positive for Covid</span>-19. In last 24hrs, policemen from Khar, Juhu, Bangur Nagar and Kurar Village police station tested positive. Total corona positive cases in Mumbai Police Department reaches 14. #CoronaInMaharashtra</td>
+                <td>28</td>
+                <td>128</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1251352198908280833">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 03:26:48</td>
+                <td class ="content_left">21 serving personnel have been tested <span style="color: yellow;">positive for Covid</span>-19 within Navy Premises in Mumbai. This number includes 20 Sailors of INS Angre. There are no cases of infection onboard Ships and Submarines. #coronaupdatesindia #MumbaiLockdown</td>
+                <td>13</td>
+                <td>90</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1251351446521438213">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recovered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recovered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 15:38:06</td>
+                <td class ="content_left">#Mumbai corona positive cases rise to 31789 and 1430 new cases reported today. 38 patients lost their lives and 330 <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and discharged today.</td>
+                <td>15</td>
+                <td>141</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1264943834015948805">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 15:04:33</td>
+                <td class ="content_left">#Maharashtra corona positive cases rise to 41,642.
+
+64 deaths reported in last 24hrs.
+
+2345 new cases reported today.
+
+1408 patients <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and discharged today.</td>
+                <td>13</td>
+                <td>85</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1263485839297970177">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 15:30:10</td>
+                <td class ="content_left">1372 new corona positive cases reported today in #mumbai. City total stands at 23935. Today 41 patients lost their lives and 350 patients <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and discharged.</td>
+                <td>28</td>
+                <td>184</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1263129898765348864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 14:36:03</td>
+                <td class ="content_left">BEST employees are doing their best in this pandemic and just like mumbai police officials, they are also getting affected by Covid-19. 9 more best workers have tested positive for #COVID19 today. Total positive cases in BEST is now 137 and 62 <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and discharged.</td>
+                <td>15</td>
+                <td>133</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1262753891386458112">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 15:51:26</td>
+                <td class ="content_left">1185 new corona positive cases reported today in #Mumbai (300 cases are from 12-16 May) and 23 people died. Mumbai total stands at 21152. More than 500 patients <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and discharged today.</td>
+                <td>16</td>
+                <td>82</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1262410477532930048">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 15:02:43</td>
+                <td class ="content_left">884 new corona positive cases reported today in #Mumbai. 41 died and 238 patients <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and discharged today. Mumbai total stands at 18396.</td>
+                <td>17</td>
+                <td>153</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1261673441725304833">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 15:20:41</td>
+                <td class ="content_left">998 new corona positive cases reported in today in #Mumbai. 25 patients lost their lives and 443 <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and discharged today. City total corona positive cases now stands at 16579 with 621 deaths.</td>
+                <td>20</td>
+                <td>135</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1260953187676086272">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 15:01:19</td>
+                <td class ="content_left">#Mumbai corona positive cases rise to 14,781. 
+
+426 new cases reported today and 28 patients died due to Covid-19. 
+
+203 <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and discharged today.</td>
+                <td>14</td>
+                <td>59</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1260223537312264192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 15:01:38</td>
+                <td class ="content_left">#Mumbai Corona Virus Update:-
+
+791 corona positive cases reported today in Mumbai, 20 patients died and 106 <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and discharged.
+
+City total stands at 14,355 with 528 deaths. As of now 3110 patients <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and discharged.</td>
+                <td>10</td>
+                <td>86</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1259861227020353544">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 08:08:48</td>
+                <td class ="content_left">As of now in maharashtra we have done 66,800 corona virus test out of which 95% tested negative. 
+
+70-75% people have mild symptoms. From 6 months infant to 90yr old patient <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and discharged : #UddhavThackeray</td>
+                <td>11</td>
+                <td>82</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1251784802602291200">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 18:20:56</td>
+                <td class ="content_left">Today in Mumbai 107 new corona positive cases reported. 3 people died and 21 <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and discharged.</td>
+                <td>15</td>
+                <td>96</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1250851687331315712">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 19:16:41</td>
+                <td class ="content_left">It's late but this information is as important as anything else. Maharashtra corona positive cases rise to 2684 out of which 1756 cases reported from Mumbai. 11 people lost their lives due to Covid-19 today in Mumbai and 204 new cases reported. 23 people <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and discharged.</td>
+                <td>43</td>
+                <td>233</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1250140939156258817">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 14:37:29</td>
+                <td class ="content_left">BIG: Mumbai sees highest one day death toll from corona virus. 16 people lost their lives in mumbai today due to Covid-19 and 217 new cases reported. 26 patients <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and discharged. Mumbai corona virus cases now stands at 1399. #Mumbailockdown</td>
+                <td>22</td>
+                <td>124</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1249345904219308033">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 15:51:56</td>
+                <td class ="content_left">Let me give you some positive news as well. As of now in maharashtra, 208 patients fully <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and discharged from the hospital.</td>
+                <td>65</td>
+                <td>697</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1249002250711728133">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 14:19:31</td>
+                <td class ="content_left">Breaking: 100 new corona positive cases reported in #Mumbai in last twenty four hours and city tally stands at 590. Five people lost their lives and death toll rises to 40. As of now 59 patients <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and discharged.</td>
+                <td>23</td>
+                <td>121</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1247529443578376195">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 13:21:37</td>
+                <td class ="content_left">In last 24 hours, 57 new corona positive cases reported in Mumbai city out of which 4 lost their lives. Numbers of corona positive patients stands at 490 in the city, out of which 34 lost their lives and 57 <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and discharged. #MumbaiFightsCovid19</td>
+                <td>17</td>
+                <td>92</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1247152482947452929">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 15:00:28</td>
+                <td class ="content_left">Maharashtra Corona Update:
+
+Total corona positive cases - 748
+People died as of now in the state - 45
+New cases reported today - 113
+
+People who died today - 13
+Mumbai - 8
+Pune - 3
+Aurangabad - 1
+Kalyan/Dombivali - 1 
+
+56 people <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> and went back home. #maharashtralockdown</td>
+                <td>16</td>
+                <td>98</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1246814973155774466">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 11:34:03</td>
+                <td class ="content_left">So there were two tests on the same day for accurate results, throat and <span style="color: yellow;"><span style="color: yellow;">nose</span></span> swab test and I tested 'NEGATIVE' in both. https://t.co/vHg9c7C3uS</td>
+                <td>213</td>
+                <td>3833</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1254373170687045633">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">test positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "test positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 16:13:15</td>
+                <td class ="content_left">IAS officer among two top health officials in MP <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> to #coronavirus.</td>
+                <td>12</td>
+                <td>145</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1246470901899513856">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 17:25:39</td>
+                <td class ="content_left">Being a mumbaikar and specially by knowing the area #dharavi. I would say let's pray it doesn't explode. Because the person who died due to <span style="color: yellow;">Covid19</span> owns a garment shop in the area n he came in contact with multiple people. BMC/Police has already sealed all the 300 flats/90 shops.</td>
+                <td>55</td>
+                <td>180</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1245401955591225344">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 04:21:19</td>
+                <td class ="content_left">The <span style="color: yellow;"><span style="color: yellow;">pain</span></span> of discipline is far less than the <span style="color: yellow;"><span style="color: yellow;">pain</span></span> of regret. Good morning everyone!!
+
+#SaturdayMotivation #SaturdayThoughts</td>
+                <td>13</td>
+                <td>135</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1243755020740440065">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asthma</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asthma"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 04:28:57</td>
+                <td class ="content_left">One more death in mumbai. One 68 year old philippines citizen, initially tested Positive but subsequently become Negative, expired yesterday night in Kasturba Hospital, Mumbai. He was also diabetic and suffering from <span style="color: yellow;"><span style="color: yellow;">asthma</span></span> #coronaupdatesindia</td>
+                <td>3</td>
+                <td>55</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1241945001640132610">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">heart disease</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "heart disease"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 05:43:57</td>
+                <td class ="content_left">Breaking : Another death in mumbai due to #coronavirus. One 63 year old man who was admitted in one private hospital died at 11.03pm. he was also suffering from high blood pressure, diabeties and <span style="color: yellow;"><span style="color: yellow;">heart disease</span></span>. This is a 2nd death in mumbai due to #COVID19.</td>
+                <td>13</td>
+                <td>116</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1241601488247328774">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">some symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "some symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 08:12:13</td>
+                <td class ="content_left">Meet my friend @AbiraDhar from Mumbai who travelled to Newyork recently and when she came back, she visited Kasturba Hospital for check up as she had <span style="color: yellow;"><span style="color: yellow;">some symptoms</span></span>. Listen her experience of #coronavirus quarantine. More power to you Abira!! 💕😘 https://t.co/RGcRxNuP8b</td>
+                <td>2</td>
+                <td>42</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1239826860403388416">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-18 13:03:19</td>
+                <td class ="content_left">'Bend down and <span style="color: yellow;">touch</span> the ground with your forehead', I ordered Ajmal Kasab. Now say 'Bharat Mata Ki Jai' (Victory to Mother India). I commanded. Kasab said, 'Bharat Mata Ki Jai'. I wasn't satisfied with just one, I made him repeat it twice, writes #RakeshMaria in his memoir.</td>
+                <td>24</td>
+                <td>132</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1229753258719117317">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-05 07:11:14</td>
+                <td class ="content_left">@misskaul How can I get in <span style="color: yellow;">touch</span> with you.</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1224953613648306181">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">exhausted</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "exhausted"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-01 08:20:33</td>
+                <td class ="content_left">FM #NirmalaSitharaman looks <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> and she left two pages to be read. 2 hours 40 minutes, longest budget speech ever. #Budget2020</td>
+                <td>2</td>
+                <td>52</td>
+                <td><a href="https://twitter.com/thakur_shivangi/status/1223521506027810816">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,948 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>303-NaqiahJ.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 303-NaqiahJ.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">303-NaqiahJ.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">painful</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "painful"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 05:09:54</td>
+                <td class ="content_left">It’s not dramatic to want to go back to kampung to celebrate Eid with your parents. Especially if it’s just 2 of them even worse if they’re alone. But it’s much more <span style="color: yellow;"><span style="color: yellow;">painful</span></span> to celebrate raya without them next year. Just because of your selfish act this year. Think before you act</td>
+                <td>1</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1264060966066503680">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 23:46:41</td>
+                <td class ="content_left">@eddyywords Aiyo the coughing abit <span style="color: yellow;"><span style="color: yellow;">painful</span></span> 😭 sometimes it is mild, sometimes macam mau cabut tekak 😂 thank you though. It’s good to hear from another covid survivor (can we call ourselves this 😂), it’s like a beacon of hope! Like I’m soon going to be okay 💪🏻</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246947397722234880">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">freezing</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "freezing"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 23:37:35</td>
+                <td class ="content_left">I know things are tough especially when you’re not sure how your future will be. We’re all in the same boat. What we can do is to make sure we’re not rusty by just waiting. Since most companies are <span style="color: yellow;"><span style="color: yellow;">freezing</span></span> their hiring, let’s not just wait and do something that can benefit us.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1262527784808660992">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 16:08:49</td>
+                <td class ="content_left">Verily, with hardship comes ease 94:5
+-
+Read my sharing on post <span style="color: yellow;"><span style="color: yellow;">covid19</span></span> recovery on my FB. Too long to write here. I tend to talk and write a lot. It's a habit! 
+
+https://t.co/jsvyS3Li5h</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1259153359300263936">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 14:24:12</td>
+                <td class ="content_left">@hanhanz89 @GrabMY their ride cover insurance tu kan give free <span style="color: yellow;"><span style="color: yellow;">covid19</span></span> coverage. so I tanya eligibility and how to claim. mmg I dh baca in their website and app, kena contact Chubb directly. I called Chubb, they said Grab kena handle for this one. So I contact Grab via DM. they dared to give me</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1255140766789189636">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 16:28:18</td>
+                <td class ="content_left">Noooo 😭 read thread 😭 <span style="color: yellow;"><span style="color: yellow;">covid19</span></span> are really something else guys. Take care everyone! Salam Ramadhan. https://t.co/B1HGPjTPOC</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1253360058810822656">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 08:13:36</td>
+                <td class ="content_left">I’m not really a prefectionist, I just really like things to be proper. I’m extra <span style="color: yellow;"><span style="color: yellow;">tired</span></span> these days because for me to upload the products I’m selling, I would at least get the full name of the product and good quality pictures. I’m a buyer too so I understand. We can do this 💪🏻</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1257946605757411330">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 17:31:43</td>
+                <td class ="content_left">Hi everyone! I will sambung my conversation with PKD Dr. tu tomorrow ok. A bit <span style="color: yellow;"><span style="color: yellow;">tired</span></span> already. And thank YOU for all the well wishes and prayers. And yg tolong backup all the negative comments, thank you! Let’s just ignore them. Please be safe, stay at home. I hope my input helps.</td>
+                <td>5</td>
+                <td>51</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246128258870947841">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 11:26:27</td>
+                <td class ="content_left">@adlinazainudin It’ll be awesome, InsyaAllah! You’ll have someone you can annoy and care for you hehe. Rindu family definitely, esp if semua pun dah married. And yess! but xpe, sanitize hands everytime <span style="color: yellow;">touch</span> something outside. I dlm rumah pun still spray2 bila dh blk. In case I still have it.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1251472155407081472">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recovered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recovered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 00:51:26</td>
+                <td class ="content_left">Proud of our KKM, number of <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> are really high 🤗 good job 👏🏻 
+
+And thank YOU! https://t.co/vFoSC1SKxK</td>
+                <td>0</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1247688466873237504">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 15:56:12</td>
+                <td class ="content_left">Ok gais, they cannot spread covid. Jangan takut dah. But to be safe just keep them indoor. Kesian nanti.
+
+Cats, dogs not <span style="color: yellow;">Covid-19</span> spreaders, Vet Dept assures pet owners | Malay Mail https://t.co/aO7lURlnUq</td>
+                <td>2</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1247553774521995264">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 05:18:56</td>
+                <td class ="content_left">Berikut adalah Updated Price List for <span style="color: yellow;">COVID-19</span> testing:
+
+• Manipal - 600
+• Sunway - 360
+• SDMC Subang - 630
+• SDMC Ara Damansara - 630
+• SDMC Desa Park - 630
+• KPJ Damansara - 388
+• KPJ Rawang - 388
+• KPJ Klang - 388
+• KPJ Shah Alam - 388
+• Pantai Bangsar - 480 
+👇🏻</td>
+                <td>5</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1247031013177307137">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 21:43:23</td>
+                <td class ="content_left">So I was tested positive <span style="color: yellow;">Covid-19</span> despite not having any contact with positive patients or traveling history. I’m planning to share everything related to symptoms and experiences from the test up to being quarantine currently at hospital.
+
+Ini adalah thread 👇🏻</td>
+                <td>21682</td>
+                <td>20851</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245829206849638401">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 16:20:46</td>
+                <td class ="content_left">Agong Titah Rakyat Malaysia Dirikan Solat Hajat Khusus Bagi Menolak Wabak <span style="color: yellow;">Covid-19</span> via @saysseismik https://t.co/kmDrPe1vPw</td>
+                <td>5</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1242848911439433728">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 22:46:12</td>
+                <td class ="content_left">monitoring my cough. But as long as I don’t have any fever, it’ll be okay. I just had my <span style="color: yellow;"><span style="color: yellow;">nose</span></span> swab test an hour ago, the result will be ready in a day or two (wish it could be sooner) and if the result is -ve I can go home!! So it’s a good news for me so I feel so much better.</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1247294566052425729">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 13:14:54</td>
+                <td class ="content_left">and will ask a few questions in an online form and will follow up if screening and test needed.
+4. Don't need to sanitize my house because the virus will die on its own
+5. The viruses travel inside my body, attacking organs, from <span style="color: yellow;"><span style="color: yellow;">nose</span></span> down to rectum (I shared about this also)</td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246426016492351490">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 02:22:41</td>
+                <td class ="content_left">time. It happened one after another. My only constant symptoms are dry cough. Non-constant (on and off): fever, runny <span style="color: yellow;"><span style="color: yellow;">nose</span></span>, headache.
+READ: “Dr. Compton-Phillips said the infection can spread through the mucous membranes, from the <span style="color: yellow;"><span style="color: yellow;">nose</span></span> down to the rectum.”
+https://t.co/xkRc2D2jz6</td>
+                <td>10</td>
+                <td>22</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246261879489486849">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 02:19:16</td>
+                <td class ="content_left">Here are explanation on the journey of the virus, from <span style="color: yellow;"><span style="color: yellow;">nose</span></span> to rectum. This explains why my symptoms are spreading from <span style="color: yellow;"><span style="color: yellow;">nose</span></span> (loss sense of smell), lungs (one night difficult breathing), stomach (vomiting), large intestine (diarrhoea). These are the symptoms that are not all the</td>
+                <td>1</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246261019451609088">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 11:09:02</td>
+                <td class ="content_left">Was woken up at 5am by a doctor and informed that she will be taking a <span style="color: yellow;"><span style="color: yellow;">nose</span></span> swab. Because it has been more than 13 days since my first symptoms, my <span style="color: yellow;"><span style="color: yellow;">nose</span></span> swab will be every 2 days. If the result is -ve, I can go back home, but still need to quarantine myself for 14 days.</td>
+                <td>4</td>
+                <td>27</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246031952949284864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 11:00:20</td>
+                <td class ="content_left">My symptoms:
+19 march: start demam, dry cough, <span style="color: yellow;"><span style="color: yellow;">nose</span></span> kering and blocked terus walaupun xde phlegm - lasted for few days
+24-25 march- terus ok, just batuk sikit2
+26-28 march- start blk demam teruk sikit, pening kepala, vomiting, coughing and and flu.</td>
+                <td>70</td>
+                <td>165</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246029763119960070">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 04:00:19</td>
+                <td class ="content_left">@jasonleong I did Influenza, dengue, blood, urine tests, and covid <span style="color: yellow;"><span style="color: yellow;">nose</span></span> and throat swab. Not sure the name of the tests. I can check the receipts if u really want to know</td>
+                <td>1</td>
+                <td>37</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245924062037082119">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 03:56:58</td>
+                <td class ="content_left">@sabmukhriz Obvious. Sbb it was weird. Selalu hilang deria sbb blocked <span style="color: yellow;"><span style="color: yellow;">nose</span></span> due to stuffy <span style="color: yellow;"><span style="color: yellow;">nose</span></span> kan? Tp hidung i tersumbat yg kering. Then terus hilang deria bau, bkn sikit2, like completely. Bila bau xde mkn lg la xde rasa.</td>
+                <td>8</td>
+                <td>39</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245923219778883585">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 23:45:04</td>
+                <td class ="content_left">Ada hunch because the situation was weird, but I just brush the thoughts off. Kenapa pelik? Sebab, dry cough mcm mana boleh <span style="color: yellow;"><span style="color: yellow;">nose</span></span> mcm tersumbat, and <span style="color: yellow;"><span style="color: yellow;">nose</span></span> tu pun rasa kering. Sampai sometimes I actually masukkan air sbb too dry! Oh sore throat pun salah satu simptom I.</td>
+                <td>70</td>
+                <td>308</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245859826241921025">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">my nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "my nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 22:46:12</td>
+                <td class ="content_left">monitoring my cough. But as long as I don’t have any fever, it’ll be okay. I just had <span style="color: yellow;"><span style="color: yellow;">my nose</span></span> swab test an hour ago, the result will be ready in a day or two (wish it could be sooner) and if the result is -ve I can go home!! So it’s a good news for me so I feel so much better.</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1247294566052425729">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 11:09:02</td>
+                <td class ="content_left">Was woken up at 5am by a doctor and informed that she will be taking a nose swab. Because it has been more than 13 days since my first symptoms, <span style="color: yellow;"><span style="color: yellow;">my nose</span></span> swab will be every 2 days. If the result is -ve, I can go back home, but still need to quarantine myself for 14 days.</td>
+                <td>4</td>
+                <td>27</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246031952949284864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sore throat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sore throat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 03:13:56</td>
+                <td class ="content_left">@ZulafandiHaris adududu tu laaa tadi bangun tetiba <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span> pulakkk. Selalu badan i ni lepas <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span> mesti demam 🙄 so kena lawann 💪🏻💪🏻 Nasib baik boleh bawak gadgets weh. Kalau x, mati kutu. Tengok cerita terhibur jgk.
+Minum air sejuk eh 🤣 good tips 😂</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246999554462867458">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 03:29:31</td>
+                <td class ="content_left">@Lov7Rihanna Here you go: My symptoms were: fever (sometimes), dry cough, loss sense of smell, <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span>, dry nose. Vomiting, headache, runny nose, diarrhea (these symptoms are only for 4 days)
+Start on 19 March, did test on 26 March, got the results on 2 April.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245916311445630978">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 23:45:31</td>
+                <td class ="content_left">Hilang deria bau/rasa agak lama, almost a week. Now all better. Simptom lain pun dah berkurang, just sometimes still rasa <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span>, batuk and cirit birit. 4 nights ago, I was unable to sleep, sbb x boleh bernafas. It was in the morning I talked to my husband utk push sunmed</td>
+                <td>59</td>
+                <td>266</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245859940326989824">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 23:45:04</td>
+                <td class ="content_left">Ada hunch because the situation was weird, but I just brush the thoughts off. Kenapa pelik? Sebab, dry cough mcm mana boleh nose mcm tersumbat, and nose tu pun rasa kering. Sampai sometimes I actually masukkan air sbb too dry! Oh <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span> pun salah satu simptom I.</td>
+                <td>70</td>
+                <td>308</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245859826241921025">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diarrhoea</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diarrhoea"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 16:55:24</td>
+                <td class ="content_left">calendar 😞 they calculate my first day is the first swab I took; on 28 March. So akan stay di hospital lama lagi. Next test is 13 days after 28 March. Harini condition are abit unwell; my batuk suddenly jadi teruk, ada just a slight fever, <span style="color: yellow;"><span style="color: yellow;">diarrhoea</span></span> and headache.</td>
+                <td>1</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246481505766920192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 11:09:14</td>
+                <td class ="content_left">So right now waiting for the swab test result from this morning. Current condition: okay, just dry coughing and <span style="color: yellow;"><span style="color: yellow;">diarrhoea</span></span> (but not continuously). 
+PKD Petaling called me earlier and we did my movement tracking since the first day of symptom until warded, and 14 days prior.</td>
+                <td>3</td>
+                <td>27</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246032004518277120">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 08:31:48</td>
+                <td class ="content_left">@noajila @hanhanz89 u &amp; others don’t need to act holier than thou, no need to drag my dad/husband yg pergi kedai. Lepas hari ke-3 still <span style="color: yellow;"><span style="color: yellow;">fever</span></span> i x pergi tmpt2 awam dh. u can actually tanya i terus drpd terus tuduh mcmni tau. u don’t have ALL the details. Setakat tau 2-3 points from my tweets.</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246354774238187520">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 08:29:32</td>
+                <td class ="content_left">@noajila @hanhanz89 Hi, i pergi kedai tu bukan nye gi batuk dkt semua benda dlm tu. Wore mask, sanitize my hands setiap kali pgg benda tau. u don’t know me, i x cerita full pun. B4 I gi hospital i went to kk, they said no need to test pun sbb symptoms i <span style="color: yellow;"><span style="color: yellow;">fever</span></span> biasa. Over there pun u tau ke i mcm mn?</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246354200797143040">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 08:19:23</td>
+                <td class ="content_left">@__loveshak @ZUHA1RAH @haiqal3 Kak long twitter, dan few others yg blame i ni. Mmg i &amp; family keluar, we took all precautions lah hello. Hospital tu my FIL dh meninggal pun. KKM pun refused to test me and ckp i <span style="color: yellow;"><span style="color: yellow;">fever</span></span> biasa tau. Afterwards I quaratine x even keluar. Korang tau apa? Berdosa tau ckp2 cm tau ni 🙄</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246351645656502273">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 08:14:07</td>
+                <td class ="content_left">@AdileenRamlee Ok dah baca. Kinda funny really. Dia igt i visit org dkt hospital tu kwn i ke apa. My fil kot. Yg i jaga dkt rumah 🙄 and for god’s sake, my symptoms masa tu all <span style="color: yellow;"><span style="color: yellow;">fever</span></span>. Pergi KKM pun kena brush off as <span style="color: yellow;"><span style="color: yellow;">fever</span></span> JE sbb xde contact 🤣 xpe la I maafkan mereka2 ni bcs they don’t know.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246350321997082624">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 03:29:31</td>
+                <td class ="content_left">@Lov7Rihanna Here you go: My symptoms were: <span style="color: yellow;"><span style="color: yellow;">fever</span></span> (sometimes), dry cough, loss sense of smell, sore throat, dry nose. Vomiting, headache, runny nose, diarrhea (these symptoms are only for 4 days)
+Start on 19 March, did test on 26 March, got the results on 2 April.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245916311445630978">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">some symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "some symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 06:53:50</td>
+                <td class ="content_left">I’m pausing my updates for awhile as I’m not feeling well at the moment. <span style="color: yellow;">Some symptoms</span> came back 😔 
+Take care everyone. Thank you for the well wishes, thoughts and prayers.</td>
+                <td>0</td>
+                <td>36</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246330118626140161">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">antibiotics</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "antibiotics"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 05:27:32</td>
+                <td class ="content_left">@Ra7anaS Oh nooo!! And the bird is still a baby. My husband brought him to vet already. Need to give him <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> and feed him. Hopefuthe can survive! And thank you for the tips! I’ll relay it to him.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246308400310280193">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">runny nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "runny nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 02:22:41</td>
+                <td class ="content_left">time. It happened one after another. My only constant symptoms are dry cough. Non-constant (on and off): fever, <span style="color: yellow;"><span style="color: yellow;">runny nose</span></span>, headache.
+READ: “Dr. Compton-Phillips said the infection can spread through the mucous membranes, from the nose down to the rectum.”
+https://t.co/xkRc2D2jz6</td>
+                <td>10</td>
+                <td>22</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246261879489486849">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 03:29:31</td>
+                <td class ="content_left">@Lov7Rihanna Here you go: My symptoms were: fever (sometimes), dry cough, loss sense of smell, sore throat, dry nose. Vomiting, headache, <span style="color: yellow;"><span style="color: yellow;">runny nose</span></span>, diarrhea (these symptoms are only for 4 days)
+Start on 19 March, did test on 26 March, got the results on 2 April.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245916311445630978">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">dry cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "dry cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 02:22:41</td>
+                <td class ="content_left">time. It happened one after another. My only constant symptoms are <span style="color: yellow;"><span style="color: yellow;">dry cough</span></span>. Non-constant (on and off): fever, runny nose, headache.
+READ: “Dr. Compton-Phillips said the infection can spread through the mucous membranes, from the nose down to the rectum.”
+https://t.co/xkRc2D2jz6</td>
+                <td>10</td>
+                <td>22</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246261879489486849">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 00:13:42</td>
+                <td class ="content_left">@WaikuanT @jasonleong @yngscientist @KKMPutrajaya @DGHisham Hi! Yes still warded, for now I’m only having <span style="color: yellow;"><span style="color: yellow;">dry cough</span></span>. Unfortunately, even my husband wasn’t tested, he came to this hospital hoping to do the test, but they only screen him. Not sure bcs they want him to wait for a phone call from PKD first or what. All my close contacts will</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246229421704413185">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 11:09:14</td>
+                <td class ="content_left">So right now waiting for the swab test result from this morning. Current condition: okay, just <span style="color: yellow;"><span style="color: yellow;">dry cough</span></span>ing and diarrhoea (but not continuously). 
+PKD Petaling called me earlier and we did my movement tracking since the first day of symptom until warded, and 14 days prior.</td>
+                <td>3</td>
+                <td>27</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246032004518277120">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 11:00:20</td>
+                <td class ="content_left">My symptoms:
+19 march: start demam, <span style="color: yellow;"><span style="color: yellow;">dry cough</span></span>, nose kering and blocked terus walaupun xde phlegm - lasted for few days
+24-25 march- terus ok, just batuk sikit2
+26-28 march- start blk demam teruk sikit, pening kepala, vomiting, coughing and and flu.</td>
+                <td>70</td>
+                <td>165</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246029763119960070">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 10:57:17</td>
+                <td class ="content_left">my daily meds routine: 
+paracetamol/panadol, Ubat batuk yg Bena Expactorant tu. Mcm2 colour i cuba. Bila yg <span style="color: yellow;"><span style="color: yellow;">dry cough</span></span>, I drank the blue one, hari yg teruk tu i drank the maroon/orange colour. Prospan pun ada few times. Flu meds Clarinase, vit c, warm water with lemon and honey</td>
+                <td>32</td>
+                <td>129</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246028998322163714">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 03:29:31</td>
+                <td class ="content_left">@Lov7Rihanna Here you go: My symptoms were: fever (sometimes), <span style="color: yellow;"><span style="color: yellow;">dry cough</span></span>, loss sense of smell, sore throat, dry nose. Vomiting, headache, runny nose, diarrhea (these symptoms are only for 4 days)
+Start on 19 March, did test on 26 March, got the results on 2 April.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245916311445630978">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 23:45:04</td>
+                <td class ="content_left">Ada hunch because the situation was weird, but I just brush the thoughts off. Kenapa pelik? Sebab, <span style="color: yellow;"><span style="color: yellow;">dry cough</span></span> mcm mana boleh nose mcm tersumbat, and nose tu pun rasa kering. Sampai sometimes I actually masukkan air sbb too dry! Oh sore throat pun salah satu simptom I.</td>
+                <td>70</td>
+                <td>308</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245859826241921025">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 23:44:42</td>
+                <td class ="content_left">saringan. Keadaan masa itu agak teruk sbb dah 2 hari muntah2, demam dan batuk dah seminggu. Simptom yg dialami adalah: loss sense of smell and taste, demam, <span style="color: yellow;"><span style="color: yellow;">dry cough</span></span>, headache, muntah, susah bernafas, cirit birit (yg ni recent 3 days). I guess masa hilang bau tu I dh ada hunch</td>
+                <td>342</td>
+                <td>686</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245859733946290176">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Difficulty breathing</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Difficulty breathing"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 00:17:14</td>
+                <td class ="content_left">@WaikuanT @jasonleong @yngscientist @KKMPutrajaya @DGHisham be contacted by Dr from PKD. If the Dr. feel the need for them to be tested, they’ll be advised to go to the nearest KK. KK will only perform test on you if you have all the boxes tick. History and all the 3 symptoms: fever, cough, <span style="color: yellow;">difficulty breathing</span>. Or else they’ll send you</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246230309277851648">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Difficulty breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Difficulty breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 00:17:14</td>
+                <td class ="content_left">@WaikuanT @jasonleong @yngscientist @KKMPutrajaya @DGHisham be contacted by Dr from PKD. If the Dr. feel the need for them to be tested, they’ll be advised to go to the nearest KK. KK will only perform test on you if you have all the boxes tick. History and all the 3 symptoms: fever, cough, <span style="color: yellow;">difficulty breath</span>ing. Or else they’ll send you</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246230309277851648">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 11:08:52</td>
+                <td class ="content_left">my house, why did I went and did the Covid test. I also had an X-Ray. Blood test and X-ray results were okay, they just prescribed me with <span style="color: yellow;"><span style="color: yellow;">cough</span></span> syrup. Then I had dinner, chat with my family &amp; friends, zoom video call with my friends, watch some online series, and went to sleep.</td>
+                <td>3</td>
+                <td>27</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246031911387987968">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 23:45:04</td>
+                <td class ="content_left">Ada hunch because the situation was weird, but I just brush the thoughts off. Kenapa pelik? Sebab, dry <span style="color: yellow;"><span style="color: yellow;">cough</span></span> mcm mana boleh nose mcm tersumbat, and nose tu pun rasa kering. Sampai sometimes I actually masukkan air sbb too dry! Oh sore throat pun salah satu simptom I.</td>
+                <td>70</td>
+                <td>308</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245859826241921025">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">vit</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "vit"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 10:57:17</td>
+                <td class ="content_left">my daily meds routine: 
+paracetamol/panadol, Ubat batuk yg Bena Expactorant tu. Mcm2 colour i cuba. Bila yg dry cough, I drank the blue one, hari yg teruk tu i drank the maroon/orange colour. Prospan pun ada few times. Flu meds Clarinase, <span style="color: yellow;"><span style="color: yellow;">vit</span></span> c, warm water with lemon and honey</td>
+                <td>32</td>
+                <td>129</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246028998322163714">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 10:56:05</td>
+                <td class ="content_left">List of things to bring:
+Water tumbler (ni bkn swasta dpt jug air setiap katil)
+cup, prayer mat and telekung, <span style="color: yellow;">Vit</span> C and own meds. few clothes (although u'll be using hospital gown, so just bring few) Face mask (can request if u don't have, but only 1 piece daily will be given)</td>
+                <td>89</td>
+                <td>270</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246028694327451648">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 01:42:18</td>
+                <td class ="content_left">@ffaarrz I mmg daily mkn ubat and <span style="color: yellow;"><span style="color: yellow;">vit</span></span> c. Sbb tempoh tu agak pjg &amp; bila headache n muntah tu baru husband paksa buat test. But yes, 24-25 march i felt okay, just batuk jrg2. 26 march bam! Start teruk. Awal2 tu light2 je dia bg.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245889329257271296">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 10:49:17</td>
+                <td class ="content_left">where I got it from. Part of me was still in denial, tp bila I dgr jiran katil I dkt ward ni pun both loss sense of <span style="color: yellow;"><span style="color: yellow;">taste</span></span> and cirit birit pun salah satu simptom, dh boleh la terima sikit2. A lot of DMs and whatsapp I received from my friends &amp; family all tanya, dapat dari mana.</td>
+                <td>18</td>
+                <td>73</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246026983101743107">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asymptomatic</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asymptomatic"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 09:20:09</td>
+                <td class ="content_left">@fkairosdpanda @livewithcalvins Hi!! Of course it's possible for some <span style="color: yellow;"><span style="color: yellow;">asymptomatic</span></span> to pass. Cuma I xtahu exactly from where when who I got it from! 😊😉</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1246004551276040192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 08:41:09</td>
+                <td class ="content_left">@whoreandmore I think this one can spread already the info. KKM that day released saying that lost sense of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> is a piece of fake news. huhu. but my jiran katil also, 2 of them lose the sense of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> too.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245994737468723205">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 23:44:42</td>
+                <td class ="content_left">saringan. Keadaan masa itu agak teruk sbb dah 2 hari muntah2, demam dan batuk dah seminggu. Simptom yg dialami adalah: loss sense of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> and taste, demam, dry cough, headache, muntah, susah bernafas, cirit birit (yg ni recent 3 days). I guess masa hilang bau tu I dh ada hunch</td>
+                <td>342</td>
+                <td>686</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245859733946290176">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">lost sense of smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "lost sense of smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 08:41:09</td>
+                <td class ="content_left">@whoreandmore I think this one can spread already the info. KKM that day released saying that <span style="color: yellow;"><span style="color: yellow;">lost sense of smell</span></span> is a piece of fake news. huhu. but my jiran katil also, 2 of them lose the sense of smell too.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245994737468723205">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Vitamin C</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Vitamin C"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 07:08:21</td>
+                <td class ="content_left">@furthersouthth List of things to bring:
+water tumbler, cup, praying mats and clothhes, <span style="color: yellow;">vitamin c</span> and own medicines if u wanna continue taking them, no need clothes bcs will wear hospital gown, hand sanitizer, face mask (provided but only one per day, if have own stock just bring), tissue,</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245971384913674240">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diarrhea</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diarrhea"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 03:29:31</td>
+                <td class ="content_left">@Lov7Rihanna Here you go: My symptoms were: fever (sometimes), dry cough, loss sense of smell, sore throat, dry nose. Vomiting, headache, runny nose, <span style="color: yellow;"><span style="color: yellow;">diarrhea</span></span> (these symptoms are only for 4 days)
+Start on 19 March, did test on 26 March, got the results on 2 April.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245916311445630978">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">headache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "headache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 01:42:18</td>
+                <td class ="content_left">@ffaarrz I mmg daily mkn ubat and vit c. Sbb tempoh tu agak pjg &amp; bila <span style="color: yellow;"><span style="color: yellow;">headache</span></span> n muntah tu baru husband paksa buat test. But yes, 24-25 march i felt okay, just batuk jrg2. 26 march bam! Start teruk. Awal2 tu light2 je dia bg.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245889329257271296">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 01:36:16</td>
+                <td class ="content_left">@ffaarrz It was one of my symptoms. The severe <span style="color: yellow;"><span style="color: yellow;">headache</span></span> tu during 26-30 march. 3 days muntah2. Time tu tgh mcm teruk la. Now dah okay</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245887809992273922">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Mineral</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Mineral"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 01:31:24</td>
+                <td class ="content_left">@einhyatt Water tumbler yeap better. So can fill in hot water. I dpt <span style="color: yellow;">mineral</span> water bottle and cup, so I’m keeping the bottle utk refill. Sedih sikit, so xdpt la hot water. Pakai baju hospital, bwk yg dlm2 je and yg utk blk nnt. Sejadah, telekung, ubat2.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245886586924855296">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">no symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "no symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 01:10:34</td>
+                <td class ="content_left">@AshrafAzmi Yes sure. I went to hero market once, mydin twice, mylife pharmacy twice. I pretty much just stay indoor. But my dad have been going out daily to buy few groceries. So far he have <span style="color: yellow;"><span style="color: yellow;">no symptoms</span></span>, belum test lg. Will keep u updated.</td>
+                <td>5</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245881343310848000">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 21:43:23</td>
+                <td class ="content_left">So I was <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> Covid-19 despite not having any contact with positive patients or traveling history. I’m planning to share everything related to symptoms and experiences from the test up to being quarantine currently at hospital.
+
+Ini adalah thread 👇🏻</td>
+                <td>21682</td>
+                <td>20851</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245829206849638401">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">I was tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "I was tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 21:43:23</td>
+                <td class ="content_left">So <span style="color: yellow;"><span style="color: yellow;">I was tested positive</span></span> Covid-19 despite not having any contact with positive patients or traveling history. I’m planning to share everything related to symptoms and experiences from the test up to being quarantine currently at hospital.
+
+Ini adalah thread 👇🏻</td>
+                <td>21682</td>
+                <td>20851</td>
+                <td><a href="https://twitter.com/NaqiahJ/status/1245829206849638401">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

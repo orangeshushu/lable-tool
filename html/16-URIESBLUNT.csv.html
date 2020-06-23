@@ -1,0 +1,839 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>16-URIESBLUNT.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 16-URIESBLUNT.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">16-URIESBLUNT.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">medicine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "medicine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 19:22:40</td>
+                <td class ="content_left">i made it through work without my anxiety <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> today and I’m so fucking proud of myself.</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1254491102419222531">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 03:51:51</td>
+                <td class ="content_left">this <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> is gonna knock me out goodnight</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1248821033529937922">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 17:17:32</td>
+                <td class ="content_left">today I was rushed o the doctor for stomach pain and bleeding in my urine and the <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> was almost $100 NOT including the cost of the visit. i won’t have to suffer anymore. im so emotional. https://t.co/9XmhVdB915</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1246124689833025536">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 01:11:57</td>
+                <td class ="content_left">my doctor prescribed me <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> for my rash that used to be my old anxiety meds that my psychiatrist deadass gave me until I fell asleep. MEMORIES.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1240808263786074114">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asthma</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asthma"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 02:08:11</td>
+                <td class ="content_left">I JUST HAD AN <span style="color: yellow;">ASTHMA</span> ATTACK I REALLY AM ALLERGIC TO THIS MF HOMEWORK</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1249882110120333313">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 05:38:47</td>
+                <td class ="content_left">i just had an <span style="color: yellow;"><span style="color: yellow;">asthma</span></span> attack for the first time and that was the scariest shit of my life</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1246673617531912192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 03:31:08</td>
+                <td class ="content_left">my bath is so <span style="color: yellow;">COLD</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1249540595716173824">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 01:50:21</td>
+                <td class ="content_left">I’m 19 and tested positive for COVID-19. It started off as a common <span style="color: yellow;"><span style="color: yellow;">cold</span></span> feeling and worsened. I have been drenched in sweat from a fever, coughing, could barely walk from lightheadedness. I thought I was in invincible towards this virus. Stay healthy. Please.</td>
+                <td>30</td>
+                <td>401</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1244079417518931971">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">no appetite</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "no appetite"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 04:40:35</td>
+                <td class ="content_left">we love how I have <span style="color: yellow;"><span style="color: yellow;">no appetite</span></span> anymore</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1249195687629201413">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 19:43:42</td>
+                <td class ="content_left">that nine hour shift killed me I’m so mf <span style="color: yellow;"><span style="color: yellow;">tired</span></span> https://t.co/84YSxwNx00</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1247973412066164736">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 23:36:28</td>
+                <td class ="content_left">@RickyPDillon what exercises have you been doing a lot at home? i wanna get some inspiration. im <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of feeling so <span style="color: yellow;"><span style="color: yellow;">tired</span></span> and want to incorporate that into my day.</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1242596171354443784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 04:08:32</td>
+                <td class ="content_left">moving houses fucking sucks I’m so <span style="color: yellow;"><span style="color: yellow;">tired</span></span></td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1238315986345918464">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-07 18:43:27</td>
+                <td class ="content_left">my dad is so hateful towards my boyfriend and I and I’m sick and <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of it</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1236361839602253824">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-29 17:51:23</td>
+                <td class ="content_left">really need someone to talk to &amp; dm right now. im sad and broken. <span style="color: yellow;"><span style="color: yellow;">tired</span></span> fo family turning against me.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1233812020430082055">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-19 20:51:24</td>
+                <td class ="content_left">beyond <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of being treated like absolute fucking trash</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1230233443784675328">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-19 00:07:15</td>
+                <td class ="content_left">im <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of being <span style="color: yellow;"><span style="color: yellow;">tired</span></span> all the time. 
+i hate being called lazy for sleeping. 
+getting told I shouldn’t be <span style="color: yellow;"><span style="color: yellow;">tired</span></span>, etc.
+anemia is no joke.</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1229920345991327744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-13 02:28:42</td>
+                <td class ="content_left">i wish I was born with a normal functioning brain. <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of feeling so fucking worthless and depressed and anxious every day. getting through each day is seemingly impossible.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1227781615952257030">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-07 03:40:20</td>
+                <td class ="content_left">wishing I didn’t work 6 days a week / wasn’t always too <span style="color: yellow;"><span style="color: yellow;">tired</span></span> to watch brendon’s streams. i really miss hearing his voice and getting the chance to interact with him. his streams always put me in such a happy place.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1225625312446287872">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-03 13:21:17</td>
+                <td class ="content_left">im <span style="color: yellow;"><span style="color: yellow;">tired</span></span> as fuck</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1224321961301508098">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 05:26:55</td>
+                <td class ="content_left">@hamlinton_ <span style="color: yellow;"><span style="color: yellow;">cough</span></span> the office</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1247395408260857861">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 18:54:52</td>
+                <td class ="content_left">@_hoeforbeebo tempted to <span style="color: yellow;"><span style="color: yellow;">cough</span></span> on her pillow</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1243974857982959616">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 05:26:10</td>
+                <td class ="content_left">@patschneiders <span style="color: yellow;"><span style="color: yellow;">taste</span></span> jumped out for pftw and vices</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1247395219663982592">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diagnosed with covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diagnosed with covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 14:02:58</td>
+                <td class ="content_left">@elijahdaniel im not doing good. i was actually <span style="color: yellow;">diagnosed with COVID</span>-19 and my roommate has not let me lay in bed to rest and has been very mentally abusive. my depression has gotten so bad and my anxiety flared up every time I have to leave my room :(</td>
+                <td>0</td>
+                <td>14</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1246800499531304964">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 17:19:46</td>
+                <td class ="content_left">i have thousands of dollars in medical bills from my car accident a few months ago, getting <span style="color: yellow;">diagnosed with COVID</span>-19, my skin conditions, and my stomach and bladder issues. fuck. i never thought I’d be able to get it paid for. i would’ve ended up homeless without this help. https://t.co/9XmhVdB915</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1246125250896674820">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 22:08:16</td>
+                <td class ="content_left">@JeffreeStar @sinnerthehype hi I know you may not see this but I was recently <span style="color: yellow;">diagnosed with COVID</span>-19 and don’t have insurance to pay for my hospital bills &amp; lost my job so I’m terrified I’m going to lose my apartment. here’s my gofundme 🥺 it’d mean a lot.  https://t.co/4qJ83A6vrM</td>
+                <td>2</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1245473079175888896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 03:27:30</td>
+                <td class ="content_left">not to mention I just got <span style="color: yellow;">diagnosed with COVID</span>-19 but there’s also a tornado coming towards my town. it has killed one person so far.</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1244103867375267842">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 01:46:51</td>
+                <td class ="content_left">@CorinnaKopf i know this probably won’t reach you and you won’t see this but I just got <span style="color: yellow;">diagnosed with COVID</span>-19 and now am going to be drowning in debt from the hospital visit. im our of work and getting threatened to be kicked out of my apartment. anything would help. https://t.co/ZdX7IDddXa</td>
+                <td>1</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1244078534437548033">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 14:02:58</td>
+                <td class ="content_left">@elijahdaniel im not doing good. i was actually diagnosed with <span style="color: yellow;">COVID-19</span> and my roommate has not let me lay in bed to rest and has been very mentally abusive. my depression has gotten so bad and my anxiety flared up every time I have to leave my room :(</td>
+                <td>0</td>
+                <td>14</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1246800499531304964">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 04:38:27</td>
+                <td class ="content_left">ten days after contracting <span style="color: yellow;">COVID-19</span> im starting to feel better. only have a headache and fatigue and a slight cough. im thankful to be alive and well.</td>
+                <td>0</td>
+                <td>47</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1245571270751576069">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 22:08:16</td>
+                <td class ="content_left">@JeffreeStar @sinnerthehype hi I know you may not see this but I was recently diagnosed with <span style="color: yellow;">COVID-19</span> and don’t have insurance to pay for my hospital bills &amp; lost my job so I’m terrified I’m going to lose my apartment. here’s my gofundme 🥺 it’d mean a lot.  https://t.co/4qJ83A6vrM</td>
+                <td>2</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1245473079175888896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 03:27:30</td>
+                <td class ="content_left">not to mention I just got diagnosed with <span style="color: yellow;">COVID-19</span> but there’s also a tornado coming towards my town. it has killed one person so far.</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1244103867375267842">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 02:10:30</td>
+                <td class ="content_left">If i get kicked out of my apartment by my roommate for having <span style="color: yellow;">COVID-19</span> and being unable to work because I have to quarantine for 14 days I’m tempted to take her to court. Not only did she give it to us because she chose not to wear a mask at work. She also thinks this is a joke.</td>
+                <td>2</td>
+                <td>19</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1244084487211888641">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 02:04:48</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> update on our situation. https://t.co/TPxKQBjF1z</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1244083053133205507">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 01:46:51</td>
+                <td class ="content_left">@CorinnaKopf i know this probably won’t reach you and you won’t see this but I just got diagnosed with <span style="color: yellow;">COVID-19</span> and now am going to be drowning in debt from the hospital visit. im our of work and getting threatened to be kicked out of my apartment. anything would help. https://t.co/ZdX7IDddXa</td>
+                <td>1</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1244078534437548033">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 20:17:53</td>
+                <td class ="content_left">every american who got laid off waiting for their government check due to <span style="color: yellow;">COVID-19</span> https://t.co/Nr21FMxphb</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1240009481460822017">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">vomit</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "vomit"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 02:51:33</td>
+                <td class ="content_left">that default font makes me <span style="color: yellow;"><span style="color: yellow;">vomit</span></span> https://t.co/A3P4SUL4rI</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1246631532942503939">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 17:17:32</td>
+                <td class ="content_left">today I was rushed o the doctor for stomach <span style="color: yellow;"><span style="color: yellow;">pain</span></span> and bleeding in my urine and the medicine was almost $100 NOT including the cost of the visit. i won’t have to suffer anymore. im so emotional. https://t.co/9XmhVdB915</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1246124689833025536">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 10:07:20</td>
+                <td class ="content_left">it’s five in the morning and I’ve been up in excruciating <span style="color: yellow;"><span style="color: yellow;">pain</span></span> all night and am thinking it’s a kidney infection. i cant afford going to the ER again so I’m really hoping I can last until 8am when the doctors office opens :(</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1246016425459941382">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-10 21:29:31</td>
+                <td class ="content_left">i fell down the stairs the other day and fucked up my leg super bad and it’s starting to affect my sleep because the <span style="color: yellow;"><span style="color: yellow;">pain</span></span> is waking me up but america doesn’t have affordable healthcare so we love that</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1226981546105634816">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-09 03:24:35</td>
+                <td class ="content_left">my knee is in so much <span style="color: yellow;"><span style="color: yellow;">pain</span></span> I can barely walk. im in the verge of tears &amp; I hate that I can’t tell my parents cause they’ll just be mad.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1226346125311062016">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">headache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "headache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 04:38:27</td>
+                <td class ="content_left">ten days after contracting COVID-19 im starting to feel better. only have a <span style="color: yellow;"><span style="color: yellow;">headache</span></span> and fatigue and a slight cough. im thankful to be alive and well.</td>
+                <td>0</td>
+                <td>47</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1245571270751576069">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-29 01:16:02</td>
+                <td class ="content_left">i have the biggest <span style="color: yellow;"><span style="color: yellow;">headache</span></span> and am so dehydrated fuck</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1233561534330232832">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-20 20:42:26</td>
+                <td class ="content_left">i have the worst <span style="color: yellow;"><span style="color: yellow;">headache</span></span> oh my GOD</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1230593575794204674">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fatigue</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fatigue"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 04:38:27</td>
+                <td class ="content_left">ten days after contracting COVID-19 im starting to feel better. only have a headache and <span style="color: yellow;"><span style="color: yellow;">fatigue</span></span> and a slight cough. im thankful to be alive and well.</td>
+                <td>0</td>
+                <td>47</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1245571270751576069">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 01:54:49</td>
+                <td class ="content_left">Don’t take it as a joke. You’ll find yourself struggling to get a <span style="color: yellow;"><span style="color: yellow;">breath</span></span> in. If you’re feeling symptoms please isolate yourself and do not go around others. My roommate contracted it at her job. She still doesn’t believe she has it.</td>
+                <td>0</td>
+                <td>58</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1244080540099190787">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-23 22:38:10</td>
+                <td class ="content_left">me after singing king of the clouds without taking a <span style="color: yellow;"><span style="color: yellow;">breath</span></span> https://t.co/GGLcgMx2kN</td>
+                <td>4</td>
+                <td>32</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1231709865455890432">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 01:50:21</td>
+                <td class ="content_left">I’m 19 and <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19. It started off as a common cold feeling and worsened. I have been drenched in sweat from a fever, coughing, could barely walk from lightheadedness. I thought I was in invincible towards this virus. Stay healthy. Please.</td>
+                <td>30</td>
+                <td>401</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1244079417518931971">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-02 18:27:37</td>
+                <td class ="content_left">my boss is making me come into work when I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the flu and can barely move. i work with kids too :-)</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1212802643929776134">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 01:50:21</td>
+                <td class ="content_left">I’m 19 and tested <span style="color: yellow;">positive for COVID</span>-19. It started off as a common cold feeling and worsened. I have been drenched in sweat from a fever, coughing, could barely walk from lightheadedness. I thought I was in invincible towards this virus. Stay healthy. Please.</td>
+                <td>30</td>
+                <td>401</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1244079417518931971">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sweat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sweat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 01:50:21</td>
+                <td class ="content_left">I’m 19 and tested positive for COVID-19. It started off as a common cold feeling and worsened. I have been drenched in <span style="color: yellow;"><span style="color: yellow;">sweat</span></span> from a fever, coughing, could barely walk from lightheadedness. I thought I was in invincible towards this virus. Stay healthy. Please.</td>
+                <td>30</td>
+                <td>401</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1244079417518931971">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Sneeze</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Sneeze"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 03:59:10</td>
+                <td class ="content_left">my allergies are so bad but y’all already know I’d <span style="color: yellow;">sneeze</span> 726262728 times for my guinea pig. like LOOK AT HIM. what a good boy. https://t.co/jEjDtt71RQ</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1242662284234719233">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pains</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pains"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 04:13:18</td>
+                <td class ="content_left">@pftwtour twtltrtd, vices, and pftw because dying in la really out here owning my ass. not saying doab actually <span style="color: yellow;"><span style="color: yellow;">pains</span></span> me.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1242303453642346496">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shaking</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shaking"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 19:40:40</td>
+                <td class ="content_left">tw // self harm 
+
+my roommate is so mentally abusive I don’t think I can do this anymore. she has caused me to relapse and contemplate suicide. im <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> I don’t know what to do.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1241449669298925568">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">rash</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "rash"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 01:11:57</td>
+                <td class ="content_left">my doctor prescribed me medicine for my <span style="color: yellow;"><span style="color: yellow;">rash</span></span> that used to be my old anxiety meds that my psychiatrist deadass gave me until I fell asleep. MEMORIES.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1240808263786074114">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">bronchitis</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "bronchitis"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-07 18:13:58</td>
+                <td class ="content_left">really out here with <span style="color: yellow;"><span style="color: yellow;">bronchitis</span></span> 😷</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1236354419782037504">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">anemia</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "anemia"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-19 21:03:19</td>
+                <td class ="content_left">stop shaming someone with <span style="color: yellow;"><span style="color: yellow;">anemia</span></span> for sleeping too much when:
+1) they work 24/7
+2) have full-time college
+3) they can’t afford healthcare to receive help</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1230236442665848832">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">chill</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "chill"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-15 01:17:20</td>
+                <td class ="content_left">hi I’m in the car on a long ride to dinner so send some <span style="color: yellow;"><span style="color: yellow;">chill</span></span> / indie songs  my friends and I can vibe to!!!</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1228488430654513153">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-10 21:08:28</td>
+                <td class ="content_left">@bowlingforwentz ITS OK now I smoke cigarettes which isn’t good but it doesn’t make me have a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> or puke</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1226976249932853250">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-10 21:05:45</td>
+                <td class ="content_left">@bowlingforwentz i had a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> for a month straight and almost was sent to the ER hahshshakaksna</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1226975566504566784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">have a fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "have a fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-10 21:08:28</td>
+                <td class ="content_left">@bowlingforwentz ITS OK now I smoke cigarettes which isn’t good but it doesn’t make me <span style="color: yellow;"><span style="color: yellow;">have a fever</span></span> or puke</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1226976249932853250">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-10 21:00:18</td>
+                <td class ="content_left">ive had four people tell me how strong my perfume is and how good it <span style="color: yellow;"><span style="color: yellow;">smell</span></span>s today. glad to know I don’t <span style="color: yellow;"><span style="color: yellow;">smell</span></span> like total ass.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1226974192194740227">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-19 04:31:25</td>
+                <td class ="content_left">peep me high as fuck working on my narcotics &amp; <span style="color: yellow;"><span style="color: yellow;">drug</span></span> enforcement as well as my <span style="color: yellow;"><span style="color: yellow;">drug</span></span> use and abuse classes https://t.co/O1faUv6mTR</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/URIESBLUNT/status/1218752798898184192">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

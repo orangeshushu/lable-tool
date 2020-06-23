@@ -1,0 +1,1357 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>586-inqvmnd.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 586-inqvmnd.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">586-inqvmnd.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 14:22:21</td>
+                <td class ="content_left">Let's put <span style="color: yellow;"><span style="color: yellow;">covid19</span></span> aside for a little bit and pay attention to other important information. Let us not lose sight of just how dangerously incompetent he really is, other than the handling of a public health emergency.
+https://t.co/j4CslvQUMk</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1263475220255510529">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 15:51:55</td>
+                <td class ="content_left">I refuse to wear pajamas &amp; throw my hair back today. The days need to start feeling different. Been awake for 8 hours &amp; it's not even noon yet. LGF, joint aches &amp; headache = flare time. Flare = insomnia. All the fighting my body did against <span style="color: yellow;"><span style="color: yellow;">covid19</span></span> is making my lupus go haywire.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1251176575208435713">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 17:40:03</td>
+                <td class ="content_left">@adamcardyx Don't take ibuprofen. What other symptoms do you have? I had a major headache at the beginning of <span style="color: yellow;"><span style="color: yellow;">covid19</span></span> and I know you've not been feeling well.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1250479009814786048">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 14:39:48</td>
+                <td class ="content_left">I've been putting way too much pressure on myself. I've been beating myself up thinking I should be doing all this crap..my house should look perfect, cooking everyday, etc., but I just recovered from <span style="color: yellow;"><span style="color: yellow;">covid19</span></span> &amp; went right into a lupus flare. My brain won't cooperate with my body.</td>
+                <td>2</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1250433647028531203">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 10:46:21</td>
+                <td class ="content_left">@Yurmom31 @MTopkat3852 New York has always been my home and always will be. I am so grateful for Cuomo's leadership. My husband and I have <span style="color: yellow;">Covid19</span> and my son has a lgf, but nothing else. I've been sick for 3 weeks at least &amp; my hub for 2. I've studied epidemiology, Cuomo is saving NY.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1245301468648943616">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 21:57:42</td>
+                <td class ="content_left">@ZMyersOfficial You could've checked my TL before replying so you understood who I am. I'm sick in NY, immunocompromised, my <span style="color: yellow;"><span style="color: yellow;">covid19</span></span> test was damaged &amp; not run, I'm isolated  &amp; was hoping to get some light in my life with a new song from @TheBrentSmith. I'm stuck inside what you're cause is for.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1242571315795628032">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 18:46:28</td>
+                <td class ="content_left">@scantwell1492 Yea, well it's gone. Zach Myers telling me off not knowing I'm sick in the epicenter, and a huge fan kinda ruined my day. Oh yea, and my <span style="color: yellow;"><span style="color: yellow;">covid19</span></span> test being damaged and unable to process sucks too.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1242523190661992449">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 18:28:00</td>
+                <td class ="content_left">@nadasfan @M_K1977 @Shinedown @TheBrentSmith @ZMyersOfficial I know. It's just frustrating. I had my <span style="color: yellow;"><span style="color: yellow;">covid19</span></span> test last Thursday, it was damaged in transport to the lab and no one called. I have lupus, aps, take warfarin, had two strokes and have clots on my heart valves. Just wanted to hear something new. I'll crawl back under my rock.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1242518545021501442">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">lupus</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "lupus"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 14:13:09</td>
+                <td class ="content_left">@419Randall_P My son is ok. Had him tested. Negative for covid &amp; any antibodies. I've been sick since March and still haven't developed any antibodies. My <span style="color: yellow;"><span style="color: yellow;">lupus</span></span> meds are helping me, I think. But overall, I'll be alright. Just tired. Been reading a lot, so some good is coming from it.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1263472903946993666">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 12:53:57</td>
+                <td class ="content_left">@janemarielynch If he was, he'd have to follow the guidelines set by the Emergency Use Authorization. And it's more than the 1 pill a day he said he takes. It requires 2. So someone is lying. It's manufactured only in 200mg tabs, the EUA dosage is 400mg a day (I take it for <span style="color: yellow;">Lupus</span> &amp; I'm a MPH).</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1262728198070112257">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 12:42:39</td>
+                <td class ="content_left">Well I'll be damned. My immunotherapy for <span style="color: yellow;">Lupus</span> is a monoclonal antibody that targets B cells. I knew there was a relevance and possible reason for my extended period of illness. But it's better than the other outcome. I got really friggin lucky. 
+https://t.co/LLJN3J7vbX</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1262725353887412224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 14:42:26</td>
+                <td class ="content_left">@SteveKoehler22 I take monoclonal antibodies for <span style="color: yellow;"><span style="color: yellow;">lupus</span></span> and I know they're using them in hospitals. I've been sick since March. I haven't developed antibodies and I also take warfarin. My body is fighting it and keeping it at bay, but I can't shake it. I was ok for a few weeks &amp; now sick again.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1256957291846406144">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 15:51:55</td>
+                <td class ="content_left">I refuse to wear pajamas &amp; throw my hair back today. The days need to start feeling different. Been awake for 8 hours &amp; it's not even noon yet. LGF, joint aches &amp; headache = flare time. Flare = insomnia. All the fighting my body did against covid19 is making my <span style="color: yellow;"><span style="color: yellow;">lupus</span></span> go haywire.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1251176575208435713">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 14:39:48</td>
+                <td class ="content_left">I've been putting way too much pressure on myself. I've been beating myself up thinking I should be doing all this crap..my house should look perfect, cooking everyday, etc., but I just recovered from covid19 &amp; went right into a <span style="color: yellow;"><span style="color: yellow;">lupus</span></span> flare. My brain won't cooperate with my body.</td>
+                <td>2</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1250433647028531203">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 12:56:58</td>
+                <td class ="content_left">@ErinStevens64 Oh boy, do I know that feeling! The stress of everything is making me flare like mad. I can't take steroids bc of coumadin, so I take Benlysta shots &amp; plaquenil. I had to get clearance from 3 MDs &amp; bloodwork before a cortisone shot in my elbow. If u need a <span style="color: yellow;"><span style="color: yellow;">lupus</span></span> ear, I'm here🙂💜</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1250045384002543618">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 12:32:02</td>
+                <td class ="content_left">@ErinStevens64 I have <span style="color: yellow;"><span style="color: yellow;">lupus</span></span> too. The joints in my right arm have been on fire. I understand completely.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1250039106794590209">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 12:01:42</td>
+                <td class ="content_left">@419Randall_P Thanks sweetie.  Unfortunately we've been hit with it, but we're all doing ok. Despite the <span style="color: yellow;"><span style="color: yellow;">lupus</span></span> &amp; aps, immunosuppressants &amp; warfarin...my body managed to fight it. I have some SOB, but  I think it's just anxiety knowing what's coming.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1245320429897728000">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 17:25:52</td>
+                <td class ="content_left">@MichaelCoudrey @gtconway3d @realDonaldTrump Hydroxychloroquine is prescribed for <span style="color: yellow;">Lupus</span> and other autoimmune disorders. Now the people who need it are being fucked over. With the maniac wanting to end "social distancing," we're all fucked. He is an immediate danger to public health and needs to STFU.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1242502907720863744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 09:39:29</td>
+                <td class ="content_left">Maybe they'll give me my results faster if I mention I've been taking plaquenil for my <span style="color: yellow;"><span style="color: yellow;">lupus</span></span> the last five years. What was supposed to be 48 hours is now becoming 96.
+
+#CoronaVirusUpdates</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1242023149010640896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 19:07:08</td>
+                <td class ="content_left">@realDonaldTrump This tweet a public health hazard. Hydroxychloroquine, or Plaquenil, is not just a pill to pop. I've been on it for years for <span style="color: yellow;">Lupus</span> &amp; it damages your eyes. You need to be regularly checked. An antibiotic treating a virus? Isn't there a surgeon general who should be doing this?</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1241441227066806272">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 11:48:15</td>
+                <td class ="content_left">@ChrisJansing He needs to resign. He is a public health threat. The anti-malarial, branded as Plaquenil, is not just some pill to pop. It was a last resort tx for <span style="color: yellow;">Lupus</span> for me. The damage it can do to your eyes alone is a huge risk. He can't just roll out pills and hope this goes away.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1240968394352078848">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-14 11:53:29</td>
+                <td class ="content_left">@teachchildren67 @NYGovCuomo I'm on LI. I'm doing ok. I'm self-isolating. I'm more concerned my <span style="color: yellow;">Lupus</span> will flare from the stress. And the APS (antiphospholipid antibody syndrome) will flare &amp; mess up my coumadin therapy. I have a very involved medical hx. Strokes, nonbacterial thrombotic endocarditis, etc😞</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1238795384161525760">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 14:02:30</td>
+                <td class ="content_left">@FFRittle That's China. America has more chronic illnesses because we're unhealthy. I have <span style="color: yellow;">Lupus</span> and other autoimmune disorders.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1238465462897385473">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-19 14:32:21</td>
+                <td class ="content_left">The meds I inject every week for <span style="color: yellow;"><span style="color: yellow;">lupus</span></span> cost $1k per shot. That costs twice the determined poverty line in this country a year.
+
+#VoteBlueNoMatterWho</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1230138053542457345">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 22:28:56</td>
+                <td class ="content_left">@manofletterz Omg, my dog walks me. I let her go where she wants and all she does is sniff everything. She's a bully breed, and they do a lot of <span style="color: yellow;"><span style="color: yellow;">nose</span></span> work. I use a harness bc I don't want to put any force on her neck.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1260698572175048707">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 13:21:20</td>
+                <td class ="content_left">@BeatrixxxKiddoh I always wanted my <span style="color: yellow;"><span style="color: yellow;">nose</span></span> fixed bc I broke it young and it's crooked. I also chipped my bottom teeth very young and I'm very self conscious about it. My parents were neglectful, but it made me who I am today. I think you look beautiful the way you are.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1255487331051634692">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 12:02:53</td>
+                <td class ="content_left">@calleread He's so full of shit, he had an asshole placed on his chin and reduced his <span style="color: yellow;"><span style="color: yellow;">nose</span></span> so he can't smell it.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1249669385226194944">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 16:54:17</td>
+                <td class ="content_left">@PeteButtigieg, please, I implore you...I've been trying for months to get in <span style="color: yellow;">touch</span> with someone/anyone affiliated w @PeteForAmerica. The copy of your signed memoir I donated $ for in February (NH Primary Day zoom call with @Chasten) was never sent to me. Please, someone respond</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1257715250519928832">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 14:38:19</td>
+                <td class ="content_left">@ErinStevens64 They were going to try methotrexate, I was like "no thanks, I'll deal." I also have Lyrica &amp; I'm out of meds &amp; I can't get in <span style="color: yellow;">touch</span> with *anyone* associated with the rheumo practice. What a mess. Abruptly stopping it is very harmful. My primary is going to call me back shortly.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1250070887501570050">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 20:25:21</td>
+                <td class ="content_left">@MTopkat3852 I let the roofers use my electric and they blew half my place with a bad cord a couple months ago. I go to work on my dryer, I unplug it &amp; hit the fuse before I even <span style="color: yellow;">touch</span> it.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1249433445568307212">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-09 12:47:29</td>
+                <td class ="content_left">"Don't <span style="color: yellow;">touch</span> your face."
+
+But everything reported makes you face palm.</td>
+                <td>2</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1236997034323869696">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-01 16:19:10</td>
+                <td class ="content_left">@realDonaldTrump You lack empathy and have been out of <span style="color: yellow;">touch</span> with reality your entire life, managing to get by manipulating your flock of sheeple. You are not a victor, you are a villain. An impeached villain.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1223641953205673984">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">inhaler</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "inhaler"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 11:39:00</td>
+                <td class ="content_left">It's sadly amusing seeing someone actively trying so hard to avoid me.  I've given this woman an <span style="color: yellow;"><span style="color: yellow;">inhaler</span></span> when she couldn't get her rx in time &amp; sought nothing in return.  Once I uttered Bernie's name and issues with our healthcare system in 2016, she has avoided me since. 😕</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1257635908062412801">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sore throat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sore throat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 20:11:36</td>
+                <td class ="content_left">This headache, <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span>, &amp; stiff neck sucks. Ginger helps, hot tea is soothing, but today it requires a vanilla Frosty from @Wendys.
+
+I've been sick for weeks, I need something to look forward to. Unless the machine is "broken" again.</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1257402520638566405">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 15:52:53</td>
+                <td class ="content_left">@JoaquinJoeKaman Very bad headache, fever, GI issues, stiff neck, glands felt all swollen, no congestion but very runny nose, <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span>, SOB, my ribs ached, lost weight, no sense of smell, extreme fatigue,  my temp would fluctuate- it was almost cyclical. Very sweaty at night, poor sleep</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1250452042893713408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 16:45:52</td>
+                <td class ="content_left">I feel like my family is <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of me. 
+I can't do anything, I've been sick for weeks, we have a small place. I think my dog is even <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of me. I'm <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of me. Why can't I just be simple, easily entertained, and focus on something for more than two minutes.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1257350742232498187">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 13:14:32</td>
+                <td class ="content_left">Can people please give me some movie recommendations? I'm too <span style="color: yellow;"><span style="color: yellow;">tired</span></span> to read.</td>
+                <td>1</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1255485620123766784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 16:29:17</td>
+                <td class ="content_left">The next 48 hours are going to be very uneasy for me waiting for my #coronavirus results. I fought for  week to get a test. Still have a fever and it has only increased. I'm so <span style="color: yellow;"><span style="color: yellow;">tired</span></span> 😷.
+
+This is just the beginning.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1240676727241793536">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shake</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shake"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 14:42:26</td>
+                <td class ="content_left">@SteveKoehler22 I take monoclonal antibodies for lupus and I know they're using them in hospitals. I've been sick since March. I haven't developed antibodies and I also take warfarin. My body is fighting it and keeping it at bay, but I can't <span style="color: yellow;"><span style="color: yellow;">shake</span></span> it. I was ok for a few weeks &amp; now sick again.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1256957291846406144">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">my nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "my nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 13:21:20</td>
+                <td class ="content_left">@BeatrixxxKiddoh I always wanted <span style="color: yellow;"><span style="color: yellow;">my nose</span></span> fixed bc I broke it young and it's crooked. I also chipped my bottom teeth very young and I'm very self conscious about it. My parents were neglectful, but it made me who I am today. I think you look beautiful the way you are.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1255487331051634692">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 12:12:40</td>
+                <td class ="content_left">I was sick for 3 weeks in March &amp; my covid test was damaged. I was feeling ok for the last 3 weeks then started feeling sick again. I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> yesterday and I never developed antibodies, but my husband did.  
+
+Round 2, hopefully I win this one.
+
+#StayHome 
+#NewYorkTough</td>
+                <td>1</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1255470051605569547">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 22:14:48</td>
+                <td class ="content_left">@MTopkat3852 My husband donated plasma for antibodies. I'm sick again &amp; haven't developed any of my own yet. I just <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> again today after beginning to feel sick again. Not sick enough to go to the hospital, but I first got sick on March 12. Now I still have it or I got it again.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1255259194724364291">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 17:47:01</td>
+                <td class ="content_left">@JoaquinJoeKaman It's not as strong as it used to be. I used to have a very good sense of smell. It's not the same. My test was damaged and not performed bc the tube leaked in transport, but my husband <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. And yes, I take Plaquenil for lupus. Have for years bc I can't take NSAIDS.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1250480763243503616">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 19:03:15</td>
+                <td class ="content_left">The #navy captain sounded the alarm about #covid19 being aboard his ship, wanted his sailors evacuated &amp; to be taken care of &amp; stop its spread...500+ cases have been confirmed. He was removed for speaking out/"whistleblowing" &amp; now he <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. I hope he recovers. ❤🤍💙 https://t.co/UtrglyPeU0</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1246876068394434574">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 20:08:32</td>
+                <td class ="content_left">@girlsreallyrule My test was damaged and no one called me yet. Been over 2 weeks. No one has called me back. I have friends who have been waiting for weeks. My husband <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. I'm on week 4 of being sick. Hang in there. Unless you can't breathe, stay home and manage your symptoms.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1246530110477516801">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 16:34:52</td>
+                <td class ="content_left">My husband <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for #COVID19 using a CityMD facility yesterday. They called less than 24 hrs later. I never got a call back from NYS, I tested 3/19 at Stony Brook drive thru &amp; found my test was damaged seeking info on my own. Never got a call. #CoronavirusNewYork https://t.co/9rpMzUG24B</td>
+                <td>3</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1244302011681693698">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 12:07:45</td>
+                <td class ="content_left">@ErinBurnett @DocDarnell My friend's husband is NYPD. A fellow officer of his <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. He may now have to patrol store fronts to curb looting. He's not a street cop.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1242785239098941440">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-09 16:13:44</td>
+                <td class ="content_left">"The head of the Port Authority of New York and New Jersey, Rick Cotton, <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for the virus and was being placed on quarantine." #coronavirus
+#COVID19 #NYC
+
+https://t.co/OYlkcKRVh4</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1237048938794016775">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 10:10:41</td>
+                <td class ="content_left">She was 89 at the time and I tried moving heaven &amp; earth for her. I had to sign that paperwork. And the weight of it still crushes me. This is how <span style="color: yellow;">COVID-19</span> patients are dying. #StayAtHome and don't be the cause of another family having to endure losing someone this way.</td>
+                <td>2</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1253627413893955585">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 22:53:44</td>
+                <td class ="content_left">Doctors are prescribing specific dosages of hydroxychloroquine &amp; the z-pak for patients who have moderate cases of <span style="color: yellow;">COVID-19</span> experiencing SOB, but not yet in need of hospitalization.
+
+The FDA passed an EUA for providers to administer it.
+
+I went through it all yesterday w my hubs.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1246571684985012225">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 12:18:07</td>
+                <td class ="content_left">Watching &amp; waiting to see if my husband &amp; son are able to fight <span style="color: yellow;">COVID-19</span> with so many unknowns is hell.
+
+My mother's suicide was hard.
+
+Removing my grandmother from life support tore me apart.
+
+This is a nightmare.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1245324561261961217">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 20:39:52</td>
+                <td class ="content_left">@realryanpro @PeteButtigieg I want my book :( I never got it and I donated $250 to have a zoom call with @Chas10Buttigieg the day of the NH Primary. My husband has <span style="color: yellow;">COVID-19</span> and I'm finally getting over it after at least 3 weeks and I wish it would come in the mail and make me smile.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1245088444646404096">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 11:25:26</td>
+                <td class ="content_left">I'm very lucky my husband is doing OK so far. I'm scared shitless. It doesn't even matter my test was damaged &amp; not processed anymore. 
+
+Trying to keep a smile on my son's face while he knows we both have <span style="color: yellow;">COVID-19</span> is really hard.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1244948916434599937">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 12:02:37</td>
+                <td class ="content_left">#Plaquenil and other #antimalarials are shown to be effective in treating #coronavirus. I've been on it for years for #lupus. I've had a LGF for 7 days &amp; still no testing available by me yet. 
+
+French researcher posts successful <span style="color: yellow;">Covid-19</span> drug trial
+https://t.co/uovNuUxqZz</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1240247234165440512">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-12 10:54:00</td>
+                <td class ="content_left">Colorado's first drive-up <span style="color: yellow;">COVID-19</span> testing facility opens in Denver, is free of charge https://t.co/KzW2lXti0w</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1238055635498999808">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">vomit</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "vomit"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 10:16:05</td>
+                <td class ="content_left">@texaswinehouse It's disgusting. Their yards are larger than my entire community. Make me <span style="color: yellow;"><span style="color: yellow;">vomit</span></span> 🤮. Boohoo fuckers.</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1251816835848245249">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">headache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "headache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 15:51:55</td>
+                <td class ="content_left">I refuse to wear pajamas &amp; throw my hair back today. The days need to start feeling different. Been awake for 8 hours &amp; it's not even noon yet. LGF, joint aches &amp; <span style="color: yellow;"><span style="color: yellow;">headache</span></span> = flare time. Flare = insomnia. All the fighting my body did against covid19 is making my lupus go haywire.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1251176575208435713">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 11:03:24</td>
+                <td class ="content_left">@adamcardyx Glad the <span style="color: yellow;"><span style="color: yellow;">headache</span></span> has ended! Stay safe.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1250741579150696455">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 17:40:03</td>
+                <td class ="content_left">@adamcardyx Don't take ibuprofen. What other symptoms do you have? I had a major <span style="color: yellow;"><span style="color: yellow;">headache</span></span> at the beginning of covid19 and I know you've not been feeling well.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1250479009814786048">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 12:55:38</td>
+                <td class ="content_left">@freewomen4ever @ReeseW @kerrywashington Thanks! I appreciate suggestions. I have to take it easy today bc I pulled my back out dismantling my dryer yesterday and haven't found anything good and I have a <span style="color: yellow;"><span style="color: yellow;">headache</span></span> so reading is kinda uncomfortable rn.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1246783556648648704">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 18:52:55</td>
+                <td class ="content_left">I've had a <span style="color: yellow;"><span style="color: yellow;">headache</span></span> for a few days. Almost dehydrated feeling, like a hangover? Not migraine, not sinus, not my INR level. Not a hangover.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1238538546916601856">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">joint ache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "joint ache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 15:51:55</td>
+                <td class ="content_left">I refuse to wear pajamas &amp; throw my hair back today. The days need to start feeling different. Been awake for 8 hours &amp; it's not even noon yet. LGF, <span style="color: yellow;"><span style="color: yellow;">joint ache</span></span>s &amp; headache = flare time. Flare = insomnia. All the fighting my body did against covid19 is making my lupus go haywire.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1251176575208435713">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">joint aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "joint aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 15:51:55</td>
+                <td class ="content_left">I refuse to wear pajamas &amp; throw my hair back today. The days need to start feeling different. Been awake for 8 hours &amp; it's not even noon yet. LGF, <span style="color: yellow;"><span style="color: yellow;">joint aches</span></span> &amp; headache = flare time. Flare = insomnia. All the fighting my body did against covid19 is making my lupus go haywire.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1251176575208435713">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 15:51:55</td>
+                <td class ="content_left">I refuse to wear pajamas &amp; throw my hair back today. The days need to start feeling different. Been awake for 8 hours &amp; it's not even noon yet. LGF, joint <span style="color: yellow;"><span style="color: yellow;">aches</span></span> &amp; headache = flare time. Flare = insomnia. All the fighting my body did against covid19 is making my lupus go haywire.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1251176575208435713">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">massage</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "massage"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 17:43:58</td>
+                <td class ="content_left">@adamcardyx Drink lots of water and <span style="color: yellow;"><span style="color: yellow;">massage</span></span> pressure points. See if warmth or coolness helps (whichever one, depends on the headache) and feel better!</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1250479998068195328">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">runny nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "runny nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 15:52:53</td>
+                <td class ="content_left">@JoaquinJoeKaman Very bad headache, fever, GI issues, stiff neck, glands felt all swollen, no congestion but very <span style="color: yellow;"><span style="color: yellow;">runny nose</span></span>, sore throat, SOB, my ribs ached, lost weight, no sense of smell, extreme fatigue,  my temp would fluctuate- it was almost cyclical. Very sweaty at night, poor sleep</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1250452042893713408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recovered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recovered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 14:39:48</td>
+                <td class ="content_left">I've been putting way too much pressure on myself. I've been beating myself up thinking I should be doing all this crap..my house should look perfect, cooking everyday, etc., but I just <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> from covid19 &amp; went right into a lupus flare. My brain won't cooperate with my body.</td>
+                <td>2</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1250433647028531203">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 16:55:03</td>
+                <td class ="content_left">My husband is so sick of me he's doing @DoorDash now 😂.
+
+But seriously, he <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> &amp; has a few days off. We have masks &amp; gloves, so he signed up to help deliver food around our area in NY because the infection rate is insane in my county. I'm so proud of him.❤ #NewYorkTough</td>
+                <td>1</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1248655747048751106">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 15:09:46</td>
+                <td class ="content_left">My husband has fully <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> from #covid19, as have I, thankfully. We were both *very* lucky and I take nothing for granted. It took three weeks and a heavy physical toll. Please take care of yourselves! 
+
+#LongIsland 
+#NewYorkTough 
+#StayHomeFor everyone.</td>
+                <td>2</td>
+                <td>21</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1248266862611386369">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 02:21:07</td>
+                <td class ="content_left">@SladeWentworth I can't <span style="color: yellow;"><span style="color: yellow;">smell</span></span> your farts anymore.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1249885364514422784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 12:02:53</td>
+                <td class ="content_left">@calleread He's so full of shit, he had an asshole placed on his chin and reduced his nose so he can't <span style="color: yellow;"><span style="color: yellow;">smell</span></span> it.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1249669385226194944">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 12:59:27</td>
+                <td class ="content_left">@MTopkat3852 Yes, it *finally* did. Lost weight, too. Loss of appetite &amp; my sense of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> was very dampened. My cat reminded me it was almost back to normal, damn shit <span style="color: yellow;"><span style="color: yellow;">smell</span></span>ed awful. The fatigue tho...almost felt like a damn zombie. Everything was exhausting to do.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1246784516930375686">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Can't smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Can't smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 02:21:07</td>
+                <td class ="content_left">@SladeWentworth I <span style="color: yellow;">can't smell</span> your farts anymore.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1249885364514422784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 12:02:53</td>
+                <td class ="content_left">@calleread He's so full of shit, he had an asshole placed on his chin and reduced his nose so he <span style="color: yellow;">can't smell</span> it.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1249669385226194944">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">autoimmune</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "autoimmune"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 14:36:51</td>
+                <td class ="content_left">@curiousofu I was sick and luckily recovered, but with my <span style="color: yellow;"><span style="color: yellow;">autoimmune</span></span> disorders there's a lot of uncertainty.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1249708130381987840">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 17:25:52</td>
+                <td class ="content_left">@MichaelCoudrey @gtconway3d @realDonaldTrump Hydroxychloroquine is prescribed for Lupus and other <span style="color: yellow;"><span style="color: yellow;">autoimmune</span></span> disorders. Now the people who need it are being fucked over. With the maniac wanting to end "social distancing," we're all fucked. He is an immediate danger to public health and needs to STFU.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1242502907720863744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 19:10:38</td>
+                <td class ="content_left">@NYGovCuomo I can't get a test. I've been denied 4 times. I'm immunocompromised and have an <span style="color: yellow;"><span style="color: yellow;">autoimmune</span></span> heart condition. I'm 36. I'm symptomatic with fever. I WAS DENIED #COVID19 testing in Suffolk County.</td>
+                <td>36</td>
+                <td>190</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1238543008812974080">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 14:02:30</td>
+                <td class ="content_left">@FFRittle That's China. America has more chronic illnesses because we're unhealthy. I have Lupus and other <span style="color: yellow;"><span style="color: yellow;">autoimmune</span></span> disorders.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1238465462897385473">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">migraines</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "migraines"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 22:56:21</td>
+                <td class ="content_left"><span style="color: yellow;">Migraines</span> suck.
+
+That's the tweet.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1249471447204052994">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sweat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sweat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 17:30:58</td>
+                <td class ="content_left">$20 part needed to fix a $900 dryer. <span style="color: yellow;">Sweat</span> equity is worth it.</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1248302397719527429">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 17:51:31</td>
+                <td class ="content_left">I feel like I'm an annoying person 😞.
+
+I think cabin <span style="color: yellow;"><span style="color: yellow;">fever</span></span> is kicking in.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1247582794223628288">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 11:04:28</td>
+                <td class ="content_left">@raylab14 @SadlyCatless Hello! I take it for lupus. Under the FDA's Emergency Use Authorization, my husband was given it as treatment, after an EKG, bc his lungs started declining &amp; was on his way down. 3 days in &amp; <span style="color: yellow;"><span style="color: yellow;">fever</span></span> is gone &amp; lungs opened up. I was sick for 4 weeks, but never got as sick as he did.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1247117968800133120">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 19:27:05</td>
+                <td class ="content_left">Feeling crappier today only to find that my <span style="color: yellow;"><span style="color: yellow;">fever</span></span> came back. 
+
+This coronavirus is hard to shake. 
+
+I shouldn't bitch, I've been lucky so far despite the stats against me.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1245432517542531072">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 09:10:20</td>
+                <td class ="content_left">My husband has a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> now. Fuck.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1242740589369704448">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 18:58:35</td>
+                <td class ="content_left">@mikefarb1 I'm still waiting for my results and I live in NY and have had a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> for 10 days now.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1241801467176136705">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 22:41:04</td>
+                <td class ="content_left">Waiting for my results is driving me insane. Still have this damn <span style="color: yellow;"><span style="color: yellow;">fever</span></span> &amp; headache. No appetite still. I was told 48 hours, but I have a feeling they're a little backed up. I just hope the sample is still viable because of the backlog. I'm scared.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1241132679183192065">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 16:29:17</td>
+                <td class ="content_left">The next 48 hours are going to be very uneasy for me waiting for my #coronavirus results. I fought for  week to get a test. Still have a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> and it has only increased. I'm so tired 😷.
+
+This is just the beginning.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1240676727241793536">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 14:05:48</td>
+                <td class ="content_left">I've had a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> for a week now, and have health conditions that make me high risk and my husband cannot stay home bc he's emergency personnel.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1240278233834295298">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recover</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recover"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 17:39:14</td>
+                <td class ="content_left">@ChrisCuomo Glad you're able to keep fighting it. I hope you <span style="color: yellow;"><span style="color: yellow;">recover</span></span> quickly. I hope everyone does. 💛</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1247579703717892096">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 09:56:33</td>
+                <td class ="content_left">@texaswinehouse My son found the site that is tracking county by county by us &amp; he found ours, right before bedtime. Seeing both his parents <span style="color: yellow;"><span style="color: yellow;">recover</span></span> hopefully eases his worry bc he's safe at home. I don't know why I was so fortunate when other's haven't been. I'm grateful, but also heartbroken.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1247463264302313473">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 10:06:52</td>
+                <td class ="content_left">@briantylercohen I'd get mine filled and get brand name at generic price bc it was so cheap and readily available. Over the years I've used 3 different manufacturers of the <span style="color: yellow;"><span style="color: yellow;">drug</span></span> for Lupus. If it's being used as per the FDA's Emergency Use Authorization, only 12-16 pills are needed per patient.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1247465861629313025">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 12:02:37</td>
+                <td class ="content_left">#Plaquenil and other #antimalarials are shown to be effective in treating #coronavirus. I've been on it for years for #lupus. I've had a LGF for 7 days &amp; still no testing available by me yet. 
+
+French researcher posts successful Covid-19 <span style="color: yellow;"><span style="color: yellow;">drug</span></span> trial
+https://t.co/uovNuUxqZz</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1240247234165440512">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">loss of appetite</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "loss of appetite"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 12:59:27</td>
+                <td class ="content_left">@MTopkat3852 Yes, it *finally* did. Lost weight, too. <span style="color: yellow;">Loss of appetite</span> &amp; my sense of smell was very dampened. My cat reminded me it was almost back to normal, damn shit smelled awful. The fatigue tho...almost felt like a damn zombie. Everything was exhausting to do.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1246784516930375686">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fatigue</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fatigue"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 12:59:27</td>
+                <td class ="content_left">@MTopkat3852 Yes, it *finally* did. Lost weight, too. Loss of appetite &amp; my sense of smell was very dampened. My cat reminded me it was almost back to normal, damn shit smelled awful. The <span style="color: yellow;"><span style="color: yellow;">fatigue</span></span> tho...almost felt like a damn zombie. Everything was exhausting to do.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1246784516930375686">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Hydroxychloroquine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Hydroxychloroquine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 22:53:44</td>
+                <td class ="content_left">Doctors are prescribing specific dosages of <span style="color: yellow;">hydroxychloroquine</span> &amp; the z-pak for patients who have moderate cases of COVID-19 experiencing SOB, but not yet in need of hospitalization.
+
+The FDA passed an EUA for providers to administer it.
+
+I went through it all yesterday w my hubs.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1246571684985012225">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 17:30:46</td>
+                <td class ="content_left">@scottdnelson @MichaelCoudrey @gtconway3d @realDonaldTrump Trump wants it to be. It's based off a small study done in France. Doesn't mean it is. <span style="color: yellow;"><span style="color: yellow;">Hydroxychloroquine</span></span> damages your heart if you have a QT rhythm issue and it also poisons your eyes.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1242504142452555778">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 17:25:52</td>
+                <td class ="content_left">@MichaelCoudrey @gtconway3d @realDonaldTrump <span style="color: yellow;"><span style="color: yellow;">Hydroxychloroquine</span></span> is prescribed for Lupus and other autoimmune disorders. Now the people who need it are being fucked over. With the maniac wanting to end "social distancing," we're all fucked. He is an immediate danger to public health and needs to STFU.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1242502907720863744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 19:22:44</td>
+                <td class ="content_left">@robreiner His own is as <span style="color: yellow;"><span style="color: yellow;">cold</span></span> as ice.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1246518585905819648">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">exhausted</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "exhausted"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 03:15:29</td>
+                <td class ="content_left">I'm just too <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> to keep going rn.🥱🥱🥱</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1244463229608361987">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">have a temperature</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "have a temperature"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 12:56:14</td>
+                <td class ="content_left">@AndreyasAsylum Ok. My dog has been my best companion through all of this. My family is home, but everyone still needs their space. Please monitor if you <span style="color: yellow;"><span style="color: yellow;">have a temperature</span></span>. I hope you feel better soon!</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1243159826806472704">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">no appetite</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "no appetite"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 22:41:04</td>
+                <td class ="content_left">Waiting for my results is driving me insane. Still have this damn fever &amp; headache. <span style="color: yellow;">No appetite</span> still. I was told 48 hours, but I have a feeling they're a little backed up. I just hope the sample is still viable because of the backlog. I'm scared.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1241132679183192065">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Blood clots</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Blood clots"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 12:32:02</td>
+                <td class ="content_left">@DukeOfMoiety Yea, can't do much with having <span style="color: yellow;">blood clots</span>. So I went to grad school instead and got my Master of Public Health.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1240979412130115584">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">underlying disease</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "underlying disease"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 12:10:32</td>
+                <td class ="content_left">You know how if you get sick, it exacerbates everything else?  Like an arrhythmia, HTN, etc.
+
+This pandemic is showing everyone, who is willing to look, all the other <span style="color: yellow;"><span style="color: yellow;">underlying disease</span></span>s in our country. Income inequality, profiteering, greed, etc.</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1240973999397535744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">have a fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "have a fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 16:29:17</td>
+                <td class ="content_left">The next 48 hours are going to be very uneasy for me waiting for my #coronavirus results. I fought for  week to get a test. Still <span style="color: yellow;"><span style="color: yellow;">have a fever</span></span> and it has only increased. I'm so tired 😷.
+
+This is just the beginning.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1240676727241793536">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breathing trouble</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breathing trouble"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 21:03:15</td>
+                <td class ="content_left">@lostmyusername_ @News12LI Hopefully you won't develop <span style="color: yellow;"><span style="color: yellow;">breathing trouble</span></span>s. Fingers crossed for you.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1240383286838509570">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diarrhea</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diarrhea"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-14 15:20:53</td>
+                <td class ="content_left">@KaylaChowShow @DwHavoc <span style="color: yellow;">Diarrhea</span> &amp; Demons</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1238847574691450884">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-14 15:20:43</td>
+                <td class ="content_left">@KaylaChowShow @DwHavoc The <span style="color: yellow;">Diarrhea</span> Code</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1238847533520207875">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-14 15:20:24</td>
+                <td class ="content_left">@KaylaChowShow @DwHavoc Gone with the <span style="color: yellow;">Diarrhea</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1238847454168125442">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Osteopathy</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Osteopathy"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-14 14:03:12</td>
+                <td class ="content_left">@gtconway3d @JaeDog105 Doctor's of <span style="color: yellow;"><span style="color: yellow;">Osteopathy</span></span> focus on the body as a whole and how systems relate and take a more holistic approach. MD's are very clinical &amp; reactive. DO = preventative. MD - reactive treatment.  They both require very different personalities. Have respect for ALL physicians.</td>
+                <td>17</td>
+                <td>302</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1238828024646250496">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-14 15:07:05</td>
+                <td class ="content_left">I've realized over time that people may initially like me, but then I'm thrown by the wayside. And it's not for lack of trying to make friends.
+
+I don't understand. I never will. 
+
+I can't change who I am.
+
+I'm an acquired <span style="color: yellow;"><span style="color: yellow;">taste</span></span> I guess. 😕</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1228334855555092482">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-13 16:20:46</td>
+                <td class ="content_left">@mfstern I don't wish <span style="color: yellow;"><span style="color: yellow;">pain</span></span> on anyone, but you turn into what you exude.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1227991008354369538">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">chills</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "chills"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-25 13:43:12</td>
+                <td class ="content_left">This gave me <span style="color: yellow;"><span style="color: yellow;">chills</span></span> because this is it. We're approaching the tipping point. Trump grabbed Lady Liberty by the pussy and the @GOP looked the other way.
+#RealTime #BillMaher @billmaher @RealTimers 
+https://t.co/dqtzkY6eWh</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/inqvmnd/status/1221065986926940160">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

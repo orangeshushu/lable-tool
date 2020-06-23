@@ -1,0 +1,2714 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>302-naijaparrotng.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 302-naijaparrotng.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">302-naijaparrotng.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 20:18:16</td>
+                <td class ="content_left">103-Year-Old US Grand Mother Celebrates Recovery From <span style="color: yellow;">COVID-19</span> By Drinking Beer (Pix) https://t.co/gjM9xPDUIC</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1266101503598759944">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 12:21:04</td>
+                <td class ="content_left">Nigerian man who survived <span style="color: yellow;">COVID-19</span> shares his experience https://t.co/BfaGk0rtwA</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1265981412626141190">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 08:10:31</td>
+                <td class ="content_left">“Lagos will see a decline in number of <span style="color: yellow;">COVID-19</span> patients in four to six months time” – Health Commissioner, Prof. Akin Abayomi https://t.co/ruTjUlgdCC</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1265918360686133249">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 04:28:58</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Is From Hell, Not From God – Bishop Mike Bamidele https://t.co/LlSwLc7Tm5</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1265862604070813698">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 04:03:11</td>
+                <td class ="content_left">389 new cases of <span style="color: yellow;">COVID-19</span> recorded in Nigeria https://t.co/n9TX8VCYzG</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1265856117378252801">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 00:10:37</td>
+                <td class ="content_left">389 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/3UGTWc00IC</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1265797591234732033">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 21:21:49</td>
+                <td class ="content_left">Nigerian man who survived <span style="color: yellow;">COVID-19</span> shares his experience https://t.co/ds9u3Bmh6w</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1265755110426148872">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 21:09:21</td>
+                <td class ="content_left">87 <span style="color: yellow;">COVID-19</span> patients discharged in Lagos https://t.co/472C5eaI04</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1265751973594349569">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 07:52:24</td>
+                <td class ="content_left">Man mourns his ‘close girlfriend’ who died from <span style="color: yellow;">COVID-19</span> in Abuja https://t.co/vUa9DZ5jr6</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1265551413775605766">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 04:02:10</td>
+                <td class ="content_left">276 new cases of <span style="color: yellow;">COVID-19</span> recorded in Nigeria https://t.co/gTpxUX7cpa</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1265493475283341315">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 23:40:51</td>
+                <td class ="content_left">276 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/2emsBT0I2e</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1265427709208993801">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 06:00:52</td>
+                <td class ="content_left">Japan completely lifts state of emergency in the country as <span style="color: yellow;">COVID-19</span> outbreak is “brought under control”” https://t.co/mP3LuXOj5o</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1265160958739087368">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 05:38:30</td>
+                <td class ="content_left">Husband of train worker who died from <span style="color: yellow;">COVID-19</span> after being spat on, says her death has destroyed his world https://t.co/Wh3iUMzU3K</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1265155328989188101">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 04:12:28</td>
+                <td class ="content_left">W.H.O suspends trial of Trump ‘miracle drug’ Hydroxychloroquine over high <span style="color: yellow;">Covid-19</span> mortality rates https://t.co/dIXRbu7U6c</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1265133678637744128">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 15:00:48</td>
+                <td class ="content_left">Her death has destroyed my world – Husband of train worker who died from <span style="color: yellow;">COVID-19</span> after being spat on, says https://t.co/qmLDy5tH57</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1264934449013305345">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 02:40:30</td>
+                <td class ="content_left">313 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/VcNIf4D1dv</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1264748143817756672">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 17:38:23</td>
+                <td class ="content_left">Bauchi State Spends N4,500 Daily On Each <span style="color: yellow;">COVID-19</span> Patient’s Meal https://t.co/0zr2kEV6X1</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1264611718556274693">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 14:20:44</td>
+                <td class ="content_left">“You don’t need to visit Isolation centres to heal the Sick” Billionaire Prophet, Jeremiah Fufeyin says he healed another <span style="color: yellow;">COVID-19</span> Patient [Watch Video] https://t.co/eWJpjMLNA0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1264561978221232128">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 05:27:30</td>
+                <td class ="content_left">265 new cases of <span style="color: yellow;">COVID-19</span> recorded in Nigeria https://t.co/3y8kOFUxxq</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1264427783595479046">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 02:00:43</td>
+                <td class ="content_left">265 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/MHFmWetgA9</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1264375744756580352">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 04:43:58</td>
+                <td class ="content_left">245 new cases of <span style="color: yellow;">COVID-19</span> recorded in Nigeria https://t.co/KFNsan6oBE</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1264054442342711296">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 04:38:21</td>
+                <td class ="content_left">Four more <span style="color: yellow;">COVID-19</span> deaths recorded in Lagos https://t.co/KcMDCeeKKW</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1264053028807729153">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 01:20:22</td>
+                <td class ="content_left">245 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/S2VtXWcQls</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1264003204666273793">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 20:35:43</td>
+                <td class ="content_left">Chinese medical team not treating <span style="color: yellow;">COVID-19</span> patients in Nigeria – CCECC https://t.co/03qTXav11Z</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1263931567753306113">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 13:00:47</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> outbreak has ruined my plans to wed my German girlfriend – Singer Patapaa Laments (VIDEO) https://t.co/G5S8lTQG0U</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1263817082891878402">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 06:00:22</td>
+                <td class ="content_left">339 new cases of <span style="color: yellow;">COVID-19</span> recorded in Nigeria – 139 in Lagos alone https://t.co/ix4UVSxPjw</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1263711280822706179">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 12:23:03</td>
+                <td class ="content_left"><span style="color: yellow;">Covid-19</span> in trouble as Doctor receives spiritual and physical protection from a donor https://t.co/FK42l0VQOc</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1263445197171589130">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 06:34:51</td>
+                <td class ="content_left">284 New <span style="color: yellow;">COVID-19</span> Cases, 106 Discharged And 8 Deaths On May 20 https://t.co/rw3zecdrKw</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1263357571391533056">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 06:32:10</td>
+                <td class ="content_left">60% Of <span style="color: yellow;">COVID-19</span> Cases In Rivers Are Oil Workers – Governor Wike https://t.co/TRItrhdxgG</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1263356895479377920">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 06:20:34</td>
+                <td class ="content_left">Kwara Discharges 3 <span style="color: yellow;">COVID-19</span> Patients, Records 3 More Cases https://t.co/T4WgACI3mn</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1263353976910741509">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 00:00:32</td>
+                <td class ="content_left">284 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/3Oaxhw1Toz</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1263258338420285441">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 20:41:36</td>
+                <td class ="content_left">8 Doctors Test Positive For <span style="color: yellow;">COVID-19</span> In Zamfara https://t.co/7la6QsBiJI</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1263208273139949569">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 20:11:17</td>
+                <td class ="content_left">Susan Okpe Has Been Released From <span style="color: yellow;">COVID-19</span> Isolation Centre « https://t.co/Q1nsrFri9J</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1263200644606750722">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 15:40:58</td>
+                <td class ="content_left">Nurse treating <span style="color: yellow;">COVID-19</span> patients goes viral for wearing only ‘lingerie’ under transparent PPE gown in male hospital ward (photos) https://t.co/Zrnyi9dTIm</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1263132616259223552">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 08:00:34</td>
+                <td class ="content_left">226 New <span style="color: yellow;">COVID-19</span> Cases, 90 Discharged And 1 Death On May 19 « https://t.co/dvpIiHe5BW</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1263016751916134400">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 03:30:41</td>
+                <td class ="content_left">226 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/bafa388La9</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262948833807552518">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 12:12:17</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Not A Joke – President Buhari Tells Governors https://t.co/2bd1ywCFIa</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262717714256130050">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 04:42:31</td>
+                <td class ="content_left">216 New <span style="color: yellow;">COVID-19</span> Cases, 50 Discharged And 9 Deaths On May 18 https://t.co/0PLX8VQmbX</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262604526789550080">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 02:50:28</td>
+                <td class ="content_left">216 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/kAtl8okqDA</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262576325715529729">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 21:03:22</td>
+                <td class ="content_left">62 year old woman dies while struggling for <span style="color: yellow;">COVID-19</span> palliative in Rivers https://t.co/sga8B4yU9Z</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262488977442996224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 18:41:44</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> is a scam in Nigeria, they did not plan the drama before they went on stage – Discharged patient claims https://t.co/9r2SNKYscY</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262453335061336066">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 18:40:54</td>
+                <td class ="content_left">62-year-old woman dies in stampede while struggling for <span style="color: yellow;">COVID-19</span> palliative in Rivers https://t.co/56a5P0QTOW</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262453123504918536">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 18:32:33</td>
+                <td class ="content_left">Makinde To Reveal Name Of The Company With 38 <span style="color: yellow;">COVID-19</span> Infected Workers Tomorrow https://t.co/6rxg0snYgQ</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262451022280093698">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 17:58:43</td>
+                <td class ="content_left">No Presidential Broadcast On <span style="color: yellow;">COVID-19</span> Updates Today – Femi Adesina https://t.co/VWTN6iTAVm</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262442506287013888">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 05:37:31</td>
+                <td class ="content_left">Couple and their guests take to their heels as <span style="color: yellow;">COVID-19</span> task force disrupt their wedding in Cross River state (video) https://t.co/WEkQLysGcd</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262255979346849793">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 05:13:38</td>
+                <td class ="content_left">338 New <span style="color: yellow;">COVID-19</span> Cases, 122 Discharged And 6 Deaths On May 17 https://t.co/YGJIK80iQd</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262249966371774464">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 02:30:38</td>
+                <td class ="content_left">338 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/q3JrdFtAVi</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262208948385579008">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 22:30:43</td>
+                <td class ="content_left">15 more <span style="color: yellow;">COVID-19</span> patients discharged in Lagos https://t.co/7XlcD212uY</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262148569752051717">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 20:46:43</td>
+                <td class ="content_left">Plateau Records First <span style="color: yellow;">COVID-19</span> Death, As Governor Lalong Addresses The State https://t.co/33FrHBvhJK</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262122399413284864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 17:15:12</td>
+                <td class ="content_left">Governor Fayemi Thanks Ekiti <span style="color: yellow;">COVID-19</span> Donors (Full List) https://t.co/ASys4KuJTj</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262069168611840001">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 16:16:55</td>
+                <td class ="content_left">Guests Run As <span style="color: yellow;">COVID-19</span> Taskforce Disrupts Wedding In Cross River (Video) https://t.co/VLvjuym0ft https://t.co/ICPzC2puCS</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262054502267584513">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 16:16:02</td>
+                <td class ="content_left">Governors’ Excesses In Implementation Of <span style="color: yellow;">COVID-19</span> Lockdown Measures (Photos) https://t.co/PRAQuJkAo2</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262054278061002752">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 14:21:06</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Prophecy: You’re too small to speak against my Spiritual Father, Nigerian Prophet Gideon Isah replies Ivorian Atheist Yanick Aka https://t.co/SQagrUMoJd</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262025353004023808">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 14:20:49</td>
+                <td class ="content_left">Guests run for their lives as <span style="color: yellow;">COVID-19</span> Task Force busts wedding in a church in Cross River State (Video) https://t.co/HAiOhUIcqJ</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262025282896134144">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 10:10:54</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> survivor reveals the effect garlic, ginger and lemon concoction had on her https://t.co/MGf5EXN0Ei</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261962388783407106">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 09:36:36</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> survivor reveals the effect garlic, ginger and lemon concoction had on her https://t.co/s1l5lbsKyb</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261953758747033605">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 02:00:27</td>
+                <td class ="content_left">176 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/X0QwOD5GTq</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261838965398798337">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 21:50:50</td>
+                <td class ="content_left">Pregnant <span style="color: yellow;">COVID-19</span> patient delivered of a baby boy in Lagos State (Photo) https://t.co/RWJTsNbgvp</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261776144002670592">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 20:48:55</td>
+                <td class ="content_left">Three more <span style="color: yellow;">COVID-19</span> deaths recorded in Lagos https://t.co/X1LQcEl7kz</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261760565632008194">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 20:42:21</td>
+                <td class ="content_left">2 <span style="color: yellow;">COVID-19</span> Patients Discharged In Imo Today https://t.co/ZSkbak99vz</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261758911713021952">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 15:26:42</td>
+                <td class ="content_left">PRESIDENT BUHARI RECEIVES MADAGASCAN <span style="color: yellow;">COVID-19</span> HERBAL “DRUG” FROM GUINEA BISSAU’S PRESIDENT EMBALO, SAYS “I WILL LISTEN TO SCIENCE” https://t.co/hLwoeLXoh6</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261679476259393538">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 15:23:24</td>
+                <td class ="content_left">Benue <span style="color: yellow;">COVID-19</span> index case threatens to sue NCDC if she is not released within 7 days https://t.co/cZJvHHyzke</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261678645858484226">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 13:58:18</td>
+                <td class ="content_left">“WHO Offered $20M Bribe To Poison <span style="color: yellow;">COVID-19</span> Cure” – Madagascar President Rajoelina https://t.co/T7LbngXnYy</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261657228878151682">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 13:41:26</td>
+                <td class ="content_left">”I WENT, I FOUGHT AND I CONQUERED- Nigerian Lady who survived <span style="color: yellow;">COVID-19</span> shares her experience. https://t.co/BRPwMOJZqI</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261652985475670022">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 07:43:10</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Lockdown Causes German Economy To Contract By 2.2% https://t.co/OlvpzaHa2W</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261562823349583872">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 07:41:43</td>
+                <td class ="content_left">Ogun Extends <span style="color: yellow;">COVID-19</span> Lockdown A Third Time https://t.co/wbewnOo0K4</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261562458759520257">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 07:34:15</td>
+                <td class ="content_left">288 New <span style="color: yellow;">COVID-19</span> Cases Reported, 140 Discharged And 3 Deaths On May 15 https://t.co/qPHNTE1GZD</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261560579619278848">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 01:20:25</td>
+                <td class ="content_left">288 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/gJnfaQMtq5</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261466503452516352">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-15 17:46:19</td>
+                <td class ="content_left">Bauchi Discharges 9 <span style="color: yellow;">COVID-19</span> Patients Today https://t.co/68cyjkeXfz</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261352221922516996">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-15 17:38:51</td>
+                <td class ="content_left">HUMAN RIGHT ABUSE AND THE FIGHT AGAINST <span style="color: yellow;">COVID-19</span> IN NIGERIA https://t.co/YCBvaAW5Jz</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261350342979174401">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-15 17:32:29</td>
+                <td class ="content_left">HUMAN RIGHT ABUSE AND THE FIGHT AGAINST <span style="color: yellow;">COVID-19</span> IN NIGERIA https://t.co/sotStGm1ZL</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261348744181628929">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-15 17:18:32</td>
+                <td class ="content_left">EFCC Hands Over Diezani’s Property To Lagos As <span style="color: yellow;">COVID-19</span> Isolation Centre (Photos) « https://t.co/VL1FOdqyZm</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261345232584445952">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-15 00:50:39</td>
+                <td class ="content_left">193 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/wJdM85Dgx9</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261096623473598466">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 15:46:15</td>
+                <td class ="content_left">Man, wife, three-year-old child test positive for <span style="color: yellow;">COVID-19</span> in Ebonyi https://t.co/WsQEMELoqI</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1260959621117771776">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 15:28:26</td>
+                <td class ="content_left">Recovered <span style="color: yellow;">COVID-19</span> patients in Nigeria surpass 1,000 https://t.co/UTMk5xJh1m</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1260955135804653570">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 07:52:11</td>
+                <td class ="content_left">US Says China Is Trying To Steal <span style="color: yellow;">COVID-19</span> Vaccine Research https://t.co/ja3EYWLT0P</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1260840316321566723">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 06:58:34</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Response Team In Kwara Transport Suspected Patient Without Wearing PPE https://t.co/dw2wBQAJXZ https://t.co/YAsN1kQBFk</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1260826825409822721">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 20:23:56</td>
+                <td class ="content_left">US Vows To Monitor $32.8M <span style="color: yellow;">COVID-19</span> Spending In Nigeria https://t.co/Xi3UcGY4SP</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1260667113880064005">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 17:37:38</td>
+                <td class ="content_left">We tested 111 residents for <span style="color: yellow;">COVID-19</span> but they were all negative – Kogi commissioner for information, Kingsley Fanwo https://t.co/gHmtsE346R</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1260625262846369792">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 23:40:39</td>
+                <td class ="content_left">146 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/dQxXZJwMnK</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1260354229404925952">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 21:15:23</td>
+                <td class ="content_left">22 <span style="color: yellow;">COVID-19</span> patients discharged in Sokoto https://t.co/DSuivQ8yxt</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1260317671612198915">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 18:12:09</td>
+                <td class ="content_left">Wounded Rivers <span style="color: yellow;">COVID-19</span> Task Force Members Speak From Hospital Bed (Photos) https://t.co/DL6EKdvWtq</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1260271560188968962">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 17:59:39</td>
+                <td class ="content_left">Another <span style="color: yellow;">COVID-19</span> Patient Delivered Of A Baby At LUTH https://t.co/d6NledQ0jv</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1260268416130310146">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 06:36:36</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> PANDEMIC IN NIGERIA: ASSESSMENT OF CONTAINMENT STRATEGY https://t.co/9qx7iCcQQV</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1260096519086247942">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 04:01:05</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> PANDEMIC IN NIGERIA: ASSESSMENT OF CONTAINMENT STRATEGY https://t.co/FiBQDfqwT2</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1260057384619323392">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 23:20:37</td>
+                <td class ="content_left">President Buhari orders importation of Madagascar <span style="color: yellow;">COVID-19</span> herbal cure https://t.co/ow7nUgfzwW</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259986802288537600">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 23:20:25</td>
+                <td class ="content_left">242 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/0fBfeJAN3a</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259986750048481280">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 21:08:59</td>
+                <td class ="content_left">Abuja Doctor Explains <span style="color: yellow;">COVID-19</span> Treatment Regimen https://t.co/AUkQCWbJWn</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259953675084214278">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 20:48:44</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Cure: FG Yet To Show Interest In Our Drug – Prof. Iwu https://t.co/um11UKzH4r</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259948579764031488">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 10:50:57</td>
+                <td class ="content_left">Lagos state government seals Hotel, Night club for violating <span style="color: yellow;">COVID-19</span> regulations (photos) https://t.co/1QZTdCXerI</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259798142452727808">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 04:01:07</td>
+                <td class ="content_left">Doctor Who Discovered Nigeria’s Index <span style="color: yellow;">COVID-19</span> Case Says “It Was Scary’ (Pics) https://t.co/fmnJA25wPw</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259695004353794048">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 03:38:12</td>
+                <td class ="content_left">Lagos state government seals Hotel, Night club for violating <span style="color: yellow;">COVID-19</span> regulations (photos) https://t.co/BW9fPYdOaN</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259689236334120961">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 03:29:54</td>
+                <td class ="content_left">21 <span style="color: yellow;">COVID-19</span> patients discharged in Lagos https://t.co/wzv81GBHQy</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259687148577591296">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 02:40:23</td>
+                <td class ="content_left">248 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/jf0TkZvJjj</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259674686654484480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 20:15:44</td>
+                <td class ="content_left">Niece of Nigerian nurse who died of <span style="color: yellow;">COVID-19</span> in the UK says she warned about lack of protective equipment before getting infected https://t.co/K0Rvtk42Du</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259577884726960143">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 18:30:43</td>
+                <td class ="content_left">Open churches let’s heal <span style="color: yellow;">COVID-19</span> patients – Pastor Adewale Giwa tells Buhari https://t.co/C2HecjLmk2</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259551457013096456">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 17:39:08</td>
+                <td class ="content_left">“Not Allowed To Smoke Marijuana”: <span style="color: yellow;">COVID-19</span> Positive Navy Officer Absconds (Pix) https://t.co/mavYih6G5P</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259538477949095944">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 05:59:37</td>
+                <td class ="content_left">FCT Confirms 3 More <span style="color: yellow;">COVID-19</span> Deaths, Discharges 39 &amp; Records 7 New Cases https://t.co/WtPQKSeiU3</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259362438367064066">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 02:10:21</td>
+                <td class ="content_left">239 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/EppXWQoJiW</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259304742137798656">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 17:38:45</td>
+                <td class ="content_left">American Nurse Steals Money From A Dying <span style="color: yellow;">COVID-19</span> Patient (Photos) https://t.co/EQ0U5Ik5eQ</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259175993140375552">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 16:41:06</td>
+                <td class ="content_left">There’s massive outbreak of <span style="color: yellow;">COVID-19</span> in Bauchi town; over 100 people have died – Former House of Reps member, Ibrahim Baba writes Buhari https://t.co/yT6Yl0XcEm</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259161482362789893">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 09:51:00</td>
+                <td class ="content_left">Five more <span style="color: yellow;">COVID-19</span> deaths recorded in Kano state https://t.co/tbaEuGqjUJ</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259058280741158913">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 05:35:54</td>
+                <td class ="content_left">Kano Records 5 <span style="color: yellow;">COVID-19</span> Deaths, Discharges 2 https://t.co/MXW5LgI9mo</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258994081566523392">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 01:40:26</td>
+                <td class ="content_left">386 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/hmut63KV2b</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258934822325702656">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 21:30:44</td>
+                <td class ="content_left">42 <span style="color: yellow;">COVID-19</span> patients discharged in Lagos https://t.co/lap5oISvtz</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258871983640580098">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 20:32:35</td>
+                <td class ="content_left">Kano <span style="color: yellow;">COVID-19</span> Patients Hold Doctors And Nurse Hostage https://t.co/jwLhx4ce8f</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258857348673744896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 09:20:46</td>
+                <td class ="content_left">Cross River state’s <span style="color: yellow;">COVID-19</span> taskforce whip defaulters caught outside during curfew (Video) https://t.co/Xumtqzy0VI</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258688283615395840">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 04:45:32</td>
+                <td class ="content_left">381 new cases of <span style="color: yellow;">COVID-19</span> recorded in Nigeria – 183 in Lagos alone https://t.co/PHQdkCnfAy</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258619018795245568">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 01:10:31</td>
+                <td class ="content_left">381 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/Wh0HS99IR0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258564906850430976">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 21:00:38</td>
+                <td class ="content_left">Coronavirus Is Found in Semen of <span style="color: yellow;">Covid-19</span> Patients ; new research shows the virus could be sexually transmitted. https://t.co/AMMR2fdGfW</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258502022376181764">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 18:15:25</td>
+                <td class ="content_left">Yobe Director Dies At <span style="color: yellow;">COVID-19</span> Isolation Centre https://t.co/jWM9rTyAIV</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258460444576165894">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 18:07:34</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Lockdown: Reduce Data Prices For Nigerians – Fayose https://t.co/w3l6hJ8bMc</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258458469289676803">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 15:40:06</td>
+                <td class ="content_left">Black people four times more likely to die from <span style="color: yellow;">COVID-19</span> than white people – new data shows https://t.co/cU21gePyAU</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258421356917665792">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 05:03:09</td>
+                <td class ="content_left">195 new cases of <span style="color: yellow;">COVID-19</span> recorded in Nigeria as total number hits 3145 https://t.co/OpV3ILeCDD</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258261065072349184">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 17:59:00</td>
+                <td class ="content_left">25 Passengers From Nigeria Test Positive For <span style="color: yellow;">COVID-19</span> – Lebanese Health Ministry https://t.co/PeX3AEQskM</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258093923853053952">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 14:41:54</td>
+                <td class ="content_left">My <span style="color: yellow;">COVID-19</span> Test Centre Awaiting Approval Of Health Ministry – Akin Alabi https://t.co/zj2qtLnoeC</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258044322244636674">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 14:40:33</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Curfew: FCT Apprehends Night Travellers From Neighbouring States https://t.co/2ddV6wSQn3</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258043983785230336">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 12:31:17</td>
+                <td class ="content_left">Video shows heartbreaking moment body of Nigerian woman who died of <span style="color: yellow;">COVID-19</span> in New York is being moved from her home amid tears (WATCH) https://t.co/NLnIHpdpQ4</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258011450058125312">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 08:20:58</td>
+                <td class ="content_left">One doctor dies, 34 other doctors test positive for <span style="color: yellow;">COVID-19</span> in Kano https://t.co/pmMUXivVb4</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257948457542836224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 04:46:59</td>
+                <td class ="content_left">148 New <span style="color: yellow;">COVID-19</span> Cases Reported. Total 2950. 481 Discharged. 98 Deaths https://t.co/vsal3swjoE</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257894607289036800">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 03:55:26</td>
+                <td class ="content_left">One doctor dies, 34 other doctors test positive for <span style="color: yellow;">COVID-19</span> in Kano https://t.co/WH8rp7avsy</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257881633203470339">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 22:04:23</td>
+                <td class ="content_left">Three more <span style="color: yellow;">COVID-19</span> cases recorded in Kaduna https://t.co/v2FwXkNy9D</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257793288435875840">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 10:25:38</td>
+                <td class ="content_left">Oil Workers Must Show <span style="color: yellow;">COVID-19</span> Results Before Entering Rivers – Governor Wike https://t.co/jd3vaSbI7v https://t.co/DEOHJzVcoJ</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257617442467086338">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 10:24:43</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Patient Who Escaped From Delta Intercepted By Enugu Taskforce https://t.co/DaUxwHQUgi https://t.co/jPxM69v8KI</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257617214527680513">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 04:22:19</td>
+                <td class ="content_left">245 new cases of <span style="color: yellow;">COVID-19</span> recorded in Nigeria – 76 in Lagos alone https://t.co/5j2kF0v4JK https://t.co/gCyQhNmlLz</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257526013036318720">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 20:42:32</td>
+                <td class ="content_left">Nurses In Ogun Wear Polythene Bags To Treat Suspected <span style="color: yellow;">COVID-19</span> Patient (Photo) https://t.co/08ujlEQsNC https://t.co/jk4GibhbAr</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257410302158790662">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 17:39:23</td>
+                <td class ="content_left">Driver, 2 Others Carrying <span style="color: yellow;">COVID-19</span> Patients, Blood Samples, Test Positive In Ondo https://t.co/j3guhjQ9pZ https://t.co/ME2m6Pv4za</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257364212499783680">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 11:07:08</td>
+                <td class ="content_left">50 Almajirai Infected With <span style="color: yellow;">COVID-19</span> In Kaduna https://t.co/13OKC00la0 https://t.co/FrRQSzr5gc</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257265500851240962">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 11:02:04</td>
+                <td class ="content_left">FCTA Releases <span style="color: yellow;">COVID-19</span> Results Of Individuals Not Well Kitted At Abba Kyari’s Burial https://t.co/hdSJZvvXGd https://t.co/hezhMlBxTF</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257264226042863618">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 04:00:16</td>
+                <td class ="content_left">Lockdown: “We Are Not Resuming Work, <span style="color: yellow;">COVID-19</span> Is Real” – Abuja Residents https://t.co/cNpVAF3Og1 https://t.co/Tfskaxoivf</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257158074567208960">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 03:10:26</td>
+                <td class ="content_left">170 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/ab7CgQFDOy https://t.co/H7XLwb5ASt</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257145534957191169">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 23:00:44</td>
+                <td class ="content_left">Lagos records three more <span style="color: yellow;">COVID-19</span> related deaths ahead of ease of lockdown https://t.co/cBex04mkBw https://t.co/wnMdHhNPRR</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257082694330171392">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 23:00:44</td>
+                <td class ="content_left">Tanzanian President Magufuli orders probe on <span style="color: yellow;">COVID-19</span> kits after goat and pawpaw test positive for Coronavirus https://t.co/s1yCssrRAl https://t.co/hXfDrCm6n4</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257082694070087682">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 20:42:22</td>
+                <td class ="content_left">Tanzanian President Magufuli orders probe on <span style="color: yellow;">COVID-19</span> kits after goat and pawpaw test positive for Coronavirus…lol https://t.co/vH19FoVqYy https://t.co/UWaDlPstJf</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257047873373589505">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 20:18:14</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Test: Ali Modu Sheriff Tricks Health Officials, Flees To Abuja – SR https://t.co/fab6XUXMvb https://t.co/zI7J8helNu</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257041800268779520">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 16:34:37</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Lockdown Gradually Eases Globally batch by batch, exactly as Prophesied by Billionaire Prophet, Jeremiah Fufeyin [Watch Video] by Stokes Africa https://t.co/4urMwKq7g4 https://t.co/se391eX9Mx</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256985524012756992">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 10:30:54</td>
+                <td class ="content_left">Billionaire Prophet, Jeremiah Fufeyin Receives Worldwide Accolades for Effective Prophecy, as <span style="color: yellow;">COVID-19</span> Lockdown Measures Ease Gradually, across the World. https://t.co/vyXKPnSdac https://t.co/auGMmiEHEt</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256893990869368833">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 10:15:44</td>
+                <td class ="content_left">220 new cases of <span style="color: yellow;">COVID-19</span> recorded in Nigeria https://t.co/I1AIXJ4kNj https://t.co/YUSj4WcZxv</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256890175860416513">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 10:12:54</td>
+                <td class ="content_left">I infected four persons with <span style="color: yellow;">COVID-19</span> – Governor Nasir El-Rufai reveals https://t.co/YS4jjl30yD https://t.co/c55ukUDb8J</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256889463558586368">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 08:13:17</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> And The Second Coming Of Jesus Christ https://t.co/u4aeM0pMcS</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256859361646968833">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 07:50:47</td>
+                <td class ="content_left">As <span style="color: yellow;">COVID-19</span> Cases Rise, Patients Face Difficulties Accessing Healthcare In Kano https://t.co/e0Ib5mp0pJ https://t.co/20j1hcNMyg</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256853696710873090">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 21:42:39</td>
+                <td class ="content_left">National Agency For Food and Drug Admnistration And Control (NAFDAC) <span style="color: yellow;">COVID-19</span> Pandemic Lockdown and Guidance Note To Companies That Donate or Market Breastmilk Substitues (BMS) For Infants https://t.co/07nqgUlDLZ</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256700657400193024">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 21:38:59</td>
+                <td class ="content_left">Kano state governor, Abdullahi Ganduje, relaxes lockdown order by President Buhari amid spike in <span style="color: yellow;">COVID-19</span> cases in the state https://t.co/4HRax9yR8Q https://t.co/vW3yulq0Fk</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256699734359670784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 20:42:18</td>
+                <td class ="content_left">One <span style="color: yellow;">COVID-19</span> Patient Escapes From Taraba Isolation Centre https://t.co/kOp5jAaTjI https://t.co/VY02zjNhaV</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256685466788782083">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 18:10:46</td>
+                <td class ="content_left">“Rate of community transmission in Kano is ‘now 80 percent’” – Head of <span style="color: yellow;">Covid-19</span> presidential task force in Kano, Nasiru Gwarzo https://t.co/9rZfDmecIy</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256647334659792907">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 17:35:19</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Patient, Who Absconded In Kebbi, Is Dead https://t.co/bPW36gQstL https://t.co/rALs7iIIP5</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256638412905484293">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 17:31:55</td>
+                <td class ="content_left">4 <span style="color: yellow;">COVID-19</span> Patients Die In Lagos https://t.co/ZVrw1HICC1 https://t.co/xQNpFafcXI</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256637557070233601">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 09:04:17</td>
+                <td class ="content_left">“Deputy Governor In Trouble For Transferring <span style="color: yellow;">COVID-19</span> Fund To A Woman’s Account” https://t.co/AdeIyC2Uu8 https://t.co/QMDyOu0Ja2</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256509808309686272">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 05:24:46</td>
+                <td class ="content_left">238 New <span style="color: yellow;">COVID-19</span> Cases Reported. Total 2170. 352 Discharged. 68 Deaths https://t.co/el0UXfOKFF https://t.co/wGJqEDqjT2</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256454563147759616">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 01:40:32</td>
+                <td class ="content_left">238 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/QI5JEwEhXS https://t.co/yDA7ZFlVS0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256398135158595584">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 20:41:32</td>
+                <td class ="content_left">Children Of Dead <span style="color: yellow;">COVID-19</span> Patient &amp; A Pastor Praying For Him Test Positive In Rivers https://t.co/rqsgKGWBlO https://t.co/UjY9TJyYuP</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256322889067847686">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 09:56:48</td>
+                <td class ="content_left">“Some States Playing Politics With <span style="color: yellow;">COVID-19</span> To Get Money” – Northern Elders Forum https://t.co/0WtvHwtXsa https://t.co/FvLBja8ElA</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256160633671815170">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 09:28:28</td>
+                <td class ="content_left">Ghana Records 1,032 <span style="color: yellow;">COVID-19</span> Cases — 10 Days After Lifting Lockdown https://t.co/0cFe6lfrxp https://t.co/JuooM6VVKM</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256153503644385281">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 09:21:15</td>
+                <td class ="content_left">“There are now 102 potential <span style="color: yellow;">Covid-19</span> vaccines in the works worldwide” – W.H.O announces https://t.co/bxQWhX4pPY https://t.co/QcEy7AtV4m</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256151689062727680">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 05:38:48</td>
+                <td class ="content_left">Kano Deaths: ‘41% Showed Key <span style="color: yellow;">COVID-19</span> Symptom’ — New Survey Sheds Light https://t.co/1lr2XL5Lsr https://t.co/YO0bOsC23i</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256095708366680065">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 05:09:31</td>
+                <td class ="content_left">204 New <span style="color: yellow;">COVID-19</span> Cases Reported. Total 1932. 319 Discharged. 58 Deaths https://t.co/8FSIG3cRgC https://t.co/L0Afq7oS7W</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256088339385638913">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 21:08:49</td>
+                <td class ="content_left">29-Year-Old Banker Tests Positive For <span style="color: yellow;">COVID-19</span> In Yobe https://t.co/NSTcteQA6j</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255967367789715456">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 12:50:31</td>
+                <td class ="content_left">25-year-old dies of <span style="color: yellow;">COVID-19</span> in Lagos https://t.co/XkoPN2J5sa https://t.co/lc14hf2FNg</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255841963221360642">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 05:50:27</td>
+                <td class ="content_left">Trump Wants FDA To Quicken Remdesivir Approval For <span style="color: yellow;">COVID-19</span> Treatment « https://t.co/L0owR4eJSm https://t.co/XvtUjUmF2F</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255736252235689985">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 05:45:02</td>
+                <td class ="content_left">Almajiris Deported From Kano Brought 21 <span style="color: yellow;">COVID-19</span> Cases To Kaduna – El-Rufai https://t.co/LWqGnG9G4n</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255734888663322624">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 05:17:01</td>
+                <td class ="content_left">196 New <span style="color: yellow;">COVID-19</span> Cases Reported. Total 1728. 306 discharged. 51 deaths https://t.co/TT9WTODzvb https://t.co/ByFY0IiiUd</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255727837677604865">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 00:32:03</td>
+                <td class ="content_left">49 <span style="color: yellow;">COVID-19</span> patients discharged in Lagos https://t.co/HTZPXPsbVl https://t.co/tP0t6ovHJ5</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255656122301788160">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 00:30:36</td>
+                <td class ="content_left">196 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/CcLe3SYGyd https://t.co/ky2ZbdApWE</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255655757187612673">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 20:26:44</td>
+                <td class ="content_left">Abia State <span style="color: yellow;">COVID-19</span> Taskforce Intercepts Car Carrying Bags Of Cannabis (Photo) https://t.co/4dwjXa1iUH https://t.co/gEy4SDuy8Z</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255594388417380354">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 16:11:54</td>
+                <td class ="content_left">Man &amp; Wife Pay Assassins To Eliminate Neighbour Over <span style="color: yellow;">Covid-19</span> Palliative (Pics) https://t.co/emi0MH1j52 https://t.co/HvsgX5fv9E</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255530258037723136">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 16:07:11</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Affects Kidney And Blood – Lagos Health Commissioner https://t.co/ATYyQJcH2a https://t.co/zxmeZIImyz</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255529070055559173">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 08:49:27</td>
+                <td class ="content_left">195 New Cases Of <span style="color: yellow;">COVID-19</span> Reported, Total 1532, 225 Discharged, 44 Deaths https://t.co/R3w13WLOcc https://t.co/ZuRSVA2bPS</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255418911903887360">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 08:44:42</td>
+                <td class ="content_left">How Buhari’s <span style="color: yellow;">COVID-19</span> Speech Leaked Ahead Of Broadcast – Femi Adesina https://t.co/ZkXJkQVapI https://t.co/heLvtUhp9g</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255417715617079296">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 08:11:03</td>
+                <td class ="content_left">Apostle Suleman responds to Witches advocacy group who challenged him to heal a <span style="color: yellow;">Covid-19</span> patient and get $1,000 reward https://t.co/kmwoAIbgiC https://t.co/d02YBGO1RE</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255409246612738048">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 23:50:23</td>
+                <td class ="content_left">195 new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/XlBKHwyKPC https://t.co/s5vw2yi1zZ</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255283249548574721">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 19:50:50</td>
+                <td class ="content_left">“Heal one <span style="color: yellow;">COVID-19</span> patient and get $1000” – Witches tell Apostle Suleiman https://t.co/58CLGYCdoY https://t.co/vixYoUb1d8</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255222966666870792">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 18:02:24</td>
+                <td class ="content_left">N500b <span style="color: yellow;">COVID-19</span> Fund: Senate Bars Journalists From National Assembly (Photos) https://t.co/TZVa3XChvt https://t.co/1pTTBauf9L</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255195677254180865">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 15:41:04</td>
+                <td class ="content_left">Kano state reopens <span style="color: yellow;">COVID-19</span> testing center https://t.co/kvKCr6vLOr https://t.co/f0yNKnHzAW</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255160108335673344">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 14:13:06</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Testing Resumes In Kano https://t.co/JF03mWDrqq https://t.co/yAJrLKcQzc</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255137971776262146">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 14:11:07</td>
+                <td class ="content_left">US Doctor Who Treated <span style="color: yellow;">COVID-19</span> Patients Commits Suicide (Photo) https://t.co/VYeP207Olm https://t.co/oGhUIChaSI</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255137471458754560">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 10:11:30</td>
+                <td class ="content_left">How <span style="color: yellow;">COVID-19</span> Dead Bodies Are Buried By NCDC Officials (Video) https://t.co/keSFIJMKNH https://t.co/WOuFweYL90</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255077169828630529">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 09:39:34</td>
+                <td class ="content_left">Ogun Launches <span style="color: yellow;">COVID-19</span> Mobile Laboratory (Photos) https://t.co/SeTpHDMid5 https://t.co/2SmtrfAKEJ</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255069135979065344">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 04:52:12</td>
+                <td class ="content_left">Mohammed Atiku Shares <span style="color: yellow;">COVID-19</span> Experience, Praises Health Workers https://t.co/z6e36zkS3S https://t.co/pCsQhkzRxc</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254996818754060288">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 04:51:06</td>
+                <td class ="content_left">64 New Cases Of <span style="color: yellow;">COVID-19</span> Reported, Total 1337, 255 Discharged, 40 Deaths https://t.co/QR950NfGZe https://t.co/AcpWauXINI</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254996539841417222">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 23:30:28</td>
+                <td class ="content_left">Sixty-four new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/aAGmQJx0xa https://t.co/25xDWp9QEk</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254915848168443911">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 20:54:49</td>
+                <td class ="content_left">Two children under the age of 10 have contracted <span style="color: yellow;">COVID-19</span> in Ekiti State ― Health Commissioner reveals https://t.co/yWNhptXgaP https://t.co/vhUPNaragN</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254876679169769473">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 20:30:02</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Patient Delivered Of A Baby At LUTH https://t.co/kyOQ9HmOC3 https://t.co/K57FNFse0W</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254870442508156928">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 20:24:21</td>
+                <td class ="content_left">Lagos Discharges 15 More <span style="color: yellow;">COVID-19</span> Patients, Including An Indian https://t.co/dzWR6E6dTo https://t.co/58MJ0EFDsB</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254869010170228737">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 20:21:40</td>
+                <td class ="content_left">Full Text: President Buhari’s Address On <span style="color: yellow;">COVID-19</span> Lockdown On 27th April, 2020 https://t.co/0JIp8Ar9ZZ https://t.co/qvTEVOwrwh</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254868337957445633">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 19:20:57</td>
+                <td class ="content_left">40-year-old <span style="color: yellow;">COVID-19</span> patient gives birth to baby girl in Lagos https://t.co/S4I6EHpGKp https://t.co/H8sOVNWcYl</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254853058711957504">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 11:00:33</td>
+                <td class ="content_left">UPDATE: <span style="color: yellow;">Covid-19</span> patient said to be on the run in Borno, has been found https://t.co/wOaa7pEIYQ https://t.co/AQoIorMgkF</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254727128811216898">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 20:18:11</td>
+                <td class ="content_left">2 <span style="color: yellow;">COVID-19</span> patients on the run in Borno state https://t.co/4FZ0nxlaLi https://t.co/x4ZK0lcrkS</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254505074258296833">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 11:27:27</td>
+                <td class ="content_left">No Evidence That <span style="color: yellow;">COVID-19</span> Survivors Can’t Be Reinfected – WHO https://t.co/2oDDjUJN9u https://t.co/3n7PKRsNCS</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254371508622962688">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 09:27:35</td>
+                <td class ="content_left">“Permit Us To Pray For &amp; Heal <span style="color: yellow;">COVID-19</span> Patients” – Apostle Suleman Tells FG https://t.co/sRLI3zwM7s https://t.co/rfHKKzjCUP</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254341345411575813">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 02:00:32</td>
+                <td class ="content_left">Eighty-seven new cases of <span style="color: yellow;">COVID-19</span> confirmed in Nigeria https://t.co/CSPbArEzcS https://t.co/OzW77Nm4RT</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254228841415016450">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 20:52:50</td>
+                <td class ="content_left">Kano <span style="color: yellow;">COVID-19</span> Centre Closed Indefinitely For Fumigation After Staff Tested Positive https://t.co/SpgfKyddn9 https://t.co/ZTZoYgSqEZ</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254151404685574152">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 18:21:17</td>
+                <td class ="content_left">FMN To Donate 36,000 <span style="color: yellow;">COVID-19</span> Test Kits, 75 Ventilators &amp; 331,000 PPEs To NCDC https://t.co/5XiRoufJaJ https://t.co/uZIqLJ0MMx</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254113265032007680">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 18:18:10</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Cases Rise To 28,000 In Africa — WHO https://t.co/DNiwXdTWT9 https://t.co/R8ZKghF16H</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254112479417962496">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 13:40:29</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> : Banky W distributes over 8000 meals to less privileged Nigerians (Photos) https://t.co/N0JTLbUDdC https://t.co/fCdlWjc2HB</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254042599175999489">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 21:21:07</td>
+                <td class ="content_left">10 <span style="color: yellow;">COVID-19</span> patients discharged in Lagos https://t.co/OBlzN2BPiw https://t.co/RE1sc0tDL3</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253796135392641025">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 21:20:50</td>
+                <td class ="content_left">Nigerian man battling to survive <span style="color: yellow;">COVID-19</span> in the UK begs Nigerians to take it seriously and stop “bashing” the president for ordering a lockdown https://t.co/gDNZiK2EuH https://t.co/jFpckBBl97</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253796064773246976">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 20:54:38</td>
+                <td class ="content_left">N5bn <span style="color: yellow;">COVID-19</span> Personal Protective Equipment Fraud Uncovered In NDDC – SaharaReporters https://t.co/ToypQoCGNZ https://t.co/95uwj5H8zm</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253789469859348481">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 17:11:11</td>
+                <td class ="content_left">Police drag lockdown violators inside ambulance with fake <span style="color: yellow;">Covid-19</span> patient in India https://t.co/omBupHWJ5e https://t.co/gNO4AQG8Dm</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253733235428921344">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 17:10:55</td>
+                <td class ="content_left">Actress Caroline Danjuma sacked me after I contracted <span style="color: yellow;">COVID-19</span> from her son – Lady cries out https://t.co/Cjv05IIQ02 https://t.co/0xKryEeKfq</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253733168529715202">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 09:00:35</td>
+                <td class ="content_left">”The rich are afraid of <span style="color: yellow;">Covid-19</span> and want the poor to stay at home. The poor are afraid of hunger” – Comedian, AY https://t.co/xKknqr1Ta4 https://t.co/pt5cDHo9dK</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253609772366118914">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 20:18:58</td>
+                <td class ="content_left">About 40 Health Workers Tested Positive For <span style="color: yellow;">COVID-19</span> – Health Minister, Ehanire https://t.co/fwqbRzTAhX https://t.co/ghWZfvlfOV</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253418105163808768">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 16:17:03</td>
+                <td class ="content_left">ECOWAS leaders appoint President Buhari ‘’Champion of <span style="color: yellow;">COVID-19</span> response’’ for Africa sub-region https://t.co/2lKSTak0jA https://t.co/BZyuyNOjoi</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253357227018248194">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 12:44:25</td>
+                <td class ="content_left">Police officer dies of <span style="color: yellow;">COVID-19</span> in Edo https://t.co/e5MOkCXfuN https://t.co/9AJHAQWWU7</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253303714477154304">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 08:31:12</td>
+                <td class ="content_left">A prominent Nigerian politician is about to apologize, announce he tested positive for <span style="color: yellow;">COVID-19</span> – Kemi Olunloyo https://t.co/1t4YICKscS https://t.co/AiX7XjG6RW</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253239990437494788">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 20:27:09</td>
+                <td class ="content_left">Kano Runs Out Of <span style="color: yellow;">COVID-19</span> Test Kits, As Testing Center Suspends Operations https://t.co/fC3H96aTdX https://t.co/GNiPPscFaP</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253057777481719808">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 20:20:51</td>
+                <td class ="content_left">Police officer dies of <span style="color: yellow;">COVID-19</span> in Edo https://t.co/Qfq4y6toue https://t.co/YAuNxk3bY2</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253056191250468869">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 20:20:44</td>
+                <td class ="content_left">29-year-old pregnant Health worker dies of <span style="color: yellow;">COVID-19</span> in Ekiti https://t.co/RblVpm7x6A https://t.co/YXQfdTCjgF</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253056162083278851">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 20:19:06</td>
+                <td class ="content_left">The Only <span style="color: yellow;">COVID-19</span> Patient In Anambra Discharged – Governor Obiano https://t.co/wCpFCa3ZHS https://t.co/dxSMF9cJUU</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253055752341786624">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 15:01:49</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Toll: United States Records Over 2,400 Deaths In 24 Hours (Pics) https://t.co/BDzbsdB3Z9 https://t.co/Y7LW9Vrxem</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1252975905183498240">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 10:36:25</td>
+                <td class ="content_left">Buhari Writes CJN Over Decongestion Of Prisons Amid <span style="color: yellow;">COVID-19</span> Pandemic https://t.co/CwKafW5ssK https://t.co/RdECVMsGTf</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1252909116038791168">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 20:10:30</td>
+                <td class ="content_left">Lagos state discharges nine more <span style="color: yellow;">COVID-19</span> patients https://t.co/BKMKInFL3W https://t.co/UYolFUBGxV</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1252691197438627843">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 12:00:34</td>
+                <td class ="content_left">Chioma Akpota reacts after her photo was used to report Chioma Avril’s recovery from <span style="color: yellow;">COVID-19</span> https://t.co/lqfv5g4Bbx https://t.co/c8wLKFmvOd</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1252567905193033729">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 08:00:24</td>
+                <td class ="content_left">Wuhan doctors who were critically ill with <span style="color: yellow;">COVID-19</span> wake up to find that their skin has turned dark after the virus damaged their livers https://t.co/aDQiHWSmag https://t.co/Qy0jcelMaB</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1252507464794288128">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 20:48:36</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Lockdown: Domestic/sexual violence cases rise In Lagos by 50% https://t.co/AvbA1Spgof https://t.co/K7WRiI4ZvM</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1252338398259408896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 20:45:39</td>
+                <td class ="content_left">Kwankwaso Donates Hospital To Kano <span style="color: yellow;">COVID-19</span> Committee https://t.co/KbEcjx9jDH</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1252337655552995328">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 20:42:28</td>
+                <td class ="content_left">Governor El-Rufai Takes Selfie In Isolation, Attends <span style="color: yellow;">COVID-19</span> Committee Meeting https://t.co/U2ZVjmzCk0 https://t.co/132C6LQfs5</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1252336856097751040">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 20:41:28</td>
+                <td class ="content_left">Highlights Of Governor Sanwo-Olu’s Press Briefing On <span style="color: yellow;">COVID-19</span> This Evening https://t.co/bTPDQKR9td https://t.co/QalVhzEmAa</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1252336604825260033">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 03:20:45</td>
+                <td class ="content_left">BREAKING: Nigeria Records 86 New <span style="color: yellow;">COVID-19</span> Cases, 70 in Lagos https://t.co/yDx9Fr9JAY https://t.co/MMnqJ7wIAF</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1252074701180018690">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 23:20:50</td>
+                <td class ="content_left">Put Religious Leaders In <span style="color: yellow;">COVID-19</span> Committees, — Pastor Adeboye https://t.co/K7PwLZLgTq https://t.co/WOV9zzS92N</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1252014321095368710">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 23:20:43</td>
+                <td class ="content_left">There is no policy in Lagos against the release of <span style="color: yellow;">COVID-19</span> corpses to their families for burial- Health Commissioner, Akin Abayomi, says (video) https://t.co/EGRDgVTa4o https://t.co/TIkQJf7870</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1252014295438823429">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 19:11:10</td>
+                <td class ="content_left">83-year-old woman dies of <span style="color: yellow;">COVID-19</span> in Lagos https://t.co/kNLbaR2M2b https://t.co/uYieEBoaET</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251951493130924032">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 10:50:34</td>
+                <td class ="content_left">Davido says he can sell his expensive cars to help Nigerians in <span style="color: yellow;">COVID-19</span> pandemic https://t.co/CSTaaiE1A7 https://t.co/bEtKlWvpp7</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251825512542076928">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 05:43:26</td>
+                <td class ="content_left">Anambra <span style="color: yellow;">COVID-19</span> Index Case Tests Negative https://t.co/93MQ8J9jij https://t.co/idWSi50oUp</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251748219698262017">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 05:38:52</td>
+                <td class ="content_left">49 New Cases Of <span style="color: yellow;">COVID-19</span> Reported, Total 542, 166 Discharged, 19 Deaths https://t.co/WJwC9KmSDP https://t.co/F34oAJGi3V</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251747070618357761">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 22:40:54</td>
+                <td class ="content_left">Ikorodu General Hospital records suspected <span style="color: yellow;">COVID-19</span> related death https://t.co/DLgSaSjB87 https://t.co/41keNtrdr8</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251641886965669890">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 22:40:39</td>
+                <td class ="content_left">Abia State wanted <span style="color: yellow;">COVID-19</span> patient, Victor Prosper, finally arrested. https://t.co/HyD665rsDJ https://t.co/tRstdrpYU6</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251641821006041090">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 20:21:24</td>
+                <td class ="content_left">Man Carelessly Disposes His <span style="color: yellow;">COVID-19</span> Protective Wear After Abba Kyari’s Burial https://t.co/vL6NuhLlDw https://t.co/ExOS7eAj9X</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251606778413973508">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 14:24:30</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Sends 2023 Political Aspirants Underground https://t.co/Ionzgo1YAX https://t.co/z68KgMe2rT</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251516960149569539">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 04:35:21</td>
+                <td class ="content_left">Nigerian man dies of <span style="color: yellow;">COVID-19</span> in the US https://t.co/hS9F33akAr https://t.co/ZtqGnULZQz</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251368697869942784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 04:27:42</td>
+                <td class ="content_left">51 new <span style="color: yellow;">COVID-19</span> cases recorded in Nigeria https://t.co/pGc6XdDzLG https://t.co/AhAB3RFir2</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251366770541199361">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 02:20:30</td>
+                <td class ="content_left">Nigerian man dies of <span style="color: yellow;">COVID-19</span> in the United States https://t.co/5K8IcWcEcX https://t.co/O4otBhUxqC</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251334760703631365">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 20:54:19</td>
+                <td class ="content_left">Ogun state to relax presidential lockdown order as it discharges six more <span style="color: yellow;">COVID-19</span> patients https://t.co/HideBUdRDz https://t.co/o4h9zat7sg</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251252674978349063">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 18:10:40</td>
+                <td class ="content_left">There may never be any show/concert till there’s vaccine for <span style="color: yellow;">COVID-19</span> – Jude Okoye https://t.co/gsfmI99kJZ https://t.co/QfTDx21Uq3</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251211489895161856">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 14:01:16</td>
+                <td class ="content_left">“I’m supposed to be at Singapore, but <span style="color: yellow;">COVID-19</span> spoiled everything” – Beverly Naya writes as she celebrates her birthday https://t.co/0OyGGA9LTf https://t.co/wRIFu74q71</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251148728607469570">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 13:59:49</td>
+                <td class ="content_left">“Now is the Time to Display your Wealth by Giving to the Needy” -Popular Billionaire Prophet, Jeremiah Fufeyin, challenges Wealthy Pastors in Africa, as he is set to donate another 800Million Naira, towards <span style="color: yellow;">COVID-19</span> relief https://t.co/qHOXlpy54G https://t.co/etbjlxx3yy</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251148362096603141">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 12:49:42</td>
+                <td class ="content_left">78% Of Nigerians Support <span style="color: yellow;">COVID-19</span> Lockdown – Lai Mohammed https://t.co/weO8TY2lPp https://t.co/s3m84hkO51</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251130715716096003">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 12:30:40</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Lockdown: Nigerians In Ghana Beg FG To Rescue Them (Video) https://t.co/JrF6Zjs2au https://t.co/YwzIv3F18x</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251125926408196098">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">test positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "test positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 04:09:34</td>
+                <td class ="content_left">122 Almajiris <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for Coronavirus in Jigawa – Governor Badaru https://t.co/aZuJGB5q0V</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1265857722089713664">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 03:11:57</td>
+                <td class ="content_left">#COVID-19: Confirmed cases in Nigeria hit 8068 as 229 people <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> in one day https://t.co/TTx0c8XbF9</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1265118449489117184">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 13:01:36</td>
+                <td class ="content_left">27 workers of a company in Oyo state <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for Coronavirus https://t.co/kupd3NtqX1</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1263817288282787841">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 06:08:17</td>
+                <td class ="content_left">10 members of a family <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for Coronavirus in Kaduna https://t.co/UwfQYwBmuH</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1263713271565168640">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 20:41:36</td>
+                <td class ="content_left">8 Doctors <span style="color: yellow;">Test Positive</span> For COVID-19 In Zamfara https://t.co/7la6QsBiJI</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1263208273139949569">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 15:33:21</td>
+                <td class ="content_left">COVID-19: 6 Workers From Same Company <span style="color: yellow;">Test Positive</span> – Governor Makinde Reveals Name https://t.co/JWVB4lwT2V</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1263130699462258691">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 09:32:50</td>
+                <td class ="content_left">Three Nigerians recently evacuated from Dubai <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for COVID-19 https://t.co/BN5pRjBJg5</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261952809492197376">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 15:46:15</td>
+                <td class ="content_left">Man, wife, three-year-old child <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for COVID-19 in Ebonyi https://t.co/WsQEMELoqI</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1260959621117771776">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 11:54:24</td>
+                <td class ="content_left">“I Did Not <span style="color: yellow;">Test Positive</span> For Coronavirus” – Lagos Health Commissioner, Prof. Abayomi https://t.co/bCp6rPVJBv</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258726947275800577">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 21:27:57</td>
+                <td class ="content_left">18 nurses <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for Coronavirus in Kano https://t.co/6tKU51mjGY</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258146508345573377">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 17:59:00</td>
+                <td class ="content_left">25 Passengers From Nigeria <span style="color: yellow;">Test Positive</span> For COVID-19 – Lebanese Health Ministry https://t.co/PeX3AEQskM</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258093923853053952">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 08:20:58</td>
+                <td class ="content_left">One doctor dies, 34 other doctors <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for COVID-19 in Kano https://t.co/pmMUXivVb4</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257948457542836224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 04:33:58</td>
+                <td class ="content_left">101 inmates in military prison <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for Coronavirus in DR Congo https://t.co/ggGD56pkTN</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257891332401647618">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 03:55:26</td>
+                <td class ="content_left">One doctor dies, 34 other doctors <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for COVID-19 in Kano https://t.co/WH8rp7avsy</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257881633203470339">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 17:39:23</td>
+                <td class ="content_left">Driver, 2 Others Carrying COVID-19 Patients, Blood Samples, <span style="color: yellow;">Test Positive</span> In Ondo https://t.co/j3guhjQ9pZ https://t.co/ME2m6Pv4za</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257364212499783680">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 11:26:19</td>
+                <td class ="content_left">80% Of Kano Coronavirus Samples <span style="color: yellow;">Test Positive</span> – Nasiru Gwarzo https://t.co/r0zCaIWun3 https://t.co/5Utu5P267g</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257270327253643266">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 23:00:44</td>
+                <td class ="content_left">Tanzanian President Magufuli orders probe on COVID-19 kits after goat and pawpaw <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for Coronavirus https://t.co/s1yCssrRAl https://t.co/hXfDrCm6n4</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257082694070087682">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 20:42:22</td>
+                <td class ="content_left">Tanzanian President Magufuli orders probe on COVID-19 kits after goat and pawpaw <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for Coronavirus…lol https://t.co/vH19FoVqYy https://t.co/UWaDlPstJf</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257047873373589505">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 18:50:39</td>
+                <td class ="content_left">Mother And Son <span style="color: yellow;">Test Positive</span> For coronavirus In Osun https://t.co/x5vAkNsRpG https://t.co/u3Y6ugmgEe</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257019758165123077">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 21:32:11</td>
+                <td class ="content_left">Founder of DAAR Communications, Raymond Dokpesi Snr, and 7 members of his family <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for COVID19 https://t.co/9r8z0areJ4 https://t.co/0H4LScVAiy</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256335632730738689">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 20:41:32</td>
+                <td class ="content_left">Children Of Dead COVID-19 Patient &amp; A Pastor Praying For Him <span style="color: yellow;">Test Positive</span> In Rivers https://t.co/rqsgKGWBlO https://t.co/UjY9TJyYuP</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256322889067847686">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 20:20:47</td>
+                <td class ="content_left">Raymond Dokpesi Snr And 7 Family Members <span style="color: yellow;">Test Positive</span> For Coronavirus https://t.co/GwOpo1sjfa https://t.co/IvKARGPoEU</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256317665531924480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 21:03:26</td>
+                <td class ="content_left">Guinea-Bissau’s Prime Minister and 3 ministers <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for Coronavirus https://t.co/RdePhLbSZd https://t.co/FG8xLSGhOw</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255603623423336449">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 16:06:16</td>
+                <td class ="content_left">Nurse And Her Mother <span style="color: yellow;">Test Positive</span> For Coronavirus In Epe, Lagos https://t.co/ffUuOlVipQ https://t.co/W8VjQCxuKv</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255528839494631426">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 16:09:55</td>
+                <td class ="content_left">5 Almajiris Repartriated To Kaduna From Kano <span style="color: yellow;">Test Positive</span> For COVID-19 https://t.co/IdSLx4o0tK https://t.co/FWDSQ5V8Eu</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254804979933732865">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 13:10:29</td>
+                <td class ="content_left">WHO official, two others <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for Coronavirus in Bauchi https://t.co/By5kNnTDvX https://t.co/4O1gZOKjbN</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253672662326542343">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 09:00:52</td>
+                <td class ="content_left">Three medical doctors in Lagos <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for Coronavirus https://t.co/Q8vyzGsnhq https://t.co/RscbOpAXze</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253609843182600193">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 06:47:27</td>
+                <td class ="content_left">Three medical doctors in Lagos <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for Coromavirus https://t.co/nRPlQoq6wX https://t.co/CalQUsjlUm</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253576270459342851">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 05:16:41</td>
+                <td class ="content_left">Two cats become the first pets in the US to <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for Coronavirus https://t.co/F2dm0N5HMw https://t.co/Bs8JKJ7yGN</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253191038367232000">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 19:40:53</td>
+                <td class ="content_left">All those who recently visited Vedic Lifecare in Lekki advised to self-isolate as two hospital staff <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for Coronavirus https://t.co/GCYvBDjKm2 https://t.co/nFIQAntDAn</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1252321358417137664">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 18:14:34</td>
+                <td class ="content_left">All those who recently visited Vedic Lifecare in Lekki advised to self-isolate as two hospital staff <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for Coronavirus https://t.co/alj9o49Vbv https://t.co/b42KkhVZ7b</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1252299638062952450">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 20:47:48</td>
+                <td class ="content_left">Taskforce Co-Chairman Professor Garba, 6 Others <span style="color: yellow;">Test Positive</span> For Coronavirus In Kano https://t.co/Ri9yw3rmQv https://t.co/BdZJoAKryS</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251251034959368192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">freeze</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "freeze"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 23:41:17</td>
+                <td class ="content_left">Daddy <span style="color: yellow;">Freeze</span> Defends Leke Adeboye After He Was Criticized For Dressing Like A Gangster https://t.co/8YnlCUSYjA</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1265427818978172928">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 09:30:42</td>
+                <td class ="content_left">Daddy <span style="color: yellow;">Freeze</span> reacts to video of woman who broke into tongues after surviving an accident; says she was speaking “the tongues of demons” https://t.co/SVvdqKWvwD</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261589885934276608">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 18:00:32</td>
+                <td class ="content_left">COVID-19: Daddy <span style="color: yellow;">Freeze</span> tells Pastors to refund 1 year tithes of their members so they can eat https://t.co/qGDwrwMLH0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259181473959206917">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 16:34:06</td>
+                <td class ="content_left">“I Did Not Offer Daddy <span style="color: yellow;">Freeze</span> a 5Million Naira Bribe” – Popular Billionaire Prophet, Jeremiah Fufeyin denies Viral Allegations… by Strokes Africa https://t.co/672m0V15MX https://t.co/kIsPrYb9oQ</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255535841771950082">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 16:30:51</td>
+                <td class ="content_left">“I did not offer Daddy <span style="color: yellow;">Freeze</span> a 5Million Naira Bribe” — Popular Billionaire Prophet Jeremiah Fufeyin replies Daddy <span style="color: yellow;">Freeze</span> https://t.co/XmKyWrBsAc https://t.co/aCUVv6g7HU</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255535027137511425">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 15:01:11</td>
+                <td class ="content_left">Daddy <span style="color: yellow;">Freeze</span> confirms Mercy Eke and Willie XO are dating (Video) https://t.co/alGDjBObFG https://t.co/FOWPT1KRjx</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251888581750243329">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 06:01:39</td>
+                <td class ="content_left">Confirmed Coronavirus cases in Nigeria hit 8068 after 229 people <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> in 24 hours https://t.co/baHFhWCDqJ</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1265161152834736128">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 04:03:25</td>
+                <td class ="content_left">Man who <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for Coronavirus in Lagos intercepted in a 15-seater bus in Benue https://t.co/8kIjPsMefP</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1260057971314352128">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 21:30:29</td>
+                <td class ="content_left">Lagos Residents who <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for coronavirus have gone into hiding- Lagos Health Commissioner, Akin Abayomi https://t.co/WswTs5ejSG</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258871919614533637">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 09:20:56</td>
+                <td class ="content_left">Lagos Commissioner for Health, Akin Abayomi, debunks reports claiming he has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19 https://t.co/4igkOzhN1v</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258688325801689094">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 09:21:15</td>
+                <td class ="content_left">“113 Nigerian health workers have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19” – Minister of Health, Ehanire Osagie https://t.co/NPj1RkFNYC https://t.co/IkLjCenjtZ</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256151688584577024">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 01:01:16</td>
+                <td class ="content_left">Edo state government declares nursing mother who <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> and has remained unreachable, wanted https://t.co/8xdTjuRvLu https://t.co/S0njHsOGN8</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256025863646318593">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 16:59:51</td>
+                <td class ="content_left">Edo state government declares nursing mother who <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> and has remained unreachable, wanted https://t.co/jxQB7ClKig https://t.co/qO2XLMVKsc</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255904712156680203">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 20:48:59</td>
+                <td class ="content_left">72 Nigerians <span style="color: yellow;">Tested Positive</span> For Coronavirus In Guangzhou – China Writes FG https://t.co/4bAOp8NZR1 https://t.co/4QCAhDc9IY</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253788047126093826">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 20:18:58</td>
+                <td class ="content_left">About 40 Health Workers <span style="color: yellow;">Tested Positive</span> For COVID-19 – Health Minister, Ehanire https://t.co/fwqbRzTAhX https://t.co/ghWZfvlfOV</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253418105163808768">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 08:31:41</td>
+                <td class ="content_left">My family and I have not <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for Coronavirus – Footballer, Ahmed Musa https://t.co/QfzyuTJjr5 https://t.co/IejydLNIh2</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253240111191425024">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 08:31:12</td>
+                <td class ="content_left">A prominent Nigerian politician is about to apologize, announce he <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19 – Kemi Olunloyo https://t.co/1t4YICKscS https://t.co/AiX7XjG6RW</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253239990437494788">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Hydroxychloroquine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Hydroxychloroquine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 04:12:28</td>
+                <td class ="content_left">W.H.O suspends trial of Trump ‘miracle drug’ <span style="color: yellow;"><span style="color: yellow;">Hydroxychloroquine</span></span> over high Covid-19 mortality rates https://t.co/dIXRbu7U6c</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1265133678637744128">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Chloroquine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Chloroquine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 17:35:25</td>
+                <td class ="content_left">COVID-19: Lagos Enlists 600 Patients For <span style="color: yellow;"><span style="color: yellow;">Chloroquine</span></span> Clinical Trials https://t.co/2Lg480qkzk</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1264610970388828168">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 04:33:56</td>
+                <td class ="content_left">I have no apologies for saying I used <span style="color: yellow;"><span style="color: yellow;">Chloroquine</span></span> and ZIthromax to treat myself when I had Coronavirus- Bauchi state governor, Bala Mohammed https://t.co/lcGjWskdbv</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258253709517246467">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 20:41:36</td>
+                <td class ="content_left">8 Doctors Test <span style="color: yellow;">Positive For COVID</span>-19 In Zamfara https://t.co/7la6QsBiJI</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1263208273139949569">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 15:46:15</td>
+                <td class ="content_left">Man, wife, three-year-old child test <span style="color: yellow;">positive for COVID</span>-19 in Ebonyi https://t.co/WsQEMELoqI</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1260959621117771776">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 17:59:00</td>
+                <td class ="content_left">25 Passengers From Nigeria Test <span style="color: yellow;">Positive For COVID</span>-19 – Lebanese Health Ministry https://t.co/PeX3AEQskM</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258093923853053952">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 08:20:58</td>
+                <td class ="content_left">One doctor dies, 34 other doctors test <span style="color: yellow;">positive for COVID</span>-19 in Kano https://t.co/pmMUXivVb4</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257948457542836224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 03:55:26</td>
+                <td class ="content_left">One doctor dies, 34 other doctors test <span style="color: yellow;">positive for COVID</span>-19 in Kano https://t.co/WH8rp7avsy</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257881633203470339">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 09:21:15</td>
+                <td class ="content_left">“113 Nigerian health workers have tested <span style="color: yellow;">positive for COVID</span>-19” – Minister of Health, Ehanire Osagie https://t.co/NPj1RkFNYC https://t.co/IkLjCenjtZ</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256151688584577024">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 21:08:49</td>
+                <td class ="content_left">29-Year-Old Banker Tests <span style="color: yellow;">Positive For COVID</span>-19 In Yobe https://t.co/NSTcteQA6j</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255967367789715456">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 21:00:28</td>
+                <td class ="content_left">Davido’s Chioma makes first social media appearance since testing <span style="color: yellow;">positive for COVID</span>-19 (Photos) https://t.co/acjeZh4nKE https://t.co/TOCZPscqPD</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255965266581782528">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 20:18:58</td>
+                <td class ="content_left">About 40 Health Workers Tested <span style="color: yellow;">Positive For COVID</span>-19 – Health Minister, Ehanire https://t.co/fwqbRzTAhX https://t.co/ghWZfvlfOV</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253418105163808768">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 08:31:12</td>
+                <td class ="content_left">A prominent Nigerian politician is about to apologize, announce he tested <span style="color: yellow;">positive for COVID</span>-19 – Kemi Olunloyo https://t.co/1t4YICKscS https://t.co/AiX7XjG6RW</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1253239990437494788">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cancer</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cancer"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 16:48:24</td>
+                <td class ="content_left">World Renowned Christian Apologist, Ravi Zacharias Dies Of <span style="color: yellow;">Cancer</span> At 74 https://t.co/szsPHaRkWt</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262787199050772480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sweat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sweat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 22:52:39</td>
+                <td class ="content_left">“Women <span style="color: yellow;"><span style="color: yellow;">sweat</span></span> blood for a spot at a table that disrespects their <span style="color: yellow;"><span style="color: yellow;">sweat</span></span>” – Simi talks about challenges women face https://t.co/dN7x01maiG</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262516480232603649">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 20:56:54</td>
+                <td class ="content_left">Women <span style="color: yellow;"><span style="color: yellow;">sweat</span></span> blood for a spot at a table that disrespects their <span style="color: yellow;"><span style="color: yellow;">sweat</span></span> – Simi talks about the challenges women face https://t.co/LjMt9OpSv5</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1262487348455116803">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recovered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recovered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 20:49:05</td>
+                <td class ="content_left">How I <span style="color: yellow;">Recovered</span> From Coronavirus — Doyin Okupe https://t.co/pGN3jlsN59</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261035832150032385">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 20:25:57</td>
+                <td class ="content_left">Nigerian Governors Demand Inclusion In <span style="color: yellow;">Recovered</span> Loots’ Sharing https://t.co/f9q3N552Rn</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1261030008031776769">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 15:28:26</td>
+                <td class ="content_left"><span style="color: yellow;">Recovered</span> COVID-19 patients in Nigeria surpass 1,000 https://t.co/UTMk5xJh1m</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1260955135804653570">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 18:10:49</td>
+                <td class ="content_left">Army officer who was Ondo state’s Index case of Coronavirus, has <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> https://t.co/DQIlG0kf7G https://t.co/JuS97Hqqbz</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1252298691320467457">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recover</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recover"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 00:10:46</td>
+                <td class ="content_left">Ex-Presidential aide, Doyin Okupe reveals the medication he took to <span style="color: yellow;"><span style="color: yellow;">recover</span></span> from COVID-19 https://t.co/IFhqffTZQT</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1260724196872794112">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 21:32:10</td>
+                <td class ="content_left">Police <span style="color: yellow;">Recover</span> Decomposed Corpses Of 3 Kidnapped Uniport Students https://t.co/fufDQyYKy0 https://t.co/136u3VLDBp</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256335632332255232">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 03:44:45</td>
+                <td class ="content_left">Plant extract in Madagascar’s herbal <span style="color: yellow;"><span style="color: yellow;">drug</span></span> for Coronavirus grows in Nigeria – Minister of Health, Osagie Ehanire https://t.co/0GkbrmxVpY</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1260053272699768833">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 20:48:44</td>
+                <td class ="content_left">COVID-19 Cure: FG Yet To Show Interest In Our <span style="color: yellow;">Drug</span> – Prof. Iwu https://t.co/um11UKzH4r</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259948579764031488">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 04:31:31</td>
+                <td class ="content_left">Minister of Health reveals <span style="color: yellow;"><span style="color: yellow;">drug</span></span> used to treat COVID19 patients in Nigeria https://t.co/eDAcob6Ppa</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257890715369119746">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 10:56:53</td>
+                <td class ="content_left">Japan Ready To Supply Coronavirus <span style="color: yellow;">Drug</span> To 43 Countries For Free https://t.co/m1geZzr7jq https://t.co/2SavSAgonM</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257262919462633472">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 21:45:49</td>
+                <td class ="content_left">Nigeria has expressed interest to be part of Coronavirus <span style="color: yellow;"><span style="color: yellow;">drug</span></span> trials – WHO https://t.co/mqlofRUKEr</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256701454120697861">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 21:42:39</td>
+                <td class ="content_left">National Agency For Food and <span style="color: yellow;">Drug</span> Admnistration And Control (NAFDAC) COVID-19 Pandemic Lockdown and Guidance Note To Companies That Donate or Market Breastmilk Substitues (BMS) For Infants https://t.co/07nqgUlDLZ</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256700657400193024">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 09:21:15</td>
+                <td class ="content_left">Nigerian doctor in US leads major study on <span style="color: yellow;"><span style="color: yellow;">drug</span></span> Remdesivir that appears to treat COVID-19 (WATCH) https://t.co/JsPauTqTfo https://t.co/XFrYEgHZ26</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256151688651644928">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 21:09:24</td>
+                <td class ="content_left">Catholic Church Donates All Its 425 Hospitals In Nigeria As <span style="color: yellow;">COVID19</span> Isolation Centers https://t.co/f1hZBzmlkF</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259953781250326536">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 14:30:50</td>
+                <td class ="content_left"><span style="color: yellow;">COVID19</span> : Another total lockdown would be counterproductive- Festus Keyamo warns https://t.co/shgJCVbbQE</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1259491090652106752">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 03:55:24</td>
+                <td class ="content_left">48 <span style="color: yellow;">COVID19</span> patients discharged in Lagos, three in Ondo https://t.co/Yd76q5P0TP</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258606400848134145">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 21:04:03</td>
+                <td class ="content_left">One <span style="color: yellow;">COVID19</span> related death recorded in Delta https://t.co/uvoJcDtXsI</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258140492010840067">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 16:30:48</td>
+                <td class ="content_left">Two <span style="color: yellow;">COVID19</span> patients abscond from Oyo Isolation center https://t.co/VWL16AfVzk</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258071726812008448">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 15:04:33</td>
+                <td class ="content_left">Two <span style="color: yellow;">COVID19</span> patients abscond from Oyo Isolation center https://t.co/xdD0inmWB1</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1258050021741789187">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 04:37:31</td>
+                <td class ="content_left">Video of <span style="color: yellow;">COVID19</span> patients in Gombe protesting at their Isolation center https://t.co/k3R4nqZY2V</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257892224639152128">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 04:31:31</td>
+                <td class ="content_left">Minister of Health reveals drug used to treat <span style="color: yellow;">COVID19</span> patients in Nigeria https://t.co/eDAcob6Ppa</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257890715369119746">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 22:10:29</td>
+                <td class ="content_left"><span style="color: yellow;">COVID19</span> : Lagos records four deaths, Discharges 22 patients https://t.co/A1W6NUnqHV https://t.co/CQE4WN7Afg</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1256707661913034753">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 19:20:46</td>
+                <td class ="content_left">Bola Tinubu and wife test negative for <span style="color: yellow;">COVID19</span> after his Chief Security officer died from <span style="color: yellow;">COVID19</span> complications https://t.co/MrfqBd96GU https://t.co/0QPtw2COlT</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254853009269354496">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 12:20:45</td>
+                <td class ="content_left"><span style="color: yellow;">COVID19</span> : NYSC assures Corps Members of paying March, April allowances despite lockdown https://t.co/mPLyzihZQr https://t.co/Qa65pPBPMp</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1252935372457181190">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 12:00:55</td>
+                <td class ="content_left">Two new <span style="color: yellow;">COVID19</span> deaths recorded in Lagos https://t.co/pBjOVjZe8j https://t.co/4bqPe1TK2r</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1252567993759993856">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 19:10:48</td>
+                <td class ="content_left">We have spent over N1bn in the fight against <span style="color: yellow;">COVID19</span> – Edo state governor, Godwin Obaseki https://t.co/5wEfwz0Xpm</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251951399081922560">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 18:30:32</td>
+                <td class ="content_left">Man carelessly discards his PPE on roadside against <span style="color: yellow;">COVID19</span> practices (Video) https://t.co/ngYR4ZaTHQ https://t.co/S9ljeX3POW</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251578880248422405">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 13:57:53</td>
+                <td class ="content_left">Rivers state government discharges second <span style="color: yellow;">COVID19</span> patient https://t.co/aLsYwJbO6j https://t.co/mg9dhDRHZs</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251147875494457345">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 13:54:35</td>
+                <td class ="content_left">Five <span style="color: yellow;">COVID19</span> patients discharged in Edo https://t.co/vX1g4Qua0z https://t.co/Ivhks4ySIz</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251147045626212354">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Difficulty in breathing</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Difficulty in breathing"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 04:08:09</td>
+                <td class ="content_left">Bank customers take to their heels after a Nigerian man suffered <span style="color: yellow;">difficulty in breathing</span> and slumped while using an ATM in Lagos (video) https://t.co/9o72pNDUgN https://t.co/vFBGHta6Ff</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257522448049803265">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 23:41:03</td>
+                <td class ="content_left">Bank customers run for their lives after a Nigerian man suffered <span style="color: yellow;">difficulty in breathing</span> and slumped while using an ATM in Lagos (video) https://t.co/4NaNWRje0k https://t.co/VPTn4y5d3k</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1257455229903265793">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">respiratory symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "respiratory symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 11:45:19</td>
+                <td class ="content_left">COVID-19: 1 In 5 People With <span style="color: yellow;">Respiratory Symptoms</span> In Lagos Positive – Commissioner https://t.co/qbckuav2gI https://t.co/zIUJWMEaVY</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255825557066932225">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">HIV</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "HIV"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 07:40:46</td>
+                <td class ="content_left">I’ve been living with <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> since I was 8 after a doctor said I would die at 12 – 27-year-old survivor shares experience https://t.co/DHkXlvjvXC https://t.co/OVRPFS7r6y</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1255039236832735232">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 14:30:47</td>
+                <td class ="content_left">If you’re <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of life, go &amp; kill yourselves instead of abusing people on IG – Bobrisky tells trolls (video) https://t.co/oumnYGWbCN https://t.co/Q0Du3B84ye</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1254417644444401666">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asymptomatic</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asymptomatic"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 14:30:41</td>
+                <td class ="content_left">COVID-19: <span style="color: yellow;">Asymptomatic</span> mother unknowingly infects seventeen of her 18 children with Coronavirus https://t.co/NcimYPRgkx https://t.co/rNhBEGcSwO</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251518517536571393">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 09:54:57</td>
+                <td class ="content_left">COVID-19: <span style="color: yellow;">Asymptomatic</span> mother unknowingly infects seventeen of her 18 children with Coronavirus https://t.co/RIWiwfPTWJ https://t.co/QE32Guk8W8</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251449128435023878">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 04:36:55</td>
+                <td class ="content_left">Health workers in FMC Bauchi beg for protection as they are made to work without PPE even after two doctors died after exposure to Lassa <span style="color: yellow;">Fever</span> (video) https://t.co/FmjWvjjd4h https://t.co/z35DadVBXs</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251369092348551171">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 02:20:39</td>
+                <td class ="content_left">FMC Bauchi health workers beg for protection as they’re made to work without PPE even after two doctors died due to exposure to Lassa <span style="color: yellow;">Fever</span> (Photos) https://t.co/Yx4jSzIDJZ https://t.co/YyEHTXTkP3</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/naijaparrotng/status/1251334801371652100">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,733 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>163-ChriseoNoona.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 163-ChriseoNoona.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">163-ChriseoNoona.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 22:25:46</td>
+                <td class ="content_left">@rkivesyoongi All this time I thought Tear was the perfect anthem for <span style="color: yellow;"><span style="color: yellow;">pain</span></span> of love gone wrong &amp; how hard you try to hold it together when everything is tearing you apart; the longing to be back together, the regret for mistakes, the anger at the feeling of responsibility to make it all work.😭</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1265408813869363200">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 21:40:53</td>
+                <td class ="content_left">@LeniiBlue No, not the sense of heaviness but <span style="color: yellow;"><span style="color: yellow;">pain</span></span> in lungs when I coughed or took a deep breath. I did have tingling feeling in lower jaw and face and <span style="color: yellow;"><span style="color: yellow;">pain</span></span>ful dry eyes. Monitor your breathing. That's the important thing!!</td>
+                <td>0</td>
+                <td>24</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1245103801536634880">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-22 22:34:10</td>
+                <td class ="content_left">@hobiskiss Don't delay your mammogram! This happened to me in 2012. I had skipped a year but finally went in when there was generalized <span style="color: yellow;"><span style="color: yellow;">pain</span></span> in my right breast - but no lump. They did a biopsy the same day as the mammogram, then surgery &amp; treatment. I am 100% cancer free now. Sending 💜💜</td>
+                <td>0</td>
+                <td>20</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1220112445106089984">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 23:39:46</td>
+                <td class ="content_left">@stessieT I still remember how much I loved the <span style="color: yellow;"><span style="color: yellow;">smell</span></span> of our local library in Washington D.C. !!</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1262890722681733120">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 07:07:20</td>
+                <td class ="content_left">@holly_bourneYA I kept testing with my favorite strong taste, Wilkins Ginger marmalade. After 14 days still couldn't taste it but then  could <span style="color: yellow;"><span style="color: yellow;">smell</span></span> a bit of garlic cooking. It's slowly coming back. It still has a way to go. It's like the 'center of the watermelon' full taste is still missing.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1249232619796975621">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 07:00:03</td>
+                <td class ="content_left">@GillCabrit @SadieR1978 @holly_bourneYA I can relate to that 'chemical smoke <span style="color: yellow;"><span style="color: yellow;">smell</span></span>' too! It was sort of metallic, like an electrical fire. Really gross. I kept rinsing my  mouth out with strong anti-bacterial mouthwash but  couldn't taste it. Then the metallic taste came back. I lost 100% taste &amp; <span style="color: yellow;"><span style="color: yellow;">smell</span></span> for 14 days.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1249230783723655170">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 21:11:15</td>
+                <td class ="content_left">I cannot recommend this critically instructive Asian Boss video enough! He interviews the head of infectious diseases doctor about COVID-19. Just as a side note, the unique symptoms of loss of taste &amp; <span style="color: yellow;"><span style="color: yellow;">smell</span></span> mentioned at minute 14:11 are my symptoms too. https://t.co/wVUV3hEeEV</td>
+                <td>7</td>
+                <td>24</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1244009178265341953">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 20:43:44</td>
+                <td class ="content_left">@DrMattMcCarthy And we are WAY WAY behind not only on testing but on getting results! I've been sick for 2 weeks with all the classic symptoms plus more (loss of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> &amp; Taste) &amp; I was tested last Thursday - a week ago - still haven't received results! We are so far behind where we should be.</td>
+                <td>1</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1243277479994744832">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 15:58:11</td>
+                <td class ="content_left">@SkyNews @ENT_UK This has definitely been a strong symptom of mine for the past week. I cannot <span style="color: yellow;"><span style="color: yellow;">smell</span></span> or taste anything at all. Got tested yesterday but have been told it could be 7-10 days for results. Labs are that backed up.</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1241393678335107079">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 14:57:52</td>
+                <td class ="content_left">@sigur_lilja Not getting better at all. Everything is the same, day after day, with no improvement at all. The article this morning really caught my attention because I've lost ALL sense of taste and <span style="color: yellow;"><span style="color: yellow;">smell</span></span> since last Sunday. It is SO weird. Now being told at least 7 days for test results.</td>
+                <td>1</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1241378499236990982">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 14:07:20</td>
+                <td class ="content_left">@ENT_UK @bizteachroz This is me!  I've been sick since March 11 and the weirdest part of it is a complete loss of sense of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> and taste!</td>
+                <td>3</td>
+                <td>30</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1241365783885656065">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-15 05:28:20</td>
+                <td class ="content_left">@unotaehyung Root Beer.  Got very sick on it after a hot day at the beach when I was five years old. Even the <span style="color: yellow;"><span style="color: yellow;">smell</span></span> of it now makes me feel ill. Yuck!</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1239060842257108992">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 17:17:39</td>
+                <td class ="content_left">@beautywhereyou1 @BTS_twt are so slender, so muscular. Oh wow, their skin is incredible - and you finally believe what you've heard before - that the boys are even better looking in real life. You become astonished at the passion and energy radiating off the stage. Even the solos take your <span style="color: yellow;"><span style="color: yellow;">breath</span></span> away.+</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1260620232026058752">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-16 17:49:06</td>
+                <td class ="content_left">@stessieT @BTS_twt Waking up to find my 6 month old Tabby kitten purring in my face and then reaching for my phone right away to check up on @BTS_twt news. THEN coffee and open the front door for a huge <span style="color: yellow;"><span style="color: yellow;">breath</span></span> of cold fresh air. My morning happiness!</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1217866378377433088">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 14:32:23</td>
+                <td class ="content_left">There are blessings in these tough times (in addition to full recovery from <span style="color: yellow;">COVID-19</span> ..Yay!). My 50th high school reunion in D.C. was cancelled but 49 girls out of our class of 70 just had a 2 1/2 hr Zoom session &amp; it was the best thing ever!! Actual reunion rescheduled for 2021.</td>
+                <td>1</td>
+                <td>50</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1254780436842045441">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 16:24:14</td>
+                <td class ="content_left">@BTSArmyMom3 I left home twice after self-isolating on March 10 - the 1st time to go get tested for <span style="color: yellow;">COVID-19</span> because I was so darn sick (yup, it was positive) &amp; the second time to get more cough medicine on April 10. I've ordered groceries delivered &amp; now starting to walk because I feel well.</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1254446196891856896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 07:08:36</td>
+                <td class ="content_left">So happy to see my weird <span style="color: yellow;">COVID-19</span> symptom finally getting attention! https://t.co/UL6VyPxOBP https://t.co/xOeUQGnNHM</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1249232936555048962">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 04:56:39</td>
+                <td class ="content_left">@pumpkjins Hang tough. I've been <span style="color: yellow;">COVID-19</span> positive and it was three very yucky weeks. Watch for weird symptoms like sudden loss of taste. Track how you feel each day. Take your temp. Just know I NEVER had a fever, not once - or a sore throat, just really bad cough, chills, aches, exhaustion</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1246663017154002945">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 20:27:15</td>
+                <td class ="content_left">Just want you all to know that I tested positive for <span style="color: yellow;">COVID-19</span> but starting to feel much better after 2 really bad weeks. Probably caught it after long hours in The Denver airport on March 5th. Strangest symptom was complete loss of sense of taste. Stay well &amp; vigilant everyone.💜</td>
+                <td>143</td>
+                <td>2064</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1245085268954116101">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 14:09:27</td>
+                <td class ="content_left">I have been sick since March 11. Finally got tested for <span style="color: yellow;">COVID-19</span> yesterday. The weirdest symptom of all has been the complete loss of sense of taste and smell. I've never ever experienced this before! Results in 3 days. WOW. https://t.co/8t7r2abwZF</td>
+                <td>75</td>
+                <td>317</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1241366314507100161">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 16:26:37</td>
+                <td class ="content_left">@BTSArmyMom3 And of course I wore a mask &amp; gloves when I went to buy <span style="color: yellow;"><span style="color: yellow;">cough</span></span> medicine, despite reports that I'm immune or can't infect anyone. I will continue to be super cautious around everyone. Scheduled to go give blood for my plasma antibodies next week so looking forward to human contact!</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1254446797356847105">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 16:24:14</td>
+                <td class ="content_left">@BTSArmyMom3 I left home twice after self-isolating on March 10 - the 1st time to go get tested for COVID-19 because I was so darn sick (yup, it was positive) &amp; the second time to get more <span style="color: yellow;"><span style="color: yellow;">cough</span></span> medicine on April 10. I've ordered groceries delivered &amp; now starting to walk because I feel well.</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1254446196891856896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 23:31:05</td>
+                <td class ="content_left">@Barba_Babs Wow. I have that metallic taste too. Also my eyes always feel "tight" and dry. Hard to explain. <span style="color: yellow;">Cough</span> is a bit better but still can't taste or smell. Still waiting for results. I hope your sister is OK.</td>
+                <td>1</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1242594817860722688">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 04:16:17</td>
+                <td class ="content_left">I got out of the stock market just in time from the dot com crash in March 2000 but OMG am I ever dumb for not buying Netflix stocks in 2002!  I just ordered two 1,000 piece jigsaw puzzles from Amazon. Need to stay entertained as I deal with this <span style="color: yellow;"><span style="color: yellow;">cough</span></span> from travels.🙄Stream BTS!!</td>
+                <td>2</td>
+                <td>40</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1239405101061566464">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">medicine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "medicine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 16:24:14</td>
+                <td class ="content_left">@BTSArmyMom3 I left home twice after self-isolating on March 10 - the 1st time to go get tested for COVID-19 because I was so darn sick (yup, it was positive) &amp; the second time to get more cough <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> on April 10. I've ordered groceries delivered &amp; now starting to walk because I feel well.</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1254446196891856896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cancer</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cancer"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 15:20:40</td>
+                <td class ="content_left">@SarahJaneCheeky I only found them at the start in 2013 because I fell into K-dramas in 2012 when recovering from <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> surgery. The K-dramas made me look into South Korea culture and I found k-pop and was into all the groups until I found BTS. Then I started driving my American friends NUTS!!</td>
+                <td>1</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1251531095599808512">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 03:47:22</td>
+                <td class ="content_left">@MicheBangtan After surviving breast <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> &amp; a double mastectomy in 2012 I started a wonderful new job on January 1st, 2013 as the Director of an aviation museum in Northern California. That entire year was magical, including watching a new group called @BTS_twt BTS debut with No More Dream.</td>
+                <td>2</td>
+                <td>44</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1244471254486142977">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-22 22:34:10</td>
+                <td class ="content_left">@hobiskiss Don't delay your mammogram! This happened to me in 2012. I had skipped a year but finally went in when there was generalized pain in my right breast - but no lump. They did a biopsy the same day as the mammogram, then surgery &amp; treatment. I am 100% <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> free now. Sending 💜💜</td>
+                <td>0</td>
+                <td>20</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1220112445106089984">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 07:07:20</td>
+                <td class ="content_left">@holly_bourneYA I kept testing with my favorite strong <span style="color: yellow;"><span style="color: yellow;">taste</span></span>, Wilkins Ginger marmalade. After 14 days still couldn't <span style="color: yellow;"><span style="color: yellow;">taste</span></span> it but then  could smell a bit of garlic cooking. It's slowly coming back. It still has a way to go. It's like the 'center of the watermelon' full <span style="color: yellow;"><span style="color: yellow;">taste</span></span> is still missing.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1249232619796975621">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 07:00:03</td>
+                <td class ="content_left">@GillCabrit @SadieR1978 @holly_bourneYA I can relate to that 'chemical smoke smell' too! It was sort of metallic, like an electrical fire. Really gross. I kept rinsing my  mouth out with strong anti-bacterial mouthwash but  couldn't <span style="color: yellow;"><span style="color: yellow;">taste</span></span> it. Then the metallic <span style="color: yellow;"><span style="color: yellow;">taste</span></span> came back. I lost 100% <span style="color: yellow;"><span style="color: yellow;">taste</span></span> &amp; smell for 14 days.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1249230783723655170">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 06:51:21</td>
+                <td class ="content_left">@holly_bourneYA This was me!!! I started coughing 3/10 &amp; on 3/15 I suddenly, utterly &amp; completely couldn't <span style="color: yellow;"><span style="color: yellow;">taste</span></span> anything! It was like suddenly going blind and I knew I had COVID-19. So weird. Got tested 3/20. Positive. Never had a fever but really sick for 3 weeks. Better now. <span style="color: yellow;">Taste</span> back 70%.</td>
+                <td>1</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1249228595018399746">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 21:11:15</td>
+                <td class ="content_left">I cannot recommend this critically instructive Asian Boss video enough! He interviews the head of infectious diseases doctor about COVID-19. Just as a side note, the unique symptoms of loss of <span style="color: yellow;"><span style="color: yellow;">taste</span></span> &amp; smell mentioned at minute 14:11 are my symptoms too. https://t.co/wVUV3hEeEV</td>
+                <td>7</td>
+                <td>24</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1244009178265341953">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 23:31:05</td>
+                <td class ="content_left">@Barba_Babs Wow. I have that metallic <span style="color: yellow;"><span style="color: yellow;">taste</span></span> too. Also my eyes always feel "tight" and dry. Hard to explain. Cough is a bit better but still can't <span style="color: yellow;"><span style="color: yellow;">taste</span></span> or smell. Still waiting for results. I hope your sister is OK.</td>
+                <td>1</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1242594817860722688">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 15:58:11</td>
+                <td class ="content_left">@SkyNews @ENT_UK This has definitely been a strong symptom of mine for the past week. I cannot smell or <span style="color: yellow;"><span style="color: yellow;">taste</span></span> anything at all. Got tested yesterday but have been told it could be 7-10 days for results. Labs are that backed up.</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1241393678335107079">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 14:57:52</td>
+                <td class ="content_left">@sigur_lilja Not getting better at all. Everything is the same, day after day, with no improvement at all. The article this morning really caught my attention because I've lost ALL sense of <span style="color: yellow;"><span style="color: yellow;">taste</span></span> and smell since last Sunday. It is SO weird. Now being told at least 7 days for test results.</td>
+                <td>1</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1241378499236990982">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 14:09:27</td>
+                <td class ="content_left">I have been sick since March 11. Finally got tested for COVID-19 yesterday. The weirdest symptom of all has been the complete loss of sense of <span style="color: yellow;"><span style="color: yellow;">taste</span></span> and smell. I've never ever experienced this before! Results in 3 days. WOW. https://t.co/8t7r2abwZF</td>
+                <td>75</td>
+                <td>317</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1241366314507100161">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 06:51:21</td>
+                <td class ="content_left">@holly_bourneYA This was me!!! I started coughing 3/10 &amp; on 3/15 I suddenly, utterly &amp; completely couldn't taste anything! It was like suddenly going blind and I knew I had COVID-19. So weird. Got tested 3/20. Positive. Never had a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> but really sick for 3 weeks. Better now. Taste back 70%.</td>
+                <td>1</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1249228595018399746">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">bad cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "bad cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 04:56:39</td>
+                <td class ="content_left">@pumpkjins Hang tough. I've been COVID-19 positive and it was three very yucky weeks. Watch for weird symptoms like sudden loss of taste. Track how you feel each day. Take your temp. Just know I NEVER had a fever, not once - or a sore throat, just really <span style="color: yellow;"><span style="color: yellow;">bad cough</span></span>, chills, aches, exhaustion</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1246663017154002945">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sore throat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sore throat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 04:56:39</td>
+                <td class ="content_left">@pumpkjins Hang tough. I've been COVID-19 positive and it was three very yucky weeks. Watch for weird symptoms like sudden loss of taste. Track how you feel each day. Take your temp. Just know I NEVER had a fever, not once - or a <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span>, just really bad cough, chills, aches, exhaustion</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1246663017154002945">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">headaches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "headaches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 20:25:06</td>
+                <td class ="content_left">@stessieT I had massive <span style="color: yellow;"><span style="color: yellow;">headaches</span></span> in my 3 weeks of dealing with COVID-19.  Now they're gone as I recover. But I'm having wild &amp; vivid dreams about adventures &amp; struggles gone wrong after our 6.5 earthquake on 3-31. I haven't had nightmares in 30 years, so it's weird. For me it's stress.</td>
+                <td>1</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1246534281507123202">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">painful</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "painful"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 21:40:53</td>
+                <td class ="content_left">@LeniiBlue No, not the sense of heaviness but pain in lungs when I coughed or took a deep breath. I did have tingling feeling in lower jaw and face and <span style="color: yellow;"><span style="color: yellow;">painful</span></span> dry eyes. Monitor your breathing. That's the important thing!!</td>
+                <td>0</td>
+                <td>24</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1245103801536634880">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-10 22:18:00</td>
+                <td class ="content_left">@DearMoon246 @BTS_twt The abrupt change from major to minor key in the music is startling and grating at that point.  I'm trying to find reference to any earlier BTS song written in minor key. It's just not THEM...not the PERSONA of BTS anyway...it really is the depth of fame's <span style="color: yellow;"><span style="color: yellow;">painful</span></span> difficulty.</td>
+                <td>1</td>
+                <td>22</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1215759723204448256">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 20:27:15</td>
+                <td class ="content_left">Just want you all to know that I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19 but starting to feel much better after 2 really bad weeks. Probably caught it after long hours in The Denver airport on March 5th. Strangest symptom was complete loss of sense of taste. Stay well &amp; vigilant everyone.💜</td>
+                <td>143</td>
+                <td>2064</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1245085268954116101">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 20:27:15</td>
+                <td class ="content_left">Just want you all to know that I tested <span style="color: yellow;">positive for COVID</span>-19 but starting to feel much better after 2 really bad weeks. Probably caught it after long hours in The Denver airport on March 5th. Strangest symptom was complete loss of sense of taste. Stay well &amp; vigilant everyone.💜</td>
+                <td>143</td>
+                <td>2064</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1245085268954116101">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">can't taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "can't taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 23:31:05</td>
+                <td class ="content_left">@Barba_Babs Wow. I have that metallic taste too. Also my eyes always feel "tight" and dry. Hard to explain. Cough is a bit better but still <span style="color: yellow;"><span style="color: yellow;">can't taste</span></span> or smell. Still waiting for results. I hope your sister is OK.</td>
+                <td>1</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1242594817860722688">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">illusion</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "illusion"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 14:59:18</td>
+                <td class ="content_left">@BestOfMeBestOfU @BTS_twt Is it an optical <span style="color: yellow;"><span style="color: yellow;">illusion</span></span> or are Taehuyng's fingernails unusually long here?</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1239929310099591173">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-21 21:24:54</td>
+                <td class ="content_left">@HobiMimsSide I know it seems upsetting but there were THREE big-ass heaters blowing hot air at them across the stage!! The boys might have chosen to wear scarves, hats &amp; gloves but they didn't. Yoongi probably fine once he got inside. he seems to be the skinniest in BTS - so gets <span style="color: yellow;"><span style="color: yellow;">cold</span></span> easily. https://t.co/ZFOIDBCys8</td>
+                <td>1</td>
+                <td>13</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1230966649651486720">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-17 19:43:05</td>
+                <td class ="content_left">@msbeatrice_81 @BTS_twt @Crumbles4Kookie 5 non-@BTS_twt artists to get to know me:
+
+1. Pink Floyd
+2. Dan Fogelberg
+3. Fleetwood Mac
+4. Elton John
+5. <span style="color: yellow;">Cold</span> Play
+     and....(6. Lindsey Stirling; 7. Ed Sheeran; 8. Yo-Yo Ma; 9. Imagine Dragons; 10. Lizzo!)</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1229491475525718016">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-16 17:49:06</td>
+                <td class ="content_left">@stessieT @BTS_twt Waking up to find my 6 month old Tabby kitten purring in my face and then reaching for my phone right away to check up on @BTS_twt news. THEN coffee and open the front door for a huge breath of <span style="color: yellow;"><span style="color: yellow;">cold</span></span> fresh air. My morning happiness!</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1217866378377433088">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sweat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sweat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-21 13:17:25</td>
+                <td class ="content_left">OMG!!!  The Kinetic Manifesto for ON!!!    That line, "Gotta Go Insane to Stay Sane" is a direct connection to the carving on the wall in Blood <span style="color: yellow;">Sweat</span> and Tears by philosopher Friedrich Nietzsche, "You Must Have Chaos Within to Give Birth to a Dancing Star!"  This is SO brilliant!</td>
+                <td>69</td>
+                <td>191</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1230843972513198081">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nosebleed</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nosebleed"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-04 04:13:19</td>
+                <td class ="content_left">@yeonjuls @mnygvevo <span style="color: yellow;">Nosebleed</span> seats are still wonderful! I've been to five BTS concerts, 2 arenas fairly close up &amp; 3 stadiums (2 days Rose Bowl &amp; 1 day CitiField in NYC). At CitiField we had total <span style="color: yellow;"><span style="color: yellow;">nosebleed</span></span> seats up on a side &amp; it was the BEST and most intimate of all - for me. I cried with joy.</td>
+                <td>3</td>
+                <td>57</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1224546452468162561">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-15 17:06:29</td>
+                <td class ="content_left">@ForeverPurple23 @BTS_twt Hate? Wow, that's strong. I have a few BTS songs that don't interest me much after awhile, a couple I'm honestly <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of (DNA &amp; BWL) but SO many that still give me chills; Outro:Tear, Bulletproof Pt2, Fake Love &amp; many many more. The full range of music is personal to all of us!</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1217493265634615296">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">exhausted</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "exhausted"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-14 21:33:06</td>
+                <td class ="content_left">Anyone else completely wrung out, mind-blown, <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> and giddy from today's onslaught of @BTS_twt  art news, Weverse bantering between JK and V, news of LA performance Jan. 27th which inevitably means new BTS music performed at the Grammys on the 26th?  Anyone??🤣🤣🤣🤣🤣🤣</td>
+                <td>157</td>
+                <td>600</td>
+                <td><a href="https://twitter.com/ChriseoNoona/status/1217197976491216896">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

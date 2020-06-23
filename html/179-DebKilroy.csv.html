@@ -1,0 +1,846 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>179-DebKilroy.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 179-DebKilroy.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">179-DebKilroy.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asthma</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asthma"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 01:18:04</td>
+                <td class ="content_left">@nowsgood320 @ShayneDimmer @CliveFPalmer @MarkMcGowanMP I don’t have severe <span style="color: yellow;"><span style="color: yellow;">asthma</span></span> and my chest &amp; lungs have not been effected by the virus FACT</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1265814563527593984">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 04:16:45</td>
+                <td class ="content_left">@Miss_Tallula Hi I’ve just seen your tweet. I have been sick with <span style="color: yellow;">COVID19</span> and I am quite unwell. Sorry I haven’t been well enough to reply and then you’re thinking that because I didn’t reply I don’t support you Hope you’re staying safe Take care</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1264772366560681984">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 03:37:51</td>
+                <td class ="content_left">@LVikkiml I think it’s post <span style="color: yellow;"><span style="color: yellow;">covid19</span></span> symptoms that people are only identifying now</td>
+                <td>3</td>
+                <td>12</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1262950641040855046">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 07:39:40</td>
+                <td class ="content_left">@amandajaporter @AJ_Whittaker @latoya_aroha I would suggest sending to the Minister of Prisons in your State. Let the media know that they won’t accept soap as a public health precaution to <span style="color: yellow;">COVID19</span></td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1259750003012104199">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 21:55:38</td>
+                <td class ="content_left"><span style="color: yellow;">COVID19</span> is a death sentence for people in prison #freethemall #Covid_19 RIP Mr. Smalls 💔 https://t.co/cVaUQxw0iU</td>
+                <td>2</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1258515862283186179">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 01:14:21</td>
+                <td class ="content_left">The reason no one in prison hasn’t tested positive to #COVID__19 is because they’re not testing everyone. Sisters Inside calls on every jurisdiction to test every person in prison for <span style="color: yellow;">COVID19</span> #cleanoutprisons https://t.co/EA0xnQkpQP</td>
+                <td>35</td>
+                <td>71</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1256391546426912768">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 23:12:09</td>
+                <td class ="content_left"><span style="color: yellow;">Covid19</span> 👇🏾👇🏾👇🏾 #<span style="color: yellow;"><span style="color: yellow;">covid19</span></span>behindbars https://t.co/ofJHHydk8b</td>
+                <td>1</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1254186465967259648">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 12:33:49</td>
+                <td class ="content_left">@clarevward @MeganMinelli @latoya_aroha @AJ_Whittaker @MadelineHayman @Roxy_Moore_ @lidia__thorpe We are donating soap to stop the virus spreading once it hits prison We are also advocating to #cleanoutprisons to have people released so they don’t die from <span style="color: yellow;"><span style="color: yellow;">covid19</span></span></td>
+                <td>1</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1247865230551465986">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 03:52:51</td>
+                <td class ="content_left">@AlexSilverLV With all due respect I’m presently in quarantine with <span style="color: yellow;">COVID19</span> and as I said there’s great readings available Here’s a great book to start with Are Prisons Obsolete by #AngelaDavis https://t.co/pQhheBhV0Y</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1247009348171096064">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 00:54:52</td>
+                <td class ="content_left">Day 10 Starting to feel a bit better. <span style="color: yellow;">COVID19</span> is no joke. It knocked us down and we are on our way back up. #physicaldistancing is a must to stop the spread of #covid_19 Take care of yourself and plz think of others. This virus kills @BonetaMarieMabo #hospitallife #auspol https://t.co/MYWeWr0qyr</td>
+                <td>211</td>
+                <td>2406</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1241891127575232513">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 04:22:29</td>
+                <td class ="content_left">Day 72 Still waiting on results of my #COVID19 tests. Feeling lethargic, tight chest, difficulty breathing, foggy brain, no taste or <span style="color: yellow;"><span style="color: yellow;">smell</span></span> aaarrrggghhhhh Thx to my supportive husband taking photos of me resting 😂😂 Stay safe everyone This virus is serious It’s not muckin around https://t.co/zveGe33tBR</td>
+                <td>140</td>
+                <td>753</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1263324257532014592">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 04:02:39</td>
+                <td class ="content_left">@JeremiahBourge6 Yessss I remember the <span style="color: yellow;"><span style="color: yellow;">smell</span></span> of the ocean and how it bought tears to my eyes Take care</td>
+                <td>1</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1261507327070359552">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 21:27:04</td>
+                <td class ="content_left">@bezmay @jrojourno @hornseyj @Anna_Hartley1 @normanswan Yes both myself and Neta lost our sense of taste and <span style="color: yellow;"><span style="color: yellow;">smell</span></span> early in and I still don’t have it back fully</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1243288384836997120">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 04:22:29</td>
+                <td class ="content_left">Day 72 Still waiting on results of my #COVID19 tests. Feeling lethargic, tight chest, difficulty breathing, foggy brain, no <span style="color: yellow;"><span style="color: yellow;">taste</span></span> or smell aaarrrggghhhhh Thx to my supportive husband taking photos of me resting 😂😂 Stay safe everyone This virus is serious It’s not muckin around https://t.co/zveGe33tBR</td>
+                <td>140</td>
+                <td>753</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1263324257532014592">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 21:27:04</td>
+                <td class ="content_left">@bezmay @jrojourno @hornseyj @Anna_Hartley1 @normanswan Yes both myself and Neta lost our sense of <span style="color: yellow;"><span style="color: yellow;">taste</span></span> and smell early in and I still don’t have it back fully</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1243288384836997120">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 00:23:23</td>
+                <td class ="content_left">Day 5 &amp; I am feeling a bit better Filling up with nutritious homemade soups Body aches lessening Still can’t <span style="color: yellow;"><span style="color: yellow;">taste</span></span> anything but the look of this soup is amazing. Slightly sore throat. #Covid_19 #coronavirus Self isolate &amp; care for yourself 😍 https://t.co/0bJNqtfJKf</td>
+                <td>33</td>
+                <td>429</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1240071264963678208">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 15:29:47</td>
+                <td class ="content_left">Day 4 in isolation has been really hard I’m getting sicker Medical staff came home to check on us &amp; they’re great Feeling really nauseous &amp; I’ve developed a chest infection. My daughter organised chicken soup &amp; fresh juices but can’t <span style="color: yellow;"><span style="color: yellow;">taste</span></span> anything. #COVIDー19 Take care of you ♥️</td>
+                <td>146</td>
+                <td>1260</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1239936980424654848">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Difficulty breathing</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Difficulty breathing"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 04:22:29</td>
+                <td class ="content_left">Day 72 Still waiting on results of my #COVID19 tests. Feeling lethargic, tight chest, <span style="color: yellow;">difficulty breathing</span>, foggy brain, no taste or smell aaarrrggghhhhh Thx to my supportive husband taking photos of me resting 😂😂 Stay safe everyone This virus is serious It’s not muckin around https://t.co/zveGe33tBR</td>
+                <td>140</td>
+                <td>753</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1263324257532014592">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Difficulty breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Difficulty breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 04:22:29</td>
+                <td class ="content_left">Day 72 Still waiting on results of my #COVID19 tests. Feeling lethargic, tight chest, <span style="color: yellow;">difficulty breath</span>ing, foggy brain, no taste or smell aaarrrggghhhhh Thx to my supportive husband taking photos of me resting 😂😂 Stay safe everyone This virus is serious It’s not muckin around https://t.co/zveGe33tBR</td>
+                <td>140</td>
+                <td>753</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1263324257532014592">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 20:07:35</td>
+                <td class ="content_left">@PaulGarnerWoof I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> in early March &amp; was hospitalised. Thank you for this article. I have been feeling like I’m going crazy. Sick every 2nd day. Thought it was anxiety, depression, my body aches, my tongue burns, I’m lethargic, headaches, body aches, mood swings. This makes sense</td>
+                <td>2</td>
+                <td>34</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1261750163418132480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 00:46:23</td>
+                <td class ="content_left">@pauldutton1968 @bevhenwood There is no one on prison who have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for #Covid_19 because they are not testing every person in prison</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1258558835435823104">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 01:14:21</td>
+                <td class ="content_left">The reason no one in prison hasn’t <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> to #COVID__19 is because they’re not testing everyone. Sisters Inside calls on every jurisdiction to test every person in prison for COVID19 #cleanoutprisons https://t.co/EA0xnQkpQP</td>
+                <td>35</td>
+                <td>71</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1256391546426912768">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 22:32:56</td>
+                <td class ="content_left">By Wednesday this week at least 9,437 ppl in USA prisons had <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for #COVID19 The # of new cases among prisoners is more than doubling each week showing that the curve used to measure when the virus is under control is still soaring in prisons 
+https://t.co/CUNfHiaMgL</td>
+                <td>15</td>
+                <td>13</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1254538981812781057">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 20:41:01</td>
+                <td class ="content_left">After nearly 50 years in prison, 74-year-old Gloria Williams was taken to the hospital on Saturday after she complained about trouble breathing. There, she <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19. She is now in the intensive care unit receiving oxygen treatment. #freeher 💔♥️ https://t.co/rE6QuXdc87</td>
+                <td>23</td>
+                <td>41</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1253423653997305856">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 07:51:26</td>
+                <td class ="content_left">Day 23 Another roller coaster ride for us while we sit in quarantine @BonetaMarieMabo tested negative yesterday &amp; has now <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> today 😘 So we are both positive to #Covid_19 again. One step forward two steps back We are so close yet so far from home 💔 #stayhome https://t.co/IoWGKFH8Cj</td>
+                <td>185</td>
+                <td>803</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1246707001872101376">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 06:39:36</td>
+                <td class ="content_left">Day 22 since first tested &amp; day 26 since 1st symptoms We have some good news &amp; not so good news @BonetaMarieMabo has tested negative which is wonderful ♥️ I’ve <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> again 😩 It’s been a roller coaster ride for both us today We’re still in quarantine #Covid_19 #StayHome</td>
+                <td>175</td>
+                <td>1331</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1246326536686321664">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 09:03:45</td>
+                <td class ="content_left">And here we go #COVIDー19 is now in Qld prisons We must release as many people as we can to stop the death toll mounting up #qldpol A prison officer who has  <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> to virus
+had contact with officers &amp; prisoners during a number of shifts over the weekend &amp; Monday https://t.co/7jMVWOB1TV</td>
+                <td>157</td>
+                <td>290</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1242738934389465088">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 21:25:12</td>
+                <td class ="content_left">@mdavisqlder The 2 women are here are devastated cause the ship told them no one had the virus. They just did what the boat officials told them.
+Apparently there’s people <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> who are refusing to stay isolated too. They are out and about in community</td>
+                <td>4</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1242200751612420096">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">body ache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "body ache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 20:07:35</td>
+                <td class ="content_left">@PaulGarnerWoof I tested positive in early March &amp; was hospitalised. Thank you for this article. I have been feeling like I’m going crazy. Sick every 2nd day. Thought it was anxiety, depression, my <span style="color: yellow;"><span style="color: yellow;">body ache</span></span>s, my tongue burns, I’m lethargic, headaches, <span style="color: yellow;"><span style="color: yellow;">body ache</span></span>s, mood swings. This makes sense</td>
+                <td>2</td>
+                <td>34</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1261750163418132480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 23:33:08</td>
+                <td class ="content_left">Day 7 is horrific so far. I feel so very sick. <span style="color: yellow;">Body ache</span>s, congestion, feel like I could vomit for hours, lethargic, just when I thought I was on the way up I’ve crashed &amp; burnt today. This virus is horrific. So many people are dying. It’s terrifying #COVIDー19 Plz look after you</td>
+                <td>828</td>
+                <td>3744</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1240783396013371392">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 00:23:23</td>
+                <td class ="content_left">Day 5 &amp; I am feeling a bit better Filling up with nutritious homemade soups <span style="color: yellow;">Body ache</span>s lessening Still can’t taste anything but the look of this soup is amazing. Slightly sore throat. #Covid_19 #coronavirus Self isolate &amp; care for yourself 😍 https://t.co/0bJNqtfJKf</td>
+                <td>33</td>
+                <td>429</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1240071264963678208">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">body aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "body aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 20:07:35</td>
+                <td class ="content_left">@PaulGarnerWoof I tested positive in early March &amp; was hospitalised. Thank you for this article. I have been feeling like I’m going crazy. Sick every 2nd day. Thought it was anxiety, depression, my <span style="color: yellow;"><span style="color: yellow;">body aches</span></span>, my tongue burns, I’m lethargic, headaches, <span style="color: yellow;"><span style="color: yellow;">body aches</span></span>, mood swings. This makes sense</td>
+                <td>2</td>
+                <td>34</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1261750163418132480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 23:33:08</td>
+                <td class ="content_left">Day 7 is horrific so far. I feel so very sick. <span style="color: yellow;">Body aches</span>, congestion, feel like I could vomit for hours, lethargic, just when I thought I was on the way up I’ve crashed &amp; burnt today. This virus is horrific. So many people are dying. It’s terrifying #COVIDー19 Plz look after you</td>
+                <td>828</td>
+                <td>3744</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1240783396013371392">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 00:23:23</td>
+                <td class ="content_left">Day 5 &amp; I am feeling a bit better Filling up with nutritious homemade soups <span style="color: yellow;">Body aches</span> lessening Still can’t taste anything but the look of this soup is amazing. Slightly sore throat. #Covid_19 #coronavirus Self isolate &amp; care for yourself 😍 https://t.co/0bJNqtfJKf</td>
+                <td>33</td>
+                <td>429</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1240071264963678208">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 19:55:16</td>
+                <td class ="content_left">There are few images of the 86,000 deaths and many of the <span style="color: yellow;">Covid-19</span> hotspots - prisons, nursing homes, meat packing plants - are off limits. What is the impact of this hidden toll? #FreeThemAll #Covid_19 https://t.co/48FX3C1llC</td>
+                <td>2</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1261747064053960705">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-15 01:07:32</td>
+                <td class ="content_left">Women are the less visible victims of <span style="color: yellow;">Covid-19</span> behind bars – as they are so often overlooked in a criminal legal system that was not designed for them Their stories illuminate the unique problems women face in prison #freeher https://t.co/aMdwdnbH22</td>
+                <td>16</td>
+                <td>45</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1261100871661662208">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 05:52:35</td>
+                <td class ="content_left">Prisons and human rights in the time of <span style="color: yellow;">COVID-19</span> @CaruanaSteven  ‘prisons belong to the community…  it must not be forgotten that those considered "less worthy" are nonetheless the responsibility of society.’ #covid19australia #freethemall #freeher 
+
+https://t.co/oRnQBM2n7t</td>
+                <td>3</td>
+                <td>13</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1260810219971436546">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 03:48:19</td>
+                <td class ="content_left">Now, as #coronavirus spreads across the country, fears for First Nations people are at an all-time high In the words of Pat Turner, CEO @NACCHOAustralia “I can’t be any blunter. If <span style="color: yellow;">COVID-19</span> gets into our communities, we are gone.” @marieclaireau #COVID19   https://t.co/g81bH6FgqZ</td>
+                <td>37</td>
+                <td>60</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1249907307892199424">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 22:47:57</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> Is Turning Prisons Into “Kill-Boxes” #freeher #freethemall https://t.co/h8Ra6E00Cz</td>
+                <td>4</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1246932617653436418">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 05:42:04</td>
+                <td class ="content_left">Black people already struggle to breathe in Canada. Ignoring us during this <span style="color: yellow;">COVID-19</span> crisis will only make it worse.
+
+Great piece by brilliant #ElJones ♥️ #Covid_19  https://t.co/f8J2XsNK7s</td>
+                <td>8</td>
+                <td>28</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1246674446049402881">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 04:10:30</td>
+                <td class ="content_left">An Urgent Plea To Release Women And Children From Prisons
+“Leaving them in there with <span style="color: yellow;">COVID-19</span> would be a death sentence,” says Debbie Kilroy #COVIDー19 @marieclaireau 
+https://t.co/yNFSicjLSJ</td>
+                <td>60</td>
+                <td>84</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1245564238703161344">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 23:17:00</td>
+                <td class ="content_left">We Need Proper Parliamentary Scrutiny Of <span style="color: yellow;">COVID-19</span> Decisions Ex-Judges urge extra scrutiny during #covid19australia https://t.co/Q3YInuFonf</td>
+                <td>8</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1245490378469335040">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 05:53:15</td>
+                <td class ="content_left">Ultimately, in order to adequately tackle the harms of <span style="color: yellow;">COVID-19</span> we need to consider major changes to our prison system. 👇🏾👇🏾👇🏾 #freeher #COVIDー19 https://t.co/DCXWEdyusr</td>
+                <td>15</td>
+                <td>75</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1242328604815396864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sweat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sweat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-15 01:20:55</td>
+                <td class ="content_left">A prison in Western Australia's north-west has been described as having cells "infested" with snakes and rats, while inmates <span style="color: yellow;"><span style="color: yellow;">sweat</span></span> it out in temperatures above 33 degrees Celsius at night. #FreeThemAll #freeher 
+
+https://t.co/B4hdlrW47w</td>
+                <td>29</td>
+                <td>43</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1261104241420070912">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 03:03:06</td>
+                <td class ="content_left">My heart <span style="color: yellow;"><span style="color: yellow;">aches</span></span> as I think of mothers in prison today who can’t cuddle &amp; kiss their children for Mothers Day 
+
+Mothers Day is one of the hardest days you will ever do in prison as you sit in a concerte cell No cuddles &amp; kisses as there’s no visits Sending lots of love 
+
+#FreeHer https://t.co/wpiIn5QPpl</td>
+                <td>32</td>
+                <td>98</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1259318017302728704">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 05:23:38</td>
+                <td class ="content_left">My heart <span style="color: yellow;"><span style="color: yellow;">aches</span></span> 💔💔 RIP 💔💔 Young pregnant 18 year old Aboriginal woman has been found murdered in WA. When will this horrific violence end?  Men’s violence is out of control. #DFV must end #wapol</td>
+                <td>405</td>
+                <td>1735</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1257903829917433856">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 00:23:23</td>
+                <td class ="content_left">Day 5 &amp; I am feeling a bit better Filling up with nutritious homemade soups Body <span style="color: yellow;"><span style="color: yellow;">aches</span></span> lessening Still can’t taste anything but the look of this soup is amazing. Slightly sore throat. #Covid_19 #coronavirus Self isolate &amp; care for yourself 😍 https://t.co/0bJNqtfJKf</td>
+                <td>33</td>
+                <td>429</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1240071264963678208">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recovered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recovered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 10:04:00</td>
+                <td class ="content_left">@muzrush I’m fully <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> thank you</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1258336775069548550">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 20:41:01</td>
+                <td class ="content_left">After nearly 50 years in prison, 74-year-old Gloria Williams was taken to the hospital on Saturday after she complained about trouble breathing. There, she tested <span style="color: yellow;">positive for COVID</span>-19. She is now in the intensive care unit receiving oxygen treatment. #freeher 💔♥️ https://t.co/rE6QuXdc87</td>
+                <td>23</td>
+                <td>41</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1253423653997305856">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">trouble breathing</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "trouble breathing"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 20:41:01</td>
+                <td class ="content_left">After nearly 50 years in prison, 74-year-old Gloria Williams was taken to the hospital on Saturday after she complained about <span style="color: yellow;"><span style="color: yellow;">trouble breathing</span></span>. There, she tested positive for COVID-19. She is now in the intensive care unit receiving oxygen treatment. #freeher 💔♥️ https://t.co/rE6QuXdc87</td>
+                <td>23</td>
+                <td>41</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1253423653997305856">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 22:41:51</td>
+                <td class ="content_left">Great article from brutha @ryan_beardy about real prison experiences #Covid_19 #FreeThemAll #freeher Those cell walls always felt like such an inadequate barrier to the common <span style="color: yellow;"><span style="color: yellow;">cold</span></span> or flu. If we heard just one cough, we knew a virus could be coming soon.. https://t.co/XWn7O5Xy5o</td>
+                <td>3</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1250554962423103490">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asymptomatic</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asymptomatic"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 06:38:40</td>
+                <td class ="content_left">@HairyZambezi @BonetaMarieMabo You have to have 2 negatives in 24 hours and be <span style="color: yellow;"><span style="color: yellow;">asymptomatic</span></span> for 72 hours - that’s what we are being told now - keeps changing though</td>
+                <td>2</td>
+                <td>28</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1247051078081773568">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 01:26:39</td>
+                <td class ="content_left">Police are NOT health professionals and having cops get up in peoples faces, <span style="color: yellow;">touch</span> them, handcuff them ensures the spread of the virus.  You can’t arrest or intimidate or threaten your way out of a public health crisis.  #COVID19</td>
+                <td>278</td>
+                <td>787</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1246247781519339522">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">painful</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "painful"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 10:23:28</td>
+                <td class ="content_left">@muzrush @BonetaMarieMabo It’s awful and it can be <span style="color: yellow;"><span style="color: yellow;">painful</span></span> depending on who does it</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1245658097017737217">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">head ache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "head ache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 23:57:02</td>
+                <td class ="content_left">@studentmum36 @BreakfastNews Nauseousness and <span style="color: yellow;"><span style="color: yellow;">head ache</span></span></td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1245500449911799808">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">ache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "ache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 23:57:02</td>
+                <td class ="content_left">@studentmum36 @BreakfastNews Nauseousness and head <span style="color: yellow;"><span style="color: yellow;">ache</span></span></td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1245500449911799808">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Panadol</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Panadol"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 06:01:41</td>
+                <td class ="content_left">@u_hardy @allisonBeDemure I could ask for <span style="color: yellow;"><span style="color: yellow;">Panadol</span></span> if I wanted it but there’s nothing they can give</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1243780277047943170">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shake</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shake"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 03:27:45</td>
+                <td class ="content_left">UPDATE Day 8 my health is deteriorating &amp; I’m starting to get really scared I’ve always been fit healthy &amp; strong &amp; I still can’t <span style="color: yellow;"><span style="color: yellow;">shake</span></span> #COVID_19 After my first symptoms on 10/3 I thought this would be over now What’s happening to me? Plz don’t take this virus lightly It kills 💔</td>
+                <td>1541</td>
+                <td>5586</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1241204827289313280">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nauseous</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nauseous"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 20:45:54</td>
+                <td class ="content_left">@pauldutton1968 Still feeling <span style="color: yellow;"><span style="color: yellow;">nauseous</span></span> and congested. Hope today gets better Plz take care of you and your mob ♥️♥️</td>
+                <td>1</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1241103696873664512">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 15:29:47</td>
+                <td class ="content_left">Day 4 in isolation has been really hard I’m getting sicker Medical staff came home to check on us &amp; they’re great Feeling really <span style="color: yellow;"><span style="color: yellow;">nauseous</span></span> &amp; I’ve developed a chest infection. My daughter organised chicken soup &amp; fresh juices but can’t taste anything. #COVIDー19 Take care of you ♥️</td>
+                <td>146</td>
+                <td>1260</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1239936980424654848">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">vomit</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "vomit"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 23:33:08</td>
+                <td class ="content_left">Day 7 is horrific so far. I feel so very sick. Body aches, congestion, feel like I could <span style="color: yellow;"><span style="color: yellow;">vomit</span></span> for hours, lethargic, just when I thought I was on the way up I’ve crashed &amp; burnt today. This virus is horrific. So many people are dying. It’s terrifying #COVIDー19 Plz look after you</td>
+                <td>828</td>
+                <td>3744</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1240783396013371392">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sore throat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sore throat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 00:23:23</td>
+                <td class ="content_left">Day 5 &amp; I am feeling a bit better Filling up with nutritious homemade soups Body aches lessening Still can’t taste anything but the look of this soup is amazing. Slightly <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span>. #Covid_19 #coronavirus Self isolate &amp; care for yourself 😍 https://t.co/0bJNqtfJKf</td>
+                <td>33</td>
+                <td>429</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1240071264963678208">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-31 07:10:17</td>
+                <td class ="content_left"><span style="color: yellow;">Drug</span> decriminalisation would 'save hundreds of millions', but Queensland Premier rules it out #qldpol Prisons don’t work https://t.co/G8j6zI0HpS</td>
+                <td>10</td>
+                <td>29</td>
+                <td><a href="https://twitter.com/DebKilroy/status/1223141435739762688">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

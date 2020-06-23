@@ -1,0 +1,552 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>855-LadyDoth.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 855-LadyDoth.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">855-LadyDoth.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 18:04:56</td>
+                <td class ="content_left">@chrysalis941 @Michael_Heaver We don't watch any news since coming home from hospital having been <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> with covid. 7 days for my husband and 10 for me. We watched the Cumming brief live because we knew anything other than that would be edited every hour to suit the audience.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1265705562475507714">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 06:00:27</td>
+                <td class ="content_left">@PandH2015 @Herefordlad1 @SkyNews Neither he nor his wife had been <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. Imagine your virtue signalling outrage had they been tested before others.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1264436077789577217">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 08:46:41</td>
+                <td class ="content_left">@Satir_n_sarcasm @SandraWors3 @SkyNews What negligence? No post mortums are being done. My uncle has COPD, pneumonia and asbestosis. But being he <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for covid his death cert said cause of death... coronavirus. My cousin is currently fighting this.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1257230152276328448">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 06:39:39</td>
+                <td class ="content_left">@afneil Did anyone know what kind of disease the Chinese would unleash on us? I spent 8 bloody days on a covid ward. <span style="color: yellow;">Tested positive</span>. More than enough PPE. Don't comment unless you've had the experience.</td>
+                <td>0</td>
+                <td>12</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1255023858953998336">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 14:29:36</td>
+                <td class ="content_left">@SkyNews We are not having autopsies or post mortums. We don't know what people are dying of. My uncle died of pneumonia. Death cert said covid. My cousin demanded it be changed. She was told that because he <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> he had to be included in the "numbers".</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1253330183039270912">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 13:41:22</td>
+                <td class ="content_left">@BBCWalesNews @PublicHealthW How many of those <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> have survived?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1242084024732000256">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 13:43:15</td>
+                <td class ="content_left">@WalesOnline The Welsh government so t have a good track record on delivering numbers. Don't hold your <span style="color: yellow;"><span style="color: yellow;">breath</span></span></td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1265639706483740673">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diabetes</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diabetes"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 10:16:42</td>
+                <td class ="content_left">@acatherwoodnews @adamboultonSKY Might be a good idea if you lost weight. Aren't you you a <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> risk? But you'd use the private healthcare Sky provide wouldn't you?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1265587728504274945">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recovered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recovered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 20:53:51</td>
+                <td class ="content_left">@BBCWalesNews Does this apply to those of us who have <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> after being in hospital?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1264660907570978821">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 21:50:11</td>
+                <td class ="content_left">@Fiona__Mills @SkyNews Well I'm in the control group based in South Wales having <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> from covid and I can assure you we aren't being given it.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1252716284485283840">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Breathless</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Breathless"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 16:29:17</td>
+                <td class ="content_left">@Monty72street @SpecCoffeeHouse @afneil I was covid positive. 10 days in hospital. Third week home. Still with a cough. Still <span style="color: yellow;">breathless</span> just walking upstairs. Still exhausted. And I'm not a PM.</td>
+                <td>0</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1260608060172783616">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cancer</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cancer"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 20:39:31</td>
+                <td class ="content_left">@HughRodgers12 @GuidoFawkes @piersmorgan @ITV @GMB He doesn't care about the flu victim death rate year on year. If <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> deaths. Or those who starve to death.</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1260308645709000704">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-15 17:39:42</td>
+                <td class ="content_left">@fiscalfreak @InTravelerWorld @SkyNews No coverage after I lost my father to <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> and my mother to Alzheimer's.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1239244896671879175">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-07 12:23:18</td>
+                <td class ="content_left">@piersmorgan I saw it called a killer on Twitter. Well war is a killer but we let it happen. <span style="color: yellow;">Cancer</span> is a killer but we let it happen. Flu is a killer but we let it happen.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1236266172544360453">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-06 16:51:34</td>
+                <td class ="content_left">@DailyMailUK The killer? <span style="color: yellow;">Cancer</span> is a killer. Starvation us a killer. More people are testing negative and people are recovering from this illness. Just bloody stop with this scaremongering.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1235971296120446976">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-04 14:55:24</td>
+                <td class ="content_left">@BBCBreaking @BBCWalesNews Can you release the number of HIV deaths this week? How many <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> deaths this week?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1235217282906939395">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">test positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "test positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 07:14:15</td>
+                <td class ="content_left">@WalesPolitics @BBCWalesNews Can anyone tell me what happens to people who <span style="color: yellow;"><span style="color: yellow;">test positive</span></span>? Are they hospitalised? Left at home until they need the hospital?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1259381217167912968">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 08:46:41</td>
+                <td class ="content_left">@Satir_n_sarcasm @SandraWors3 @SkyNews What negligence? No post mortums are being done. My uncle has COPD, pneumonia and asbestosis. But being he tested <span style="color: yellow;">positive for covid</span> his death cert said cause of death... coronavirus. My cousin is currently fighting this.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1257230152276328448">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 15:24:10</td>
+                <td class ="content_left">@WalesOnline With <span style="color: yellow;">COVID19</span> or due to <span style="color: yellow;">COVID19</span>? Let's have some fucking good news please.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1244284222262644743">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 15:21:15</td>
+                <td class ="content_left">@SkyNews @inzyrashid They are NOT dying of <span style="color: yellow;">COVID19</span> FFS</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1244283484925038593">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Sneeze</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Sneeze"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 14:21:07</td>
+                <td class ="content_left">@Robfm @DailyMailUK I am 60, a chronic asthmatic. I know my body. I've taken my meds as I should. I wash my hands. <span style="color: yellow;"><span style="color: yellow;">Sneeze</span></span> I to a tissue. I change my pants - don't want my bottom bits giving me the virus. Some common sense might not go amiss here.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1239557312081264641">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-10 08:17:01</td>
+                <td class ="content_left">@alwaysonrepol @Boatman28491954 @BethRigby @KayBurley Habits that should have been ingrained from childhood. Wow doesn't cover their mouth when coughing? <span style="color: yellow;"><span style="color: yellow;">Sneeze</span></span> into a tissue? Wash their hands after the toilet? Don't blame governments for dirty people's behaviour. My health is at risk thanks to these disgusting people. And yours.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1237291354968985600">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 14:10:34</td>
+                <td class ="content_left">@JodieShanks @Sally300131682 @SkyNews Thank you. I'm <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of trying to explain this to uneducated people</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1239554655211991041">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-15 20:46:24</td>
+                <td class ="content_left">@overdressjen @BethRigby No they aren't. And you know it. People are <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of the scaremongering and dealing with this. It's idiots like you that feed the fear.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1239291882963943424">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-24 10:55:39</td>
+                <td class ="content_left">@Bertcallaghan81 @SkyNews Don't be so ridiculous. Why did so many ordinary people vote Conservative? Perhaps people are <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of the look at me types? The PR junkets. Corbyn turning saved the day? I'd have pushed him over. Labour have held Wales for 20 years and done eff all.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1231895458169180161">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">HIV</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "HIV"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-04 14:55:24</td>
+                <td class ="content_left">@BBCBreaking @BBCWalesNews Can you release the number of <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> deaths this week? How many cancer deaths this week?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1235217282906939395">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-29 14:00:34</td>
+                <td class ="content_left">@the_hardliner @tnewtondunn Sadly it's been a youth club for years. This is a muddled aged out of <span style="color: yellow;">touch</span> man suddenly finding his new boss means business. Let him go.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1233753932347924481">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-29 13:59:14</td>
+                <td class ="content_left">@tnewtondunn As if Starmer has any room to talk. This is simply an out of <span style="color: yellow;">touch</span> employee who is unwilling to change his ways for his boss. In another "industry" he'd be on a final warning at least.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1233753596891668480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-28 23:01:08</td>
+                <td class ="content_left">@mjh_wales @barrieTMan @WalesOnline It's still a <span style="color: yellow;"><span style="color: yellow;">cold</span></span> or flu virus. We have them every damn year.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1233527581921697795">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-22 14:03:34</td>
+                <td class ="content_left">@DailyMailUK How can you out into words the absolute <span style="color: yellow;"><span style="color: yellow;">pain</span></span> these families will now being going through?</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1231217973878284289">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-21 20:25:40</td>
+                <td class ="content_left">@BBCWalesNews Why mention he's disabled? Is his <span style="color: yellow;"><span style="color: yellow;">pain</span></span> worse than that of an able bodied child? This is unacceptable no matter what.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1230951742403207168">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shake</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shake"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-08 07:04:53</td>
+                <td class ="content_left">@WalesOnline URGENT ACTION!!!??? God above Labour have had devolved power to manage the Welsh NHS for 20 years and only now it needs URGENT ACTION???
+I'll bet this "action" means a demand for more cash instead of a <span style="color: yellow;"><span style="color: yellow;">shake</span></span> up on fiscal policy.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1214805156354756610">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shaking</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shaking"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-07 07:47:16</td>
+                <td class ="content_left">@SkyNews All those first time Conservative voters just had the reason for their decision to leave Labour confirmed. They must be <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> their heads.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/LadyDoth/status/1214453433148813314">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

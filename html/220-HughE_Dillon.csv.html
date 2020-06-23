@@ -1,0 +1,1914 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>220-HughE_Dillon.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 220-HughE_Dillon.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">220-HughE_Dillon.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 23:41:25</td>
+                <td class ="content_left">If you or anyone you know <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> via a swab test for COVID-19 antibodies, Penn Medicine needs to talk to you about possibly donating blood to create a vaccine &amp; to study how it has affected all types of people. (This is not a drug trial, so now worries there.) Thanks https://t.co/MwWcpsAalY</td>
+                <td>7</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1266152629853466625">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 14:12:58</td>
+                <td class ="content_left">Just posted @ShopRiteStores Whitman Plaza 333 W. Oregon Ave.  a worker has <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for Covid19 https://t.co/ZuRuSesYgp</td>
+                <td>3</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1253688386155679744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 07:11:01</td>
+                <td class ="content_left">COVID-19 patients may be most contagious one to two days before symptoms appear, study finds
+https://t.co/ncfCLvMjEB ~ Yes that is exactly what @PHLPublicHealth told me a month ago when I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for Covid19 (they weren't concerned w/people I saw past 3 days)</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1251770258937036802">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 22:10:21</td>
+                <td class ="content_left">https://t.co/CHSZbSTqbX ~ Chris Cuomo and George Stephanopoulus have no idea what a sacrifice is . STFI DB u both just <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>, ugh</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1250909422538416136">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 22:22:21</td>
+                <td class ="content_left">Thank you @PHLPublicHealth
+for following up on me and my recovery. It's reassuring to know @PhiladelphiaGov has a plan in place to monitor people who have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for #coronavirus . I'm especially grateful for the follow ups which will happen going forward. #stayhome</td>
+                <td>11</td>
+                <td>218</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1241490358141440001">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 21:09:10</td>
+                <td class ="content_left">Today I have <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for #coronavirus . I have mild symptoms, cough, sore throat, extreme body aches. I’m resting at home and will be quarantined for 14 days. I’m grateful my symptoms are mild, and extend prayers to those suffering worse. #StayHome</td>
+                <td>86</td>
+                <td>1512</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1241109552076029967">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 19:24:48</td>
+                <td class ="content_left">@Tattoos4ACause Sorry I don't mean to me flippent. I know someone who was directly in contact with the bball player, has all the symptoms but a fever and they turned her down. She contacted them the night he <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>. I'm trying to get her tested.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1239633734846070784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-15 00:45:53</td>
+                <td class ="content_left">@DeniseNakanoTV @MiguelMValle @NBCPhiladelphia and Christian Wood from the Piston's just <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1238989761467080709">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 23:41:25</td>
+                <td class ="content_left">If you or anyone you know tested positive via a swab test for <span style="color: yellow;">COVID-19</span> antibodies, Penn Medicine needs to talk to you about possibly donating blood to create a vaccine &amp; to study how it has affected all types of people. (This is not a drug trial, so now worries there.) Thanks https://t.co/MwWcpsAalY</td>
+                <td>7</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1266152629853466625">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 02:47:03</td>
+                <td class ="content_left">U.S. farmers will get $16 billion in direct aid because of <span style="color: yellow;">COVID-19</span> https://t.co/0RSSeA76TR</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1265474568724131842">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 18:06:17</td>
+                <td class ="content_left">Fairmount salon owner closing due to uncertainty amid <span style="color: yellow;">COVID-19</span> pandemic https://t.co/0bWOeRcbwC via @6abc</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1264256349543829505">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 13:37:09</td>
+                <td class ="content_left">Good Review, Good Show. Great fundraiser for @phlcovid19fund &gt;&gt;  PHLove fundraiser for <span style="color: yellow;">COVID-19</span> relief showcases Questlove, Daryl Hall, Patti LaBelle | Review https://t.co/UDCChW4KMd via @phillyinquirer @delucadan</td>
+                <td>3</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1263826234020179971">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 04:30:20</td>
+                <td class ="content_left">A Man Shared A Shocking Photo Of What <span style="color: yellow;">COVID-19</span> Did To Him After Six Weeks In A Hospital https://t.co/qD8sGBRymh via @davidmackau</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1263326233737285632">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 14:00:08</td>
+                <td class ="content_left">People who have had a COLD before may be protected against <span style="color: yellow;">COVID-19</span> https://t.co/HH4D9wMtRr via @MailOnline - I was wondering that as I had just had the flu, and then a cold before I got antibiotics and better in December through all of January. #covid19survivor</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1262744854691319813">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 15:36:23</td>
+                <td class ="content_left">Due to the ongoing <span style="color: yellow;">Covid-19</span> pandemic, you are not required to report on 05/19/2020 for your Jury Service. You will be postponed to a later date after jury trials resume. In the meantime, please stay safe. Jury Commission (I appreciate they notified me)</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1262406687358582784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 03:49:20</td>
+                <td class ="content_left">Mother’s Day In Ocean City During <span style="color: yellow;">COVID-19</span> Pandemic , the boards were brisk on a cold day https://t.co/iURVy1S4qD</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1261503979311292417">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 03:23:50</td>
+                <td class ="content_left">St. Louis-area couple married nearly 61 years die on same day from <span style="color: yellow;">COVID-19</span> https://t.co/fPwi9jUwC4 via @stltoday (Another casualty, they wanted to donate their bodies to a medical school, but COVID19 prevents that last charitable act.)</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1259685619669897223">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 02:13:18</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> EMERGENCY RENTAL ASSISTANCE PROGRAM https://t.co/j9dIp2nYMq</td>
+                <td>1</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1258943093124071425">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 01:57:28</td>
+                <td class ="content_left">Reports: Roy Horn of Siegfried and Roy dies from <span style="color: yellow;">COVID-19</span> complications https://t.co/7uZ4ZwSUsE via @10TampaBay - The real Tiger King</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1258939108950290432">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 00:19:30</td>
+                <td class ="content_left">Gold Coast influencer breaks down as she loses followers on her pron site amid <span style="color: yellow;">COVID-19</span> https://t.co/XUolNUVCWa via @DailyMailCeleb - Keep her away from DiBruno's</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1258914454575755264">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 22:47:00</td>
+                <td class ="content_left">Who to tip and how much for doorstep deliveries during the <span style="color: yellow;">COVID-19</span> pandemic https://t.co/CjlsrGZAS4</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1258891176310198272">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 18:04:43</td>
+                <td class ="content_left">Love this compilation of stories by @brianghoward for @Phillymag - 12 Philadelphians on How <span style="color: yellow;">COVID-19</span> Turned Their Worlds Upside Down https://t.co/EThXwkauH3 I told my story as well.</td>
+                <td>2</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1257008197644308490">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 22:39:54</td>
+                <td class ="content_left">Philadelphia police department changes modified arrest policy for non-violent offenders amid <span style="color: yellow;">COVID-19</span> pandemic https://t.co/Zf1qNUQkdt via @6abc -seriously, what a joke that was not to charge people with crimes.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1256352674737463298">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 05:57:25</td>
+                <td class ="content_left">When will the <span style="color: yellow;">COVID-19</span> virus end? https://t.co/DzPfHbFYEZ</td>
+                <td>2</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1256100393840455682">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 15:46:45</td>
+                <td class ="content_left">NEEDED: A- blood type for man in Marple Township, age 40, married and father of three young children, who is desperately sick in the ICU at Lankenau Hospital with the <span style="color: yellow;">Covid-19</span> virus. A candidate for a plasma infusion thru Mayo Clinic, but he needs a donor. #covid19survivor plasma</td>
+                <td>20</td>
+                <td>25</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1252624823152447491">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 22:11:22</td>
+                <td class ="content_left">Tomorrow @TheEllenShow will video chat w/the amazing nurses in Philadelphia called “The Swab Squad.” These healthcare workers run the <span style="color: yellow;">COVID-19</span> testing center @TJUHospital PLUS another Philly area treasure @iamwandasykes makes an appearance. https://t.co/OsuSx75oeJ</td>
+                <td>4</td>
+                <td>24</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1252359228796178432">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 07:11:01</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> patients may be most contagious one to two days before symptoms appear, study finds
+https://t.co/ncfCLvMjEB ~ Yes that is exactly what @PHLPublicHealth told me a month ago when I tested positive for Covid19 (they weren't concerned w/people I saw past 3 days)</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1251770258937036802">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 03:48:23</td>
+                <td class ="content_left">Column: His patient near death, this determined doctor recruited a <span style="color: yellow;">COVID-19</span> survivor to donate plasma  https://t.co/NHveeUymvr - It's great to hear about the plasma survivor stories</td>
+                <td>0</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1251719266711277568">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 14:14:33</td>
+                <td class ="content_left">Giant Grocery clerk who died of <span style="color: yellow;">COVID-19</span> made $20.64 on her final paycheck wasn't provided with gloves or hand sanitizer https://t.co/D2MkzcG2b9 via @MailOnline</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1250064908257017858">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 06:18:03</td>
+                <td class ="content_left">The Red Cross is seeking people who are fully recovered from the new coronavirus to sign up to donate plasma to help current <span style="color: yellow;">COVID-19</span> patients.https://t.co/TxBlQGfi3j</td>
+                <td>3</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1249944992782651393">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 05:59:58</td>
+                <td class ="content_left">Davie police chief said BSO deputy died of <span style="color: yellow;">COVID-19</span> because he was gay, complaint says - (OMG geez) https://t.co/Ig20F9LPnS</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1249215665279557632">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 18:07:11</td>
+                <td class ="content_left">I wish anyone in the health field had told me about breathing exercises w/Covid19. Not until Chris Cuomo did a piece on it did I know - Alleviate <span style="color: yellow;">COVID-19</span> Symptoms With This Breathing Technique https://t.co/VxXO2MNKE0</td>
+                <td>11</td>
+                <td>45</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1249036287761420288">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 15:57:16</td>
+                <td class ="content_left">TONIGHT: Free - Alexander, Bialik, Drescher, Erivo, Menzel, Midler, Platt, Porter, Silverman, Others To Raise Funds For CDC <span style="color: yellow;">COVID-19</span> Emergency Response Fund At Virtual ‘Saturday Night Seder’ April 11 @forbes https://t.co/C1peM7zO2b</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1249003594281635841">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 15:49:26</td>
+                <td class ="content_left">Resources for Freelance Journalists During the <span style="color: yellow;">COVID-19</span> Pandemic - Folio: https://t.co/VVoBRsxBij</td>
+                <td>2</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1249001622677721088">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 21:41:38</td>
+                <td class ="content_left">Doctor returns to fight <span style="color: yellow;">COVID-19</span> after recovering from the disease ~ thank you frontline workers who were ill 
+#covid19survivors  https://t.co/hIRQOHXY3M</td>
+                <td>0</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1248727867078455301">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 13:29:38</td>
+                <td class ="content_left">Chris Cuomo opens up about his fight against <span style="color: yellow;">Covid-19</span> and gives advice on how to help beat it after talking to a pulmonary doc https://t.co/uh1oURUD3X</td>
+                <td>3</td>
+                <td>16</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1247879273848979456">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 05:26:47</td>
+                <td class ="content_left">Woman shares her long road to <span style="color: yellow;">COVID-19</span> recovery, says there is hope | FOX 2 Detroit ~ this article has good advice about #COVID2019  https://t.co/5v7eZC4k0p</td>
+                <td>0</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1246670600652931079">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 20:09:27</td>
+                <td class ="content_left">Plasmapheresis Donor Registry for Patients Recovered from Confirmed <span style="color: yellow;">COVID-19</span>  https://t.co/4UkuRa6DBh Thanks to @HLGasser for sending us this link.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1245805563805609990">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 13:38:41</td>
+                <td class ="content_left">We spoke to a few people who’ve had <span style="color: yellow;">COVID-19</span> and asked them what they want us to understand about the illness. Here’s what they said. https://t.co/E8x5xsGfQk? # via @HuffPostLife</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1245707224409935881">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 04:52:06</td>
+                <td class ="content_left">A choir decided to go ahead with rehearsal. Now dozens of members have <span style="color: yellow;">COVID-19</span> and two are dead
+ https://t.co/OGPm6N0yeV</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1244487544953344000">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 04:03:02</td>
+                <td class ="content_left">'I'm in panic mode': Wife of <span style="color: yellow;">COVID-19</span> patient pleads for plasma donations https://t.co/WWJU3bBi4B via @msnbc ~ so heartbreaking.  I know this was just FDA approved but why weren’t we prepared.  Has other countries done this? Why didn’t we anticipate this?</td>
+                <td>2</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1244475194539999238">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 18:50:48</td>
+                <td class ="content_left">Thank you @PhiladelphiaGov  Philadelphia <span style="color: yellow;">COVID-19</span> Small Business Relief Fund https://t.co/KqtAgADQP1</td>
+                <td>2</td>
+                <td>13</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242161895802617862">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 17:30:34</td>
+                <td class ="content_left">City Provides Update on <span style="color: yellow;">COVID-19</span> w/Links to Important Sites https://t.co/8QpNcQoUty</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1240329763165736960">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 00:31:20</td>
+                <td class ="content_left">Yards Brewery to Close Temporarily in Response to <span style="color: yellow;">COVID-19</span> will be open for beer and food take out. follow @yardsbrew for info on a delivery service https://t.co/4ZcOPQNFsw</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1239348488716070913">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-14 16:29:49</td>
+                <td class ="content_left">There have been no reported cases of <span style="color: yellow;">COVID-19</span> @AdventureAqua we are committed to putting health and safety of our team members, animals, and guests first. Monday, March 16, 2020 as a precautionary measure and are planning on reopening on Saturday, March 28, 2020 #coronavirusPHL</td>
+                <td>1</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1238864924513906688">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-14 01:37:26</td>
+                <td class ="content_left">All of Philadelphia’s Parkway museums shut down to help stem the spread of <span style="color: yellow;">COVID-19</span> https://t.co/iPKWMlbkup via @phillyinquirer - Basically telling us to all #SelfQuarantine #coronapocalypse</td>
+                <td>11</td>
+                <td>24</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1238640349603606530">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-13 14:43:20</td>
+                <td class ="content_left">Advisory: Update on <span style="color: yellow;">COVID-19</span> #coronavirusphl Response. Today's briefing will be livestreamed at @PHLPublicHealth https://t.co/e3JwDCiO7d</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1238475740590596096">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">medicine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "medicine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 23:41:25</td>
+                <td class ="content_left">If you or anyone you know tested positive via a swab test for COVID-19 antibodies, Penn <span style="color: yellow;">Medicine</span> needs to talk to you about possibly donating blood to create a vaccine &amp; to study how it has affected all types of people. (This is not a drug trial, so now worries there.) Thanks https://t.co/MwWcpsAalY</td>
+                <td>7</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1266152629853466625">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 14:08:10</td>
+                <td class ="content_left">@timahbimah They told me not to take any <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> so I didn’t mask my temperature so then I could see when my fever broke naturally. And I am self quarantine that was the most important part I said 14 days but since I’m still sick on day 10 I’m gonna be staying in probably at least a month</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242815542098112512">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 23:41:25</td>
+                <td class ="content_left">If you or anyone you know tested positive via a swab test for COVID-19 antibodies, Penn Medicine needs to talk to you about possibly donating blood to create a vaccine &amp; to study how it has affected all types of people. (This is not a <span style="color: yellow;"><span style="color: yellow;">drug</span></span> trial, so now worries there.) Thanks https://t.co/MwWcpsAalY</td>
+                <td>7</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1266152629853466625">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 20:52:45</td>
+                <td class ="content_left">Center City neighborhood streets were lovely. Center City close to Wawa on Broad Street and anywhere near City Hall is awash with empty streets, random people, aggressive panhandlers, a few folks falling over like zombies in <span style="color: yellow;"><span style="color: yellow;">drug</span></span> stupors. It was sad. Be Safe and Be Aware. https://t.co/pvDb3j3jpI</td>
+                <td>1</td>
+                <td>27</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1263573466822959106">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 18:41:28</td>
+                <td class ="content_left">@itsonlyzach Those are two very compatible signs with me, a Leo. Just saying. My hubby is a cancer, and is way to practical. Literally I said maybe I should take the malaria <span style="color: yellow;"><span style="color: yellow;">drug</span></span> for the virus, and he said, no we should let people who are more ill have first dibs. You can ask for it next week</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242159545708879876">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shake</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shake"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 18:03:19</td>
+                <td class ="content_left">They’re either being held up or they’re really excited for their burgers &amp; <span style="color: yellow;"><span style="color: yellow;">shake</span></span>s at <span style="color: yellow;">Shake</span> Shack #COVID19 signs https://t.co/VVrgFlZ06O</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1265705157653905409">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 17:11:34</td>
+                <td class ="content_left">With very little fan fare the 1300 block of Walnut Street is now open for traffic. The north side sidewalk closest to <span style="color: yellow;">Covid19</span> shelter ⁦@HolidayInn⁩ Center City is off limits to the public. #phillyslowlyopening #phillyresets #<span style="color: yellow;"><span style="color: yellow;">covid19</span></span>phl #phillynews https://t.co/6wmH3GBJzl</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1265692132431536133">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 04:31:41</td>
+                <td class ="content_left">It sucks I have to prevent comments on my Instagram because people condemn me for posting a video of folks at park w/and w/o masks on &amp; because i was <span style="color: yellow;">Covid19</span> it's my responsibility to mention they could kill someone. Seriously, I think they know by now.</td>
+                <td>0</td>
+                <td>17</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1265138514762571778">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 02:23:14</td>
+                <td class ="content_left">@ricnolaphl Homeless people with <span style="color: yellow;">Covid19</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1263656637753155584">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 22:03:15</td>
+                <td class ="content_left">Not medical advice but I did hear two nurses, on a cigarette break, say things were getting better but in the fall and winter when both the flu &amp; <span style="color: yellow;"><span style="color: yellow;">covid19</span></span> are active, it's gonna hit the fan. Since I was eavesdropping I couldn't get a follow up question in.</td>
+                <td>0</td>
+                <td>13</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1263591208246317056">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 19:10:09</td>
+                <td class ="content_left">A few wks ago I did a poll on instagram Younger folks of both parties wanted Philly to open by June. Older folks of both parties didn't. People who told me they had <span style="color: yellow;">Covid19</span> already, wanted it opened. No one who had it wanted to wait, except for my husband who cares abt people</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1262098096735105027">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 19:07:53</td>
+                <td class ="content_left">@loctastic I'm so torn to have an opinion since I am <span style="color: yellow;">Covid19</span> Survivor. I'm not afraid of getting it again. They said if I get it again it won't be as severe. We have to wait 3 weeks to see if the numbers go up in the open states. See how many people die.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1262097526813057028">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 18:56:42</td>
+                <td class ="content_left"><span style="color: yellow;">Covid19</span> open and close is not based on politics. i know lots of Democrats that want the country to open, and I know lots of Republican's who want it to open when it's safe.</td>
+                <td>0</td>
+                <td>16</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1262094712636309505">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 22:57:12</td>
+                <td class ="content_left">Instagram followers were brutal about these two frontline <span style="color: yellow;">Covid19</span> who just tested negative yesterday graduates. They put their masks on at the top of the steps. I had to@remove the comment section. 🤦‍♂️ people https://t.co/WIho4VKFnP</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1261068070908497920">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 17:57:35</td>
+                <td class ="content_left">@RhoneGallagher He did eventually get <span style="color: yellow;">Covid19</span> and recovered. He didn’t want to be involved in my news story so we didn’t reveal it till afterwards. It was very scary he had the worst body chills, and fever, thought he was going to crack his teeth.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1260267894203650049">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 17:34:11</td>
+                <td class ="content_left">I just have to say I was shocked when I got <span style="color: yellow;">Covid19</span> virus. I thought I had been doing everything right except for wearing a mask. I know now who I got it from and that person and I were at least 4 feet away when we chatted.</td>
+                <td>3</td>
+                <td>38</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1260262006487166977">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 03:23:50</td>
+                <td class ="content_left">St. Louis-area couple married nearly 61 years die on same day from COVID-19 https://t.co/fPwi9jUwC4 via @stltoday (Another casualty, they wanted to donate their bodies to a medical school, but <span style="color: yellow;">COVID19</span> prevents that last charitable act.)</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1259685619669897223">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 02:57:48</td>
+                <td class ="content_left">He saved his son for his Russian lobbying business.  One of them would have been indicted. Trump is created a smokescreen from <span style="color: yellow;">Covid19</span> deaths</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1259679070381649923">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 03:14:40</td>
+                <td class ="content_left">After 1200 votes , 10 hrs later the InstaStories poll to open or not in June . Many DEMS &amp; GOPS voted both sides. So it’s not a party line divide. A dozen or so people are <span style="color: yellow;">Covid19</span> survivors who voted yes, but they’re not public with it. Very interesting . Numbers moving closer https://t.co/lpmlFEbfIy</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1258596149549830145">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 21:35:43</td>
+                <td class ="content_left">I think @GovChristie should go to a hospital and hug a few <span style="color: yellow;">Covid19</span> patients and make the first sacrifice. ~ Seriously thought he was pro-life! #ChrisChristie</td>
+                <td>0</td>
+                <td>14</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1257786077143871489">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 18:44:03</td>
+                <td class ="content_left">It's odd that people are continuing to get sick this deep into social distancing and mask wearing. The incubation period is no more than 14 days, and most often 5 - 11 days. I wish we knew if these people were complying to <span style="color: yellow;">COVID19</span> rules. https://t.co/DwaTYNTpso</td>
+                <td>0</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1257742872331329538">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 05:59:08</td>
+                <td class ="content_left">@ejthies15 @gleennertalk @MeltdownWRIF There's a great FB page <span style="color: yellow;">Covid19</span> Survivors. It's filled w/folks just getting sick, in middle of it like you Emily, &amp; those recovered. Some folks are heading towards their 2nd month, others like me got better just under a month, and a lot of them, like me, weren't hospitalized</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1257550374661165056">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 03:21:48</td>
+                <td class ="content_left">Why You Should Wear a Face Mask during <span style="color: yellow;">Covid19</span> https://t.co/rX7S8QPRy9</td>
+                <td>5</td>
+                <td>31</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1257510783438794759">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 18:10:27</td>
+                <td class ="content_left">When the <span style="color: yellow;">Covid19</span> pandemic is over Broad Street should look like this to celebrate the Front Line Workers, and each other. We will also have a moment of silence for all those who suffered and who passed away. #phillystrong https://t.co/uYJ4AuSgZC</td>
+                <td>0</td>
+                <td>28</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1257372028664979457">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-04 15:52:25</td>
+                <td class ="content_left">@LaurenDawnFox29 @SouthwestAir My hubby is flying to Florida on Saturday to rescue my mom and drove snowbird home. He’s going to wear a mask. Change his clothing after landing, and wash his face. He’s <span style="color: yellow;">Covid19</span> survivor so maybe that’s why we’re comfortable with him going.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1257337293586739205">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 18:15:03</td>
+                <td class ="content_left">When will <span style="color: yellow;">Covid19</span> end. A thoughtful article I found. https://t.co/DzPfHbFYEZ</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1256286022738067456">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 15:43:06</td>
+                <td class ="content_left">People complaining about <span style="color: yellow;">Covid19</span> not being as deadly as reported are the same people complaining that yesterday’s storm wasn’t as damaging as predicted (but tell that to folks in SNJ, and those still without electricity in the western suburbs). (PS #StayHome saved lives) https://t.co/E3briZvg8v</td>
+                <td>2</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1256247786426769409">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 22:10:42</td>
+                <td class ="content_left">Hahaha, it's like God's gift to us for not feeling bad that we're missing a good day outside during the <span style="color: yellow;">Covid19</span> quarantine. https://t.co/RdOEKdBaPM</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1254533389320949760">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 14:12:58</td>
+                <td class ="content_left">Just posted @ShopRiteStores Whitman Plaza 333 W. Oregon Ave.  a worker has tested positive for <span style="color: yellow;">Covid19</span> https://t.co/ZuRuSesYgp</td>
+                <td>3</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1253688386155679744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 22:37:12</td>
+                <td class ="content_left">https://t.co/ghAiQ4P0bT #RIPFredDaGodson death by <span style="color: yellow;">Covid19</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1253452891773440001">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 00:13:16</td>
+                <td class ="content_left">Guess they’re gonna track me now: got this in email: ... wants your at-home finger prick to confirm its <span style="color: yellow;">Covid19</span> Assay for FDA validation #<span style="color: yellow;">COVID19</span>survivor PS not freaked out as I own a cell phone and no doubt already am  tracked !!</td>
+                <td>1</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1253114680454918150">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 21:45:34</td>
+                <td class ="content_left">Lacrosse star leaves hospital after he wakes from coronavirus coma
+~ if you were wondering about the <span style="color: yellow;">Covid19</span> student from NJ the one who plays lacrosse was doing, (I was) he survived thanks to his parents!!  https://t.co/KM1edecO7i</td>
+                <td>0</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1252715122981830658">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 07:11:01</td>
+                <td class ="content_left">COVID-19 patients may be most contagious one to two days before symptoms appear, study finds
+https://t.co/ncfCLvMjEB ~ Yes that is exactly what @PHLPublicHealth told me a month ago when I tested positive for <span style="color: yellow;">Covid19</span> (they weren't concerned w/people I saw past 3 days)</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1251770258937036802">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 15:14:40</td>
+                <td class ="content_left">@BobKellyFOX29 @USATODAY Nah. I was sick for a month in December/January and it was horrible but it was no <span style="color: yellow;">Covid19</span> which is nothing like a cold or flu.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1249717645999517696">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 12:47:55</td>
+                <td class ="content_left">After having <span style="color: yellow;">Covid19</span> and being quarantined for a month. Then healing and being allowed out. I now see, and feel what a huge sacrifice you all are doing. You're healthy, there's an "invisible" enemy, and you are gifting the world with your absence. THANK YOU VERY MUCH!! https://t.co/YKEMjNxa7M</td>
+                <td>2</td>
+                <td>62</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1249680715324809216">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 12:11:39</td>
+                <td class ="content_left">You know what isn’t essential to the <span style="color: yellow;">Covid19</span> lockdown, spray paint. It needs to be pulled out of hardware stores and wherever else it’s sold. Crazy how much graffiti I saw on buildings, bridges and objects yesterday, and it’s not even very artistic. https://t.co/V4iiFux694</td>
+                <td>2</td>
+                <td>32</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1249671588741513219">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 15:42:26</td>
+                <td class ="content_left">During my <span style="color: yellow;">Covid19</span> when I was able to eat I went off my low carb diet and didn’t bother to check my sugars. Nearly a week of discipline, my sugar is back in range. Why must I learn this lesson over and over. I feel great now!! 🤦‍♂️ #lessonslearnt</td>
+                <td>0</td>
+                <td>31</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1248999859149058048">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 20:17:32</td>
+                <td class ="content_left">I'm learning a lot about <span style="color: yellow;">Covid19</span> and survivors from FB pages. Some people put Vaseline in their noses to stop the virus from going into their lungs. Now that's a new one https://t.co/tGRvKUCXij</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1248706701592858626">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 19:48:10</td>
+                <td class ="content_left">@omytodd I will be wearing mask, but honestly most of what I'm reading on <span style="color: yellow;">Covid19</span> Survivor FB pages are of people going out of their houses in even a shorter time than I am, like a week after their fever has broken. Unfortunately that is what the CDC recommends, but I think its too short</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1248699310977560576">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 20:13:48</td>
+                <td class ="content_left">Thanks so much. Feeling better today. 2 days w/o a cough, or the <span style="color: yellow;">Covid19</span> cold. I am hoping to leave my quarantine 4/16/20, which would be one month since I had my first symptoms. https://t.co/3R4oTEALoO</td>
+                <td>1</td>
+                <td>52</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1248343374689636353">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 12:48:38</td>
+                <td class ="content_left">Coronavirus: Garry Bowie, HIV activist and director of WeHo nonprofit Being Alive, dies from COVID-19, husband says | https://t.co/qYRWGCXHBa ~ so many great people, leaders in their community, people who worked to improve people lives dying from <span style="color: yellow;">Covid19</span>  https://t.co/5wXm9Ewgkb</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1248231347484844032">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 14:11:30</td>
+                <td class ="content_left">I love when people pitch me to write about their jewelry line and then say it could be a win win for us both. Then I send them my advertising rates, which by the way are <span style="color: yellow;">Covid19</span> rock bottom and BOGO. Then they write back that they were just trying to help me get readers. https://t.co/vuJ1JXNj3c</td>
+                <td>0</td>
+                <td>25</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1247889812348002312">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 13:56:24</td>
+                <td class ="content_left">I'm starving in quarantine. I guess I was overeating b4 <span style="color: yellow;"><span style="color: yellow;">covid19</span></span> by going out to eat every day. I live with a normal eating spouse who does the online grocery shopping. I'm probably the only person who is going to lose about 15lbs when i finally get set free.</td>
+                <td>0</td>
+                <td>57</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1247523622064779265">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 13:44:47</td>
+                <td class ="content_left">@GeorgeSolis @6abc Looking good. Welcome Back. I'm so jealous I still have the <span style="color: yellow;">Covid19</span> cough and can't break quarantine yet. So glad your on your feet and in front of the camera reassuring us that everything will be alright.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1247520700354699264">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-06 18:02:16</td>
+                <td class ="content_left">HughE Dillon <span style="color: yellow;">Covid19</span> Story https://t.co/nFV0jxXgjd https://t.co/2m1RVn0fqq</td>
+                <td>2</td>
+                <td>16</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1247223112132964352">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 15:39:09</td>
+                <td class ="content_left">@DirtyGert Whatever you do, don’t make bat 🦇 soup, that’s how <span style="color: yellow;">Covid19</span> started. Be careful w/those creatures. They provide a good service when they’re not flying towards my head.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1246462317564485632">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 02:21:23</td>
+                <td class ="content_left">@vcast81 The <span style="color: yellow;">Covid19</span> started cause a women ate bat soup. blah</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1246261555311804420">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 11:44:45</td>
+                <td class ="content_left">@cinwall01 He sent gowns and masks to China in Feb for their <span style="color: yellow;">Covid19</span> fight. it’s in the State Department press releases. Careless!!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1245678552055459840">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 04:28:37</td>
+                <td class ="content_left">https://t.co/9Lwu2Wj0YX ~ wow so many iconic stars dying of <span style="color: yellow;">Covid19</span></td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1244481634084192261">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 02:08:14</td>
+                <td class ="content_left">@Rosie @wtpact5js Philly, and I am 3 days free of my <span style="color: yellow;">Covid19</span> fevers. #Day10quarantined.</td>
+                <td>0</td>
+                <td>39</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1243359143206850560">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 04:17:28</td>
+                <td class ="content_left">@thefallfreek Hi Paul. It was the entire back and started with my first coronavirus symptoms of a cough a small fever. It was excruciating pain, and the only relief I had was taking about 4 hot showers a day for 45mins. It subsided as the week went on and my other <span style="color: yellow;"><span style="color: yellow;">covid19</span></span> symptoms took over.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1243029277207154688">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">diabetes</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "diabetes"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 20:32:01</td>
+                <td class ="content_left">@CrossingBroad Yes. It’s been 6 weeks. Looking to donate plasma in June if I can keep my <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> in check. Too many carbs 🤦‍♂️</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1263568248634773504">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 18:52:23</td>
+                <td class ="content_left">Those doctors they always want you to get blood tests for <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> and the A1C. Good grief I just went through weeks of sweet quarantine food. They're going to have to wait. Otherwise I'm healthy, but I need to wear my mask until there's a vaccine. #virtualdoctorvisit</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1259919297411002368">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 23:51:41</td>
+                <td class ="content_left">Tom Hanks just told us he has <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> 2 during his #couchparty chit chat https://t.co/Aoly5FAvKN #covid19survivor https://t.co/MKHXt3yHX8</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1252384473234075649">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-09 03:18:20</td>
+                <td class ="content_left">Cruise prices are super low. If you have 1 - 30 days free for a 5 day cruise it's a buyers market if you're healthy and under 50. Unfortunately for me I have <span style="color: yellow;"><span style="color: yellow;">diabetes</span></span> or I'd book it.  Apr 22 New York (Manhattan), Norwegian Encore - 5 days $195 https://t.co/Hr8bQV4vWf</td>
+                <td>2</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1236853803099529218">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 14:00:08</td>
+                <td class ="content_left">People who have had a <span style="color: yellow;">COLD</span> before may be protected against COVID-19 https://t.co/HH4D9wMtRr via @MailOnline - I was wondering that as I had just had the flu, and then a <span style="color: yellow;"><span style="color: yellow;">cold</span></span> before I got antibiotics and better in December through all of January. #covid19survivor</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1262744854691319813">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 03:49:20</td>
+                <td class ="content_left">Mother’s Day In Ocean City During COVID-19 Pandemic , the boards were brisk on a <span style="color: yellow;"><span style="color: yellow;">cold</span></span> day https://t.co/iURVy1S4qD</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1261503979311292417">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 15:14:40</td>
+                <td class ="content_left">@BobKellyFOX29 @USATODAY Nah. I was sick for a month in December/January and it was horrible but it was no Covid19 which is nothing like a <span style="color: yellow;"><span style="color: yellow;">cold</span></span> or flu.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1249717645999517696">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 17:47:26</td>
+                <td class ="content_left">@kenneth_notken I need a <span style="color: yellow;"><span style="color: yellow;">cold</span></span> shower now</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1247944153264201731">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 00:03:47</td>
+                <td class ="content_left">@GJankaitis Bad and constant at first. Then fevers and chills. Now cough trailing off with a head <span style="color: yellow;"><span style="color: yellow;">cold</span></span> 3 weeks later.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1246589315066535937">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 15:37:39</td>
+                <td class ="content_left">I’m so annoyed, every day I wake up hoping #COVID19 head <span style="color: yellow;"><span style="color: yellow;">cold</span></span> and cough is over. It’s not. Hopefully tomorrow. Then I’ll count 7 days from that point til I’m ‘symptom free’ and negative.  You can see I still have red eye sickness.  😫 nearly 3weeks now. https://t.co/7cCxSjDT4e</td>
+                <td>1</td>
+                <td>40</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1246461941394087938">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 16:10:26</td>
+                <td class ="content_left">My symptoms are worse now. Still a head <span style="color: yellow;"><span style="color: yellow;">cold</span></span> like but a consistent fever. Tired, and achy. I’m going to sleep all day. #coronavirus</td>
+                <td>3</td>
+                <td>169</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1241396762155331584">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">antibiotics</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "antibiotics"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 14:00:08</td>
+                <td class ="content_left">People who have had a COLD before may be protected against COVID-19 https://t.co/HH4D9wMtRr via @MailOnline - I was wondering that as I had just had the flu, and then a cold before I got <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> and better in December through all of January. #covid19survivor</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1262744854691319813">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-11 21:18:37</td>
+                <td class ="content_left">The symptoms of #coronavirus? The virus can cause pneumonia. Those who have fallen ill are reported to suffer coughs, fever and breathing difficulties. In severe cases there can be organ failure. As this is viral pneumonia, <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> are of no use.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1237850437878837253">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-06 15:49:25</td>
+                <td class ="content_left">@beachworshipper @cvspharmacy @WholeFoods @PURELL I like <span style="color: yellow;"><span style="color: yellow;">antibiotics</span></span> too</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1235955653224607744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shaking</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shaking"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 03:10:07</td>
+                <td class ="content_left">My zoom friends are freaking out because the only person who has a mask on is the criminal, a white hospital kinda mask. Now the police are <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> hands. Hopefully they have Purell my friend says. #smoothcriminal chase</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1262581273492688896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cancer</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cancer"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 12:31:39</td>
+                <td class ="content_left">Note in the picture on left, my beautiful sister bottom right died of ovarian <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> in 2009 and my sister Crista , 2nd from right in pix from 2015 on right, wasn’t born until 1976 a year after pix on left taken.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1259461097364611073">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-18 22:02:17</td>
+                <td class ="content_left">What are you doing tonight, I know last minute.  A Conversation About <span style="color: yellow;">Cancer</span> - a Young Friends Event https://t.co/dz7i6XFb88 #phillyfights<span style="color: yellow;"><span style="color: yellow;">cancer</span></span> @FitlerClub</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1229888894851784705">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recover</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recover"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 01:05:42</td>
+                <td class ="content_left">@EdHudley No doubt.beyond heartbreaking. I wonder how long it took to <span style="color: yellow;"><span style="color: yellow;">recover</span></span> after Spanish flu</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1257838917396713473">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fatigued</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fatigued"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 00:33:53</td>
+                <td class ="content_left">I was quarantined <span style="color: yellow;"><span style="color: yellow;">fatigued</span></span> when I made that statement. I don’t agree with me anymore.</td>
+                <td>0</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1254931810632511489">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 14:12:58</td>
+                <td class ="content_left">Just posted @ShopRiteStores Whitman Plaza 333 W. Oregon Ave.  a worker has tested <span style="color: yellow;">positive for Covid</span>19 https://t.co/ZuRuSesYgp</td>
+                <td>3</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1253688386155679744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 07:11:01</td>
+                <td class ="content_left">COVID-19 patients may be most contagious one to two days before symptoms appear, study finds
+https://t.co/ncfCLvMjEB ~ Yes that is exactly what @PHLPublicHealth told me a month ago when I tested <span style="color: yellow;">positive for Covid</span>19 (they weren't concerned w/people I saw past 3 days)</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1251770258937036802">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 17:52:47</td>
+                <td class ="content_left">George Stephanopoulos tests <span style="color: yellow;">positive for COVID</span> and hasn't had symptoms
+~ first that cant be true, he was red and glistening last week and this week his eyes are still red bat beat https://t.co/lrdeL0iSbv</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1249757439207116802">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 04:36:53</td>
+                <td class ="content_left">@MaggieAstor Loss of <span style="color: yellow;"><span style="color: yellow;">smell</span></span> just one day. Loss of taste 3 days. I realize how lucky I am. I was so perplexed why everything tasted so terrible. Thanks for your article 4/3 ‘You Could Lick the Benches’: Life for the First Wave of U.S. Survivors</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1251731473490731010">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 04:48:11</td>
+                <td class ="content_left">I hope moms and dads, and friends and families and neighbors and everyone continue this amazing bonding when the world returns to normalcy after the vaccine. Slow down and <span style="color: yellow;"><span style="color: yellow;">smell</span></span> the flowers, and make memories as beautiful as you during #Covid19usa https://t.co/oKLpF5yNR4</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1251371926427250688">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 04:47:27</td>
+                <td class ="content_left">The six mild symptoms of coronavirus that no one should ignore #SmartNews - if only I knew a recovery timeline. I have 5 of these symptoms having lost taste and <span style="color: yellow;"><span style="color: yellow;">smell</span></span> Monday. I’m not going to lie, I’m so scared. I want to be brave for you. Thanks 4 🙏 ‘s https://t.co/H6Y92LJZPz</td>
+                <td>8</td>
+                <td>107</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242674433866825728">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-06 16:19:39</td>
+                <td class ="content_left">@JoshKrugerPHL @matropolis I agree, but I touch money, elevator buttons and menus a lot. I touch my face etc so I just want it handy. Mike uses it all the time. I do get colds more than him, it's annoying. I just don't like the <span style="color: yellow;"><span style="color: yellow;">smell</span></span> of it either and it's cold.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1235963264288292864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 04:36:53</td>
+                <td class ="content_left">@MaggieAstor Loss of smell just one day. Loss of <span style="color: yellow;"><span style="color: yellow;">taste</span></span> 3 days. I realize how lucky I am. I was so perplexed why everything <span style="color: yellow;"><span style="color: yellow;">taste</span></span>d so terrible. Thanks for your article 4/3 ‘You Could Lick the Benches’: Life for the First Wave of U.S. Survivors</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1251731473490731010">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 04:47:27</td>
+                <td class ="content_left">The six mild symptoms of coronavirus that no one should ignore #SmartNews - if only I knew a recovery timeline. I have 5 of these symptoms having lost <span style="color: yellow;"><span style="color: yellow;">taste</span></span> and smell Monday. I’m not going to lie, I’m so scared. I want to be brave for you. Thanks 4 🙏 ‘s https://t.co/H6Y92LJZPz</td>
+                <td>8</td>
+                <td>107</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242674433866825728">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 11:27:33</td>
+                <td class ="content_left">@phillydesign Everything I drink <span style="color: yellow;"><span style="color: yellow;">taste</span></span>s like sewer water. Hot tea, water, ice tea. I’m so glad you posted this article, I couldn’t understand why they all <span style="color: yellow;"><span style="color: yellow;">taste</span></span> the same and they were different.</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242050348623298560">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recovered</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recovered"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 06:18:03</td>
+                <td class ="content_left">The Red Cross is seeking people who are fully <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> from the new coronavirus to sign up to donate plasma to help current COVID-19 patients.https://t.co/TxBlQGfi3j</td>
+                <td>3</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1249944992782651393">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-13 02:45:37</td>
+                <td class ="content_left">Blood from <span style="color: yellow;"><span style="color: yellow;">recovered</span></span> coronavirus patients needed https://t.co/Gl0ZXrlvvB via @Northeast Times</td>
+                <td>1</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1249529141705289734">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 20:09:27</td>
+                <td class ="content_left">Plasmapheresis Donor Registry for Patients <span style="color: yellow;">Recovered</span> from Confirmed COVID-19  https://t.co/4UkuRa6DBh Thanks to @HLGasser for sending us this link.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1245805563805609990">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 19:48:10</td>
+                <td class ="content_left">@omytodd I will be wearing mask, but honestly most of what I'm reading on Covid19 Survivor FB pages are of people going out of their houses in even a shorter time than I am, like a week after their <span style="color: yellow;"><span style="color: yellow;">fever</span></span> has broken. Unfortunately that is what the CDC recommends, but I think its too short</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1248699310977560576">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 19:17:37</td>
+                <td class ="content_left">@omytodd Yes usually w/i 7 days of when their <span style="color: yellow;"><span style="color: yellow;">fever</span></span> broke. That's why I waited 21 days to make sure.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1248691625968177152">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 03:04:55</td>
+                <td class ="content_left">@Rosie I was going to donate my plasma as soon as I was done my #covid19 quarantine in 7 days, as my <span style="color: yellow;"><span style="color: yellow;">fever</span></span> has broken, but the @US_FDA came out with a statement denying this right. Is this not the craziest thing. They must have a test in place for HIV by now.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1245547734389710848">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 20:38:19</td>
+                <td class ="content_left">@PABridgeBuilder Another 7 days. It’s been one for weeks since my <span style="color: yellow;"><span style="color: yellow;">fever</span></span> broke which means I am negative but because I have this little cough I would like to wait 7 more days. I’m not gonna really walk around too much but I would like to walk out my front door.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1244725665355771909">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 21:56:57</td>
+                <td class ="content_left">@Caleb_Mezzy Hang in there, it does get better. Sleep, sleep, sleep that is what helped me the most. I'm <span style="color: yellow;"><span style="color: yellow;">fever</span></span> free 6 days now. I'll be thinking of you. Sending healthy vibes and prayers.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1244020681119019008">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 21:57:26</td>
+                <td class ="content_left">@mcryan09 I'm 5 days <span style="color: yellow;"><span style="color: yellow;">fever</span></span> free of conoravirus and I have people like you to thank for your good thoughts and prayers. thanks</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1243658415035092993">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 14:42:06</td>
+                <td class ="content_left">5 days <span style="color: yellow;"><span style="color: yellow;">fever</span></span> free, 9 days til I can give plasma to save some lives. They just reached out to me. I’m so excited 😆 #covid19survivor https://t.co/kgNmRQLZsJ</td>
+                <td>17</td>
+                <td>617</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1243548856937336835">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 21:53:40</td>
+                <td class ="content_left">Day 10 of Covid19. <span style="color: yellow;">Fever</span> free day 3. Slept all day except for an hour when I was on my balcony getting sunlight and saying the Rosary. Mike joined me and then a ladybug flew 8 stories up to say hi, landing on his shirt. Dang good sign. https://t.co/YTMsBUND4G</td>
+                <td>7</td>
+                <td>420</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1243295076429815813">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 04:01:47</td>
+                <td class ="content_left">As I head into day 9 since my first symptoms #COVID2019 I'm 60hrs <span style="color: yellow;"><span style="color: yellow;">fever</span></span> free . I still hv minor symptoms, cough, body aches, tired. I am not out of the woods yet as I am in a transition period where some people think they're getting better and they relapse, but I feel confident</td>
+                <td>5</td>
+                <td>351</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1243025331449221128">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 14:08:10</td>
+                <td class ="content_left">@timahbimah They told me not to take any medicine so I didn’t mask my temperature so then I could see when my <span style="color: yellow;"><span style="color: yellow;">fever</span></span> broke naturally. And I am self quarantine that was the most important part I said 14 days but since I’m still sick on day 10 I’m gonna be staying in probably at least a month</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242815542098112512">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 14:05:04</td>
+                <td class ="content_left">I just overheard Mike tell his friend that as soon as I have 5 days of no <span style="color: yellow;"><span style="color: yellow;">fever</span></span> he’s going to have me start on my closet project I promised to do last year. He is savage.  ** Update: made it through the night of fear.  No <span style="color: yellow;"><span style="color: yellow;">fever</span></span>, but still nauseous.</td>
+                <td>0</td>
+                <td>210</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242814763069038595">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 19:35:00</td>
+                <td class ="content_left">Thank you to all who added me to your prayer 🙏 circle and prayers. Excited to tell you I made it 1 day w/o a <span style="color: yellow;"><span style="color: yellow;">fever</span></span>. I still have symptoms tired, nauseous and body aches but excited to be closer to the 5 day <span style="color: yellow;"><span style="color: yellow;">fever</span></span> free goal. Everything still tastes like crap though, seriously 😐 https://t.co/ytUS2dNjcg</td>
+                <td>15</td>
+                <td>295</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242535403355344896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 18:20:01</td>
+                <td class ="content_left">@fayyyysappp After how long will I get better. My <span style="color: yellow;"><span style="color: yellow;">fever</span></span> just broke today, day 7. It didn't go into my chest, so far. Thanks.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242154147434070019">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 11:13:57</td>
+                <td class ="content_left">This virus 🦠 has everything. Just when you think the headache, aches and <span style="color: yellow;"><span style="color: yellow;">fever</span></span> have subsided, it comes back w/a vengence with nauseous, high <span style="color: yellow;"><span style="color: yellow;">fever</span></span>, aches . Last week I thought this isn’t so bad, but I had no idea 💡 that was the beginning #coronavirus #day8ofquarantine</td>
+                <td>31</td>
+                <td>222</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242046925169360903">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 14:06:42</td>
+                <td class ="content_left">@My_2Cents You call your doctor and if you have symptoms like a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> or cough etc. they will write a prescription for you to go get tested. If you don’t have severe symptoms you ride it out at home. But the health department checks up on you daily</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1241728010325307392">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 22:24:28</td>
+                <td class ="content_left">@pmullen30 I found out. For Jefferson you have to go through your doctor, and have a direct contact with someone positive if you don’t have a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> or have traveled out of the country.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1239678948243574790">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 19:24:48</td>
+                <td class ="content_left">@Tattoos4ACause Sorry I don't mean to me flippent. I know someone who was directly in contact with the bball player, has all the symptoms but a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> and they turned her down. She contacted them the night he tested positive. I'm trying to get her tested.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1239633734846070784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 19:17:03</td>
+                <td class ="content_left">@bowmanesq aahh that might be why. I know a few people in the US where they tried to get tested because of exposure, or they had a cough, sore throat, breathing issues but no <span style="color: yellow;"><span style="color: yellow;">fever</span></span> and they were denied.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1239631786319187971">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-11 21:18:37</td>
+                <td class ="content_left">The symptoms of #coronavirus? The virus can cause pneumonia. Those who have fallen ill are reported to suffer coughs, <span style="color: yellow;"><span style="color: yellow;">fever</span></span> and breathing difficulties. In severe cases there can be organ failure. As this is viral pneumonia, antibiotics are of no use.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1237850437878837253">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">HIV</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "HIV"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-09 12:48:38</td>
+                <td class ="content_left">Coronavirus: Garry Bowie, <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> activist and director of WeHo nonprofit Being Alive, dies from COVID-19, husband says | https://t.co/qYRWGCXHBa ~ so many great people, leaders in their community, people who worked to improve people lives dying from Covid19  https://t.co/5wXm9Ewgkb</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1248231347484844032">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 21:27:16</td>
+                <td class ="content_left">@magico_cowgirl @6abc Yipee a little less discrimination. No this is not good news as people are dying today, right now. I have the antibodies to save lives today. This is the FDA's response to quell the misinformed. If they don't have a system to test <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> in the blood, now that's scary.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1245825148621672452">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 19:52:48</td>
+                <td class ="content_left">@itsianraymond People are so dumb thinking we won a victory. This was to quell the masses, which is did. The ones that don't comprehend the discrimination. If they're not testing the blood now for <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> that is scary.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1245801375537213444">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 19:37:07</td>
+                <td class ="content_left">The @US_FDA now certainly did more than other administrations. Why didn't they roll this archaic rule back. You're going to tell me people who are <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> positive &amp; maybe they don't know, don't donate blood and the blood isn't tested for that &amp; other STD's? #COVID19</td>
+                <td>0</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1245797428273582083">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 19:04:14</td>
+                <td class ="content_left">Please read the article which came out on today. They want Gay people to abstain from sex for 3 months b4 they’re allowed to donate blood. They already have the capabilities to test for <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> but are still discriminating against gay men. People will die because of their decision!! https://t.co/4ZY8OzHx8u</td>
+                <td>2</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1245789154815991808">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 03:04:55</td>
+                <td class ="content_left">@Rosie I was going to donate my plasma as soon as I was done my #covid19 quarantine in 7 days, as my fever has broken, but the @US_FDA came out with a statement denying this right. Is this not the craziest thing. They must have a test in place for <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> by now.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1245547734389710848">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 13:44:47</td>
+                <td class ="content_left">@GeorgeSolis @6abc Looking good. Welcome Back. I'm so jealous I still have the Covid19 <span style="color: yellow;"><span style="color: yellow;">cough</span></span> and can't break quarantine yet. So glad your on your feet and in front of the camera reassuring us that everything will be alright.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1247520700354699264">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 00:03:47</td>
+                <td class ="content_left">@GJankaitis Bad and constant at first. Then fevers and chills. Now <span style="color: yellow;"><span style="color: yellow;">cough</span></span> trailing off with a head cold 3 weeks later.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1246589315066535937">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 15:37:39</td>
+                <td class ="content_left">I’m so annoyed, every day I wake up hoping #COVID19 head cold and <span style="color: yellow;"><span style="color: yellow;">cough</span></span> is over. It’s not. Hopefully tomorrow. Then I’ll count 7 days from that point til I’m ‘symptom free’ and negative.  You can see I still have red eye sickness.  😫 nearly 3weeks now. https://t.co/7cCxSjDT4e</td>
+                <td>1</td>
+                <td>40</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1246461941394087938">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 14:49:59</td>
+                <td class ="content_left">@JJCaroccia @HuffPostLife Much better. Just still tired and a bit of a <span style="color: yellow;"><span style="color: yellow;">cough</span></span> . Thanks so much for asking 😊</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1245725170796462081">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 20:38:19</td>
+                <td class ="content_left">@PABridgeBuilder Another 7 days. It’s been one for weeks since my fever broke which means I am negative but because I have this little <span style="color: yellow;"><span style="color: yellow;">cough</span></span> I would like to wait 7 more days. I’m not gonna really walk around too much but I would like to walk out my front door.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1244725665355771909">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 04:17:28</td>
+                <td class ="content_left">@thefallfreek Hi Paul. It was the entire back and started with my first coronavirus symptoms of a <span style="color: yellow;"><span style="color: yellow;">cough</span></span> a small fever. It was excruciating pain, and the only relief I had was taking about 4 hot showers a day for 45mins. It subsided as the week went on and my other covid19 symptoms took over.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1243029277207154688">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 14:06:42</td>
+                <td class ="content_left">@My_2Cents You call your doctor and if you have symptoms like a fever or <span style="color: yellow;"><span style="color: yellow;">cough</span></span> etc. they will write a prescription for you to go get tested. If you don’t have severe symptoms you ride it out at home. But the health department checks up on you daily</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1241728010325307392">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">red eye</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "red eye"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-04 15:37:39</td>
+                <td class ="content_left">I’m so annoyed, every day I wake up hoping #COVID19 head cold and cough is over. It’s not. Hopefully tomorrow. Then I’ll count 7 days from that point til I’m ‘symptom free’ and negative.  You can see I still have <span style="color: yellow;"><span style="color: yellow;">red eye</span></span> sickness.  😫 nearly 3weeks now. https://t.co/7cCxSjDT4e</td>
+                <td>1</td>
+                <td>40</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1246461941394087938">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 14:49:59</td>
+                <td class ="content_left">@JJCaroccia @HuffPostLife Much better. Just still <span style="color: yellow;"><span style="color: yellow;">tired</span></span> and a bit of a cough . Thanks so much for asking 😊</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1245725170796462081">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 20:19:36</td>
+                <td class ="content_left">@styleprdiva I'm quarantined, I can't leave my apartment and people certainly don't want to <span style="color: yellow;">touch</span> my garbage. Thankfully I have a balcony.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1244720954535809028">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 17:07:39</td>
+                <td class ="content_left">Thank you health care workers for staffing the testing sites. It's definitely a scary job. PLEASE DON't <span style="color: yellow;">TOUCH</span> THE health care workers, even if you know them.</td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1240323997755215872">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-08 19:27:23</td>
+                <td class ="content_left">Philadelphia 76ers Postpone Youth Foundation Gala Due To Coronavirus Concerns, high fives and handshakes: https://t.co/bwPABEWQak - Going forward let's just say hi and not even to the elbow <span style="color: yellow;">touch</span> until things calm down.</td>
+                <td>2</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1236735281031786496">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-06 22:32:21</td>
+                <td class ="content_left">ith a <span style="color: yellow;">touch</span> of roaring 1920&amp;#39;s flair, @Easterseals will
+celebrate the incredible milestones and changes that have been accomplished over the past
+100 years @CitizenBankPark Saturday night</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1236057054613319682">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-06 16:19:39</td>
+                <td class ="content_left">@JoshKrugerPHL @matropolis I agree, but I <span style="color: yellow;">touch</span> money, elevator buttons and menus a lot. I <span style="color: yellow;">touch</span> my face etc so I just want it handy. Mike uses it all the time. I do get colds more than him, it's annoying. I just don't like the smell of it either and it's cold.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1235963264288292864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-06 16:18:01</td>
+                <td class ="content_left">I have a compromised immune system - Diabetes. I don't usually use @purell, as most of my family does. Sounds like a good idea now esp <span style="color: yellow;">touch</span>ing $$ or menus. Maybe I'll go back to my barbarian ways as my Mom tells me. PS I do wash my hands but not everytime I <span style="color: yellow;">touch</span> $$ or a menu</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1235962851254206465">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-27 15:00:50</td>
+                <td class ="content_left">why did they have to ruin it with a sweet and savory blend of brown sugar. It went from good Keto, to I can't <span style="color: yellow;">touch</span> that with a 10 foot tongue. @dunkindonuts https://t.co/WpQY2Sg0BE</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1233044325392637954">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Shortness of breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Shortness of breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 00:25:10</td>
+                <td class ="content_left">@DrSheenaHoward It didn't seem to affect my lungs, it never affected my lungs. I did have the cough, and I had sometimes do have <span style="color: yellow;">shortness of breath</span>. Occasionally stabbing chest pains, but not severe as others.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1243695591504347136">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">body ache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "body ache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 04:01:47</td>
+                <td class ="content_left">As I head into day 9 since my first symptoms #COVID2019 I'm 60hrs fever free . I still hv minor symptoms, cough, <span style="color: yellow;"><span style="color: yellow;">body ache</span></span>s, tired. I am not out of the woods yet as I am in a transition period where some people think they're getting better and they relapse, but I feel confident</td>
+                <td>5</td>
+                <td>351</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1243025331449221128">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 19:35:00</td>
+                <td class ="content_left">Thank you to all who added me to your prayer 🙏 circle and prayers. Excited to tell you I made it 1 day w/o a fever. I still have symptoms tired, nauseous and <span style="color: yellow;"><span style="color: yellow;">body ache</span></span>s but excited to be closer to the 5 day fever free goal. Everything still tastes like crap though, seriously 😐 https://t.co/ytUS2dNjcg</td>
+                <td>15</td>
+                <td>295</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242535403355344896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 21:09:10</td>
+                <td class ="content_left">Today I have tested positive for #coronavirus . I have mild symptoms, cough, sore throat, extreme <span style="color: yellow;"><span style="color: yellow;">body ache</span></span>s. I’m resting at home and will be quarantined for 14 days. I’m grateful my symptoms are mild, and extend prayers to those suffering worse. #StayHome</td>
+                <td>86</td>
+                <td>1512</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1241109552076029967">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">body aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "body aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 04:01:47</td>
+                <td class ="content_left">As I head into day 9 since my first symptoms #COVID2019 I'm 60hrs fever free . I still hv minor symptoms, cough, <span style="color: yellow;"><span style="color: yellow;">body aches</span></span>, tired. I am not out of the woods yet as I am in a transition period where some people think they're getting better and they relapse, but I feel confident</td>
+                <td>5</td>
+                <td>351</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1243025331449221128">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 19:35:00</td>
+                <td class ="content_left">Thank you to all who added me to your prayer 🙏 circle and prayers. Excited to tell you I made it 1 day w/o a fever. I still have symptoms tired, nauseous and <span style="color: yellow;"><span style="color: yellow;">body aches</span></span> but excited to be closer to the 5 day fever free goal. Everything still tastes like crap though, seriously 😐 https://t.co/ytUS2dNjcg</td>
+                <td>15</td>
+                <td>295</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242535403355344896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 21:09:10</td>
+                <td class ="content_left">Today I have tested positive for #coronavirus . I have mild symptoms, cough, sore throat, extreme <span style="color: yellow;"><span style="color: yellow;">body aches</span></span>. I’m resting at home and will be quarantined for 14 days. I’m grateful my symptoms are mild, and extend prayers to those suffering worse. #StayHome</td>
+                <td>86</td>
+                <td>1512</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1241109552076029967">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 03:54:31</td>
+                <td class ="content_left">I wonder if the back <span style="color: yellow;"><span style="color: yellow;">pain</span></span> is only a symptom in the USA. When i was tested my doc said the back <span style="color: yellow;"><span style="color: yellow;">pain</span></span> was probably because of my coughing or stress. But now I'm reading where so many others had it too as a first symptom. The back <span style="color: yellow;"><span style="color: yellow;">pain</span></span> was unbearable. #COVID2019</td>
+                <td>3</td>
+                <td>28</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1243023501272977408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 14:28:32</td>
+                <td class ="content_left">@camille_mola Stress. I am crippled with back <span style="color: yellow;"><span style="color: yellow;">pain</span></span> which I had never had ever before</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1240283953170432001">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">no fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "no fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 14:05:04</td>
+                <td class ="content_left">I just overheard Mike tell his friend that as soon as I have 5 days of <span style="color: yellow;"><span style="color: yellow;">no fever</span></span> he’s going to have me start on my closet project I promised to do last year. He is savage.  ** Update: made it through the night of fear.  <span style="color: yellow;">No fever</span>, but still nauseous.</td>
+                <td>0</td>
+                <td>210</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242814763069038595">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 19:17:03</td>
+                <td class ="content_left">@bowmanesq aahh that might be why. I know a few people in the US where they tried to get tested because of exposure, or they had a cough, sore throat, breathing issues but <span style="color: yellow;"><span style="color: yellow;">no fever</span></span> and they were denied.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1239631786319187971">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">mild symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "mild symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 04:47:27</td>
+                <td class ="content_left">The six <span style="color: yellow;"><span style="color: yellow;">mild symptoms</span></span> of coronavirus that no one should ignore #SmartNews - if only I knew a recovery timeline. I have 5 of these symptoms having lost taste and smell Monday. I’m not going to lie, I’m so scared. I want to be brave for you. Thanks 4 🙏 ‘s https://t.co/H6Y92LJZPz</td>
+                <td>8</td>
+                <td>107</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242674433866825728">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 17:43:04</td>
+                <td class ="content_left">@Rosie I blame him for my positive #coronavirus test. (I'm doing ok with <span style="color: yellow;"><span style="color: yellow;">mild symptoms</span></span>, including a low fever)</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1241420071811067907">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 21:09:10</td>
+                <td class ="content_left">Today I have tested positive for #coronavirus . I have <span style="color: yellow;"><span style="color: yellow;">mild symptoms</span></span>, cough, sore throat, extreme body aches. I’m resting at home and will be quarantined for 14 days. I’m grateful my symptoms are mild, and extend prayers to those suffering worse. #StayHome</td>
+                <td>86</td>
+                <td>1512</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1241109552076029967">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 19:35:00</td>
+                <td class ="content_left">Thank you to all who added me to your prayer 🙏 circle and prayers. Excited to tell you I made it 1 day w/o a fever. I still have symptoms tired, nauseous and body <span style="color: yellow;"><span style="color: yellow;">aches</span></span> but excited to be closer to the 5 day fever free goal. Everything still tastes like crap though, seriously 😐 https://t.co/ytUS2dNjcg</td>
+                <td>15</td>
+                <td>295</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242535403355344896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 11:13:57</td>
+                <td class ="content_left">This virus 🦠 has everything. Just when you think the headache, <span style="color: yellow;"><span style="color: yellow;">aches</span></span> and fever have subsided, it comes back w/a vengence with nauseous, high fever, <span style="color: yellow;"><span style="color: yellow;">aches</span></span> . Last week I thought this isn’t so bad, but I had no idea 💡 that was the beginning #coronavirus #day8ofquarantine</td>
+                <td>31</td>
+                <td>222</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242046925169360903">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nauseous</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nauseous"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 19:35:00</td>
+                <td class ="content_left">Thank you to all who added me to your prayer 🙏 circle and prayers. Excited to tell you I made it 1 day w/o a fever. I still have symptoms tired, <span style="color: yellow;"><span style="color: yellow;">nauseous</span></span> and body aches but excited to be closer to the 5 day fever free goal. Everything still tastes like crap though, seriously 😐 https://t.co/ytUS2dNjcg</td>
+                <td>15</td>
+                <td>295</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242535403355344896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Aspirin</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Aspirin"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 11:31:48</td>
+                <td class ="content_left">@My_2Cents Did you call your doctor. I think you’re not supposed to take <span style="color: yellow;">aspirin</span> but I’m not a doctor I’m not taking anything and you really should contact someone who’s a professional.</td>
+                <td>1</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242051416258220033">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">high fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "high fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 11:13:57</td>
+                <td class ="content_left">This virus 🦠 has everything. Just when you think the headache, aches and fever have subsided, it comes back w/a vengence with nauseous, <span style="color: yellow;"><span style="color: yellow;">high fever</span></span>, aches . Last week I thought this isn’t so bad, but I had no idea 💡 that was the beginning #coronavirus #day8ofquarantine</td>
+                <td>31</td>
+                <td>222</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1242046925169360903">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">test positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "test positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 17:43:18</td>
+                <td class ="content_left">Five University of Tampa students <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for coronavirus
+~ hey you in ⁦@RittenhouseSq⁩ park  https://t.co/tGiH35uP3r</td>
+                <td>1</td>
+                <td>12</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1241782517948198913">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">my temp is</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "my temp is"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-22 04:39:30</td>
+                <td class ="content_left"><span style="color: yellow;">My temp is</span> 101. I’m drinking my water supply as it’s not fun to stand and wait for faucet. This is my highest temp so far. I’m going to have chocolate chip cookies  Mike ordered as a treat. After 7 days we ate everything that wasn’t in a can.</td>
+                <td>1</td>
+                <td>42</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1241585271159902208">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">low fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "low fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 17:43:04</td>
+                <td class ="content_left">@Rosie I blame him for my positive #coronavirus test. (I'm doing ok with mild symptoms, including a <span style="color: yellow;"><span style="color: yellow;">low fever</span></span>)</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1241420071811067907">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sore throat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sore throat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 21:09:10</td>
+                <td class ="content_left">Today I have tested positive for #coronavirus . I have mild symptoms, cough, <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span>, extreme body aches. I’m resting at home and will be quarantined for 14 days. I’m grateful my symptoms are mild, and extend prayers to those suffering worse. #StayHome</td>
+                <td>86</td>
+                <td>1512</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1241109552076029967">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 19:17:03</td>
+                <td class ="content_left">@bowmanesq aahh that might be why. I know a few people in the US where they tried to get tested because of exposure, or they had a cough, <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span>, breathing issues but no fever and they were denied.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1239631786319187971">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">have a fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "have a fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 22:27:37</td>
+                <td class ="content_left">You can be positive and not have symptoms and/or have a few symptoms and not <span style="color: yellow;"><span style="color: yellow;">have a fever</span></span>. Just stay in!! Let’s do some spring cleaning 🧹 https://t.co/QuSmW2B9Cy</td>
+                <td>8</td>
+                <td>14</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1239679743018008577">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 22:24:28</td>
+                <td class ="content_left">@pmullen30 I found out. For Jefferson you have to go through your doctor, and have a direct contact with someone positive if you don’t <span style="color: yellow;"><span style="color: yellow;">have a fever</span></span> or have traveled out of the country.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1239678948243574790">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">heart disease</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "heart disease"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-15 16:01:23</td>
+                <td class ="content_left">@TheJordanRachel @kniscoolasice Soon they'll be no hospital beds for people suffering from <span style="color: yellow;"><span style="color: yellow;">heart disease</span></span> because they'll have #COVIDー19</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1239220156380917761">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breathing difficulties</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breathing difficulties"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-11 21:18:37</td>
+                <td class ="content_left">The symptoms of #coronavirus? The virus can cause pneumonia. Those who have fallen ill are reported to suffer coughs, fever and <span style="color: yellow;"><span style="color: yellow;">breathing difficulties</span></span>. In severe cases there can be organ failure. As this is viral pneumonia, antibiotics are of no use.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1237850437878837253">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breathing difficult</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breathing difficult"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-11 21:18:37</td>
+                <td class ="content_left">The symptoms of #coronavirus? The virus can cause pneumonia. Those who have fallen ill are reported to suffer coughs, fever and <span style="color: yellow;"><span style="color: yellow;">breathing difficult</span></span>ies. In severe cases there can be organ failure. As this is viral pneumonia, antibiotics are of no use.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1237850437878837253">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asymptomatic</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asymptomatic"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-11 21:06:45</td>
+                <td class ="content_left">This #coronavirus reminds me of: Mary Mallon, also known as Typhoid Mary, an Irish cook believed to have infected 51 people, 3 died, w/typhoid fever, the first person in the US identified as an <span style="color: yellow;"><span style="color: yellow;">asymptomatic</span></span> carrier of the disease. She eventually was quarantined for life</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/HughE_Dillon/status/1237847453031747589">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,1944 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>346-seyiamakinde.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 346-seyiamakinde.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">346-seyiamakinde.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 08:32:23</td>
+                <td class ="content_left">2. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any <span style="color: yellow;">COVID-19</span> symptoms: cough, fever, tiredness, body ache and shortness of breath.</td>
+                <td>42</td>
+                <td>75</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1265923864925736960">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 08:31:49</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (for MAY 27, 2020)
+
+1.The <span style="color: yellow;">COVID-19</span> confirmation tests for two suspected cases came back POSITIVE. One case is from iSON Xperiences and the other case is from Ido Local Govt Area. So, the total number of confirmed cases in Oyo State is 252. https://t.co/QcRGe2xGKW</td>
+                <td>90</td>
+                <td>212</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1265923722919186435">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-27 13:57:05</td>
+                <td class ="content_left">Our dear children in Oyo State, although the <span style="color: yellow;">COVID-19</span> pandemic means we are not having the usual march past and other activities for the Children’s Day celebrations, we will continue to love, protect and bequeath the legacy of a sound education to you. Happy Children's Day! https://t.co/p1mH2xOD1w</td>
+                <td>198</td>
+                <td>1257</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1265643190020968449">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 22:44:10</td>
+                <td class ="content_left">3. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any <span style="color: yellow;">COVID-19</span> symptoms: cough, fever, tiredness, body ache and shortness of breath.</td>
+                <td>43</td>
+                <td>65</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1265413447837274113">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 22:43:06</td>
+                <td class ="content_left">2. Also, the <span style="color: yellow;">COVID-19</span> confirmation tests for six suspected cases came back POSITIVE. One case is from iSON Xperiences and one each from Ibadan South West, Ibadan South East, Surulere, Ido and Egbeda Local Government Areas.</td>
+                <td>45</td>
+                <td>100</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1265413177300246528">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 22:42:15</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MAY 26, 2020)
+
+1. Seventeen confirmed <span style="color: yellow;">COVID-19</span> patients have received their second NEGATIVE test results and have been discharged. This brings the number of discharged cases in Oyo State to seventy-five. https://t.co/5RSLgQyokf</td>
+                <td>124</td>
+                <td>363</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1265412965836238850">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 07:59:49</td>
+                <td class ="content_left">2. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any <span style="color: yellow;">COVID-19</span> symptoms: cough, fever, tiredness, body ache and shortness of breath.</td>
+                <td>38</td>
+                <td>65</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1265190894371770369">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 07:59:28</td>
+                <td class ="content_left">1. The <span style="color: yellow;">COVID-19</span> confirmation tests for four suspected cases came back POSITIVE. Two are from iSON Xperiences and one case each from Ibadan South West and Egbeda Local Government Areas. So, the total number of confirmed cases in Oyo State is 244.</td>
+                <td>54</td>
+                <td>111</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1265190805699993600">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 07:59:10</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (for MAY 25, 2020) https://t.co/TZt26OmmmI</td>
+                <td>72</td>
+                <td>238</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1265190727346249728">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 22:57:47</td>
+                <td class ="content_left">2. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any <span style="color: yellow;">COVID-19</span> symptoms: cough, fever, tiredness, body ache and shortness of breath.</td>
+                <td>44</td>
+                <td>99</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1264692097040474113">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 22:57:25</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MAY 24, 2020)
+
+1. The <span style="color: yellow;">COVID-19</span> confirmation tests for seven suspected cases came back POSITIVE. Six are from iSON Xperiences and one case is also from Ibadan SW Local Govt Area. So, the total number of confirmed cases in Oyo State is 240. https://t.co/DCo31amAlj</td>
+                <td>115</td>
+                <td>308</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1264692004056948737">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 22:05:17</td>
+                <td class ="content_left">3. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any <span style="color: yellow;">COVID-19</span> symptoms: cough, fever, tiredness, body ache and shortness of breath.</td>
+                <td>43</td>
+                <td>86</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1264316496467148800">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 22:04:41</td>
+                <td class ="content_left">2. Also, the <span style="color: yellow;">COVID-19</span> confirmation tests for thirty suspected cases came back POSITIVE. Twenty-seven cases are from iSON Xperiences and one each from Ibadan SW, Ibadan SE and Oluyole Local Govt Areas. So, the total number of confirmed cases in Oyo State as at 5.30PM today is 233.</td>
+                <td>68</td>
+                <td>124</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1264316346508161025">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 22:03:35</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MAY 23, 2020)
+
+1. Nine confirmed <span style="color: yellow;">COVID-19</span> patients have received their second NEGATIVE test results and have been discharged. This brings the number of discharged cases in Oyo State to fifty-eight. https://t.co/wvDPs4MASu</td>
+                <td>137</td>
+                <td>349</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1264316068073529345">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 10:02:03</td>
+                <td class ="content_left">Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any <span style="color: yellow;">COVID-19</span> symptoms: cough, fever, tiredness, body ache and shortness of breath.</td>
+                <td>40</td>
+                <td>67</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1264134489317486593">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 10:01:49</td>
+                <td class ="content_left">3. Remember, many <span style="color: yellow;">COVID-19</span> cases are asymptomatic. So, it is important to wear your face masks in public places, practice social distancing, and wash your hands with soap and water regularly.</td>
+                <td>44</td>
+                <td>85</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1264134430395858944">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 10:01:15</td>
+                <td class ="content_left">2. Also, the <span style="color: yellow;">COVID-19</span> confirmation tests for thirteen suspected cases came back POSITIVE. Eleven cases are from iSON Xperiences. The other two cases are from Afijio and Ibadan North East Local Government Areas. So, the total number of confirmed cases in Oyo State is 203.</td>
+                <td>46</td>
+                <td>71</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1264134288066465793">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 10:00:39</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (for MAY 22, 2020)
+
+1. One confirmed <span style="color: yellow;">COVID-19</span> patient has received their second NEGATIVE test results and has been discharged. This brings the number of discharged cases in Oyo State to forty-nine. https://t.co/A5j3GY2qXs</td>
+                <td>113</td>
+                <td>314</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1264134139403538432">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 09:21:04</td>
+                <td class ="content_left">The upside is that majority of the <span style="color: yellow;">COVID-19</span> cases in Oyo State have relatively mild or no symptoms. This means that with the proper management of cases that we have put in place, they will recover without any complications.</td>
+                <td>44</td>
+                <td>73</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1263761789226975232">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 09:17:33</td>
+                <td class ="content_left">Let me reassure you, as Head of the Oyo State <span style="color: yellow;">COVID-19</span> Task Force, that we are doing everything in our power to contain the spread of this disease, given the recent increase in numbers.</td>
+                <td>43</td>
+                <td>85</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1263760903213809667">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 09:17:12</td>
+                <td class ="content_left">The <span style="color: yellow;">COVID-19</span> confirmation tests for twenty-eight suspected cases came back POSITIVE. Twenty-seven are from iSON Xperiences and the last case is from Akinyele Local Government Area. So, the total number of confirmed cases in Oyo State is 190.</td>
+                <td>56</td>
+                <td>90</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1263760815817142272">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 09:16:45</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (for MAY 21, 2020) https://t.co/WvScyNEAaS</td>
+                <td>107</td>
+                <td>266</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1263760702029824000">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-21 13:15:37</td>
+                <td class ="content_left">As I stated in my press briefing on May 18, 2020, the experts are carrying out a risk situational analysis and we will communicate whatever decisions are reached through our Oyo State <span style="color: yellow;">COVID-19</span> Task Force Press briefings in due course. https://t.co/Rf9r4tpcwQ</td>
+                <td>70</td>
+                <td>150</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1263458425679339520">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 23:15:55</td>
+                <td class ="content_left">2. Also, the <span style="color: yellow;">COVID-19</span> confirmation tests for nineteen suspected cases came back POSITIVE. Fifteen are from iSON Xperiences in Ibadan South West LGA, 2 are from Ido LGA and 1 is from Ibadan South East LGA. So, the total number of confirmed cases in Oyo State is 162.</td>
+                <td>62</td>
+                <td>129</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1263247108582387714">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 23:14:41</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MAY 20, 2020)
+
+1. Two confirmed <span style="color: yellow;">COVID-19</span> patients have received their second NEGATIVE test results and have been discharged. This brings the number of discharged cases in Oyo State to forty-eight. https://t.co/9x1WZslAy8</td>
+                <td>122</td>
+                <td>344</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1263246800405790721">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 10:07:57</td>
+                <td class ="content_left">1. The <span style="color: yellow;">COVID-19</span> confirmation tests for six suspected cases came back POSITIVE. All six cases are from the same organisation, iSON Xperiences in Ibadan South West Local Government Area. So, the total number of confirmed cases in Oyo State is 143.</td>
+                <td>82</td>
+                <td>109</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1263048813008375808">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 10:07:15</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (for MAY 19, 2020) https://t.co/kT2sZlCxIY</td>
+                <td>110</td>
+                <td>319</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1263048633638887429">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 15:29:43</td>
+                <td class ="content_left">You can assess your <span style="color: yellow;">COVID-19</span> status or report a <span style="color: yellow;">COVID-19</span> case using your phone. Dial *723*19*6# or call 014400028. No internet required.
+This service is provided courtesy of E’clat Healthcare Limited. https://t.co/r85EcWmqOR</td>
+                <td>170</td>
+                <td>396</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1262767397183926272">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 23:13:10</td>
+                <td class ="content_left">a) People who believe they could have come in contact with a <span style="color: yellow;">COVID-19</span> case in Oyo State;
+
+b) People with <span style="color: yellow;">COVID-19</span> symptoms: cough, fever, tiredness, body ache and shortness of breath;
+
+c) Healthcare workers who have been in contact with the high-risk groups, above.</td>
+                <td>44</td>
+                <td>76</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1262521641285955585">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 23:12:08</td>
+                <td class ="content_left">1. The <span style="color: yellow;">COVID-19</span> confirmation tests for nineteen suspected cases came back POSITIVE. All nineteen of these cases are from the same organisation referred to in the update of May 16 and 17, 2020. So, the total number of confirmed cases in Oyo State is 137.</td>
+                <td>71</td>
+                <td>101</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1262521382585405445">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 23:11:11</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MAY 18, 2020) https://t.co/F3bcTJPwtU</td>
+                <td>93</td>
+                <td>254</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1262521144407658496">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 17:24:35</td>
+                <td class ="content_left">We are currently in an accelerated phase in the transmission of <span style="color: yellow;">COVID-19</span> in Oyo State and the expert advice is that transmission occurs more easily in enclosed spaces. So, we cannot at this time, relax this directive.</td>
+                <td>56</td>
+                <td>105</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1262433917266771968">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 17:23:15</td>
+                <td class ="content_left">We will issue an advisory based on the advice given by Professor E. Olatunde Farombi, a Professor of Biochemistry and Fellow, Nigeria Academy of Science. This is on foods and natural products useful as preventive measures against <span style="color: yellow;">COVID-19</span> and other viral illnesses.</td>
+                <td>63</td>
+                <td>105</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1262433581311373314">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 17:22:30</td>
+                <td class ="content_left">On the management of <span style="color: yellow;">COVID-19</span> cases, we will continue to allow all confirmed <span style="color: yellow;">COVID-19</span> cases who are able to self-isolate at home to do so, in order not to overwhelm the capacity of our isolation centres.</td>
+                <td>50</td>
+                <td>90</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1262433392462893059">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 17:21:05</td>
+                <td class ="content_left">The details of the company in Ibadan South West Local Government Area where 38 <span style="color: yellow;">COVID-19</span> cases have so far, been confirmed in the last two days, will be unveiled tomorrow.</td>
+                <td>67</td>
+                <td>103</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1262433035229814784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 17:20:32</td>
+                <td class ="content_left">I will yield the floor to him in a moment but first, let me give you a general overview of where we are in the fight against <span style="color: yellow;">COVID-19</span> in Oyo State.</td>
+                <td>50</td>
+                <td>85</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1262432899674054656">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 17:19:55</td>
+                <td class ="content_left">Today, I am being joined by Professor Temitope Alonge, a member of the Oyo State <span style="color: yellow;">COVID-19</span> Task Force. He will brief you on the new treatment protocol for <span style="color: yellow;">COVID-19</span> cases in the state and the reliability of the results obtained so far.</td>
+                <td>55</td>
+                <td>99</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1262432742236700681">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 17:19:26</td>
+                <td class ="content_left">Press Briefing by Governor Seyi Makinde, Head, Oyo State <span style="color: yellow;">COVID-19</span> Task Force (May 18, 2020) https://t.co/DQQqChlF1l</td>
+                <td>227</td>
+                <td>792</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1262432622128631810">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 08:04:28</td>
+                <td class ="content_left">a) People who believe they could have come in contact with a <span style="color: yellow;">COVID-19</span> case in Oyo State;
+
+b) People with <span style="color: yellow;">COVID-19</span> symptoms: cough, fever, tiredness, body</td>
+                <td>39</td>
+                <td>52</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1262292961645256705">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 08:03:32</td>
+                <td class ="content_left">Furthermore, the test results of two suspected cases from the University College Hospital, Ibadan, who passed away and have been buried also came back POSITIVE. So, the total number of confirmed cases in Oyo State is 118 and the total number of <span style="color: yellow;">COVID-19</span> related deaths is four.</td>
+                <td>48</td>
+                <td>55</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1262292726403534848">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 08:02:52</td>
+                <td class ="content_left">2. Also, the <span style="color: yellow;">COVID-19</span> confirmation tests for eleven suspected cases came back POSITIVE. Eight of these cases are from the same organisation in Ibadan South West Local Government Area referred to in the update of May 16, 2020. One case is from Oluyole Local Government Area.</td>
+                <td>53</td>
+                <td>66</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1262292555477155841">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 08:02:02</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (for MAY 17, 2020)
+
+1. Eighteen confirmed <span style="color: yellow;">COVID-19</span> patients have received their second NEGATIVE test results and have been discharged. This brings the number of discharged cases in Oyo State to forty-six. https://t.co/neWWQ223oA</td>
+                <td>207</td>
+                <td>479</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1262292349092274176">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 21:27:15</td>
+                <td class ="content_left">a) People who believe they could have come in contact with a <span style="color: yellow;">COVID-19</span> case in Oyo State;
+
+b) People with <span style="color: yellow;">COVID-19</span> symptoms: cough, fever, tiredness, body ache and shortness of breath;</td>
+                <td>49</td>
+                <td>82</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1261770211247693825">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 21:24:47</td>
+                <td class ="content_left">1. The <span style="color: yellow;">COVID-19</span> confirmation tests for thirty-one suspected cases came back POSITIVE. Thirty of these cases are members of staff of the same organisation based in Ibadan South West Local Government Area. The organisation has been shut down and will be decontaminated.</td>
+                <td>186</td>
+                <td>248</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1261769588381007874">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 21:24:15</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MAY 16, 2020) https://t.co/wB9l7LbwGF</td>
+                <td>146</td>
+                <td>320</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1261769456788942850">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-15 22:33:49</td>
+                <td class ="content_left">a) People who believe they could have come in contact with a <span style="color: yellow;">COVID-19</span> case in Oyo State;
+
+b) People with <span style="color: yellow;">COVID-19</span> symptoms: cough, fever, tiredness, body ache and shortness of breath;</td>
+                <td>38</td>
+                <td>73</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1261424574782156800">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-15 22:32:24</td>
+                <td class ="content_left">2. Also, the <span style="color: yellow;">COVID-19</span> confirmation tests for three suspected cases came back POSITIVE. Two cases are from Oriire Local Government Area and one is from Oluyole Local Government Area. So, the total number of confirmed cases in Oyo State as at 8 PM today, is seventy-six.</td>
+                <td>53</td>
+                <td>100</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1261424217989373953">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-15 22:31:20</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MAY 15, 2020)
+
+1. Eleven confirmed <span style="color: yellow;">COVID-19</span> patients at the Infectious Disease Centre, Olodo, have received their second NEGATIVE test results and have been discharged. This brings the number of discharged cases in Oyo State to twenty-eight. https://t.co/tWFL8T5k95</td>
+                <td>169</td>
+                <td>562</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1261423949067489283">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 22:35:45</td>
+                <td class ="content_left">a) People who believe they could have come in contact with a <span style="color: yellow;">COVID-19</span> case in Oyo State;
+
+b) People with <span style="color: yellow;">COVID-19</span> symptoms: cough, fever, tiredness, body ache and shortness of breath;</td>
+                <td>21</td>
+                <td>39</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1260700284214562816">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 22:34:34</td>
+                <td class ="content_left">1. The <span style="color: yellow;">COVID-19</span> confirmation tests for four suspected cases came back POSITIVE, today. Two more <span style="color: yellow;">COVID-19</span> cases were also confirmed late last night. So, the total number of confirmed cases in Oyo State as at 10.30 PM today, is seventy-three.</td>
+                <td>46</td>
+                <td>69</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1260699986502782976">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 22:34:21</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MAY 13, 2020) https://t.co/AyFw9ij8l3</td>
+                <td>123</td>
+                <td>278</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1260699934908710914">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 20:56:33</td>
+                <td class ="content_left">2. Also, the <span style="color: yellow;">COVID-19</span> confirmation tests for two suspected cases came back POSITIVE. One case in Ibadan North and one case in Ibadan North West. So, the total number of confirmed cases in Oyo State as at 8 PM today, is sixty-seven.</td>
+                <td>65</td>
+                <td>162</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1260312934082895883">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 20:55:41</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MAY 12, 2020)
+
+1. Three confirmed <span style="color: yellow;">COVID-19</span> patients have received their second NEGATIVE test results and have been discharged. This brings the number of discharged cases in Oyo State to seventeen. https://t.co/Ku5kdXPPUm</td>
+                <td>180</td>
+                <td>549</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1260312715370864641">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 22:03:59</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MAY 11, 2020)
+
+1. The <span style="color: yellow;">COVID-19</span> confirmation test for one suspected case came back POSITIVE. The case is from Ibadan South West Local Government Area. So, the total number of confirmed cases in Oyo State as at 8 PM today, is sixty-five. https://t.co/RDrFhLdGxS</td>
+                <td>238</td>
+                <td>544</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1259967516148936704">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 22:45:20</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MAY 09, 2020)
+
+1. The <span style="color: yellow;">COVID-19</span> confirmation tests for five suspected cases came back POSITIVE. The cases are from the following Local Government Areas: Ibadan North (2), a foreigner in Surulere, Ibadan North East (1) &amp; Ibadan South West (1). https://t.co/2nJNqy3LJW</td>
+                <td>251</td>
+                <td>608</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1259253145957543938">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 22:15:12</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MAY 08, 2020)
+
+1. The <span style="color: yellow;">COVID-19</span> confirmation tests for four suspected cases came back POSITIVE. So, the total number of confirmed cases in Oyo State is fifty-nine. https://t.co/afpHeLCclO</td>
+                <td>163</td>
+                <td>475</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1258883176677740548">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 22:47:33</td>
+                <td class ="content_left">2. Also, the <span style="color: yellow;">COVID-19</span> confirmation tests for three more cases came back POSITIVE. So, the total number of confirmed cases in Oyo State is fifty-five.</td>
+                <td>52</td>
+                <td>168</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1258528926311178240">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 22:44:59</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MAY 07, 2020)
+
+1. One confirmed #COVID_19 patient has received their second negative test result and is now free from the virus. This brings the number of discharged cases in Oyo State to fourteen. https://t.co/VeUsGktPES</td>
+                <td>173</td>
+                <td>545</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1258528283664113664">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 22:42:32</td>
+                <td class ="content_left">The <span style="color: yellow;">COVID-19</span> confirmation tests of eight new cases just came back positive from the laboratory, tonight. This increases the number of confirmed cases in Oyo State to fifty-two.</td>
+                <td>50</td>
+                <td>148</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1258165279659565056">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 21:46:33</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MAY 06, 2020)
+
+1. Two confirmed <span style="color: yellow;">COVID-19</span> patients were discharged from the Infectious Disease Centre (IDC), Olodo after receiving their second negative test results. This brings the number of discharged cases in Oyo State to thirteen. https://t.co/qt6ZXXqrR6</td>
+                <td>210</td>
+                <td>600</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1258151187351777293">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 12:33:38</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (for MAY 05, 2020)
+
+1. We have received more results from pending <span style="color: yellow;">COVID-19</span> confirmation tests. The result of one suspected case came back POSITIVE, on 03/05/2020. The person is based in Ibadan. https://t.co/2L0rkRqnRz</td>
+                <td>220</td>
+                <td>534</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1258012042096672768">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 08:03:33</td>
+                <td class ="content_left">3. <span style="color: yellow;">COVID-19</span> pre-screening is also available through your phone by dialing *723*19*6# free of charge. No internet connection is required. https://t.co/wBALmArGx5</td>
+                <td>77</td>
+                <td>140</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1256856910311153665">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 08:02:15</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (for MAY 02, 2020)
+1. We have received more results from pending <span style="color: yellow;">COVID-19</span> confirmation tests. The results of two suspected cases came back POSITIVE, today. Both cases are from Ibadan. This brings the number of active cases in Oyo State to 22. https://t.co/0CaGT3AZvB</td>
+                <td>211</td>
+                <td>614</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1256856585147736064">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 22:39:44</td>
+                <td class ="content_left">4. Please, keep taking advantage of the provision for testing for <span style="color: yellow;">COVID-19</span> in Oyo State. Call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, to book a test.</td>
+                <td>62</td>
+                <td>135</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1256352634719678470">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 22:38:08</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MAY 01, 2020)
+
+1. We have started receiving results of pending <span style="color: yellow;">COVID-19</span> confirmation tests. Two tests came back positive late last night. One from a UCH doctor who returned from Kano and another is a worker with the State Security Service. https://t.co/EhWwW6mehv</td>
+                <td>299</td>
+                <td>593</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1256352232192311298">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 21:20:38</td>
+                <td class ="content_left">3. Please, keep taking advantage of the provision for testing for <span style="color: yellow;">COVID-19</span> in Oyo State. Call the Emergency Operations Centre on 08095394000 / 08095863000 / 08078288999 / 08078288800, to book a test.</td>
+                <td>49</td>
+                <td>141</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1255970340259446788">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 21:19:58</td>
+                <td class ="content_left">2. The confirmed <span style="color: yellow;">COVID-19</span> case who requested a transfer to Lagos on April 11, 2020 has now been discharged after testing negative twice.</td>
+                <td>70</td>
+                <td>189</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1255970173967876096">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 21:17:42</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (APRIL 30, 2020)
+
+1. The Emergency Operations Centre was able to track a <span style="color: yellow;">COVID-19</span> positive case, following an alert from Lagos State. The patient had a test in Lagos but came to Ibadan while waiting for the result. https://t.co/EHfNJXRgkP</td>
+                <td>221</td>
+                <td>543</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1255969600912658432">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 11:39:02</td>
+                <td class ="content_left">You can now get help with assessing your <span style="color: yellow;">COVID-19</span> status or reporting a <span style="color: yellow;">COVID-19</span> case through your phone. Dial *723*19*6# or call 014400028. No internet required.
+This service is provided courtesy of E’clat Healthcare Limited. https://t.co/VseBgYfymR</td>
+                <td>382</td>
+                <td>800</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1255823974468116484">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 07:20:03</td>
+                <td class ="content_left">6. Please, take advantage of the provision for testing for <span style="color: yellow;">COVID-19</span> in Oyo State. Call the Emergency Operations Centre on 08095394000 / 08095863000 / 08078288999 / 08078288800, to book a test.</td>
+                <td>66</td>
+                <td>138</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1255396412508049408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 07:16:56</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (APRIL 29, 2020)
+
+1. Due to a shortage of reagents required to process <span style="color: yellow;">COVID-19</span> tests, we currently have a number of pending results. Of the 775 samples collected so far, 300 are awaiting results. https://t.co/3F8MQCryYa</td>
+                <td>352</td>
+                <td>842</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1255395628579946497">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 23:04:16</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (APRIL 26, 2020)
+
+Sadly, one of the new <span style="color: yellow;">COVID-19</span> cases announced yesterday, passed away this morning. This brings the number of <span style="color: yellow;">COVID-19</span> related deaths in the state to two. So, there are currently eight active cases in Oyo State. https://t.co/Fqj8s3ExBx</td>
+                <td>406</td>
+                <td>954</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1254546868962570241">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 22:54:04</td>
+                <td class ="content_left">4. Please, keep following the directives of the Oyo State <span style="color: yellow;">COVID-19</span> Task Force. Wash your hands with soap and water or use an alcohol-based hand sanitizer, regularly. Also, continue to maintain social distancing. Gatherings in Oyo State are limited to a maximum of ten persons.</td>
+                <td>42</td>
+                <td>135</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1254181914845511680">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 22:52:38</td>
+                <td class ="content_left">a) People who believe they could have come into contact with a <span style="color: yellow;">COVID-19</span> case in Oyo State;
+
+b) People who returned to Nigeria from abroad within the last one month and their contacts;</td>
+                <td>47</td>
+                <td>83</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1254181554454233098">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 22:51:20</td>
+                <td class ="content_left">2. A total of 610 samples have been collected so far in Oyo State. 453 of these samples were collected at the <span style="color: yellow;">COVID-19</span> drive-through/walk-through testing centre at Adamasingba Stadium. Testing is still ongoing at the centre.</td>
+                <td>57</td>
+                <td>138</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1254181227646590976">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 22:50:39</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (APRIL 25, 2020)
+
+1. The <span style="color: yellow;">COVID-19</span> confirmation test for three suspected cases from the University College Hospital, Ibadan, came back POSITIVE, today. So, there are currently nine active cases in Oyo State. https://t.co/4umq4MBfBY</td>
+                <td>292</td>
+                <td>697</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1254181055747284992">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 21:28:03</td>
+                <td class ="content_left">Press briefing by Governor Seyi Makinde, Head of the <span style="color: yellow;">COVID-19</span> Task Force in Oyo State, on April 25, 2020
+Full video https://t.co/yOpU8SqcOy https://t.co/CW96JetB8N</td>
+                <td>111</td>
+                <td>451</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1254160265593196545">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 17:56:16</td>
+                <td class ="content_left">I thank the people of Oyo State for their cooperation and advise them to keep following the directives of the Task Force on <span style="color: yellow;">COVID-19</span> in Oyo State.</td>
+                <td>120</td>
+                <td>595</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1254106969029382145">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 17:54:02</td>
+                <td class ="content_left">Based on this, the Chief Medical Director of the University College Hospital (UCH), Ibadan will be working with the Commissioner for Health in Oyo State, Dr @BVA_Bello, to set up a five-person accreditation team. UCH will also nominate someone to join the <span style="color: yellow;">COVID-19</span> Task Force.</td>
+                <td>112</td>
+                <td>361</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1254106408813039616">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 17:52:33</td>
+                <td class ="content_left">Let me use this opportunity to commend the Minister for Health, @DrEOEhanire, for the work they are doing at the national level to fight the <span style="color: yellow;">COVID-19</span> pandemic.</td>
+                <td>106</td>
+                <td>349</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1254106034408480768">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 17:49:54</td>
+                <td class ="content_left"><span style="color: yellow;">COVID-19</span> compliant guidelines will be provided for markets, including hand washing facilities at strategic places and wearing of face masks. Only markets which meet up with these guidelines will be allowed to reopen.</td>
+                <td>130</td>
+                <td>404</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1254105367811948544">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 17:45:25</td>
+                <td class ="content_left">The State Secretariat will be reopened on Monday April 27th 2020. Only civil servants at level 13 and above with separate offices will resume.
+
+The following guidelines are in place to prevent and control the spread of <span style="color: yellow;">COVID-19</span> within the State Secretariat;</td>
+                <td>177</td>
+                <td>408</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1254104240777240579">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 17:44:02</td>
+                <td class ="content_left">PRESS BRIEFING BY GOVERNOR SEYI MAKINDE, HEAD OF THE <span style="color: yellow;">COVID-19</span> TASK FORCE IN OYO STATE, ON APRIL 25, 2020
+
+Good evening and thank you for joining me.
+
+We just finished the Oyo State <span style="color: yellow;">COVID-19</span> Task Force meeting. Here are some of the decisions which we took. https://t.co/6mpdSCk8q2</td>
+                <td>1058</td>
+                <td>3105</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1254103893128220677">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 22:01:22</td>
+                <td class ="content_left">3. Please, keep following the directives of the Oyo State <span style="color: yellow;">COVID-19</span> Task Force. Wash your hands with soap and water or use an alcohol-based hand sanitizer, regularly. Also, continue to maintain social distancing. Gatherings in Oyo State are limited to a maximum of ten persons.</td>
+                <td>76</td>
+                <td>227</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1253806265257660417">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 22:00:48</td>
+                <td class ="content_left">2. A total of 453 tests have been conducted at the <span style="color: yellow;">COVID-19</span> drive-through/walk-through testing centre at Adamasingba Stadium. Testing is still ongoing at the centre.</td>
+                <td>89</td>
+                <td>269</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1253806120361177088">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 22:00:10</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (APRIL 24, 2020)
+
+1. The <span style="color: yellow;">COVID-19</span> confirmation test for one suspected case came back POSITIVE, today. This brings the number of active cases in Oyo State to six. https://t.co/SDcX3eqNbd</td>
+                <td>294</td>
+                <td>744</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1253805961984311297">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 22:31:15</td>
+                <td class ="content_left">4. Please, keep following the directives of the Oyo State <span style="color: yellow;">COVID-19</span> Task Force. Wash your hands with soap and water or use an alcohol-based hand sanitizer, regularly. Also, continue to maintain social distancing. Gatherings in Oyo State are limited to a maximum of ten persons.</td>
+                <td>43</td>
+                <td>160</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1253089009036861441">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 22:30:00</td>
+                <td class ="content_left">a) People who believe they could have come into contact with a <span style="color: yellow;">COVID-19</span> case in Oyo State;
+
+b) People who returned to Nigeria from abroad within the last one month and their contacts;</td>
+                <td>35</td>
+                <td>82</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1253088693021270016">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 22:27:37</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (APRIL 22, 2020)
+
+1. The <span style="color: yellow;">COVID-19</span> confirmation test for one suspected case came back POSITIVE. The patient died at the University College Hospital, Ibadan, before his result came out today. Contact tracing has already commenced. https://t.co/Vucrdj6TD8</td>
+                <td>329</td>
+                <td>789</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1253088095064526850">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 16:12:00</td>
+                <td class ="content_left">Today, a team from the @NCDCgov  led by the Director General, Dr @Chikwe_I, visited us to offer their support as we work towards preventing the spread of <span style="color: yellow;">COVID-19</span> in Oyo State. 
+Full video https://t.co/AWOqL6Jtrn https://t.co/HAZiGyzz2e</td>
+                <td>189</td>
+                <td>639</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1252631178701660161">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 21:26:48</td>
+                <td class ="content_left">4. Please, keep following the directives of the Oyo State <span style="color: yellow;">COVID-19</span> Task Force. Wash your hands with soap and water or use an alcohol-based hand sanitizer, regularly. Also, continue to maintain social distancing. Gatherings in Oyo State are limited to a maximum of ten persons.</td>
+                <td>81</td>
+                <td>187</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1252348014204555267">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 21:24:29</td>
+                <td class ="content_left">a) People who believe they could have come into contact with a <span style="color: yellow;">COVID-19</span> case in Oyo State;
+
+b) People who returned to Nigeria from abroad within the last one month and their contacts;</td>
+                <td>53</td>
+                <td>79</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1252347430663684096">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 21:21:08</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (APRIL 20, 2020) https://t.co/boxTe4c7Vq</td>
+                <td>219</td>
+                <td>612</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1252346587281383430">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 16:18:40</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (APRIL 19, 2020)
+
+Two confirmed <span style="color: yellow;">COVID-19</span> patients were discharged today after receiving their second negative test results. This brings the number of discharged cases to nine. So, there are currently six active cases in Oyo State. https://t.co/8AR2I0U4AP</td>
+                <td>492</td>
+                <td>1533</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1251908080939552769">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 20:55:18</td>
+                <td class ="content_left">3. Please, keep following the directives of the Oyo State <span style="color: yellow;">COVID-19</span> Task Force. Wash your hands with soap and water or use an alcohol-based hand sanitizer, regularly. Also, continue to maintain social distancing. Gatherings in Oyo State are limited to a maximum of ten persons.</td>
+                <td>70</td>
+                <td>181</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1251615309900976129">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 20:54:17</td>
+                <td class ="content_left">a) People who believe they could have come into contact with a <span style="color: yellow;">COVID-19</span> case in Oyo State;
+
+b) People who returned to Nigeria from abroad within the last one month and their contacts;</td>
+                <td>44</td>
+                <td>70</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1251615053842964492">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 20:53:08</td>
+                <td class ="content_left">1. The <span style="color: yellow;">COVID-19</span> confirmation test for one suspected case, a doctor at the University College Hospital, Ibadan, came back POSITIVE, today. Isolation and contact tracing have commenced. So, there are currently eight active cases in Oyo State.</td>
+                <td>104</td>
+                <td>153</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1251614765060894724">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 20:52:33</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (APRIL 18, 2020) https://t.co/4iIpNPE8T8</td>
+                <td>241</td>
+                <td>567</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1251614620072259586">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 19:15:19</td>
+                <td class ="content_left">I also thank members of the press for the balanced reporting of the activities of the Oyo State Government as we do everything humanly possible to contain the spread of <span style="color: yellow;">COVID-19</span> in our state.</td>
+                <td>94</td>
+                <td>358</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1251227760179150859">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 19:13:59</td>
+                <td class ="content_left">Let me use this opportunity to thank our health workers. This government will continue to make their welfare our priority and ensure that they are adequately protected as they remain on the front lines in the fight against <span style="color: yellow;">COVID-19</span> in Oyo State.</td>
+                <td>92</td>
+                <td>322</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1251227425977110529">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 19:08:41</td>
+                <td class ="content_left">As I stated at an earlier interview, one of the measures we considered to prevent, contain and control the spread of <span style="color: yellow;">COVID-19</span> in Oyo State is the compulsory use of face masks in public. Today, we reached a decision to implement this measure.</td>
+                <td>86</td>
+                <td>228</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1251226090934276096">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 19:06:20</td>
+                <td class ="content_left">During the <span style="color: yellow;">COVID-19</span> Task Force meeting today, we were informed that two more tests came back positive. So, we have four new cases from the tests being conducted at Adamasingba Stadium. This brings the number of active cases in Oyo State to seven.</td>
+                <td>104</td>
+                <td>224</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1251225501307490306">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-17 19:05:40</td>
+                <td class ="content_left">PRESS BRIEFING BY GOVERNOR SEYI MAKINDE, HEAD OF THE <span style="color: yellow;">COVID-19</span> TASK FORCE IN OYO STATE ON APRIL 17, 2020
+One of the two positive <span style="color: yellow;">COVID-19</span> cases confirmed yesterday, is from Yemetu and the other is a returnee from the United States who is based in Ikolaba. https://t.co/bh64iL8lJ1</td>
+                <td>648</td>
+                <td>1994</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1251225330448306176">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 21:43:32</td>
+                <td class ="content_left">5. Just in:
+The <span style="color: yellow;">COVID-19</span> confirmation test for two suspected cases came back POSITIVE, tonight. This brings the number of active cases in Oyo State to five. https://t.co/DjpXlRux2p</td>
+                <td>54</td>
+                <td>134</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1250902671306956804">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 21:35:42</td>
+                <td class ="content_left">4. Please, keep following the directives of the Oyo State <span style="color: yellow;">COVID-19</span> Task Force. Wash your hands with soap and water or use an alcohol-based hand sanitizer, regularly. Also, continue to maintain social distancing.</td>
+                <td>41</td>
+                <td>153</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1250900701640822784">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 21:34:40</td>
+                <td class ="content_left">3. We thank Smile Communications Nigeria, which donated routers to our Emergency Operations Centre. We also thank everyone who has continued to donate to the state government in cash or kind to enable us prevent the spread of <span style="color: yellow;">COVID-19</span> in Oyo State.</td>
+                <td>45</td>
+                <td>149</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1250900440646135810">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 21:32:46</td>
+                <td class ="content_left">a) People who believe they could have come into contact with a <span style="color: yellow;">COVID-19</span> case in Oyo State;
+
+b) People who returned to Nigeria from abroad within the last one month and their contacts;</td>
+                <td>40</td>
+                <td>91</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1250899964672323585">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 21:30:11</td>
+                <td class ="content_left">1. One confirmed <span style="color: yellow;">COVID-19</span> patient was discharged after receiving their second negative test result. This brings the number of discharged cases in Oyo State to seven. As reported earlier, one case was transferred to Lagos. So, there are currently three active cases in the state.</td>
+                <td>72</td>
+                <td>210</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1250899312558686208">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 21:28:08</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (APRIL 16, 2020) https://t.co/HttFxVnBAW</td>
+                <td>222</td>
+                <td>545</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1250898795233267715">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-15 08:41:32</td>
+                <td class ="content_left">We have been advocating for local solutions to the <span style="color: yellow;">COVID-19</span> pandemic in Oyo State. So, as a <span style="color: yellow;">COVID-19</span> survivor, I volunteered to donate my blood to be studied by our experts researching on the “Evaluation of Post Infection Protection Against SARS-COV-2 (<span style="color: yellow;">COVID-19</span>) in Nigeria." https://t.co/DauVcB8lLk</td>
+                <td>1294</td>
+                <td>5483</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1250343487775469568">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 19:01:38</td>
+                <td class ="content_left">Indeed, with social distancing through lockdowns proving to be the most effective way of checking community spread, and the fact that people can have <span style="color: yellow;">COVID-19</span> and be asymptomatic, large-scale testing will help us determine where and when targeted lockdowns are necessary.</td>
+                <td>65</td>
+                <td>146</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1250137155193757697">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 19:01:03</td>
+                <td class ="content_left">Experts have opined that the best place to start in solving our peculiar problems is by ramping up our testing capabilities. This is why we collaborated with the College of Medicine, University of Ibadan, to set up a diagnostic centre to test for <span style="color: yellow;">COVID-19</span> right here in Ibadan.</td>
+                <td>80</td>
+                <td>167</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1250137007453601794">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-14 18:58:46</td>
+                <td class ="content_left">Today, we started the drive/walk-through testing initiative for <span style="color: yellow;">COVID-19</span> to test 2,000 people at Adamasingba Stadium, Ibadan. The test kits were donated by the Citizen for Citizen Initiative and the tests are executed by @LifeBankNigeria. 
+Full video https://t.co/vVCdiPIa5t https://t.co/lcPtfif5kT</td>
+                <td>631</td>
+                <td>1473</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1250136434050285568">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-12 06:24:33</td>
+                <td class ="content_left">However, the partial lockdown in Oyo State as a result of the <span style="color: yellow;">COVID-19</span> pandemic means that some of you are unable to provide for your families as you used to. This lockdown can also take a toll on your mental and spiritual well-being as a result of social distancing.</td>
+                <td>93</td>
+                <td>462</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1249221851852783619">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 19:45:05</td>
+                <td class ="content_left">5. Please, keep following the directives of the Oyo State <span style="color: yellow;">COVID-19</span> Task Force. Wash your hands with soap and water or use an alcohol-based hand sanitizer, regularly. Also, continue to maintain social distancing.</td>
+                <td>72</td>
+                <td>218</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1249060922741723136">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 19:44:23</td>
+                <td class ="content_left">4. Let me also use this opportunity to thank Chicken Republic, Dominos Pizza and all other organisations and individuals who have supported the state’s effort in preventing the spread of <span style="color: yellow;">COVID-19</span> through donations in cash and kind.</td>
+                <td>77</td>
+                <td>246</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1249060747738480640">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 19:40:58</td>
+                <td class ="content_left">1. One confirmed <span style="color: yellow;">COVID-19</span> patient was discharged after receiving their second negative test result. This brings the number of discharged cases in Oyo State to six. Another confirmed case requested a transfer to Lagos. So, there are currently four active cases in the state.</td>
+                <td>112</td>
+                <td>225</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1249059890036948997">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 19:40:00</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (APRIL 11, 2020) https://t.co/cmTFQL1wFz</td>
+                <td>263</td>
+                <td>594</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1249059645597106177">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 12:41:39</td>
+                <td class ="content_left">4. Please, keep following the directives of the Oyo State <span style="color: yellow;">COVID-19</span> Task Force. Wash your hands with soap and water or use an alcohol-based hand sanitizer, regularly. Also, continue to maintain social distancing.</td>
+                <td>78</td>
+                <td>196</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1248591975617572864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 12:40:32</td>
+                <td class ="content_left">2. All measures to prevent the spread of <span style="color: yellow;">COVID-19</span> in Oyo State, remain in place. These include the dusk to dawn curfew (7 PM to 6 AM); no gatherings of more than ten people to be held anywhere in the state and the closure of all markets except those selling perishable food items.</td>
+                <td>66</td>
+                <td>131</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1248591695828172801">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 12:38:47</td>
+                <td class ="content_left">1. Yesterday, three confirmed <span style="color: yellow;">COVID-19</span> patients were discharged after receiving their second negative test results. This brings the number of discharged cases in Oyo State to five. So, there are currently six active cases.</td>
+                <td>94</td>
+                <td>217</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1248591254973288448">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-10 12:38:04</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (APRIL 10, 2020) https://t.co/cTSNoZwXC7</td>
+                <td>344</td>
+                <td>857</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1248591073661853696">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 20:08:37</td>
+                <td class ="content_left">Press Briefing by Governor Seyi Makinde, Head of the Oyo State <span style="color: yellow;">COVID-19</span> Task Force. https://t.co/O5m0MvTyNF</td>
+                <td>170</td>
+                <td>614</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1247979683477696517">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 17:41:45</td>
+                <td class ="content_left">3. Please, keep following the directives of the Oyo State <span style="color: yellow;">COVID-19</span> Task Force. Wash your hands with soap and water or use an alcohol-based hand sanitizer, regularly. Also, continue to maintain social distancing.</td>
+                <td>72</td>
+                <td>223</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1247580334922829825">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 17:40:29</td>
+                <td class ="content_left">The second case is a 42-year-old man who is a contact of an earlier confirmed <span style="color: yellow;">COVID-19</span> case.</td>
+                <td>62</td>
+                <td>151</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1247580015266598912">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 17:40:01</td>
+                <td class ="content_left">1. The <span style="color: yellow;">COVID-19</span> confirmation test for two suspected cases came back POSITIVE, today. One of the new cases is a 28-year-old woman who returned to the country from the United Arab Emirates on March 22, 2020.</td>
+                <td>91</td>
+                <td>151</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1247579897096286211">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-07 17:39:14</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (APRIL 07, 2020) https://t.co/0kTdoHsTsM</td>
+                <td>321</td>
+                <td>836</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1247579700270190599">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-05 22:21:34</td>
+                <td class ="content_left">I am deeply moved by your prayers and support throughout this period. I am so thankful. This evening, I received my second negative test result for <span style="color: yellow;">COVID-19</span>. I especially thank Prof Temitope Alonge, who acted in my stead as Head of the Oyo State <span style="color: yellow;">COVID-19</span> Task Force. https://t.co/p0Tn1iH0H1</td>
+                <td>4977</td>
+                <td>23002</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1246925979706146819">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 21:47:37</td>
+                <td class ="content_left">7. We thank everyone who has been complying with our directives regarding curfew and social distancing. Please, keep following the directives of the Oyo State <span style="color: yellow;">COVID-19</span> Task Force.</td>
+                <td>93</td>
+                <td>515</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1245830272018313216">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 21:46:20</td>
+                <td class ="content_left">Consequently, an endowment fund account has been opened with the following banks; 
+Account Name: Oyo State Government <span style="color: yellow;">COVID-19</span> Endowment Fund
+First Bank of Nigeria - 2035265034
+United Bank for Africa - 1022748677
+Unity Bank – 0046196464</td>
+                <td>86</td>
+                <td>263</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1245829947702173697">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 21:45:48</td>
+                <td class ="content_left">5. We have received enquiries from individuals and private organisations about donating towards the state’s effort to prevent the spread of <span style="color: yellow;">COVID-19</span> in the state.</td>
+                <td>59</td>
+                <td>191</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1245829811966279680">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 21:39:41</td>
+                <td class ="content_left">1. There have been eight confirmed cases of <span style="color: yellow;">COVID-19</span> in Oyo State. One confirmed case was discharged on March 31, 2020. So, there are currently seven active cases.</td>
+                <td>82</td>
+                <td>253</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1245828274057613312">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-02 21:38:59</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (APRIL 02, 2020) https://t.co/48VF2Z1DPn</td>
+                <td>468</td>
+                <td>1344</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1245828098584489985">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-01 15:44:56</td>
+                <td class ="content_left">I urge our people to keep following the directives of the Oyo State <span style="color: yellow;">COVID-19</span> Task Force.</td>
+                <td>157</td>
+                <td>1018</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1245376611400200193">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 15:47:37</td>
+                <td class ="content_left">... So, I want to again, urge everyone in Oyo State to continue to follow the directives of the <span style="color: yellow;">COVID-19</span> Task Force and together, by the grace of God, we will defeat this virus and get our economy and our lives back on track.</td>
+                <td>84</td>
+                <td>351</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1245014899262136320">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 15:46:52</td>
+                <td class ="content_left">A.  Well, let me assure our people listening to me. Let me give the assurance that Oyo State Government will continue working with data from the Emergency Operations Centre, and we will do everything in our power to prevent the spread of <span style="color: yellow;">COVID-19</span> in the state.</td>
+                <td>77</td>
+                <td>286</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1245014708563972097">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 15:34:59</td>
+                <td class ="content_left">A.  Isaac, when we spoke last Saturday, everything that can be done to prevent the spread of <span style="color: yellow;">COVID-19</span> in Oyo State is on the table. We will continue to assess the situation and take additional measures where necessary.</td>
+                <td>46</td>
+                <td>102</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1245011719581306882">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 15:33:20</td>
+                <td class ="content_left">But to the good people of Oyo State, I want to say again: <span style="color: yellow;">COVID-19</span> is real. So, they must follow all the measures government has put in place to prevent, contain and control this virus.</td>
+                <td>50</td>
+                <td>111</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1245011303573467137">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 15:32:32</td>
+                <td class ="content_left">The reality is no, I actually never did. I had used <span style="color: yellow;">COVID-19</span> in the same metaphorical way that their APC leader did when they were fighting about their chairmanship and he said, well, the virus has gotten into the party.</td>
+                <td>52</td>
+                <td>92</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1245011101185724416">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 17:05:25</td>
+                <td class ="content_left">I have designated Prof Temitope Alonge, former Chief Medical Director of the University College, Ibadan, as the Head of <span style="color: yellow;">COVID-19</span> Task Force while I recover fully. Please continue to comply with all the directives from the <span style="color: yellow;">COVID-19</span> Task Force. Stay home, stay safe.</td>
+                <td>1214</td>
+                <td>4417</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1244672086825668608">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 17:04:49</td>
+                <td class ="content_left">I just received my <span style="color: yellow;">COVID-19</span> confirmation test result. It is POSITIVE. I am asymptomatic and will continue to self-isolate. https://t.co/SX6UAYBb0S</td>
+                <td>9236</td>
+                <td>27091</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1244671937080709122">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 21:24:08</td>
+                <td class ="content_left">1. The <span style="color: yellow;">COVID-19</span> confirmation test for four suspected cases came back POSITIVE, yesterday. The isolation process has been initiated, contact tracing and collection of samples have commenced. This brings the number of confirmed cases to seven.</td>
+                <td>120</td>
+                <td>215</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1244374809607311360">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-29 21:23:39</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MARCH 29, 2020) https://t.co/YDv2jWiC9e</td>
+                <td>609</td>
+                <td>1336</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1244374685862768642">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 11:01:18</td>
+                <td class ="content_left">Thank you for joining me. Let me start by explaining why I had to postpone my quarterly media chat. Governors who attended the NEC meeting came in contact with a confirmed <span style="color: yellow;">COVID-19</span> case. So, we were all advised to self-isolate and test. I have been in self-isolation since then.</td>
+                <td>193</td>
+                <td>580</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1243855680030851072">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 21:36:06</td>
+                <td class ="content_left">6. As part of our <span style="color: yellow;">COVID-19</span> sensitization programme, over 30,000 handbills in English, Igbo, Yoruba and Hausa have been produced for distribution.</td>
+                <td>215</td>
+                <td>490</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1243653043704528896">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 21:31:16</td>
+                <td class ="content_left">1. The <span style="color: yellow;">COVID-19</span> confirmation test for two suspected cases have come back POSITIVE. The isolation process has been initiated. 84 Persons of Interest have been identified, and contact tracing and collection of samples have commenced.</td>
+                <td>254</td>
+                <td>426</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1243651827058556930">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 21:30:41</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MARCH 27, 2020) https://t.co/0oZLee7KMQ</td>
+                <td>690</td>
+                <td>1440</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1243651681608519680">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-27 11:19:11</td>
+                <td class ="content_left">My quarterly media chat which should have held tomorrow, has been postponed, indefinitely. In its place, I will hold a tweetchat at 12 Noon tomorrow, Saturday March 28, 2020, to address issues regarding the state's preparedness for <span style="color: yellow;">COVID-19</span> and other matters. https://t.co/Uj5hsN3bbT</td>
+                <td>653</td>
+                <td>2750</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1243497794473771014">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 20:08:16</td>
+                <td class ="content_left">The team also shared flyers on prevention of <span style="color: yellow;">COVID-19</span> and hand sanitizers.</td>
+                <td>55</td>
+                <td>116</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1243268552603373573">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-26 20:06:46</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MARCH 26, 2020)
+1. Enlightenment campaigns on Coronavirus prevention via billboards erected in major towns; Ibadan, Oyo Town, Ogbomoso &amp; Eruwa Town, have commenced. Also, banners have been placed in popular online media outlets in Oyo State. https://t.co/gmCiKd51gq</td>
+                <td>447</td>
+                <td>1054</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1243268174910554113">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 18:50:26</td>
+                <td class ="content_left">By the end of this intervention, the RRT would have put in place, a structure which the Oyo State Government will leverage to effectively identify, isolate, and monitor <span style="color: yellow;">COVID-19</span> cases.</td>
+                <td>81</td>
+                <td>237</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1242886577501753345">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 18:50:07</td>
+                <td class ="content_left">The team will, for an initial period of 7 days, support <span style="color: yellow;">COVID-19</span> responses in Oyo State in the areas of training and establishment of the Diagnostic Centres.</td>
+                <td>72</td>
+                <td>188</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1242886497344335880">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 17:47:11</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MARCH 25, 2020)
+
+1. The Oyo State civil service will shut down for two weeks from, Friday, March 27, 2020. Only workers rendering essential services will be required to report for duty. https://t.co/TC0OS1EdUa</td>
+                <td>854</td>
+                <td>1577</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1242870660403208192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 07:37:42</td>
+                <td class ="content_left">Since the identification of the Ekiti case on the 18th of March, 2020, the Oyo State Government has ramped up its preparedness for any possible outbreak of the pandemic. We set up a <span style="color: yellow;">COVID-19</span> Task Force which I am heading.</td>
+                <td>31</td>
+                <td>49</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1242354891483381761">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 22:07:31</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MARCH 23, 2020)
+A broadcast by Governor Seyi Makinde
+https://t.co/OAa1d2s9hA</td>
+                <td>338</td>
+                <td>816</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1242211398375145472">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 23:38:43</td>
+                <td class ="content_left">2.  A follow up on the Ekiti <span style="color: yellow;">COVID-19</span> case revealed that the deceased was picked up directly from Lagos Airport to a private apartment in Ona Ara Local Government Area.</td>
+                <td>204</td>
+                <td>222</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1241509574194102278">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 23:37:26</td>
+                <td class ="content_left">1) The <span style="color: yellow;">COVID-19</span> confirmation test for the suspected case at Bodija has come back POSITIVE. The result was released at 17:35 PM of March 21, 2020. Oyo State Public Health Officials are collaborating with the University College Hospital (UCH), Ibadan’s team on the case.</td>
+                <td>1038</td>
+                <td>808</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1241509251417280512">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-21 23:32:45</td>
+                <td class ="content_left">OYO STATE <span style="color: yellow;">COVID-19</span> TASK FORCE UPDATE (MARCH 21, 2020) https://t.co/p6zWDkw1vc</td>
+                <td>924</td>
+                <td>1649</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1241508075288305670">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 23:26:46</td>
+                <td class ="content_left">As I promised in my statement yesterday, we just finished holding the first meeting of the Oyo State <span style="color: yellow;">COVID-19</span> Task Force. But before I share the outcome of that meeting, let me quickly clarify some issues regarding the circumstances that led to the setting up of this task force. https://t.co/zVZysHOYxH</td>
+                <td>1935</td>
+                <td>5883</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1241144178245021696">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 22:13:14</td>
+                <td class ="content_left">However, anyone experiencing any symptoms of <span style="color: yellow;">COVID-19</span> such as dry cough, fever, nausea, severe headaches, difficulty breathing &amp; tiredness should please, isolate themselves &amp; call the following Ministry of Health helplines: 08038210122/ 08023229267/ 08073431342.</td>
+                <td>766</td>
+                <td>1460</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1240763286293004292">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 22:10:08</td>
+                <td class ="content_left">Setting up the Oyo State <span style="color: yellow;">COVID-19</span> Task Force led by me. This task force will be holding its first meeting tomorrow, Friday, March 20, 2020. Immediately after the meeting, I will hold a press conference and update you on all decisions reached and so far, implemented.</td>
+                <td>409</td>
+                <td>1229</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1240762507364532224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 22:01:42</td>
+                <td class ="content_left">My dear good people of Oyo State, it has become imperative to communicate directly about the <span style="color: yellow;">COVID-19</span> situation in the state, and the measures that the Oyo State Government is taking to ensure the prevention, containment and control of this disease. https://t.co/3sCLdTKdgu</td>
+                <td>3474</td>
+                <td>9939</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1240760383905939457">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Shortness of breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Shortness of breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 08:32:23</td>
+                <td class ="content_left">2. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any COVID-19 symptoms: cough, fever, tiredness, body ache and <span style="color: yellow;">shortness of breath</span>.</td>
+                <td>42</td>
+                <td>75</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1265923864925736960">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 22:44:10</td>
+                <td class ="content_left">3. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any COVID-19 symptoms: cough, fever, tiredness, body ache and <span style="color: yellow;">shortness of breath</span>.</td>
+                <td>43</td>
+                <td>65</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1265413447837274113">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 07:59:49</td>
+                <td class ="content_left">2. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any COVID-19 symptoms: cough, fever, tiredness, body ache and <span style="color: yellow;">shortness of breath</span>.</td>
+                <td>38</td>
+                <td>65</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1265190894371770369">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 22:57:47</td>
+                <td class ="content_left">2. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any COVID-19 symptoms: cough, fever, tiredness, body ache and <span style="color: yellow;">shortness of breath</span>.</td>
+                <td>44</td>
+                <td>99</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1264692097040474113">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 22:05:17</td>
+                <td class ="content_left">3. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any COVID-19 symptoms: cough, fever, tiredness, body ache and <span style="color: yellow;">shortness of breath</span>.</td>
+                <td>43</td>
+                <td>86</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1264316496467148800">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 10:02:03</td>
+                <td class ="content_left">Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any COVID-19 symptoms: cough, fever, tiredness, body ache and <span style="color: yellow;">shortness of breath</span>.</td>
+                <td>40</td>
+                <td>67</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1264134489317486593">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 23:13:10</td>
+                <td class ="content_left">a) People who believe they could have come in contact with a COVID-19 case in Oyo State;
+
+b) People with COVID-19 symptoms: cough, fever, tiredness, body ache and <span style="color: yellow;">shortness of breath</span>;
+
+c) Healthcare workers who have been in contact with the high-risk groups, above.</td>
+                <td>44</td>
+                <td>76</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1262521641285955585">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 21:27:15</td>
+                <td class ="content_left">a) People who believe they could have come in contact with a COVID-19 case in Oyo State;
+
+b) People with COVID-19 symptoms: cough, fever, tiredness, body ache and <span style="color: yellow;">shortness of breath</span>;</td>
+                <td>49</td>
+                <td>82</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1261770211247693825">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-15 22:33:49</td>
+                <td class ="content_left">a) People who believe they could have come in contact with a COVID-19 case in Oyo State;
+
+b) People with COVID-19 symptoms: cough, fever, tiredness, body ache and <span style="color: yellow;">shortness of breath</span>;</td>
+                <td>38</td>
+                <td>73</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1261424574782156800">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 22:35:45</td>
+                <td class ="content_left">a) People who believe they could have come in contact with a COVID-19 case in Oyo State;
+
+b) People with COVID-19 symptoms: cough, fever, tiredness, body ache and <span style="color: yellow;">shortness of breath</span>;</td>
+                <td>21</td>
+                <td>39</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1260700284214562816">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">body ache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "body ache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 08:32:23</td>
+                <td class ="content_left">2. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any COVID-19 symptoms: cough, fever, tiredness, <span style="color: yellow;"><span style="color: yellow;">body ache</span></span> and shortness of breath.</td>
+                <td>42</td>
+                <td>75</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1265923864925736960">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 22:44:10</td>
+                <td class ="content_left">3. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any COVID-19 symptoms: cough, fever, tiredness, <span style="color: yellow;"><span style="color: yellow;">body ache</span></span> and shortness of breath.</td>
+                <td>43</td>
+                <td>65</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1265413447837274113">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 07:59:49</td>
+                <td class ="content_left">2. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any COVID-19 symptoms: cough, fever, tiredness, <span style="color: yellow;"><span style="color: yellow;">body ache</span></span> and shortness of breath.</td>
+                <td>38</td>
+                <td>65</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1265190894371770369">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 22:57:47</td>
+                <td class ="content_left">2. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any COVID-19 symptoms: cough, fever, tiredness, <span style="color: yellow;"><span style="color: yellow;">body ache</span></span> and shortness of breath.</td>
+                <td>44</td>
+                <td>99</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1264692097040474113">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 22:05:17</td>
+                <td class ="content_left">3. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any COVID-19 symptoms: cough, fever, tiredness, <span style="color: yellow;"><span style="color: yellow;">body ache</span></span> and shortness of breath.</td>
+                <td>43</td>
+                <td>86</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1264316496467148800">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 10:02:03</td>
+                <td class ="content_left">Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any COVID-19 symptoms: cough, fever, tiredness, <span style="color: yellow;"><span style="color: yellow;">body ache</span></span> and shortness of breath.</td>
+                <td>40</td>
+                <td>67</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1264134489317486593">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 23:13:10</td>
+                <td class ="content_left">a) People who believe they could have come in contact with a COVID-19 case in Oyo State;
+
+b) People with COVID-19 symptoms: cough, fever, tiredness, <span style="color: yellow;"><span style="color: yellow;">body ache</span></span> and shortness of breath;
+
+c) Healthcare workers who have been in contact with the high-risk groups, above.</td>
+                <td>44</td>
+                <td>76</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1262521641285955585">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 21:27:15</td>
+                <td class ="content_left">a) People who believe they could have come in contact with a COVID-19 case in Oyo State;
+
+b) People with COVID-19 symptoms: cough, fever, tiredness, <span style="color: yellow;"><span style="color: yellow;">body ache</span></span> and shortness of breath;</td>
+                <td>49</td>
+                <td>82</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1261770211247693825">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-15 22:33:49</td>
+                <td class ="content_left">a) People who believe they could have come in contact with a COVID-19 case in Oyo State;
+
+b) People with COVID-19 symptoms: cough, fever, tiredness, <span style="color: yellow;"><span style="color: yellow;">body ache</span></span> and shortness of breath;</td>
+                <td>38</td>
+                <td>73</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1261424574782156800">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 22:35:45</td>
+                <td class ="content_left">a) People who believe they could have come in contact with a COVID-19 case in Oyo State;
+
+b) People with COVID-19 symptoms: cough, fever, tiredness, <span style="color: yellow;"><span style="color: yellow;">body ache</span></span> and shortness of breath;</td>
+                <td>21</td>
+                <td>39</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1260700284214562816">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">ache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "ache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-28 08:32:23</td>
+                <td class ="content_left">2. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any COVID-19 symptoms: cough, fever, tiredness, body <span style="color: yellow;"><span style="color: yellow;">ache</span></span> and shortness of breath.</td>
+                <td>42</td>
+                <td>75</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1265923864925736960">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 22:44:10</td>
+                <td class ="content_left">3. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any COVID-19 symptoms: cough, fever, tiredness, body <span style="color: yellow;"><span style="color: yellow;">ache</span></span> and shortness of breath.</td>
+                <td>43</td>
+                <td>65</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1265413447837274113">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-26 07:59:49</td>
+                <td class ="content_left">2. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any COVID-19 symptoms: cough, fever, tiredness, body <span style="color: yellow;"><span style="color: yellow;">ache</span></span> and shortness of breath.</td>
+                <td>38</td>
+                <td>65</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1265190894371770369">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 22:57:47</td>
+                <td class ="content_left">2. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any COVID-19 symptoms: cough, fever, tiredness, body <span style="color: yellow;"><span style="color: yellow;">ache</span></span> and shortness of breath.</td>
+                <td>44</td>
+                <td>99</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1264692097040474113">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 22:05:17</td>
+                <td class ="content_left">3. Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any COVID-19 symptoms: cough, fever, tiredness, body <span style="color: yellow;"><span style="color: yellow;">ache</span></span> and shortness of breath.</td>
+                <td>43</td>
+                <td>86</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1264316496467148800">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 10:02:03</td>
+                <td class ="content_left">Please call the Emergency Operations Centre on 08095394000 | 08095863000 | 08078288999 | 08078288800, if you have any COVID-19 symptoms: cough, fever, tiredness, body <span style="color: yellow;"><span style="color: yellow;">ache</span></span> and shortness of breath.</td>
+                <td>40</td>
+                <td>67</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1264134489317486593">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-18 23:13:10</td>
+                <td class ="content_left">a) People who believe they could have come in contact with a COVID-19 case in Oyo State;
+
+b) People with COVID-19 symptoms: cough, fever, tiredness, body <span style="color: yellow;"><span style="color: yellow;">ache</span></span> and shortness of breath;
+
+c) Healthcare workers who have been in contact with the high-risk groups, above.</td>
+                <td>44</td>
+                <td>76</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1262521641285955585">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 21:27:15</td>
+                <td class ="content_left">a) People who believe they could have come in contact with a COVID-19 case in Oyo State;
+
+b) People with COVID-19 symptoms: cough, fever, tiredness, body <span style="color: yellow;"><span style="color: yellow;">ache</span></span> and shortness of breath;</td>
+                <td>49</td>
+                <td>82</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1261770211247693825">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-15 22:33:49</td>
+                <td class ="content_left">a) People who believe they could have come in contact with a COVID-19 case in Oyo State;
+
+b) People with COVID-19 symptoms: cough, fever, tiredness, body <span style="color: yellow;"><span style="color: yellow;">ache</span></span> and shortness of breath;</td>
+                <td>38</td>
+                <td>73</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1261424574782156800">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 22:35:45</td>
+                <td class ="content_left">a) People who believe they could have come in contact with a COVID-19 case in Oyo State;
+
+b) People with COVID-19 symptoms: cough, fever, tiredness, body <span style="color: yellow;"><span style="color: yellow;">ache</span></span> and shortness of breath;</td>
+                <td>21</td>
+                <td>39</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1260700284214562816">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recover</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recover"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 09:21:04</td>
+                <td class ="content_left">The upside is that majority of the COVID-19 cases in Oyo State have relatively mild or no symptoms. This means that with the proper management of cases that we have put in place, they will <span style="color: yellow;"><span style="color: yellow;">recover</span></span> without any complications.</td>
+                <td>44</td>
+                <td>73</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1263761789226975232">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 17:05:25</td>
+                <td class ="content_left">I have designated Prof Temitope Alonge, former Chief Medical Director of the University College, Ibadan, as the Head of COVID-19 Task Force while I <span style="color: yellow;"><span style="color: yellow;">recover</span></span> fully. Please continue to comply with all the directives from the COVID-19 Task Force. Stay home, stay safe.</td>
+                <td>1214</td>
+                <td>4417</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1244672086825668608">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">no symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "no symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 09:21:04</td>
+                <td class ="content_left">The upside is that majority of the COVID-19 cases in Oyo State have relatively mild or <span style="color: yellow;"><span style="color: yellow;">no symptoms</span></span>. This means that with the proper management of cases that we have put in place, they will recover without any complications.</td>
+                <td>44</td>
+                <td>73</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1263761789226975232">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">asymptomatic</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "asymptomatic"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 12:37:05</td>
+                <td class ="content_left">3. Ten cases are self-isolating while twenty-one cases are being managed in the isolation centres in Oyo State; one at the University College Hospital, Ibadan &amp; twenty in Olodo. Nineteen of these twenty cases at Olodo are <span style="color: yellow;"><span style="color: yellow;">asymptomatic</span></span> &amp; the last person has anosmia (loss of smell)</td>
+                <td>71</td>
+                <td>116</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1258012912729407489">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 17:04:49</td>
+                <td class ="content_left">I just received my COVID-19 confirmation test result. It is POSITIVE. I am <span style="color: yellow;"><span style="color: yellow;">asymptomatic</span></span> and will continue to self-isolate. https://t.co/SX6UAYBb0S</td>
+                <td>9236</td>
+                <td>27091</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1244671937080709122">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">anosmia</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "anosmia"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 12:37:05</td>
+                <td class ="content_left">3. Ten cases are self-isolating while twenty-one cases are being managed in the isolation centres in Oyo State; one at the University College Hospital, Ibadan &amp; twenty in Olodo. Nineteen of these twenty cases at Olodo are asymptomatic &amp; the last person has <span style="color: yellow;"><span style="color: yellow;">anosmia</span></span> (loss of smell)</td>
+                <td>71</td>
+                <td>116</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1258012912729407489">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">respiratory symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "respiratory symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 22:53:30</td>
+                <td class ="content_left">c) People with <span style="color: yellow;"><span style="color: yellow;">respiratory symptoms</span></span> and 
+
+d) Healthcare workers who have been in contact with the high-risk groups, above.</td>
+                <td>38</td>
+                <td>109</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1254181772683853824">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 22:30:35</td>
+                <td class ="content_left">c) People with <span style="color: yellow;"><span style="color: yellow;">respiratory symptoms</span></span> and
+ 
+d) Healthcare workers who have been in contact with the high-risk groups, above.</td>
+                <td>37</td>
+                <td>114</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1253088841914859525">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 21:25:13</td>
+                <td class ="content_left">c) People with <span style="color: yellow;"><span style="color: yellow;">respiratory symptoms</span></span> and
+ 
+d) Healthcare workers who have been in contact with the high-risk groups, above.</td>
+                <td>50</td>
+                <td>85</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1252347614512603139">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 20:54:49</td>
+                <td class ="content_left">c) People with <span style="color: yellow;"><span style="color: yellow;">respiratory symptoms</span></span> and
+ 
+d) Healthcare workers who have been in contact with the high-risk groups, above.</td>
+                <td>54</td>
+                <td>135</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1251615190367567875">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 21:33:04</td>
+                <td class ="content_left">c) People with <span style="color: yellow;"><span style="color: yellow;">respiratory symptoms</span></span> and 
+
+d) Healthcare workers who have been in contact with the high-risk groups, above.</td>
+                <td>35</td>
+                <td>84</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1250900037791617024">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 15:29:09</td>
+                <td class ="content_left">Q. [continued] Is it fair to say that that could be your likely source of exposure?
+
+A.  Well, Isaac, the truth is that yes, all governors who attended the… it was the National Economic Council meeting, were advised to self-isolate once one of the attendees <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>.</td>
+                <td>40</td>
+                <td>67</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1245010248802406400">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-31 15:28:08</td>
+                <td class ="content_left">Q.  While chatting with me live here on Saturday, you did say on Saturday that the Nigeria Governors’ Forum asked all governors that attended the last FEC meeting as a precaution to self-isolate since one of the attendees <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span>.</td>
+                <td>39</td>
+                <td>74</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1245009996305309697">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">medicine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "medicine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 07:38:49</td>
+                <td class ="content_left">We are collaborating with the College of <span style="color: yellow;">Medicine</span> to set up two Diagnostic Centres at the University College Hospital, Ibadan which will begin operations by the end of the week. Both are awaiting the Nigeria Centre for Disease Control’s validation.</td>
+                <td>36</td>
+                <td>73</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1242355172212383744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Sneezing</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Sneezing"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 23:31:16</td>
+                <td class ="content_left">The Ministry of Health also started running enlightenment campaigns about coronavirus in markets, schools and for people in the hospitality industry, to maintain the hand washing culture and give a safe distance if anyone is <span style="color: yellow;">sneezing</span> or coughing around them.</td>
+                <td>129</td>
+                <td>389</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1241145313655734278">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-10 19:43:26</td>
+                <td class ="content_left">The Ministry of Health has also run enlightenment campaigns about coronavirus in markets, schools and for people in the hospitality industry to maintain the hand washing culture and give a safe distance if anyone is <span style="color: yellow;">sneezing</span> or coughing around them.</td>
+                <td>48</td>
+                <td>100</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1237464098700492802">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">dry cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "dry cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 22:13:14</td>
+                <td class ="content_left">However, anyone experiencing any symptoms of COVID-19 such as <span style="color: yellow;"><span style="color: yellow;">dry cough</span></span>, fever, nausea, severe headaches, difficulty breathing &amp; tiredness should please, isolate themselves &amp; call the following Ministry of Health helplines: 08038210122/ 08023229267/ 08073431342.</td>
+                <td>766</td>
+                <td>1460</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1240763286293004292">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Difficulty breathing</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Difficulty breathing"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 22:13:14</td>
+                <td class ="content_left">However, anyone experiencing any symptoms of COVID-19 such as dry cough, fever, nausea, severe headaches, <span style="color: yellow;">difficulty breathing</span> &amp; tiredness should please, isolate themselves &amp; call the following Ministry of Health helplines: 08038210122/ 08023229267/ 08073431342.</td>
+                <td>766</td>
+                <td>1460</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1240763286293004292">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Difficulty breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Difficulty breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 22:13:14</td>
+                <td class ="content_left">However, anyone experiencing any symptoms of COVID-19 such as dry cough, fever, nausea, severe headaches, <span style="color: yellow;">difficulty breath</span>ing &amp; tiredness should please, isolate themselves &amp; call the following Ministry of Health helplines: 08038210122/ 08023229267/ 08073431342.</td>
+                <td>766</td>
+                <td>1460</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1240763286293004292">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tiredness</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tiredness"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 22:13:14</td>
+                <td class ="content_left">However, anyone experiencing any symptoms of COVID-19 such as dry cough, fever, nausea, severe headaches, difficulty breathing &amp; <span style="color: yellow;"><span style="color: yellow;">tiredness</span></span> should please, isolate themselves &amp; call the following Ministry of Health helplines: 08038210122/ 08023229267/ 08073431342.</td>
+                <td>766</td>
+                <td>1460</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1240763286293004292">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">HIV</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "HIV"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-16 19:45:52</td>
+                <td class ="content_left">The Free Health Mission will include free surgical operations and other free medical examinations, such as; blood pressure tests, <span style="color: yellow;"><span style="color: yellow;">HIV</span></span> test with free drugs, hernia, lipoma, sebaceous cyst, breast lumps etc. https://t.co/J3DvyzDClK</td>
+                <td>61</td>
+                <td>166</td>
+                <td><a href="https://twitter.com/seyiamakinde/status/1239639037301985281">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

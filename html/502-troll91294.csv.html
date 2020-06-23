@@ -1,0 +1,929 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>502-troll91294.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 502-troll91294.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">502-troll91294.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 22:44:55</td>
+                <td class ="content_left">@Rose_Moru It is scary and I do regret it but at the same time I’m not in so much agonizing <span style="color: yellow;"><span style="color: yellow;">pain</span></span> but it depends on what you want to do, I had to beg my doctors to remove mine they didn’t want to because I was so young. Do what you think is best.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/troll91294/status/1265051247234764801">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 22:40:26</td>
+                <td class ="content_left">@__Resmind It’s different for other people though to some people have endometriosis and have no <span style="color: yellow;"><span style="color: yellow;">pain</span></span> they can even be at stage four and have no <span style="color: yellow;"><span style="color: yellow;">pain</span></span>, me I was at stage III and I had so much <span style="color: yellow;"><span style="color: yellow;">pain</span></span> it depends on the person though and how they can deal <span style="color: yellow;"><span style="color: yellow;">pain</span></span>.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/troll91294/status/1265050116911742979">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 22:38:59</td>
+                <td class ="content_left">@__Resmind Well having very heavy bleeding or not heavy bleeding but a lot of <span style="color: yellow;"><span style="color: yellow;">pain</span></span>, <span style="color: yellow;"><span style="color: yellow;">pain</span></span> can be so bad that you can barely breathe and then on top of that cyst rupturing, and sometimes your periods can last up to 2 to 3 months which I was losing too much blood so I had to go to hospital</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/troll91294/status/1265049752195956738">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 22:32:36</td>
+                <td class ="content_left">@__Resmind @StarTheWerewolf I was pretty much in <span style="color: yellow;"><span style="color: yellow;">pain</span></span> since the age of 10 to the age of 25. Still have some <span style="color: yellow;"><span style="color: yellow;">pain</span></span>s here and there, because I still have some endometriosis inside of me there’s a couple on my bladder, but they couldn’t do anything because that was dangerous to remove.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1265048149447643142">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 22:29:35</td>
+                <td class ="content_left">@__Resmind @StarTheWerewolf I was 10 years old when I started developing <span style="color: yellow;"><span style="color: yellow;">pain</span></span> and they finally figured out what I had at the age 17. So it took them seven years to figure out what was wrong, and I’m 25 right now and I have no more reproductive organs😥</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/troll91294/status/1265047389582372870">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 17:38:30</td>
+                <td class ="content_left">@StarTheWerewolf I wouldn’t get an IUD made things a lot worse for me, I know I was in a lot of <span style="color: yellow;"><span style="color: yellow;">pain</span></span> but sometimes I still regret getting rid of my reproductive organs. So if you do get yours removed be ready for a bumpy ride a lot of emotions regret hormone pills, I still have some endo in me.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1264974135198957570">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 17:16:17</td>
+                <td class ="content_left">@StarTheWerewolf So if you ever want to talk I am here for you. I understand the <span style="color: yellow;"><span style="color: yellow;">pain</span></span> very well.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/troll91294/status/1264968543453556736">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 17:14:44</td>
+                <td class ="content_left">@StarTheWerewolf I had endometriosis and cyst on my ovaries the <span style="color: yellow;"><span style="color: yellow;">pain</span></span> was so unbearable that I got all my reproductive organs removed and I’m only 25, so I understand your <span style="color: yellow;"><span style="color: yellow;">pain</span></span>. Got my right ovary removed got my uterus removed and just recently on March 3 I got my left ovary removed</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/troll91294/status/1264968153555238913">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 22:35:10</td>
+                <td class ="content_left">@ArtistorShit2 My <span style="color: yellow;"><span style="color: yellow;">pain</span></span> is always constant even when I had cyst on my ovaries and also endometriosis on top of that. But since I don’t have any of those anymore I don’t know why I’m still having this <span style="color: yellow;"><span style="color: yellow;">pain</span></span>.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/troll91294/status/1262874467354673155">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 01:00:48</td>
+                <td class ="content_left">Started working on day 3 Comfort of radiodust week. I’m in so much <span style="color: yellow;"><span style="color: yellow;">pain</span></span> right now. 😩 #HazbinHotel #radiodust #radiodustweek</td>
+                <td>1</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/troll91294/status/1262548729950801920">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 06:22:12</td>
+                <td class ="content_left">@AshNicholsArt Usually when I can’t draw I’ll just sit and stare at my drawing call my hands mean names and my drawing too. Lol!!Sorry if my drawing looks crappy I did it really fast. But I feel your <span style="color: yellow;"><span style="color: yellow;">pain</span></span> to girl. 😩 https://t.co/XQjPdZosiF</td>
+                <td>1</td>
+                <td>22</td>
+                <td><a href="https://twitter.com/troll91294/status/1259368119853887489">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 00:30:38</td>
+                <td class ="content_left">Working on 2 drawings one is a radiodust drawing and the other one is going to be Alastor giving my hazbin hotel oc gina A haircut, that’s hard to do it right now since I’m in a lot of <span style="color: yellow;"><span style="color: yellow;">pain</span></span>, my <span style="color: yellow;"><span style="color: yellow;">pain</span></span> is getting worse,<span style="color: yellow;"><span style="color: yellow;">pain</span></span> level 1 through 10 I’m at an 8. 😫😰 #HazbinHotel</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/troll91294/status/1256380544759271425">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 22:47:04</td>
+                <td class ="content_left">@multbasa My hands doing better it’s just my back, and not that long ago I had a hysterectomy and I think I might have nerve damage on the inside so that’s been causing <span style="color: yellow;"><span style="color: yellow;">pain</span></span> for me.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1254542540939943936">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 22:36:49</td>
+                <td class ="content_left">@multbasa I’m always in <span style="color: yellow;"><span style="color: yellow;">pain</span></span> so there’s nothing I can really do except take my <span style="color: yellow;"><span style="color: yellow;">pain</span></span> medicine which I just did.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1254539959802957830">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 21:52:47</td>
+                <td class ="content_left">Working on a Angel Dust drawing. I’m in so much <span style="color: yellow;"><span style="color: yellow;">pain</span></span> right now!!😩😣 #HazbinHotel #AngelDust #HazbinHotelAngelDust</td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/troll91294/status/1254528881056456706">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 05:48:24</td>
+                <td class ="content_left">Working on the radiodust drawing right now, was hurting really bad had to take medicine. 😣 I’m so sick and tired of being in <span style="color: yellow;"><span style="color: yellow;">pain</span></span> almost all the time. 😫 #radiodust #HazbinHotel</td>
+                <td>1</td>
+                <td>16</td>
+                <td><a href="https://twitter.com/troll91294/status/1253923796962009088">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 02:51:45</td>
+                <td class ="content_left">@JustCaytlin I’m tired too. Been in a lot of <span style="color: yellow;"><span style="color: yellow;">pain</span></span> today😣</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1253516953811136514">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 17:50:37</td>
+                <td class ="content_left">@SkeleBea Yeah I got <span style="color: yellow;"><span style="color: yellow;">pain</span></span> medicine I just need to get something to eat but there’s not much food in my house</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1253380770904899588">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-04 17:38:44</td>
+                <td class ="content_left">Here’s a small radiodust comic sorry if it looks like crap but I’m in a lot of <span style="color: yellow;"><span style="color: yellow;">pain</span></span> from my surgery, i’m recovering right now. But I hope you like it.😊 #HazbinHotel #RadioDust #HazbinHotelAlastor #HazbinHotelangeldust #myart https://t.co/QC1pVUrezO</td>
+                <td>6</td>
+                <td>43</td>
+                <td><a href="https://twitter.com/troll91294/status/1235258386935140352">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-22 20:36:45</td>
+                <td class ="content_left">Was really bored so I drew angel dust looking comfy in his sweater and holding a drink. Been in a lot of <span style="color: yellow;"><span style="color: yellow;">pain</span></span> this week it’s been really bad! 😫😖 #HazbinHotel #AngelDust #myartwork #bored https://t.co/j4Dya4wyVZ</td>
+                <td>1</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/troll91294/status/1231316923272572931">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-20 01:16:26</td>
+                <td class ="content_left">@spacenerdboi @nabila_boim Your art work is amazing, I’m also trying to draw radiodust art to But I cannot finish it right now because I'm in <span style="color: yellow;"><span style="color: yellow;">pain</span></span> but I will finish it tomorrow. I wish I could draw like you and all the amazing artists on Twitter 😊😊</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1230300142554796033">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-20 01:08:58</td>
+                <td class ="content_left">In a lot of <span style="color: yellow;"><span style="color: yellow;">pain</span></span> right now will finish drawing tomorrow when I get out of work. 😫😫🥺🥺😥 #HazbinHotel #RadioDust #in<span style="color: yellow;"><span style="color: yellow;">pain</span></span></td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/troll91294/status/1230298264433577985">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-11 23:53:11</td>
+                <td class ="content_left">Having an art block right now been too stressed out and in a lot of <span style="color: yellow;"><span style="color: yellow;">pain</span></span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/troll91294/status/1227380088255238146">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pains</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pains"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 22:32:36</td>
+                <td class ="content_left">@__Resmind @StarTheWerewolf I was pretty much in pain since the age of 10 to the age of 25. Still have some <span style="color: yellow;"><span style="color: yellow;">pains</span></span> here and there, because I still have some endometriosis inside of me there’s a couple on my bladder, but they couldn’t do anything because that was dangerous to remove.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1265048149447643142">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 17:43:54</td>
+                <td class ="content_left">@StarTheWerewolf Because some of the endometriosis was on my bladder and it was too dangerous to remove, so that can still easily spread. I still have some <span style="color: yellow;"><span style="color: yellow;">pains</span></span> but I think that’s from my last surgery and I think some nerves got damaged but it’s not as bad.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/troll91294/status/1264975494119862273">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 22:26:52</td>
+                <td class ="content_left">@ArtistorShit2 I had a hysterectomy not that long ago and now I’m still developing <span style="color: yellow;"><span style="color: yellow;">pains</span></span> on my side so I don’t know what’s going on. I just wanna be out of pain😞</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/troll91294/status/1262872378297778179">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 22:17:43</td>
+                <td class ="content_left">Went to doctors today to figure out what’s going on because I’m having <span style="color: yellow;"><span style="color: yellow;">pains</span></span> on the inside of my lower left side abdomen, I’ve been poked by needles all day today, so I will do the radiodust comfort drawing tomorrow on the 20th. I am exhausted today.😔#radiodustweek #HazbinHotel</td>
+                <td>1</td>
+                <td>12</td>
+                <td><a href="https://twitter.com/troll91294/status/1262870076375564290">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-25 21:34:50</td>
+                <td class ="content_left">@kovox You’re not stinky, You <span style="color: yellow;"><span style="color: yellow;">smell</span></span> like Taco Bell!! Lol!! I like Taco Bell. 🌮</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/troll91294/status/1265033608970067968">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-20 17:09:41</td>
+                <td class ="content_left">I guess I was really <span style="color: yellow;"><span style="color: yellow;">tired</span></span> and worn out yesterday I went to bed around 7:50 and just woke up around 1 PM in the evening today. I’ll start working on day three of comfort #radiodustweek. #radiodust #HazbinHotel</td>
+                <td>1</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/troll91294/status/1263154945320259589">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-07 03:11:48</td>
+                <td class ="content_left">I’ll do the drawing tomorrow just super <span style="color: yellow;"><span style="color: yellow;">tired</span></span> today. 😩💤</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1258233039353712643">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 04:19:05</td>
+                <td class ="content_left">I’ll finish this drawing tomorrow super <span style="color: yellow;"><span style="color: yellow;">tired</span></span> 💤</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/troll91294/status/1256438036201721856">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 05:48:24</td>
+                <td class ="content_left">Working on the radiodust drawing right now, was hurting really bad had to take medicine. 😣 I’m so sick and <span style="color: yellow;"><span style="color: yellow;">tired</span></span> of being in pain almost all the time. 😫 #radiodust #HazbinHotel</td>
+                <td>1</td>
+                <td>16</td>
+                <td><a href="https://twitter.com/troll91294/status/1253923796962009088">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 02:51:45</td>
+                <td class ="content_left">@JustCaytlin I’m <span style="color: yellow;"><span style="color: yellow;">tired</span></span> too. Been in a lot of pain today😣</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1253516953811136514">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-20 05:47:56</td>
+                <td class ="content_left">@AshNicholsArt I am super <span style="color: yellow;"><span style="color: yellow;">tired</span></span> haven’t slept in three days.</td>
+                <td>0</td>
+                <td>13</td>
+                <td><a href="https://twitter.com/troll91294/status/1252111737777684480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 22:22:48</td>
+                <td class ="content_left">@HazbinLover Never!!!!! Lol!!😆 I’m always <span style="color: yellow;"><span style="color: yellow;">tired</span></span> but this past couple of days I haven’t been getting much sleep, especially Friday and Saturday I did not sleep at all but I did sleep last night, I think I got too much sleep that’s why I’m even more <span style="color: yellow;"><span style="color: yellow;">tired</span></span>.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1244751962127708160">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-30 22:14:18</td>
+                <td class ="content_left">Trying to draw a radiodust drawing but I’ve been so <span style="color: yellow;"><span style="color: yellow;">tired</span></span> this week this is what I feel like right now! #RadioDust #HazbinHotel #<span style="color: yellow;"><span style="color: yellow;">tired</span></span> https://t.co/uWYnh2mhVf</td>
+                <td>3</td>
+                <td>28</td>
+                <td><a href="https://twitter.com/troll91294/status/1244749823800152067">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 21:35:24</td>
+                <td class ="content_left">Feeling very sluggish and <span style="color: yellow;"><span style="color: yellow;">tired</span></span> today, I don’t feel like drawing today. 😞😣😴 hopefully once I get a random burst of energy I’ll start drawing. #HazbinHotel</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/troll91294/status/1244015256084656131">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-25 08:47:39</td>
+                <td class ="content_left">@HazbinLover You mean the extra ones he has, sometimes I don’t like to draw those, and I’m really <span style="color: yellow;"><span style="color: yellow;">tired</span></span> and I’ve been sick so I’m being a little bit lazy right now LOL but thank you for the feedback 😊</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/troll91294/status/1242734880338907136">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 07:42:02</td>
+                <td class ="content_left">Alastor shadow❤️❤️😈 sorry if it looks like shit, i’m really <span style="color: yellow;"><span style="color: yellow;">tired</span></span> and I feel like shit.  #HazbinHotel #radiodust #Alastor #AngelDust #HazbinHotelFanart https://t.co/NN0thaHHoD</td>
+                <td>8</td>
+                <td>88</td>
+                <td><a href="https://twitter.com/troll91294/status/1242355983265017859">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 05:45:18</td>
+                <td class ="content_left">@SpicyLewds Thank you 😊 I will go to bed right now I am really <span style="color: yellow;"><span style="color: yellow;">tired</span></span> just went back to work today, I was recovering from surgery. and where I work there’s a lot of people and foreigners and they were coughing and not covering their mouth and spitting on the bathroom walls I felt paranoid😱</td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1240877054377299970">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 05:15:04</td>
+                <td class ="content_left">Bad Angel!!! Lol!!!🤣🤣. Sorry that it looks like shit again I’m really <span style="color: yellow;"><span style="color: yellow;">tired</span></span> and my hands were kind of shaking. 😣. #HazbinHotel #radiodust #Alastor #AngelDust https://t.co/VjfJNy29da</td>
+                <td>13</td>
+                <td>101</td>
+                <td><a href="https://twitter.com/troll91294/status/1240869443124764673">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-19 23:11:53</td>
+                <td class ="content_left">❤️❤️❤️❤️❤️!!!!!!  Sorry if it looks like shit, I am really <span style="color: yellow;"><span style="color: yellow;">tired</span></span> today😴. #HazbinHotel #radiodust #dustradio #AngelDust #Alastor #alastorbottom #HazbinHotelFanart https://t.co/6UExBhi8rx</td>
+                <td>7</td>
+                <td>77</td>
+                <td><a href="https://twitter.com/troll91294/status/1240778046669565953">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">exhausted</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "exhausted"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-19 22:17:43</td>
+                <td class ="content_left">Went to doctors today to figure out what’s going on because I’m having pains on the inside of my lower left side abdomen, I’ve been poked by needles all day today, so I will do the radiodust comfort drawing tomorrow on the 20th. I am <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> today.😔#radiodustweek #HazbinHotel</td>
+                <td>1</td>
+                <td>12</td>
+                <td><a href="https://twitter.com/troll91294/status/1262870076375564290">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 23:42:40</td>
+                <td class ="content_left">If you see this Tweet, quote it with 4 pics that expose your <span style="color: yellow;"><span style="color: yellow;">taste</span></span> in women. Sorry I couldn’t help myself @AshNicholsArt you’re so adorable. https://t.co/2LAWa0Q9QL</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/troll91294/status/1260354738744369152">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-12 18:47:57</td>
+                <td class ="content_left">If you see this Tweet, quote it with 4 pics that expose your <span style="color: yellow;"><span style="color: yellow;">taste</span></span> in men. https://t.co/TokJRszHQn</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/troll91294/status/1260280570468282369">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">prone</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "prone"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-05 23:56:48</td>
+                <td class ="content_left">I swear I’m accident <span style="color: yellow;"><span style="color: yellow;">prone</span></span> I need to be put in a bubble or something so I don’t hurt myself. I’m so clumsy! Lol!!! 🤣🤣</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/troll91294/status/1257821581037965312">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">recover</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "recover"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 05:28:02</td>
+                <td class ="content_left">@JustANoodleOwO @AshNicholsArt I’ll be fine thank you. It’s just going to take me a while to <span style="color: yellow;"><span style="color: yellow;">recover</span></span> from this. 😢</td>
+                <td>1</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/troll91294/status/1255005834947571713">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">medicine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "medicine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 22:36:49</td>
+                <td class ="content_left">@multbasa I’m always in pain so there’s nothing I can really do except take my pain <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> which I just did.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1254539959802957830">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 17:50:37</td>
+                <td class ="content_left">@SkeleBea Yeah I got pain <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> I just need to get something to eat but there’s not much food in my house</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1253380770904899588">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sweat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sweat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 14:27:31</td>
+                <td class ="content_left">@todoketai1 Omg how can people do that, that’s your art that you put your time <span style="color: yellow;"><span style="color: yellow;">sweat</span></span> and tears into and then they decide to take the credit that is so rude. If I come across other people trying to take credit for your art I’ll let you know. I’m sorry this is happening to you hun.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/troll91294/status/1251880111105810433">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shaking</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shaking"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-08 19:32:07</td>
+                <td class ="content_left">@TheNotBoomerHe1 Aw thank you! 😊 My hand was <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> from pain. 😖</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/troll91294/status/1247970498987859974">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 02:26:04</td>
+                <td class ="content_left">Part 2!  My hands are <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> really bad today I just can’t keep my hands steady enough😫. #HazbinHotel #Alastor #HazbinHotelFanart https://t.co/xhVk42ZOPW</td>
+                <td>3</td>
+                <td>33</td>
+                <td><a href="https://twitter.com/troll91294/status/1243726018596175873">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 23:14:28</td>
+                <td class ="content_left">❤️❤️❤️❤️🔞🔞 sorry if it looks like shit still, don’t feel good and my hands were <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> and I felt like I was rushing myself. And Angel’s dick looks weird because I was trying to draw it like a tentacle. Lol!! #HazbinHotel #radiodust #Alastor #AngelDust #HazbinHotelFanart https://t.co/KPimmCTJmf</td>
+                <td>5</td>
+                <td>65</td>
+                <td><a href="https://twitter.com/troll91294/status/1242590637372907520">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 13:05:01</td>
+                <td class ="content_left">@kimdraws2 All I have is a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> witch is going away, sore throat and body aches my case wasn’t as bad as others thank goodness.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1246061142415413249">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 07:39:29</td>
+                <td class ="content_left">@AshNicholsArt Did you see the picture I drew for you. And also I tested positive for COVID-19 but I’m already getting better because I’m a fighter, been sick for two weeks but I’m already feeling a lot better all I had was a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> body ache and sore throat that’s all. And excited for hunicast</td>
+                <td>0</td>
+                <td>15</td>
+                <td><a href="https://twitter.com/troll91294/status/1245979218619572224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 06:16:06</td>
+                <td class ="content_left">@lil_Gremlin_dog Aww thank you. I’m getting a lot better the <span style="color: yellow;"><span style="color: yellow;">fever</span></span> whooped my ass though. I’m a fighter. 😁💪🏻</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/troll91294/status/1245958233010909184">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 05:50:42</td>
+                <td class ="content_left">I did test positive for Covid-19, I’ve been sick for 2 weeks but all I had was a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> sorethroat and body aches, I had low case covid-19. I did quarantine myself so no one would get it, still drawing hazbin hotel and definitely gonna watch hunicast. #HazbinHotel #HuniCast</td>
+                <td>1</td>
+                <td>32</td>
+                <td><a href="https://twitter.com/troll91294/status/1245951842804211712">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 14:25:31</td>
+                <td class ="content_left">@CatellusOstrum I tried going to redi care but when I told them I have a <span style="color: yellow;"><span style="color: yellow;">fever</span></span> they told me to get out and they sprayed me disinfectant spray!! And when they did that I made this face. https://t.co/2n8d3Qafwv</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/troll91294/status/1242095132280791041">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sore throat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sore throat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 13:05:01</td>
+                <td class ="content_left">@kimdraws2 All I have is a fever witch is going away, <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span> and body aches my case wasn’t as bad as others thank goodness.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1246061142415413249">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 07:39:29</td>
+                <td class ="content_left">@AshNicholsArt Did you see the picture I drew for you. And also I tested positive for COVID-19 but I’m already getting better because I’m a fighter, been sick for two weeks but I’m already feeling a lot better all I had was a fever body ache and <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span> that’s all. And excited for hunicast</td>
+                <td>0</td>
+                <td>15</td>
+                <td><a href="https://twitter.com/troll91294/status/1245979218619572224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">body ache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "body ache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 13:05:01</td>
+                <td class ="content_left">@kimdraws2 All I have is a fever witch is going away, sore throat and <span style="color: yellow;"><span style="color: yellow;">body ache</span></span>s my case wasn’t as bad as others thank goodness.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1246061142415413249">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 07:39:29</td>
+                <td class ="content_left">@AshNicholsArt Did you see the picture I drew for you. And also I tested positive for COVID-19 but I’m already getting better because I’m a fighter, been sick for two weeks but I’m already feeling a lot better all I had was a fever <span style="color: yellow;"><span style="color: yellow;">body ache</span></span> and sore throat that’s all. And excited for hunicast</td>
+                <td>0</td>
+                <td>15</td>
+                <td><a href="https://twitter.com/troll91294/status/1245979218619572224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 05:50:42</td>
+                <td class ="content_left">I did test positive for Covid-19, I’ve been sick for 2 weeks but all I had was a fever sorethroat and <span style="color: yellow;"><span style="color: yellow;">body ache</span></span>s, I had low case covid-19. I did quarantine myself so no one would get it, still drawing hazbin hotel and definitely gonna watch hunicast. #HazbinHotel #HuniCast</td>
+                <td>1</td>
+                <td>32</td>
+                <td><a href="https://twitter.com/troll91294/status/1245951842804211712">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">body aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "body aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 13:05:01</td>
+                <td class ="content_left">@kimdraws2 All I have is a fever witch is going away, sore throat and <span style="color: yellow;"><span style="color: yellow;">body aches</span></span> my case wasn’t as bad as others thank goodness.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1246061142415413249">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 05:50:42</td>
+                <td class ="content_left">I did test positive for Covid-19, I’ve been sick for 2 weeks but all I had was a fever sorethroat and <span style="color: yellow;"><span style="color: yellow;">body aches</span></span>, I had low case covid-19. I did quarantine myself so no one would get it, still drawing hazbin hotel and definitely gonna watch hunicast. #HazbinHotel #HuniCast</td>
+                <td>1</td>
+                <td>32</td>
+                <td><a href="https://twitter.com/troll91294/status/1245951842804211712">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">aches</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "aches"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 13:05:01</td>
+                <td class ="content_left">@kimdraws2 All I have is a fever witch is going away, sore throat and body <span style="color: yellow;"><span style="color: yellow;">aches</span></span> my case wasn’t as bad as others thank goodness.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1246061142415413249">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">itch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "itch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 08:04:27</td>
+                <td class ="content_left">@TheRoundOwl1 Thank you, and my eyes didn’t <span style="color: yellow;"><span style="color: yellow;">itch</span></span> but some people get different symptoms but I did hear also that some people get pinkeye.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/troll91294/status/1245985501426917377">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 07:39:29</td>
+                <td class ="content_left">@AshNicholsArt Did you see the picture I drew for you. And also I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19 but I’m already getting better because I’m a fighter, been sick for two weeks but I’m already feeling a lot better all I had was a fever body ache and sore throat that’s all. And excited for hunicast</td>
+                <td>0</td>
+                <td>15</td>
+                <td><a href="https://twitter.com/troll91294/status/1245979218619572224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 07:39:29</td>
+                <td class ="content_left">@AshNicholsArt Did you see the picture I drew for you. And also I tested <span style="color: yellow;">positive for COVID</span>-19 but I’m already getting better because I’m a fighter, been sick for two weeks but I’m already feeling a lot better all I had was a fever body ache and sore throat that’s all. And excited for hunicast</td>
+                <td>0</td>
+                <td>15</td>
+                <td><a href="https://twitter.com/troll91294/status/1245979218619572224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 05:50:42</td>
+                <td class ="content_left">I did test <span style="color: yellow;">positive for Covid</span>-19, I’ve been sick for 2 weeks but all I had was a fever sorethroat and body aches, I had low case covid-19. I did quarantine myself so no one would get it, still drawing hazbin hotel and definitely gonna watch hunicast. #HazbinHotel #HuniCast</td>
+                <td>1</td>
+                <td>32</td>
+                <td><a href="https://twitter.com/troll91294/status/1245951842804211712">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 07:39:29</td>
+                <td class ="content_left">@AshNicholsArt Did you see the picture I drew for you. And also I tested positive for <span style="color: yellow;">COVID-19</span> but I’m already getting better because I’m a fighter, been sick for two weeks but I’m already feeling a lot better all I had was a fever body ache and sore throat that’s all. And excited for hunicast</td>
+                <td>0</td>
+                <td>15</td>
+                <td><a href="https://twitter.com/troll91294/status/1245979218619572224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 02:32:06</td>
+                <td class ="content_left">Oh no!! Alastor has <span style="color: yellow;">COVID-19</span> but don’t worry he’s fighting it and he’s winning, he’s been resting and drinking lots of water, and eating his mothers famous jambalaya. If he can beat the virus so can you, stay strong!! #HazbinHotel #COVIDー19 #vivziepop #HazbinHotelFanart #alastor https://t.co/nRb0Obv3Ja</td>
+                <td>7</td>
+                <td>87</td>
+                <td><a href="https://twitter.com/troll91294/status/1241915596641579009">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">ache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "ache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 07:39:29</td>
+                <td class ="content_left">@AshNicholsArt Did you see the picture I drew for you. And also I tested positive for COVID-19 but I’m already getting better because I’m a fighter, been sick for two weeks but I’m already feeling a lot better all I had was a fever body <span style="color: yellow;"><span style="color: yellow;">ache</span></span> and sore throat that’s all. And excited for hunicast</td>
+                <td>0</td>
+                <td>15</td>
+                <td><a href="https://twitter.com/troll91294/status/1245979218619572224">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">test positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "test positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-03 05:50:42</td>
+                <td class ="content_left">I did <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> for Covid-19, I’ve been sick for 2 weeks but all I had was a fever sorethroat and body aches, I had low case covid-19. I did quarantine myself so no one would get it, still drawing hazbin hotel and definitely gonna watch hunicast. #HazbinHotel #HuniCast</td>
+                <td>1</td>
+                <td>32</td>
+                <td><a href="https://twitter.com/troll91294/status/1245951842804211712">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">have a fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "have a fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-23 14:25:31</td>
+                <td class ="content_left">@CatellusOstrum I tried going to redi care but when I told them I <span style="color: yellow;"><span style="color: yellow;">have a fever</span></span> they told me to get out and they sprayed me disinfectant spray!! And when they did that I made this face. https://t.co/2n8d3Qafwv</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/troll91294/status/1242095132280791041">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-02 13:19:41</td>
+                <td class ="content_left">@kawanocy Oh my fucking gosh my face is so bright red and my <span style="color: yellow;"><span style="color: yellow;">nose</span></span> I swear it’s bleeding right now! That stream was by far the best ever that one went down in history! 😍😍 and love your animation by the way</td>
+                <td>0</td>
+                <td>19</td>
+                <td><a href="https://twitter.com/troll91294/status/1234468420210634753">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">my nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "my nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-02 13:19:41</td>
+                <td class ="content_left">@kawanocy Oh my fucking gosh my face is so bright red and <span style="color: yellow;"><span style="color: yellow;">my nose</span></span> I swear it’s bleeding right now! That stream was by far the best ever that one went down in history! 😍😍 and love your animation by the way</td>
+                <td>0</td>
+                <td>19</td>
+                <td><a href="https://twitter.com/troll91294/status/1234468420210634753">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-26 14:35:39</td>
+                <td class ="content_left">@EdBoscoVA Alastor: <span style="color: yellow;"><span style="color: yellow;">Touch</span></span> me and I will burn your face. Hope you like the art I drew for you too. #alastor #HazbinHotel #HazbinHotelFanart #myart https://t.co/vsqIMBfPL4</td>
+                <td>2</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/troll91294/status/1221441576255270913">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

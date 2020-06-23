@@ -1,0 +1,619 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>600-lordhelpthis.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 600-lordhelpthis.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">600-lordhelpthis.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-24 22:56:52</td>
+                <td class ="content_left">why do we add deadly <span style="color: yellow;"><span style="color: yellow;">pain</span></span> giving fuckery (also known as my period) after every sentence why the fuck</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1264691867532308480">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-20 20:23:11</td>
+                <td class ="content_left">@ferventquixotic you can think that you’re in love
+when you’re really just in <span style="color: yellow;"><span style="color: yellow;">pain</span></span></td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1241097979307520000">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-21 04:37:01</td>
+                <td class ="content_left">i’ve been having *horrible* cramps since yesterday NON STOP. like literally i caught max 2 hours of sleep before i was disturbed by the crazy <span style="color: yellow;"><span style="color: yellow;">pain</span></span> again. life is way too hard for women 😤😭</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1230713008281673729">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-21 04:27:15</td>
+                <td class ="content_left">bhagwan ji i’m sorry for my paap but can you please make this <span style="color: yellow;"><span style="color: yellow;">pain</span></span> stop i rlly don’t think i can take it anymore</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1230710550163677184">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-18 11:52:04</td>
+                <td class ="content_left">u don’t know <span style="color: yellow;"><span style="color: yellow;">pain</span></span> until ur boyfriend cheats on u wit ur bestfriend :)</td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1229735329063555072">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">drug</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "drug"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-22 07:59:11</td>
+                <td class ="content_left">@kaafitweets they’re called <span style="color: yellow;"><span style="color: yellow;">drug</span></span> dealers</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1263741183047528448">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">chill</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "chill"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-15 13:25:56</td>
+                <td class ="content_left">big <span style="color: yellow;"><span style="color: yellow;">chill</span></span> should release at least 1 recipe a week to keep people sane</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1261286695011414016">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 15:29:04</td>
+                <td class ="content_left">i told my mom to <span style="color: yellow;"><span style="color: yellow;">chill</span></span> and she said ‘mai <span style="color: yellow;"><span style="color: yellow;">chill</span></span>? <span style="color: yellow;"><span style="color: yellow;">chill</span></span> toh tujhe hona chahiye’ like AUR KITNA <span style="color: yellow;">CHILL</span> HOUN</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1255157089141317633">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 15:52:13</td>
+                <td class ="content_left">@Sahilarioussss i miss big <span style="color: yellow;"><span style="color: yellow;">chill</span></span> ka pasta and nothing else</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1253350977983438848">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 06:31:21</td>
+                <td class ="content_left">missing big <span style="color: yellow;"><span style="color: yellow;">chill</span></span> ka pasta</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1251397891026898944">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-11 06:56:52</td>
+                <td class ="content_left">i will single-handedly fund big <span style="color: yellow;"><span style="color: yellow;">chill</span></span> and taco bell sales after this lockdown is over</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1248867597065453570">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-24 18:23:04</td>
+                <td class ="content_left">once this is over i will go out, wear nice clothes, do my makeup, go to the gym, meet my friends, smile at strangers, <span style="color: yellow;"><span style="color: yellow;">chill</span></span> in a library, travel whenever i can, and do whatever i want. i’m done taking the privilege of life for granted 🙏🏻♥️</td>
+                <td>1</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1242517302987223040">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-26 10:31:47</td>
+                <td class ="content_left">@floydian_sleep Bricks &amp; Bamboo Hostel- Anjuna is great. I stayed on the same dates last year. The host is great, people are great, and they WILL hook you up with good things to do and good food too! Plus they have a bar where you can <span style="color: yellow;"><span style="color: yellow;">chill</span></span> and have a beer any time of the day. Super cheap too.</td>
+                <td>0</td>
+                <td>10</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1232614226750926849">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 04:06:38</td>
+                <td class ="content_left">omg remember going to britannia’s biscuit factory and falling in love with the <span style="color: yellow;"><span style="color: yellow;">smell</span></span> of fresh parle g’s while carefully stalking ur crush who was definitely not into u 🤡🥰</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1260783556957097984">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 20:25:03</td>
+                <td class ="content_left">i have been <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for covid-19 depression‼️</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1254869189652656133">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 20:25:03</td>
+                <td class ="content_left">i have been tested <span style="color: yellow;">positive for covid</span>-19 depression‼️</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1254869189652656133">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 20:25:03</td>
+                <td class ="content_left">i have been tested positive for <span style="color: yellow;"><span style="color: yellow;">covid-19</span></span> depression‼️</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1254869189652656133">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-19 06:59:29</td>
+                <td class ="content_left">2000+ cases of <span style="color: yellow;"><span style="color: yellow;">covid-19</span></span> in india yesterday. there’s no way out.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1251767358739243009">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">exhausted</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "exhausted"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 15:47:07</td>
+                <td class ="content_left">guys recommend good songs to cry to and i’ve already <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> all of billie’s songs</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1254799242893258752">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 16:56:28</td>
+                <td class ="content_left">bread, jam, and a glass of <span style="color: yellow;"><span style="color: yellow;">cold</span></span> milk &gt;</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1253004756118839296">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-16 07:17:13</td>
+                <td class ="content_left"><span style="color: yellow;"><span style="color: yellow;">cold</span></span> milk tastes amazing on its own especially if it’s been boiled before and then refrigerated.... mmmm delicious *chef’s kiss* 🤤</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1250684655138779140">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">headache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "headache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-22 07:30:07</td>
+                <td class ="content_left">a group of Karens is called a <span style="color: yellow;">Headache</span></td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1252862232129462276">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 18:13:28</td>
+                <td class ="content_left">i am <span style="color: yellow;">TIRED</span> of tiktokers having multi-part vids and then one of them shows up on my fyp and i have to go thru their ENTIRE profile to find ONE video bcs i’m SO invested 😡😡😡😡</td>
+                <td>0</td>
+                <td>15</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1252661746701139969">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-18 08:04:51</td>
+                <td class ="content_left"><span style="color: yellow;"><span style="color: yellow;">tired</span></span> of seeing a kpop video posted by a stupid stan under each and every tweet that bangs</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1240187397314232320">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-18 17:49:38</td>
+                <td class ="content_left">there’s one thing I’ve realised while being in a lockdown. it’s that i really need a fucking <span style="color: yellow;"><span style="color: yellow;">nose</span></span> job</td>
+                <td>1</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1251568584288907265">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-03 14:26:50</td>
+                <td class ="content_left">do i need a <span style="color: yellow;"><span style="color: yellow;">nose</span></span> job or has society conditioned me into thinking it?</td>
+                <td>3</td>
+                <td>9</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1234847706834591744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-31 21:31:23</td>
+                <td class ="content_left">@DoleDipper @climaxximus this one made me commit <span style="color: yellow;"><span style="color: yellow;">nose</span></span> exhalation too</td>
+                <td>0</td>
+                <td>42</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1223358137211613184">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-28 11:17:37</td>
+                <td class ="content_left">the lack of <span style="color: yellow;">TASTE</span> https://t.co/dAEqxUFZPU</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1243859785117650944">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-07 04:52:52</td>
+                <td class ="content_left">okay, guys, stop pretending like coffee has a good <span style="color: yellow;"><span style="color: yellow;">taste</span></span>. it doesn’t. however, it is an acquired <span style="color: yellow;"><span style="color: yellow;">taste</span></span> and it’s great that you have acquired it!!! 
+
+BUT STOP JUDGING PPL WHO DON’T LIKE IT!!!</td>
+                <td>1</td>
+                <td>16</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1225643566090743809">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-02-01 19:44:32</td>
+                <td class ="content_left">a few friends of mine have such bad <span style="color: yellow;"><span style="color: yellow;">taste</span></span> in men it’s not even a joke anymore</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1223693635826286592">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">prone</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "prone"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-03-17 09:20:32</td>
+                <td class ="content_left">all equally <span style="color: yellow;"><span style="color: yellow;">prone</span></span> to dying. trillions of dollars have been lost in the process as well. shops are closing, businesses are winding up, and the stock market has collapsed. this tells you what it takes to have a cleaner planet. it takes for everyone to literally pay for it. “ (2/2)</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1239844055367839744">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">puffy eyes</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "puffy eyes"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-30 21:55:16</td>
+                <td class ="content_left">sleeping normally:
+-boring
+-wakeup tired
+-very mediocre
+
+sleeping after crying:
+-10x better sleep
+-<span style="color: yellow;"><span style="color: yellow;">puffy eyes</span></span>™
+-gangsta vibe</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1223001761247449088">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">puffy eye</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "puffy eye"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-30 21:55:16</td>
+                <td class ="content_left">sleeping normally:
+-boring
+-wakeup tired
+-very mediocre
+
+sleeping after crying:
+-10x better sleep
+-<span style="color: yellow;"><span style="color: yellow;">puffy eye</span></span>s™
+-gangsta vibe</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1223001761247449088">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-29 07:14:58</td>
+                <td class ="content_left">why is morning <span style="color: yellow;"><span style="color: yellow;">breath</span></span> so disgusting??? it’s like i ate a whole ass rat in my sleep 🤢</td>
+                <td>0</td>
+                <td>11</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1222417835504234496">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nauseous</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nauseous"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-24 05:29:33</td>
+                <td class ="content_left">i didn’t eat anything bad yesterday (as far as i can remember) but i’ve been puking since an hour. any ideas on how to make it stop????? i hate this <span style="color: yellow;"><span style="color: yellow;">nauseous</span></span> feeling whatta ew🤢🤢🤢🤮🤮🤮</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1220579369464160256">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shaking</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shaking"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-20 15:01:57</td>
+                <td class ="content_left">just found out that the quran says it’s a sin to have a dog as a pet (??!!?) please correct me if i’m wrong because i’m <span style="color: yellow;"><span style="color: yellow;">shaking</span></span></td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1219273867589324801">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Sneezing</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Sneezing"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-01-15 10:06:33</td>
+                <td class ="content_left">i’ve manifested allergies bcs i like <span style="color: yellow;">sneezing</span> it’s so orgasmic x</td>
+                <td>0</td>
+                <td>8</td>
+                <td><a href="https://twitter.com/lordhelpthis/status/1217387589285449728">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>

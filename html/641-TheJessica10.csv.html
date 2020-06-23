@@ -1,0 +1,1266 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>641-TheJessica10.csv</title>
+</head>
+<style>
+    body {
+        background: #000;
+    }
+    #Main {
+        width: 2500px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    table {
+        width: 2500px;
+        border-collapse: collapse;
+        text-align: left;
+        margin: 10px 5px 5px 10px;
+        cursor: default;
+        border: 1px solid #ccc;
+        margin-top:20px;
+        box-shadow: 0px 0px 10px rgba(0,255,255,0.75);
+        border: 1px solid rgba(127,255,255,0.75);
+        -webkit-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        -moz-box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+        box-shadow: 0px 0px 8px rgba(0,255,255,0.75);
+    }
+    .tbTitle>th {
+        font-weight: 300;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        font: 15px "微软雅黑", Arial, Helvetica, sans-serif;
+        background-color: rgba(0,93,93,0.8);
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+    }
+    th, td {
+        border: 3px solid rgba(127,255,255,0.55);
+        text-align: center;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(127,255,255,1);
+
+    }
+    .tbContext:hover {
+        background-color: rgba(0,99,99,0.9) !important;
+    }
+    td,td>a {
+        font: 30px "微软雅黑", Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        color: rgba(127,255,255,0.75);
+        text-shadow: 0px 0px 20px rgba(0,255,255,0.75);
+    }
+    .tbContext:nth-child(2n 1) {
+        background-color: rgba(0,127,127,0.1);
+    }
+    .content_left{
+        text-align: left;
+    }
+</style>
+<body>
+
+<script>
+    function exportCsv(obj){
+        //title ["","",""]
+        var title = obj.title;
+        //titleForKey ["","",""]
+        var titleForKey = obj.titleForKey;
+        var data = obj.data;
+        var str = [];
+        str.push(obj.title.join(",")+"\n");
+        for(var i=0;i<data.length;i++){
+            var temp = [];
+            for(var j=0;j<titleForKey.length;j++){
+                temp.push(data[i][titleForKey[j]]);
+            }
+            str.push(temp.join(",")+"\n");
+        }
+        var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+        var downloadLink = document.createElement("a");
+        downloadLink.href = uri;
+        downloadLink.download = " 641-TheJessica10.csv.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    function validateForm() {
+        var symptom_dic ={
+            recover:["recover", "recovered"],
+            test_positive:["test positive", "tested positive", "positive for Covid", "my test results is positive", "I was tested positive", "diagnosed with covid", "my COVID test was positive", "covid19", "covid-19"],
+            underlying_disease: ["underlying disease", "migraines", "migraine", "sinusitis", "cancer", "autoimmune", "thrombocytopenic purpura", "anemia", "asthma", "emphysema", "bronchitis", "respiratory diseases", "heart disease", "diabetes", "HIV", "tonsils removed", "Tonsillectomy", "lupus", "multiple sclerosis"],
+            symptoms: ["asymptomatic", "no symptoms", "some symptoms", "mild symptoms", "little symptoms"],
+            fever:["febrile", "fever", "feverish", "run a fever", "have a fever", "develop a fever", "in a fever", "high fever", "mild fever", "low fever", "hyperthermia", "no fever", "degrees Fahrenheit", "temprature", "my temprature", "my temp is", "have a temperature", "has a temperature", "high body temperature", "body temperature above reference range", "body temperature above", "increased body temperature", "temperature elevated", "temperature raised", " temperature near to", " temperature up to", "temperature raised to", "fieber", "feel hot"],
+            chills:["chill", "chills", "fever and chills", "chillness", "shivered", "shivering", "shiver", "shivers", "shivery", "shiveringly", "rigor", "ague", "algor", "shake", "shake all over", "shaking", "tremble", "trembled", "cold", "colder", "freeze", "freezing", "frigid"],
+            repeated_shaking_with_chills:["repeated shaking with chills", "repeated shaking", "repeated chills"],
+            sweating: ["sweat", "sweats", "sweating", "hidropoiesis", "Hidrosis", "Diaphoresis", "Perspiration", "perspire", "Perspire Profusely", "Started To Perspire", "perspire all over", "Perspire During Sleep"],
+            Excessive_sweating :["Excessive sweating", "Profuse sweating", "Sweating profusely"],
+            sneeze :["sneez", "Sneeze", "Sneezing", "Sneezes", "sternutation", "niesen", "achoo"],
+            nose_running:["sniffle", "nose", "nosey", "nose running", "running nose", "runny nose", "run at the nose", "nose dripping", "my nose", "a streaming cold", "Nasal discharge", "run nose", "snoty"],
+            Nasal_congestion :["Nasal congestion", "Sinus Congestion", "Stuffed-up nose", "Stuffed up nose", "stuffed nose", "rhinobyon", "nasal obstruction", "stuffiness"],
+            Nosebleed:["nose bleed", "Nose bleeds", "nose bleeding", "nosebleed", "epistaxis", "hemorrhinia"],
+            new_loss_of_taste_or_smell :["smell", "taste", "lost sense of smell", "lost sense of taste", "anosphrasia", "anosmia", "anodmia", "Can't smell", "smell nothing", "can't taste", "taste nothing"],
+            cough:["cough", "nonproductive cough", "hacking cough", "tussiculation", "dry cough", "Persistent cough", "continuously coughs", "acute cough", "bad cough", "weeks of violent coughing", "coughing all night", "cough all day", "rough cough", "violent fit of coughing", "severe cough", "wracking cough", "nasty cough", "begma", "bex", "tussis", "tussive", "bechic"],
+            Sputum_production:["Sputum production", "productive cough", "cough up some phlegm", "phlegm cough", "cough phlegm"],
+            Shortness_of_breath:["respiratory symptoms", "breath", "Shortness of breath", "short breath", "polypnea", "Dyspnoea", "Dyspnea", "Breathless", "short of breath"],
+            difficulty_breathing: ["Difficulty in breathing", "Difficulty breathing", "breathing difficulty", "breathe hard", "breathing hard", "breath hard", "breathing difficulties", "breathing difficult", "labored breathing", "Difficulty breath", "breath with difficulty", "breathlessness", "lose my breath", "hardly breath", "fighting for air", "not easy to breath", "breathing became painful", "breathing painful", "breath painful", "breathing problems", "trouble breathing", "respiratory trouble", "breathing trouble"],
+            sore_throat:["sore throat", "throat sore", "throat pain", "pain in throat", "pain throat", "swollen sore throat", "sore swollen throat", "frog in the throat"],
+            Swolllymph_nodes:["swollen lymph node", "lymph nodes", "lymph node", "swollen lymph nodes", "lymphadenopathy", "swollen neck glands", "neck glands swollen", "Cervical lymph nodes"],
+            headache:["headache", "headaches", "head aches", "head ache", "head pain", "head pains", "head pounding", "pounding pain", "My head was pounding", "My head is pounding", "pounding pain in my head", "feel blood pounding hard at the back of her head", "my head to start pounding", "my head's been pounding for a good 6 hours"],
+            Dizzy :["Dizzy", " dizzy spells", " dizzy spell", "Sudden dizziness", "frequent dizzy spells", " I get vertigo occasionally"],
+            Muscle_pain :["Muscle pain", "muscle ace", "Muscle pains", "muscle aces"],
+            body_ache:["achy all over", "don't feel well", "aching all over", "aches and pains", "body ache", "body aches", "body pain", "body pains"],
+            Joint_pain:["joint pain", "joint pains", "joint ache", "joint aches", "bone pain", "bone pains", "Articular pain", "bone ache", "bone aches"],
+            eye_pain:["eyes burn", "eyes pricked", "Stinging eyes", "Stinging eye", "eyes stining", "eye stining", "red eyes", "Eye fatigue", "Eyes fatigue", "red eye", "swollen eyes", "swollen eye", "sore eye", "sore eyes", "eye irritation", "itchy eyes", "itch eyes", "eyes itchy", "eye itchy", "eyeball pain", "eye ball pain", "pain in eye", "pains in eye", "pain in eyes", "pains in eyes"],
+            intolerance_of_light :["intolerance of light", "photophobia", "sensitivity to light", "sensitive to light", "light sensitive", "light sensitivity"],
+            hyperemia_or_chemosis:["hyperemia", "chemosis", "hyperemia or chemosis", "hyperemia chemosis"],
+            eye_secretions:["eye discharge", "puffy eyes", "puffy eye", "Blurred vision", "watery eyes", "water eyes"],
+            Hearing_finding:["pains in ears", "pains in ear", "pains in my ear", "pains in my ears", "ear pain", "ear aches", "ear ache", "ears pop", "ear pop", "tinnitus"],
+            Sinus_pain :["Sinus pain"],
+            Other_pain:["pains", "pain", "painful", "ache", "aches", "achy", "giddiness", "abdominal pain"],
+            Loss_of_appetite:["poor appetite", "inappetence", "lost my appetite", "loss of appetite", "no appetite"],
+            nause:["nausea", "nauseated", "nauseous", "naupathia", "nausea and vomiting"],
+            vomiting:["vomit", "vomiting"],
+            diarrhea:["diarrhea", "diarrhoea", "loose stool", "loose stools","chronic diarrhea"],
+            Severe_diarrhoea :["Severe diarrhoea", "cacatory", "loose stool", "loose stools", "Rice water stool"],
+            Lethargy: ["Lethargy", "drowsiness", "sleepiness", "excessive sleep"],
+            Difficulty_sleeping:["Difficulty sleeping", "sleep difficult", "difficult sleep"],
+            fatigue :["fatigue", "tired", "tiredness", "fatigued", "weary", "exhausted"],
+            hallucinations:["hallucinations", "hallucination", "illusion", "illusionary", "phonism", "auditory hallucination", "visual hallucination"],
+            skin:["Kawasaki like illness", "Blood clots", "red spots", "pink spots", "red spots", "brown spots", "rash", "tiny red spots on your skin like a rash", "purpura", "thrombocytopenic purpura", "blue lips", "blue face", "Bluish lips or face"],
+            Itching: ["pruritus", "Itching","itch", "itchy", "itchs"],
+            covid_toes :["covid toes","red toes", "toes red"],
+            treatment:["doctor prescribed some medicine", "doctor prescribed some drugs", "prone", "proning"],
+            heath_products:["heath products"],
+            medicine:["medicine", "drug", "doctor gave me some meidicine", "doctor gave me some medication", "prescribe me some"],
+            Bronchodilator: ["Bronchodilator", "inhaler", "Salbutamol", "terbutaline", "albuterol", "Ventolin", ],
+            Non_opioid_analgesic:["Tylenol", "Panadol", "Excedrin", "nebs"],
+            NSAID :["Ibuprofen", "Aspirin"],
+            antibiotics:["Amoxicillin", "moxifloxacin", "antibiotics", "penicillin"],
+            Chloroquine:["Chloroquine", "Chloroxine", "Hydroxychloroquine", "Hydroxychloroquine sulfate"],
+            Vitamin:["vit", "vitmin", "Vitamin C", "Vitamin D"],
+            Complementary_therapy: ["Acupressure", "acupuncture", "Aromatherapy", "Chiropraxy", "massage", "Herbal therapy", "Holistic massage therapy", "Homeopathic therapy", "Massage using Bowen technique", "Naturopathic medicine", "Osteopathy", "Probiotic therapy", "Reflexology", "Reiki", "Shiatsu", "Touch", "Traditional Chinese Medicine", "Traditional Maori medicine", "Herbal medicine agen"],
+            Mineral: ["Mineral", "zinc"],
+            nutritional_diet: ["nutritional diet", "vegetarians"]
+        };
+        res = {}
+        // var symptom_dic ={
+        // type:["porsche", "hello"], model:["911","888"], color:["white","red"]
+        // };
+        // var x = document.forms["myForm"]["check"].value;
+        var lable_status = document.getElementsByTagName("input")
+        // console.log(y.checked)
+        for(var i = 0; i < lable_status.length; i ++){
+            if(lable_status[i].checked){
+                labelname = lable_status[i].name
+                for(symptom_element in symptom_dic){
+                    if(symptom_dic[symptom_element].indexOf(labelname) > -1){
+                        res[symptom_element] = 1
+                    }
+                }
+            }
+        }
+        exportCsv({
+                title:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                titleForKey:['recover', 'test_positive', 'underlying_disease', 'symptoms', 'fever', 'chills', 'repeated_shaking_with_chills', 'sweating', 'Excessive_sweating', 'sneeze', 'nose_running', 'Nasal_congestion', 'Nosebleed', 'new_loss_of_taste_or_smell', 'cough', 'Sputum_production', 'Shortness_of_breath', 'difficulty_breathing', 'sore_throat', 'Swolllymph_nodes', 'headache', 'Dizzy', 'Muscle_pain', 'body_ache', 'Joint_pain', 'eye_pain', 'intolerance_of_light', 'hyperemia_or_chemosis', 'eye_secretions', 'Hearing_finding', 'Sinus_pain', 'Other_pain', 'Loss_of_appetite', 'nausea', 'vomiting', 'diarrhea', 'Severe_diarrhoea', 'Lethargy', 'Difficulty_sleeping', 'fatigue', 'hallucinations', 'skin', 'Itching', 'covid_toes', 'treatment', 'heath_products', 'medicine', 'Bronchodilator', 'Non_opioid_analgesic', 'NSAID', 'antibiotics', 'Chloroquine', 'Vitamin', 'Complementary_therapy', 'Mineral', 'nutritional_diet'],
+                data:[res]
+            });
+        console.log(res)
+    }
+</script>
+
+<br>
+<H1 style="text-align: left;"><span style="color: white; ">641-TheJessica10.csv"</span></H1></body>
+<br>
+<div id="Demo" style="height: 67px; max-height: 989px;">
+    <div id="Main">
+        <form name="myForm" onsubmit="validateForm()" method="post">
+            <table style="table-layout:fixed;word-break:normal;>
+			<tbody>
+			<tr class="tbTitle">
+            <th width= "10">created_at</th>
+            <th width= "54">full_text</th>
+            <th width= "1">retweet_count</th>
+            <th width= "1">favorite_count</th>
+            <th width= "2">twitter_url</th>
+            <th width="1">reslut</th>
+            </tr>
+            </tbody><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">covid-19</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "covid-19"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-23 01:20:35</td>
+                <td class ="content_left">@RubeBait @CindisPLace @AlisonAinswort9 @NavyVetResister @LouGarza86 @adavaco @Putzy2010 @SKVL75 @GFilms7 @StephenCanfiel6 @ToshLS @IngGuthrie @frankg07450 @Lorpos2 @Jmf134Jeff @Peatches66 @Carolchapman192 @stellas42 @CoastieKate1 @CharismaMolotov @PatrickMcMahon5 @grinningbamE <span style="color: yellow;">COVID-19</span> porn</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1264003257908621313">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 00:36:49</td>
+                <td class ="content_left">@groupchatnews @dbongino Wrong. And you can't compare <span style="color: yellow;">COVID-19</span> to any deaths. This is an unknown pathogen.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1261817916665683968">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-16 18:22:40</td>
+                <td class ="content_left">@frankg07450 @AlisonAinswort9 @Carolchapman192 @Putzy2010 @adavaco @CindisPLace @SKVL75 @RubeBait @ErnestFilm @StephenCanfiel6 @Moezyboy @chefrocky413 @handwashedlies @NavyVetResister @IMontoyaResists @ToshLS @IngGuthrie @Rob16921 @dr0lst0n @Jmf134Jeff @mydoggyruss @cherylohellno Trump is making schools open in August while his friend is released to home prison due to <span style="color: yellow;">COVID-19</span> yet there were no cases in his prison.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1261723760794558465">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 00:18:01</td>
+                <td class ="content_left">@ECMcLaughlin There has been with a lot of states. I said "just wait 7 to 21 days" over 3,000 American's died due to <span style="color: yellow;">COVID-19</span> in the last 24 hours. We were going down . It was in the 2k for the last couple of weeks.</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1260726020753113089">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 21:39:00</td>
+                <td class ="content_left">Happy to finally be <span style="color: yellow;">COVID-19</span> free.</td>
+                <td>3</td>
+                <td>89</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1260686004198887424">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-13 20:58:26</td>
+                <td class ="content_left">@cherylohellno I am doing well! Thank you! I am <span style="color: yellow;">COVID-19</span> free! How are you?</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1260675794969309185">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-10 18:43:32</td>
+                <td class ="content_left">@HellBentVet Same with everything but I got <span style="color: yellow;">COVID-19</span> twice.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1259554682466258947">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 05:38:58</td>
+                <td class ="content_left">@PinkyD124 @amikegreen2 Yep. And <span style="color: yellow;">COVID-19</span> can stay on surfaces for days. Shoes up to 72 hours! Good one pence, not wearing a mask to the Mayo Clinic and only washing your hands.</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1258994853980983297">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 22:34:14</td>
+                <td class ="content_left">Crackhead looking for his crack or a republican discovering <span style="color: yellow;">COVID-19</span> is real? https://t.co/cUy7F68IjE</td>
+                <td>1</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1258887965205344257">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 13:43:36</td>
+                <td class ="content_left">@MarshaBlackburn I certainly don't want to sue China. Are you bragging? I want to sue trump for him not taking <span style="color: yellow;">COVID-19</span> seriously. For not caring about American lives. For inciting violence, racism,  homophobia,  bigotry and mysogionyst https://t.co/ejs82QKTBl</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1258029649172393985">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 13:29:13</td>
+                <td class ="content_left">@alexvelluto Good lord. Don't give trump the idea <span style="color: yellow;">COVID-19</span> isn't killing people but it's the hornets</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1258026032743026693">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 13:00:14</td>
+                <td class ="content_left">@mattklewis No. I think it's truth. People need to realize how seriously <span style="color: yellow;">COVID-19</span> is and that trump is killing us off.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1258018738441318401">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 01:28:36</td>
+                <td class ="content_left">@SethN12 @RaeMargaret61 10,771 people have died due to <span style="color: yellow;">COVID-19</span> in the last 24 hours. This is going to be awful.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1256757516773425152">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-02 23:38:57</td>
+                <td class ="content_left">@realDonaldTrump 10,771 people have died due to <span style="color: yellow;">COVID-19</span> in the last 24 hours. You are a murderer. I can't wait until November when you are booted out and arrested for tax invasion. You know what they do to rapists in prison right?</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1256729925471498240">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 18:01:02</td>
+                <td class ="content_left">@CharlieInUtah Yeah. Utah is not taking <span style="color: yellow;">COVID-19</span> seriously. It is disgusting.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1256282498792751104">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 18:30:03</td>
+                <td class ="content_left">@LeonHendrix Idiots! They will be sorry. It has been proven that protesters are catching <span style="color: yellow;">COVID-19</span> in high rates.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1255927409192271872">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 18:28:06</td>
+                <td class ="content_left">@UtahCoronavirus Utah needs to take <span style="color: yellow;">COVID-19</span> seriously.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1255564533390733313">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 22:31:12</td>
+                <td class ="content_left">@dfriedman33 @content1949 🤣🤣🤣 lying sacks of shit. Letting <span style="color: yellow;">COVID-19</span> ravage the country.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1255263323798622213">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 21:07:46</td>
+                <td class ="content_left">@PRINZESKIM @ArcaneAlphaWolf I am in the same boat. I wore a mask and gloves. <span style="color: yellow;">COVID-19</span> can stay on surfaces for days. Always take your shoes off when you get home. I only went to the grocery store and saw two people wearing masks. Utah is not taking this seriously.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1255242326571733001">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 20:15:58</td>
+                <td class ="content_left">@CharlieInUtah @ISeeYouMotel6 @MulhollandLeda @Gallaecian @cherylohellno @HLisandrello @NashvilleDeeDee @a_jan5 @resistelle @CindisPLace @SassyGirlBoss @that1lemon @Lnds777 @mydoggyruss @CharismaMolotov @Carpediem4989 No. <span style="color: yellow;">COVID-19</span> lives on surfaces for days. It will be horrific. After some beaches opened in CA and the huge line of protesters lined up to open San Diego beach is going to have severe consequences.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1255229289336844293">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 20:15:58</td>
+                <td class ="content_left">@ISeeYouMotel6 @CharlieInUtah @MulhollandLeda @Gallaecian @cherylohellno @HLisandrello @NashvilleDeeDee @a_jan5 @resistelle @CindisPLace @SassyGirlBoss @that1lemon @Lnds777 @mydoggyruss @CharismaMolotov @Carpediem4989 Yep. 1 to 3 weeks and sadly <span style="color: yellow;">COVID-19</span> will peak so high.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1255229289328410630">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 19:35:35</td>
+                <td class ="content_left">@lector_caveat @Ama4truth1 @DyanePalonis @ConnieG1025 @CClarkAuthor @CamiLee13 @BlueR00n @CokoGay @stevalice123 @QueenLavonia @gon_deedee @Mok1967SG @FekratRanna @mytaughts @eric_widi @Nashville2 @HellBentVet @Jules9800 @WomenRiseUp2020 @Martinsuz @sewhigh @smilingoutloud2 @RachaelZ17 @Ayanna45Resist @Super_woman0811 @Joie_de_Vivre__ @DidiDarrer @dindin6 @Eathbound420 @PaigeTurnerRsts @NoirJersey @JeffBlueWave1 @HarryPotterMAGE @Melissa_Jane57 @MelyssaJohnson5 @Lori_Resists @ElNoPower @CarlyJA22 @CarmenSisRice And <span style="color: yellow;">COVID-19</span> has mutated at least 30 times. A vaccine seems like the flu vaccine where they figure out the worse strain. A vaccine won't be available for 12 to 25 months.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1255219127519756291">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 22:49:46</td>
+                <td class ="content_left">@HLisandrello @Putzy2010 @RubeBait @Gallaecian @AlisonAinswort9 @Carolchapman192 @adavaco @MulhollandLeda @CindisPLace @ERNESTZorro @StephenCanfiel6 @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @StellaStar711 @ToshLS @dr0lst0n @IngGuthrie @frankg07450 @dusterdog1 Yes. I donated blood to the Red Army well before I had gotten sick. 30 mutations. That is why every <span style="color: yellow;">COVID-19</span> symptoms are different.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254905606105739264">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 22:18:25</td>
+                <td class ="content_left">@Putzy2010 @HLisandrello @RubeBait @Gallaecian @AlisonAinswort9 @Carolchapman192 @adavaco @MulhollandLeda @CindisPLace @ERNESTZorro @StephenCanfiel6 @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @StellaStar711 @ToshLS @dr0lst0n @IngGuthrie @frankg07450 @dusterdog1 I have had <span style="color: yellow;">COVID-19</span> twice.</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254897718838784002">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 21:48:39</td>
+                <td class ="content_left">Do this! Have these supplies. Please RT. I currently have <span style="color: yellow;">COVID-19</span> and have needed or wanted everything listed. https://t.co/GBRbcV68Ql</td>
+                <td>1</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254890226347945984">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 21:37:29</td>
+                <td class ="content_left">@HLisandrello @Gallaecian @CharlieInUtah @cherylohellno @MulhollandLeda @NashvilleDeeDee @a_jan5 @resistelle @CindisPLace @SassyGirlBoss @that1lemon @Lnds777 @mydoggyruss @CharismaMolotov @Carpediem4989 I told you. <span style="color: yellow;">COVID-19</span> +stable genius  = me. 😂😂😂😂</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254887415325450240">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 20:41:34</td>
+                <td class ="content_left">@CharlieInUtah @cherylohellno @MulhollandLeda @HLisandrello @Gallaecian @NashvilleDeeDee @a_jan5 @resistelle @CindisPLace @SassyGirlBoss @that1lemon @Lnds777 @mydoggyruss @CharismaMolotov @Carpediem4989 We haven't hit our peak yet. I live in Utah as well. One of the states that is not on lockdown. Stay at home orders, yes. I have <span style="color: yellow;">COVID-19</span> for the 2and time. This will spread like wildfire. I warned about the protesters in St. George. This is what's happening now. https://t.co/uCHLwoa7Sz</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254873343620034560">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 01:12:36</td>
+                <td class ="content_left">@Stop_Trump20 I have <span style="color: yellow;">COVID-19</span> and too sick to care but bored enough to try. I was making it for trump but couldn't give him any prize. 😂😂😂 https://t.co/orq51s4qeC</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254579163651952640">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 20:04:37</td>
+                <td class ="content_left">@realDonaldTrump Against leaders for suggesting shooting up disinfectant? For lying about <span style="color: yellow;">COVID-19</span> for months as the death toll rises? That's on your hands!</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254501657196421120">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 04:10:24</td>
+                <td class ="content_left">This is what <span style="color: yellow;">COVID-19</span> does. Usually you are way to sick to eat then suddenly your still is aching because you haven't eaten in days,  yet have zero energy to make anything.</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253899133154234369">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 17:29:40</td>
+                <td class ="content_left">@AlisonAinswort9 @RubeBait @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @ERNESTZorro @HLisandrello @Gallaecian @StephenCanfiel6 @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @IMontoyaResists @grinningbamE @dr0lst0n @IngGuthrie @stellas42 @frankg07450 Did you wash your hands after? 🤣🤣 "I'm never going to wash my hand again" "but <span style="color: yellow;">COVID-19</span> " "shit"</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253737889894027264">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 16:22:56</td>
+                <td class ="content_left">@SheriAWilkinson No. Utah is one of the states that is on stay at home orders but not a lockdown. People are not taking it seriously enough. I have <span style="color: yellow;">COVID-19</span> now and I'm the one wearing a mask.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253721093283540993">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 22:36:25</td>
+                <td class ="content_left">@HLisandrello @IngGuthrie @RubeBait @AlisonAinswort9 @SherryPie55 @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @ERNESTZorro @Gallaecian @StephenCanfiel6 @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @IMontoyaResists @sarah_meinzer @dr0lst0n @govets @frankg07450 I have noticed that now the ones I know, don't praise him but deflect and start talking about Dems and how evil they are. This guy I hung up on twice today said <span style="color: yellow;">COVID-19</span> was manufactured by the Dems. I should record him some time. You guys would laugh so hard.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253452698470383616">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 15:58:19</td>
+                <td class ="content_left">I tested positive for <span style="color: yellow;">COVID-19</span> 2 days ago. Have been sicker than I have ever been. I look back all the way to my childhood. Be careful out there. I was but still got it.</td>
+                <td>1</td>
+                <td>15</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253352510305325059">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 15:34:14</td>
+                <td class ="content_left">@IngGuthrie @AlisonAinswort9 @HLisandrello @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @RubeBait @ERNESTZorro @Gallaecian @StephenCanfiel6 @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @IMontoyaResists @sarah_meinzer @dr0lst0n @govets @frankg07450 Do you have <span style="color: yellow;">COVID-19</span> too?</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253346448961200128">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 20:05:16</td>
+                <td class ="content_left">@PDXAngie @AlisonAinswort9 @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @RubeBait @ERNESTZorro @HLisandrello @Gallaecian @StephenCanfiel6 @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @IMontoyaResists @sarah_meinzer @nyccookies @that1lemon @IngGuthrie Ugh. I got my results. <span style="color: yellow;">COVID-19</span> positive. I have to have two negative tests before I can go anywhere.</td>
+                <td>2</td>
+                <td>17</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1252689883048472576">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breath</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breath"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-17 17:40:20</td>
+                <td class ="content_left">@smc429 @CookKCEgyptian All the time. I'm not upset only mumbled quietly under my <span style="color: yellow;"><span style="color: yellow;">breath</span></span> "rude"</td>
+                <td>1</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1262075493169283077">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 13:16:03</td>
+                <td class ="content_left">@bettypge69 @cherylohellno I just spray it in my mouth. It disinfected and leaves my <span style="color: yellow;"><span style="color: yellow;">breath</span></span> fresh.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253674062657679362">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Breathless</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Breathless"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 01:38:17</td>
+                <td class ="content_left">@mterracino Oh I will for sure. I am still exhausted and <span style="color: yellow;">breathless</span> if I have to walk. They told me it would be a while until I felt like myself. I have been wearing a mask since day 1 and will continue to fo so. Tha is. 💕❤</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1260746223683645440">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">exhausted</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "exhausted"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 01:38:17</td>
+                <td class ="content_left">@mterracino Oh I will for sure. I am still <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> and breathless if I have to walk. They told me it would be a while until I felt like myself. I have been wearing a mask since day 1 and will continue to fo so. Tha is. 💕❤</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1260746223683645440">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-14 00:39:57</td>
+                <td class ="content_left">@astroeric12 Yay! I am still <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> but so very happy! Thanks Eric. ❤💕</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1260731539832410115">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 01:57:43</td>
+                <td class ="content_left">@Aleka2020 Exactly. It has no rules. I have a sore throat. Am so <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> it's hard to stay awake. Constant migraine. Chills so bad I shake. Fever, cough, flushed face, bad stomach pains. Sensitivity to light.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253503353801158656">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 13:38:19</td>
+                <td class ="content_left">@MulhollandLeda Good morning Leda. 💕 Thank you. It feels good to be awake. I'm still really <span style="color: yellow;"><span style="color: yellow;">exhausted</span></span> though.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253317280420618245">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">heart disease</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "heart disease"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 01:59:44</td>
+                <td class ="content_left">@jeannefisher17 @ImAllForeGolf @DonaldJTrumpJr I currently have it for the second time. <span style="color: yellow;">Heart disease</span>.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1259664455501111304">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 13:11:40</td>
+                <td class ="content_left">@SassyChick1979 @Peggysuz2017 @realDonaldTrump Tyrants. Narcissists. It is insane. And Rudy Guiliani laughing about the testing saying "we may as well test for cancer or <span style="color: yellow;"><span style="color: yellow;">heart disease</span></span>"  yeah. Those are contagious. 🙄</td>
+                <td>1</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1258021613993246720">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 16:46:59</td>
+                <td class ="content_left">Giuliani joked on fox about testing saying "why don't we do random tests for cancer, <span style="color: yellow;"><span style="color: yellow;">heart disease</span></span>" yeah. Does he get dumber the older he gets? Ah, he sneezed on me. I'm going to get cancer. I mean ... come on!</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1255539087806627840">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cough</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cough"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-11 01:15:59</td>
+                <td class ="content_left">@ImAllForeGolf @DonaldJTrumpJr Bring it fool. I'll <span style="color: yellow;"><span style="color: yellow;">cough</span></span> on you.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1259653444782010373">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-01 16:06:18</td>
+                <td class ="content_left">@IngGuthrie @StephenCanfiel6 @SKVL75 @AlisonAinswort9 @Carolchapman192 @Putzy2010 @adavaco @CindisPLace @RubeBait @ERNESTZorro @HLisandrello @Gallaecian @Moezyboy @chefrocky413 @NavyVetResister @IMontoyaResists @PDXAngie @ToshLS @frankg07450 @BoneDraft @davidjames693 @apathetic_NY She didn't dare. She just flipped me off and I laughed and told her to remember this when she is in this hospital from COVID-19. They said it is fake and nobody is dying. Oh I wanted to <span style="color: yellow;"><span style="color: yellow;">cough</span></span> on them so bad but I'm not that cruel.</td>
+                <td>0</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1256253624696504322">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-29 22:59:33</td>
+                <td class ="content_left">@MulhollandLeda Holy sh*t! And the Earth is flat. They just look like fools. Give me some and I'll <span style="color: yellow;"><span style="color: yellow;">cough</span></span> in their faces. And that guy is not fine.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1255632845302726657">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 15:33:49</td>
+                <td class ="content_left">@OnePissedOffBee @wcgirl1 @ToshLS @Gallaecian @michelle_martha @FixesGames @aprilneo @speakout_april @TDEMomof3 @HarbyMelanie @KrZy4NIN @ZieglerSandi @csu_scientist @jade_cabochon7 @derkiletian @Valerygirl67 @PRRisk333 @ABroadBrush @JeneeS_IS250 @TarynStanford @Oooooo_Donna Yeah. I have COVID-19. No breathing problems. <span style="color: yellow;">Cough</span> from pneumonia. Bacterial thank god.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254071121625747457">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tired</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tired"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 17:46:55</td>
+                <td class ="content_left">@ToshLS @SKVL75 @adavaco @AlisonAinswort9 @StephenCanfiel6 @Carolchapman192 @Putzy2010 @CindisPLace @RubeBait @ERNESTZorro @Moezyboy @chefrocky413 @NavyVetResister @mini_bubbly @IMontoyaResists @IngGuthrie @frankg07450 @Rob16921 @dr0lst0n @LindaStrother7 <span style="color: yellow;">Tired</span> but couldn't sleep. Otherwise much better.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1259178047153926144">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cancer</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cancer"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 11:45:46</td>
+                <td class ="content_left">Racism persists as the <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> of America. Persuasive, corrosive, , dehumanizing and deadly, modern day racism infects the health of our society. And this was before trump.</td>
+                <td>2</td>
+                <td>7</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1259087158767280134">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 13:11:40</td>
+                <td class ="content_left">@SassyChick1979 @Peggysuz2017 @realDonaldTrump Tyrants. Narcissists. It is insane. And Rudy Guiliani laughing about the testing saying "we may as well test for <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> or heart disease"  yeah. Those are contagious. 🙄</td>
+                <td>1</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1258021613993246720">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 16:52:41</td>
+                <td class ="content_left">@ClaudiaChopra @rickiestofrick I wish I had help. My mom and brother both died from <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> and my dad is a narcissist bible thumper.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1256990071632232450">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 16:10:07</td>
+                <td class ="content_left">@VoteNotRed @FiFiEarthAngel @Carpediem4989 @VoteTheRedOut @KatieHill4CA @Alyssa_Milano @Fired_Soon @SKVL75 @McRouvi @ekww11 @MulhollandLeda @HLisandrello @H_Mc92 @Leslieoo7 @IAM75136956 @DinaRod0871 @Carene40 @CarpeOg @CindisPLace @ResisterForever @DMansini @Lnds777 @co_rapunzel4 He died of prostate <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> last year. We lost one of the good ones for sure.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254080256626974720">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 15:58:17</td>
+                <td class ="content_left">@DMansini @FiFiEarthAngel @Carpediem4989 @VoteTheRedOut @KatieHill4CA @Alyssa_Milano @Fired_Soon @SKVL75 @McRouvi @ekww11 @MulhollandLeda @HLisandrello @H_Mc92 @Leslieoo7 @IAM75136956 @DinaRod0871 @Carene40 @CarpeOg @CindisPLace @ResisterForever @Lnds777 @co_rapunzel4 @VoteNotRed He died from early onset prostate <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> February of 2019. 😥 thank you though. He would have appreciated it!</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254077276972445696">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 14:34:21</td>
+                <td class ="content_left">@MulhollandLeda @Gallaecian @AlisonAinswort9 @StephenCanfiel6 @HLisandrello @Carolchapman192 @Putzy2010 @adavaco @CindisPLace @RubeBait @ERNESTZorro @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @IMontoyaResists @sarah_meinzer @dr0lst0n @govets @IngGuthrie @frankg07450 That's fast. I hope they are safe and nobody gets <span style="color: yellow;"><span style="color: yellow;">cancer</span></span> or has a baby with birth defects in a few years.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253331380307550208">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">smell</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "smell"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-09 11:27:16</td>
+                <td class ="content_left">@FightyWoman @lisac_mi @BettyB919 @VodkaMuse @ImTHATChristina @cherylohellno @HLisandrello @CindisPLace @ShelbyKStewart @jpierni @BlueR00n @AnneKepplinger @Natalie_Resist @ButterflyLove_8 @beccas1434 @IslandGirlPRV @brokenheartswwl @MrsRabbitResist @BCOOL333 @PuffDomino @jhgurf @resistelle @Tam_Resist @Rockmedia @spiritmoon7 @Theon_Orbis @MulhollandLeda @KikiAdine @BodhisattvaKat @aj_mirabelle @Dave_H64 @Lnds777 @lLEHaware @IngGuthrie @Gallaecian @co_rapunzel4 @astroeric12 @ChristianLament @Elderrflower @jbsportz @Scottcrates @SchaffnerCk @jlhbrain @WickedWalnut @reallyDonB @libragrl1685 @JustJaggers @KellsBells_nz @auntchechelle @RichardHealy1 Was just watching a documentary of the 100 year war. I also have a fire tablet and a kindle. I got the fire tablet for school. Saved so much in textbooks as I can rent them next to nothing. The kindle is smaller but love reading novels. Still love the <span style="color: yellow;"><span style="color: yellow;">smell</span></span> of books.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1259082504130052097">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 19:21:19</td>
+                <td class ="content_left">@OnePissedOffBee @wcgirl1 @ToshLS @Gallaecian @michelle_martha @FixesGames @aprilneo @speakout_april @TDEMomof3 @HarbyMelanie @KrZy4NIN @ZieglerSandi @csu_scientist @jade_cabochon7 @derkiletian @Valerygirl67 @PRRisk333 @ABroadBrush @JeneeS_IS250 @TarynStanford @Oooooo_Donna It is hard for me to <span style="color: yellow;"><span style="color: yellow;">smell</span></span> and things taste metallic. So strange. Is your sister well now?</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254128371891494912">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">tested positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "tested positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 23:47:15</td>
+                <td class ="content_left">@Acyn Tick tock trump. And what a fool. His private valet, the one that brings his food was <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> too. Let's see how long it takes to see repubicans wearing masks. And we can't have contact tracing. He is letting this wave over the country 
+https://t.co/m2IOd2Ryu4</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1258906338278600704">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 14:53:11</td>
+                <td class ="content_left">Ha ha! trumps personal valet <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19. You know, the one that serves him his food.</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1258771937590820864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 19:35:54</td>
+                <td class ="content_left">@Acyn What fucking assholes! I hope they get it! I just <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> 2 days ago. I can't wait until they get it.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253407267422007296">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 19:14:23</td>
+                <td class ="content_left">@maegutz @EdBruder Oh shit. I just <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19. That scares me.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253401854303539200">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 15:58:19</td>
+                <td class ="content_left">I <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19 2 days ago. Have been sicker than I have ever been. I look back all the way to my childhood. Be careful out there. I was but still got it.</td>
+                <td>1</td>
+                <td>15</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253352510305325059">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 15:34:27</td>
+                <td class ="content_left">@coyotecreek158 @Eathbound420 I have had it. Was just <span style="color: yellow;"><span style="color: yellow;">tested positive</span></span> for COVID-19. Started with a lot of stomach pain. Exhaustion, sore throat, high fever. Chills so bad I am shaking. Delusional.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253346504309235713">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">migraines</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "migraines"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 17:42:56</td>
+                <td class ="content_left">@cherylohellno @Gallaecian @ToshLS @ZieglerSandi @csu_scientist @1120Eclipse @1980Dorothy @jade_cabochon7 @BluePirate_ @JackieC1989 @derkiletian @pomsmama @Valerygirl67 @BobA1959 @wcgirl1 @NinesMarie @PRRisk333 @cjillian0709 @ABroadBrush @TarynStanford @Oooooo_Donna @GotJanie I am still having a hard time breathing and major <span style="color: yellow;"><span style="color: yellow;">migraines</span></span> but I feel I am on the mend. I have failed two tests so far. Every Monday I go in for a test so hopefully this one will be negative. Thanks for asking. https://t.co/RcqCNadJEB</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1258814655725596672">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 16:50:30</td>
+                <td class ="content_left">@astroeric12 Feeling better. Still hard to breathe. <span style="color: yellow;">Migraines</span> from hell. Hits me from time to time but still not able to do much. Thanks for asking.  💞</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1258801460222910465">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 22:09:48</td>
+                <td class ="content_left">@1984_brien Tiber balm white for <span style="color: yellow;"><span style="color: yellow;">migraines</span></span> and breathing. All natural.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254895550412976131">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">positive for Covid</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "positive for Covid"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-08 14:53:11</td>
+                <td class ="content_left">Ha ha! trumps personal valet tested <span style="color: yellow;">positive for COVID</span>-19. You know, the one that serves him his food.</td>
+                <td>0</td>
+                <td>6</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1258771937590820864">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 19:14:23</td>
+                <td class ="content_left">@maegutz @EdBruder Oh shit. I just tested <span style="color: yellow;">positive for COVID</span>-19. That scares me.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253401854303539200">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 15:58:19</td>
+                <td class ="content_left">I tested <span style="color: yellow;">positive for COVID</span>-19 2 days ago. Have been sicker than I have ever been. I look back all the way to my childhood. Be careful out there. I was but still got it.</td>
+                <td>1</td>
+                <td>15</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253352510305325059">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 15:34:27</td>
+                <td class ="content_left">@coyotecreek158 @Eathbound420 I have had it. Was just tested <span style="color: yellow;">positive for COVID</span>-19. Started with a lot of stomach pain. Exhaustion, sore throat, high fever. Chills so bad I am shaking. Delusional.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253346504309235713">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">chills</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "chills"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 15:07:35</td>
+                <td class ="content_left">@wuwu_wally Yes. I currently have it now. It is the sickest I have been. I have fainted so many times. A constant migraine.  <span style="color: yellow;">Chills</span> so I am shaking then hot (unregulated body temp) pain in my stomach. It's unbearable.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1258050786623283201">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 01:57:43</td>
+                <td class ="content_left">@Aleka2020 Exactly. It has no rules. I have a sore throat. Am so exhausted it's hard to stay awake. Constant migraine. <span style="color: yellow;">Chills</span> so bad I shake. Fever, cough, flushed face, bad stomach pains. Sensitivity to light.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253503353801158656">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 18:48:39</td>
+                <td class ="content_left">@SKVL75 @IngGuthrie @AlisonAinswort9 @Gallaecian @HLisandrello @MulhollandLeda @StephenCanfiel6 @Carolchapman192 @Putzy2010 @adavaco @CindisPLace @RubeBait @ERNESTZorro @Moezyboy @chefrocky413 @NavyVetResister @IMontoyaResists @sarah_meinzer @dr0lst0n @govets @frankg07450 It's the worst isn't it. You get the <span style="color: yellow;"><span style="color: yellow;">chills</span></span> so bad your whole body shakes and aches. Biggest migraine non stop. Exhaustion. I hope you feel better Gale.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253395375131525122">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 15:34:27</td>
+                <td class ="content_left">@coyotecreek158 @Eathbound420 I have had it. Was just tested positive for COVID-19. Started with a lot of stomach pain. Exhaustion, sore throat, high fever. <span style="color: yellow;">Chills</span> so bad I am shaking. Delusional.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253346504309235713">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shaking</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shaking"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 15:07:35</td>
+                <td class ="content_left">@wuwu_wally Yes. I currently have it now. It is the sickest I have been. I have fainted so many times. A constant migraine.  Chills so I am <span style="color: yellow;"><span style="color: yellow;">shaking</span></span> then hot (unregulated body temp) pain in my stomach. It's unbearable.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1258050786623283201">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">pain</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "pain"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 15:07:35</td>
+                <td class ="content_left">@wuwu_wally Yes. I currently have it now. It is the sickest I have been. I have fainted so many times. A constant migraine.  Chills so I am shaking then hot (unregulated body temp) <span style="color: yellow;"><span style="color: yellow;">pain</span></span> in my stomach. It's unbearable.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1258050786623283201">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 20:04:02</td>
+                <td class ="content_left">@Gallaecian @KikiAdine @NashvilleDeeDee @a_jan5 @HLisandrello @Lnds777 @resistelle @Carpediem4989 @CindisPLace @CharismaMolotov @cherylohellno @SassyGirlBoss @SelfImposedXile @lLEHaware @co_rapunzel4 Me? No. 😭 I hope every night I will wake well. Pneumonia is gone though. I can use my botanical medicine now. It doesn't help with <span style="color: yellow;"><span style="color: yellow;">pain</span></span> or sickness but it distracts from it and I love it for it!</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1255226286986887169">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 00:34:59</td>
+                <td class ="content_left">@Dragonfly_Drama Same. Nausea. <span style="color: yellow;">Pain</span> in my stomach,  fever, flushing,. My skin is so hot but I'm freezing. I am so sorry you are sick as well.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254569698974248961">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 14:12:00</td>
+                <td class ="content_left">@PDXAngie Thanks. Exactly. We can put our animals down so they are not in <span style="color: yellow;"><span style="color: yellow;">pain</span></span> or suffering but fuck people. They have to suffer.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253688142973956096">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 13:05:29</td>
+                <td class ="content_left">@HLisandrello @Putzy2010 @RubeBait @AlisonAinswort9 @MulhollandLeda @Gallaecian @frankg07450 @45YoureFired @lividddh @Carolchapman192 @adavaco @CindisPLace @ERNESTZorro @StephenCanfiel6 @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @IMontoyaResists @GotVets @dr0lst0n @IngGuthrie It is hard to eat but have made myself eat some soup every day. Just a bad <span style="color: yellow;"><span style="color: yellow;">pain</span></span> in my stomach.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253309015049691138">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 13:52:02</td>
+                <td class ="content_left">@AlisonAinswort9 @HLisandrello @StephenCanfiel6 @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @RubeBait @ERNESTZorro @Gallaecian @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @IMontoyaResists @sarah_meinzer @ev3ponies @nyccookies I do that as well. I have to have the bone broth with tea but use peppermint and ginger. And I also had a huge <span style="color: yellow;"><span style="color: yellow;">pain</span></span> in my stomach. If I hadn't already had my appendix removed I would have thought I had appendicitis</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1252595956790358016">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">some symptoms</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "some symptoms"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-06 14:45:24</td>
+                <td class ="content_left">@AngelaInKy502 I have had it twice. <span style="color: yellow;">Some symptoms</span> differ some not. Both excruciating. So shut up and stop spreading your lies.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1258045203291598848">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">taste</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "taste"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-05-03 17:05:16</td>
+                <td class ="content_left">@SheriAWilkinson @JohnnyBiggs13 @MulhollandLeda @HLisandrello @Gallaecian @RubeBait @cartoons_mad @AuthorSpice @WickedWalnut @YellowDogJeff1 @PinkVanillaMe @richones1 @allison_durh @zelda229 @MichelleObama @BarackObama @RhymesRadical @MysterySolvent @IngGuthrie @adavaco @resistelle @NashvilleDeeDee @CindisPLace @Carpediem4989 Yeah. Me too. I just have a bad relationship with meat. I have poultry but only chicken or turkey breast. The dark meat ... 🤮 I can just <span style="color: yellow;"><span style="color: yellow;">taste</span></span> blood.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1256993238335938561">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-30 17:46:26</td>
+                <td class ="content_left">@wetuiozx I'm 45 and love mine! It does <span style="color: yellow;"><span style="color: yellow;">taste</span></span> like fried food but doesn't hurt your stomach and is much healthier.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1255916436477710338">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 19:21:19</td>
+                <td class ="content_left">@OnePissedOffBee @wcgirl1 @ToshLS @Gallaecian @michelle_martha @FixesGames @aprilneo @speakout_april @TDEMomof3 @HarbyMelanie @KrZy4NIN @ZieglerSandi @csu_scientist @jade_cabochon7 @derkiletian @Valerygirl67 @PRRisk333 @ABroadBrush @JeneeS_IS250 @TarynStanford @Oooooo_Donna It is hard for me to smell and things <span style="color: yellow;"><span style="color: yellow;">taste</span></span> metallic. So strange. Is your sister well now?</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254128371891494912">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">test positive</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "test positive"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 21:07:46</td>
+                <td class ="content_left">@astroeric12 Same. I had to have my second test today. It will be negative. I need to <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> 2 times before I go into public. I'm out of tampons. 😭 but I won't go because I wouldn't wish this on anyone.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1255242326739476488">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 20:58:42</td>
+                <td class ="content_left">@SKVL75 @HLisandrello @AlisonAinswort9 @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @RubeBait @ERNESTZorro @Gallaecian @StephenCanfiel6 @Moezyboy @chefrocky413 @NavyVetResister @StellaStar711 @ToshLS @dr0lst0n @IngGuthrie @BagdMilkSoWhat @that1lemon They don't  care. They want to make sure I <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> twice before I can go into public. For me that's the grocery store.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1255240044803227649">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 13:27:14</td>
+                <td class ="content_left">@StephenCanfiel6 @AlisonAinswort9 @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @RubeBait @ERNESTZorro @HLisandrello @Gallaecian @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @IMontoyaResists @sarah_meinzer @dr0lst0n @govets @IngGuthrie @frankg07450 I'm very careful. We have N95 masks. I am not allowed to go anywhere else until I <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> twice, except the testing center.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253314488977092608">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 13:53:23</td>
+                <td class ="content_left">@PDXAngie @HLisandrello @StephenCanfiel6 @AlisonAinswort9 @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @RubeBait @ERNESTZorro @Gallaecian @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @IMontoyaResists @sarah_meinzer @ev3ponies @nyccookies No. They said if I <span style="color: yellow;"><span style="color: yellow;">test positive</span></span> I need to have someone pick one up for me. They are having me do a sleep study as well.</td>
+                <td>1</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1252596295685947392">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">medicine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "medicine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 20:04:02</td>
+                <td class ="content_left">@Gallaecian @KikiAdine @NashvilleDeeDee @a_jan5 @HLisandrello @Lnds777 @resistelle @Carpediem4989 @CindisPLace @CharismaMolotov @cherylohellno @SassyGirlBoss @SelfImposedXile @lLEHaware @co_rapunzel4 Me? No. 😭 I hope every night I will wake well. Pneumonia is gone though. I can use my botanical <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> now. It doesn't help with pain or sickness but it distracts from it and I love it for it!</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1255226286986887169">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 19:12:16</td>
+                <td class ="content_left">@Martinsuz @DyanePalonis @lector_caveat @Ama4truth1 @ConnieG1025 @CClarkAuthor @CamiLee13 @BlueR00n @CokoGay @stevalice123 @QueenLavonia @gon_deedee @Mok1967SG @FekratRanna @mytaughts @eric_widi @Nashville2 @HellBentVet @Jules9800 @WomenRiseUp2020 @sewhigh @smilingoutloud2 @RachaelZ17 @Ayanna45Resist @Super_woman0811 @Joie_de_Vivre__ @DidiDarrer @dindin6 @Eathbound420 @PaigeTurnerRsts @NoirJersey @JeffBlueWave1 @HarryPotterMAGE @Melissa_Jane57 @MelyssaJohnson5 @Lori_Resists @ElNoPower @CarlyJA22 @CarmenSisRice We do. It is my laughter <span style="color: yellow;"><span style="color: yellow;">medicine</span></span> of the day.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1255213257905672192">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 13:16:03</td>
+                <td class ="content_left">@StephenCanfiel6 @frankg07450 @AlisonAinswort9 @grinningbamE @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @RubeBait @ERNESTZorro @HLisandrello @Gallaecian @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @IMontoyaResists @dr0lst0n @stellas42 @IngGuthrie Laughter is the best <span style="color: yellow;"><span style="color: yellow;">medicine</span></span>  ... I think we all need it.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253674063114846208">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 15:58:19</td>
+                <td class ="content_left">@AlisonAinswort9 I love it! Made me laugh. Truly and you know laughter is the best <span style="color: yellow;"><span style="color: yellow;">medicine</span></span></td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253352510313705473">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Tylenol</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Tylenol"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 00:02:26</td>
+                <td class ="content_left">@LoveVicToews @HLisandrello @RubeBait @Gallaecian @AlisonAinswort9 @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @ERNESTZorro @StephenCanfiel6 @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @StellaStar711 @ToshLS @dr0lst0n @IngGuthrie @frankg07450 @dusterdog1 <span style="color: yellow;"><span style="color: yellow;">Tylenol</span></span> with aspirin is best. These have helped minimal but it's better than nothing.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254923894869245952">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 22:31:20</td>
+                <td class ="content_left">@HLisandrello @Putzy2010 @RubeBait @Gallaecian @AlisonAinswort9 @Carolchapman192 @adavaco @MulhollandLeda @CindisPLace @ERNESTZorro @StephenCanfiel6 @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @StellaStar711 @ToshLS @dr0lst0n @IngGuthrie @frankg07450 @dusterdog1 <span style="color: yellow;"><span style="color: yellow;">Tylenol</span></span> with advil is the best combination. Exedein has those but also has caffeine.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254900970053529600">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Aspirin</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Aspirin"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-28 00:02:26</td>
+                <td class ="content_left">@LoveVicToews @HLisandrello @RubeBait @Gallaecian @AlisonAinswort9 @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @ERNESTZorro @StephenCanfiel6 @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @StellaStar711 @ToshLS @dr0lst0n @IngGuthrie @frankg07450 @dusterdog1 Tylenol with <span style="color: yellow;">aspirin</span> is best. These have helped minimal but it's better than nothing.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254923894869245952">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 22:18:25</td>
+                <td class ="content_left">@HLisandrello @RubeBait @Gallaecian @AlisonAinswort9 @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @ERNESTZorro @StephenCanfiel6 @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @StellaStar711 @ToshLS @dr0lst0n @IngGuthrie @frankg07450 @dusterdog1 I'm sorry you are still hurting so badly! Peppermint oil, tiger balm white, eucalyptus. It helps. <span style="color: yellow;"><span style="color: yellow;">Aspirin</span></span> and tiger balm work best for myself. Menthol, eucalyptus,  clove menthol. Perfect combination. It also relaxes the tissue in the neck muscle that gets tight.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254897718859665408">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">cold</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "cold"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 21:46:25</td>
+                <td class ="content_left">@Axim52150655 @CharlieInUtah @cherylohellno @MulhollandLeda @HLisandrello @Gallaecian @NashvilleDeeDee @a_jan5 @resistelle @CindisPLace @SassyGirlBoss @that1lemon @Lnds777 @mydoggyruss @CharismaMolotov @Carpediem4989 It is perfect. I have a lot but don't have <span style="color: yellow;"><span style="color: yellow;">cold</span></span> nor flu medice I have looked. A lot. 😂</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254889663405252608">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">headache</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "headache"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-27 20:45:24</td>
+                <td class ="content_left">@HLisandrello @RubeBait @Gallaecian @AlisonAinswort9 @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @ERNESTZorro @StephenCanfiel6 @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @StellaStar711 @ToshLS @dr0lst0n @IngGuthrie @frankg07450 @dusterdog1 Not very well. Taking a break and just resting. Thanks. 💞❤ How are you? Is your <span style="color: yellow;"><span style="color: yellow;">headache</span></span> gone?</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254874310486798336">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">migraine</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "migraine"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-26 15:46:00</td>
+                <td class ="content_left">@AlisonAinswort9 @HLisandrello @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @RubeBait @ERNESTZorro @Gallaecian @StephenCanfiel6 @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @IMontoyaResists @ToshLS @dr0lst0n @IngGuthrie @frankg07450 @apathetic_NY The white tiger balm, a godsend. I have a <span style="color: yellow;"><span style="color: yellow;">migraine</span></span> pretty much every day. This does wonders on the temples, muscles in neck, and on forehead. It is eucalyptus,  menthol, clove. Oh how I love it!</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254436576639107072">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 18:48:39</td>
+                <td class ="content_left">@SKVL75 @IngGuthrie @AlisonAinswort9 @Gallaecian @HLisandrello @MulhollandLeda @StephenCanfiel6 @Carolchapman192 @Putzy2010 @adavaco @CindisPLace @RubeBait @ERNESTZorro @Moezyboy @chefrocky413 @NavyVetResister @IMontoyaResists @sarah_meinzer @dr0lst0n @govets @frankg07450 It's the worst isn't it. You get the chills so bad your whole body shakes and aches. Biggest <span style="color: yellow;"><span style="color: yellow;">migraine</span></span> non stop. Exhaustion. I hope you feel better Gale.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253395375131525122">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 18:33:59</td>
+                <td class ="content_left">@IngGuthrie @AlisonAinswort9 @Gallaecian @HLisandrello @MulhollandLeda @StephenCanfiel6 @Carolchapman192 @Putzy2010 @adavaco @CindisPLace @RubeBait @ERNESTZorro @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @IMontoyaResists @sarah_meinzer @dr0lst0n @govets @frankg07450 I'm really sick. Worst and longest running <span style="color: yellow;"><span style="color: yellow;">migraine</span></span> but high fever, flushed face, sore throat,  mild cough,  exhaustion to the extreme. Thank you. 💕</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253391686165688320">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">nose</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "nose"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 18:16:58</td>
+                <td class ="content_left">@AlisonAinswort9 @SKVL75 @grinningbamE @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @RubeBait @ERNESTZorro @HLisandrello @Gallaecian @StephenCanfiel6 @Moezyboy @chefrocky413 @NavyVetResister @IMontoyaResists @dr0lst0n @ToshLS @IngGuthrie Yep. She needs her <span style="color: yellow;"><span style="color: yellow;">nose</span></span> so far up trumps ass she can't even hear the shit he's selling.</td>
+                <td>0</td>
+                <td>3</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254112179378221056">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">shivering</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "shivering"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 16:11:50</td>
+                <td class ="content_left">@SKVL75 @AlisonAinswort9 @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @RubeBait @ERNESTZorro @HLisandrello @Gallaecian @StephenCanfiel6 @Moezyboy @chefrocky413 @NavyVetResister @IMontoyaResists @grinningbamE @dr0lst0n @ToshLS @IngGuthrie @frankg07450 Wow! I'm the same. I felt better yesterday morning then got sicker through the day and couldn't sleep.well I was <span style="color: yellow;"><span style="color: yellow;">shivering</span></span> so bad. I hope you get better soon. 😘</td>
+                <td>0</td>
+                <td>4</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254080688732508161">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">breathing problems</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "breathing problems"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-25 15:33:49</td>
+                <td class ="content_left">@OnePissedOffBee @wcgirl1 @ToshLS @Gallaecian @michelle_martha @FixesGames @aprilneo @speakout_april @TDEMomof3 @HarbyMelanie @KrZy4NIN @ZieglerSandi @csu_scientist @jade_cabochon7 @derkiletian @Valerygirl67 @PRRisk333 @ABroadBrush @JeneeS_IS250 @TarynStanford @Oooooo_Donna Yeah. I have COVID-19. No <span style="color: yellow;"><span style="color: yellow;">breathing problems</span></span>. Cough from pneumonia. Bacterial thank god.</td>
+                <td>0</td>
+                <td>2</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1254071121625747457">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sore throat</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sore throat"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 01:57:43</td>
+                <td class ="content_left">@Aleka2020 Exactly. It has no rules. I have a <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span>. Am so exhausted it's hard to stay awake. Constant migraine. Chills so bad I shake. Fever, cough, flushed face, bad stomach pains. Sensitivity to light.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253503353801158656">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 18:33:59</td>
+                <td class ="content_left">@IngGuthrie @AlisonAinswort9 @Gallaecian @HLisandrello @MulhollandLeda @StephenCanfiel6 @Carolchapman192 @Putzy2010 @adavaco @CindisPLace @RubeBait @ERNESTZorro @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @IMontoyaResists @sarah_meinzer @dr0lst0n @govets @frankg07450 I'm really sick. Worst and longest running migraine but high fever, flushed face, <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span>,  mild cough,  exhaustion to the extreme. Thank you. 💕</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253391686165688320">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 15:34:27</td>
+                <td class ="content_left">@coyotecreek158 @Eathbound420 I have had it. Was just tested positive for COVID-19. Started with a lot of stomach pain. Exhaustion, <span style="color: yellow;"><span style="color: yellow;">sore throat</span></span>, high fever. Chills so bad I am shaking. Delusional.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253346504309235713">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">sensitivity to light</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "sensitivity to light"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-24 01:57:43</td>
+                <td class ="content_left">@Aleka2020 Exactly. It has no rules. I have a sore throat. Am so exhausted it's hard to stay awake. Constant migraine. Chills so bad I shake. Fever, cough, flushed face, bad stomach pains. <span style="color: yellow;">Sensitivity to light</span>.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253503353801158656">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Touch</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Touch"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 18:48:39</td>
+                <td class ="content_left">@HLisandrello @IngGuthrie @AlisonAinswort9 @Gallaecian @MulhollandLeda @StephenCanfiel6 @Carolchapman192 @Putzy2010 @adavaco @CindisPLace @RubeBait @ERNESTZorro @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @IMontoyaResists @sarah_meinzer @dr0lst0n @govets @frankg07450 Yes. I keep in <span style="color: yellow;">touch</span> with my primary doctor</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253395375693549569">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 13:32:20</td>
+                <td class ="content_left">@HLisandrello @StephenCanfiel6 @AlisonAinswort9 @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @RubeBait @ERNESTZorro @Gallaecian @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @IMontoyaResists @sarah_meinzer @ev3ponies @nyccookies Thank you. I am burning up. My eyes are watering, face is flushed, skin is so hot. They gave me percocet but it doesn't even <span style="color: yellow;">touch</span> it. Can't even feel it.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1252590998925893632">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">high fever</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "high fever"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 18:33:59</td>
+                <td class ="content_left">@IngGuthrie @AlisonAinswort9 @Gallaecian @HLisandrello @MulhollandLeda @StephenCanfiel6 @Carolchapman192 @Putzy2010 @adavaco @CindisPLace @RubeBait @ERNESTZorro @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @IMontoyaResists @sarah_meinzer @dr0lst0n @govets @frankg07450 I'm really sick. Worst and longest running migraine but <span style="color: yellow;"><span style="color: yellow;">high fever</span></span>, flushed face, sore throat,  mild cough,  exhaustion to the extreme. Thank you. 💕</td>
+                <td>0</td>
+                <td>5</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253391686165688320">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-23 15:34:27</td>
+                <td class ="content_left">@coyotecreek158 @Eathbound420 I have had it. Was just tested positive for COVID-19. Started with a lot of stomach pain. Exhaustion, sore throat, <span style="color: yellow;"><span style="color: yellow;">high fever</span></span>. Chills so bad I am shaking. Delusional.</td>
+                <td>0</td>
+                <td>0</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1253346504309235713">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">trouble breathing</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "trouble breathing"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 13:41:09</td>
+                <td class ="content_left">@PDXAngie @HLisandrello @StephenCanfiel6 @AlisonAinswort9 @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @RubeBait @ERNESTZorro @Gallaecian @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @IMontoyaResists @sarah_meinzer @ev3ponies @nyccookies Thanks Ang. I will. It is terrible and wouldn't wish it on most people. Just the people that thinks it's a hoax. So glad it's not severe but the doc told me to come back in if I have <span style="color: yellow;"><span style="color: yellow;">trouble breathing</span></span>.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1252593217704349697">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">Mineral</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "Mineral"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 13:15:30</td>
+                <td class ="content_left">@AlisonAinswort9 @StephenCanfiel6 @HLisandrello @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @RubeBait @ERNESTZorro @Gallaecian @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @IMontoyaResists @sarah_meinzer @ev3ponies @nyccookies I take those along with a strict vitamin regimen. I had the Walsh test done and it shows the vitamin and <span style="color: yellow;">mineral</span> deficiencies and overloads. I had copper toxicity a year ago and it was bad. PTSD symptoms were worse. Zinc calmed it down. Has to be balanced.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1252586762477514755">原文地址</a></td>
+                <td></td>
+            </tr><tr class="tbContext">
+                <td></td>
+                <td><span style="color: red; font-size: 35px; ">zinc</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" name= "zinc"  style="width:35px; height:35px"></td>
+            </tr><tr class="tbContext">
+                <td>2020-04-21 13:15:30</td>
+                <td class ="content_left">@AlisonAinswort9 @StephenCanfiel6 @HLisandrello @Carolchapman192 @Putzy2010 @adavaco @MulhollandLeda @CindisPLace @RubeBait @ERNESTZorro @Gallaecian @Moezyboy @SKVL75 @chefrocky413 @NavyVetResister @IMontoyaResists @sarah_meinzer @ev3ponies @nyccookies I take those along with a strict vitamin regimen. I had the Walsh test done and it shows the vitamin and mineral deficiencies and overloads. I had copper toxicity a year ago and it was bad. PTSD symptoms were worse. <span style="color: yellow;">Zinc</span> calmed it down. Has to be balanced.</td>
+                <td>0</td>
+                <td>1</td>
+                <td><a href="https://twitter.com/TheJessica10/status/1252586762477514755">原文地址</a></td>
+                <td></td>
+            </tr>            
+            </table>
+            <br>
+            <br>
+            <input type="button" onclick="validateForm()" value="完成提交" style="text-align: center; width: 200px; height: 100px;font-size: 30px;background-color: lightgreen">
+        </form>
+    </div>
+</div>
+</body>
+</html>
